@@ -1,0 +1,118 @@
+/*��ʼ����ǩ��ʽ*/
+html,body,div,header,footer,head,input,nav,footer,ul,li,a,p,ol,h1,h2,h3,h4,h5,h6,img,dt,dd{
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent; /*清除点击默认的高亮效果*/
+    box-sizing: border-box;
+}
+input,textarea{
+    border: none; /*ȥ���߿���ʽ��input��div��a��button�ȶ����б߿���ʽ*/
+    resize: none; /*不允许伸缩*/
+    outline: none; /*清除默认选中框*/
+    -webkit-appearance: none; /*清除浏览器默认的样式*/
+    outline-style:none; /*ȥ��ԭ�е������������ʽ*/
+}
+ul{
+    list-style: none; /*ȥ��li��ǩ�ĵ�*/
+
+}
+img
+{
+    border:0;
+    vertical-align:middle;
+}  /*  ȥ��ͼƬ�Ͳ�Ĭ�ϵ�3���ؿհ׷�϶*/
+
+a{
+    text-decoration: none; /*ȥ��a��ǩ������»���*/
+}
+
+/*设置h5页面不可复制文字*/
+* {
+    moz-user-select: -moz-none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/*清除浮动*/
+/*.clearfix:before,.clearfix:after*/
+/*{*/
+    /*content:"";*/
+    /*display:block;*/
+    /*height:0;*/
+    /*line-height:0;*/
+    /*visibility: hidden;*/
+/*}*/
+/*.clearfix:after*/
+/*{*/
+    /*clear:both;*/
+/*}*/
+/*.clearfix*/
+/*{*/
+    /**zoom:1;!*IE/7/6*!*/
+/*}*/
+
+a {color:#666; text-decoration:none; }
+a:hover{color:#C81623;}
+/*img{*/
+    /*max-width: 100vw;*/
+/*}*/
+
+/*定义以icon开头的class的样式都设置成这个样式*/
+/**[class^="icon"]{*/
+    /*background: url(../images/sprites.png) no-repeat;*/
+    /*background-size: 200px 200px;*/
+/*}*/
+
+
+/*ͷ��ͨ��*/
+.top_bar{
+    position: absolute;
+    height: 0.44rem;
+    background: url(../images/header-bg.png) repeat-x;
+    background-size: 0.01rem 0.44rem;
+    width: 100%;
+    border: 1px solid #e0e0e0;
+}
+/*���ذ�ť*/
+.top_bar .icon_back{
+    background-position: -0.20rem 0;
+    width: 0.20rem;
+    height: 0.20rem;
+    display: block;
+    position: absolute;
+    left: 0.10rem;
+    top: 0.11rem;
+}
+
+.top_bar form{
+    /*width: 100%;*/
+    height: 0.44rem;
+    padding: 0.05rem 0.40rem;
+}
+.top_bar form input{
+    width: 100%;
+    height: 0.33rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.05px;
+}
+
+.top_bar h3{
+    text-align: center;
+    line-height: 0.44rem;
+    font-size: 0.16rem;
+    font-weight: inherit;
+}
+
+.top_bar .icon_menu{
+    background-position: -60px 0;
+    width: 0.20rem;
+    height: 0.24rem;
+    display: block;
+    position: absolute;
+    right: 0.05rem;
+    top: 0.10rem;
+}

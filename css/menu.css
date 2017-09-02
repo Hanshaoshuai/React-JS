@@ -1,0 +1,534 @@
+/*��Ʒ����������*/
+.menu_top{
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.2);
+    position: fixed;
+    z-index: 33;
+    top:0;
+    display: none;
+}
+.productMenus{
+    width: 100%;
+    /*height: 100%;*/
+    /*background: rgba(0,0,0,0.2);*/
+    position: fixed;
+    /*top: 0;*/
+    /*right: 0;*/
+    /*bottom: 0;*/
+    /*left: 0;*/
+    z-index: 34;
+    display: none;
+    top:100%;
+}
+.productMenus .menu_content{
+    width: 100%;
+    height:4.76rem;
+    position: fixed;
+    bottom: 0;
+    background: white;
+    /*margin-bottom: 0.14166rem;*/
+}
+.productMenus .menu_content .qqqq{
+	width: 100%;
+    height:3rem;
+    /*overflow-y: scroll;*/
+    overflow-y: auto;
+}
+.productMenus .menu_content .close_buttonS{
+    width: 0.25rem;
+    height:0.25rem;
+    /*background: blue;*/
+    position: absolute;
+    right:0;
+    margin: 0.09rem 0.07rem 0 0;
+    /*border-radius: 1rem;*/
+    z-index: 100;
+}
+.productMenus .menu_content .close_buttonS img{
+    width: 0.25rem;
+    height:0.25rem;
+    display: inherit;
+    margin: 0 auto;
+}
+.productMenus .menu_content .menu_contentTop{
+    height: auto;
+    width: 94.4%;
+    /*background: yellow;*/
+    margin: 0 auto;
+    position: relative;
+    border-bottom: 1px solid #c9c9c9;
+}
+.productMenus .menu_content .menu_contentTop .left_minImg{
+    height: 1.18rem;
+    width: 1.18rem;
+    background: #ffffff;
+    display: inline-block;
+    margin:  -0.21rem 0 0 0;
+    border-radius: 0.022rem;
+    border: 1px #e6e6e6 solid;
+    border-radius: 0.04rem;
+    float: left;
+    position: relative;
+}
+.productMenus .menu_content .menu_contentTop .left_minImg img{
+    height: 1.12rem;
+    width: 1.12rem;
+    position:absolute;
+    top:0;bottom:0;left:0;right:0;
+    margin:auto;
+}
+.productMenus .menu_content .menu_contentTop .moneyS{
+    height: auto;
+    width: 60%;
+    /*background: red;*/
+    display: inline-block;
+    margin: 0.266rem 0 0.25rem 0.15rem;
+    position: relative;
+}
+.productMenus .menu_content .menu_contentTop .moneyS ul{
+    height:100%;
+    width: 100%;
+}
+.productMenus .menu_content .menu_contentTop .moneyS .money_now{
+    height: 0.245rem;
+    width: 100%;
+    /*background: blue;*/
+    display: inline-block;
+    float:left;
+    font-size: 0.171rem;
+    color: #c11920;
+}
+.productMenus .menu_content .menu_contentTop .moneyS .Stock{
+    height: 0.21rem;
+    width: 100%;
+    /*background: mediumspringgreen;*/
+    display: inline-block;
+    float:left;
+    font-size: 0.14rem;
+    color: #888;
+}
+.productMenus .menu_content .menu_contentTop .moneyS .Specifications{
+    width: 100%;
+    /*background: salmon;*/
+    display: inline-block;
+	float:left;
+    font-size: 0.14rem;
+    color: #888;
+}
+
+.productMenus .menu_content .center1{
+    height: auto;
+    width: 100%;
+    /*background: red;*/
+    margin: 0 auto;
+    position: relative;
+    padding:0.03rem 0 0.14rem 0;
+}
+.productMenus .menu_content .center1{
+	width: 94.4%;
+}
+.productMenus .menu_content .center1 .colorS{
+    height:0.25rem;
+    /*background: pink;*/
+    /*position: absolute;*/
+    line-height:0.25rem;
+}
+.productMenus .menu_content .center1 .colorS p{
+   	font-size:0.14rem;
+    color: #3e3a39;
+    display: inline-block;
+}
+.productMenus .menu_content .center1 .colorS_s{
+    /*height:8.4rem;*/
+    margin: 0 auto;
+    /*background: blue;*/
+    /*overflow-y: scroll;*/
+    /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*/
+    /*border-radius: 10px;*/
+    /*background-color: #F5F5F5;*/
+    /*-webkit-border-radius: 1px;*/
+    /*border-radius: 1px;*/
+}
+.productMenus .menu_content .center1 .colorS_s ul{
+    height:100%;
+    width: 100%;
+}
+.productMenus .menu_content .center1 .colorS_s ul li{
+    height:0.25rem;
+    /*width: 3rem;*/
+    background: #f2f2f2;
+    margin:0.03rem 0.112rem 0.03rem 0;
+    display: inline-block;
+    border-radius: 0.058rem;
+    /*color: white !important;*/
+}
+.another_visit{
+    background: #F2F2F2 !important;
+}
+.another_visit p{
+    color: #c9c9c9 !important;
+}
+.another{
+    background: #c11920 !important;
+}
+.another p{
+    color: white !important;
+}
+
+/*.productMenus .menu_content .center .colorS_s ul li span{*/
+    /*font-size: 0.58333rem;*/
+    /*!*text-align: center;*!*/
+    /*color: #3e3a39;*/
+    /*display:block;*/
+    /*padding: 1px 3px;*/
+    /*margin: 1px 1px;*/
+/*}*/
+.productMenus .menu_content .center1 .colorS_s ul li p{
+    font-size: 0.12rem;
+    line-height:0.25rem;
+    color: #3e3a39;
+    padding:0 0.086rem 0 0.086rem;
+    display:block;
+}
+.productMenus .menu_content .Purchase_quantity{
+    width: 100%;
+    height: 0.63rem;
+    /*background: lawngreen;*/
+    /*position: absolute;*/
+    border-bottom:1px solid #c9c9c9;
+    border-top:1px solid #c9c9c9;
+}
+.productMenus .menu_content .Purchase_quantity .Purchase_quantityCenter{
+    width: 86%;
+    height: 100%;
+    margin-left: 0.10rem;
+    /*background: yellow;*/
+    position: relative;
+}
+.productMenus .menu_content .Purchase_quantity .Purchase_quantityCenter .text{
+    height: 100%;
+    /*background: blueviolet;*/
+    display: inline-block;
+    position: absolute;
+}
+.productMenus .menu_content .Purchase_quantity .Purchase_quantityCenter .text p{
+    font-size: 0.14rem;
+    line-height: 0.63rem;
+}
+.productMenus .menu_content .Purchase_quantity .Purchase_quantityCenter .textNumber{
+    height: 100%;
+    /*background: cornflowerblue;*/
+    display: inline-block;
+    float: right;
+}
+.productMenus .menu_content .Purchase_quantity .Purchase_quantityCenter .textNumber #div{
+    width: 100%;
+    height: 100%;
+}
+.productMenus .menu_content .Purchase_quantity .Purchase_quantityCenter .textNumber #div div{
+    margin-top:0.164rem;
+}
+.productMenus .menu_content .Purchase_quantity .Purchase_quantityCenter .textNumber #div .li1{
+    width: 0.34rem;
+    height: 0.31rem;
+    margin-left: 0.05rem;
+    display: inline-block;
+    float:right;
+    /*background: #c9c9c9;*/
+}
+.productMenus .menu_content .Purchase_quantity .Purchase_quantityCenter .textNumber #div .li1 img{
+    width: 0.34rem;
+    height: 0.31rem;
+}
+.productMenus .menu_content .Purchase_quantity .Purchase_quantityCenter .textNumber #div .li2{
+    /*width: 25%;*/
+    height: 0.31rem;
+    margin-left: 0.051rem;
+    display: inline-block;
+    float:right;
+    background: #e0e0e0;
+}
+.productMenus .menu_content .Purchase_quantity .Purchase_quantityCenter .textNumber #div .li2 span{
+    font-size: 0.168rem;
+    color: #3e3a39;
+    background: #e0e0e0;
+    display:inline-block;
+    padding:0 0.115rem 0 0.115rem;
+    /*height:100%;
+    width:100%;*/
+    text-align: center;
+    margin:0 auto;
+    /*margin:0 0 0 0.4rem;*/
+    line-height: 0.31rem;
+}
+.productMenus .menu_content .Purchase_quantity .Purchase_quantityCenter .textNumber #div .li3{
+    width: 0.34rem;
+    height: 0.31rem;
+    margin-left: 0.05rem;
+    display: inline-block;
+    float:right;
+}
+.productMenus .menu_content .Purchase_quantity .Purchase_quantityCenter .textNumber #div .li3 img{
+    width: 0.34rem;
+    height: 0.31rem;
+}
+.productMenus .menu_content .Oil_card{
+    width: 84.8%;
+    height: 1.5rem;
+    margin:0 auto;
+    margin-top:0.151rem;
+    /*background: #f2f2f2;*/
+    display: none;
+}
+.productMenus .menu_content .Oil_card .Oil_card_text{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    margin:0 auto;
+}
+.productMenus .menu_content .Oil_card .Oil_card_text .Oil_card_text_1{
+    width: 100%;
+    height: 0.35rem;
+    left:0;
+    right:0;
+    top:0;
+    background: #f2f2f2;
+    /*background: firebrick;*/
+    margin:auto;
+    position: absolute;
+}
+.productMenus .menu_content .Oil_card .Oil_card_text .Oil_card_text_2{
+     width: 100%;
+    height: 0.35rem;
+    background: #f2f2f2;
+    /*background: firebrick;*/
+    margin:auto;
+    left:0;
+    right:0;
+    bottom:0.6rem;
+    position: absolute;
+}
+.productMenus .menu_content .Oil_card .Oil_card_text div p{
+    height: 100%;
+    font-size:0.16rem;
+    color: #888;
+    display: inline-block;
+    line-height:0.35rem;
+    padding:0 0.15rem 0 0.0.1rem;
+}
+.productMenus .menu_content .Oil_card .Oil_card_text div input{
+	width:60%;
+    background: none;
+    border:none;
+    font-size:0.14rem;
+    line-height:0.21rem;
+    color: #3e3a39;
+    display: inline-block;
+    -webkit-user-select:auto;
+}
+
+
+
+
+.productMenus .Oil_card1{
+    width:100%;
+    height:0.42rem;
+    /*background: #f2f2f2;*/
+    background: #c11920;
+    bottom: 0;
+    left:0;
+    position: absolute;
+    z-index: 999;
+    text-align:center;
+    color:#fff;
+    line-height: 0.42rem;
+}
+.productMenus .Oil_card1 span{
+    width:100%;
+    height:100%;
+    background: #c11920;
+    font-size:0.14rem;
+    color:#fff;
+    /*line-height: 0.42rem;*/
+}
+
+
+
+
+
+
+/*��Ʒ���񵯳���*/
+.ProductService_menu{
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.2);
+    position: fixed;
+    z-index: 33;
+    top:0;
+    display: none;
+}
+
+
+
+.ProductService{
+    width: 100%;
+    height: 100%;
+    /*background: rgba(0,0,0,0.2);*/
+    position: fixed;
+    /*top: 0;*/
+    /*right: 0;*/
+    /*bottom: 0;*/
+    /*left: 0;*/
+    z-index: 34;
+    display: none;
+    top:100%;
+}
+.ProductService .menu_content{
+    width: 100%;
+    height: 5.124rem;
+    position: absolute;
+    bottom: 0;
+    background: white;
+    /*margin-bottom: 0.14166rem;*/
+}
+.ProductService .menu_content .close_buttonS{
+    width: 0.14rem;
+    height:0.14rem;
+    /*background: blue;*/
+    position: absolute;
+    right:0;
+    margin:0.0525rem 0.0525rem 0 0;
+    border-radius: 0.14rem;
+    z-index: 44;
+}
+.ProductService .menu_content .close_buttonS img{
+    width: 100%;
+    height:100%;
+}
+.ProductService .menu_content .menu_contentTop{
+    height: 0.644rem;
+    width: 100%;
+    /*background: yellow;*/
+    margin: 0 auto;
+    position: relative;
+    /*border-bottom: 1px solid #c9c9c9;*/
+}
+.ProductService .menu_content .menu_contentTop img{
+	position:absolute;
+	right:0.12rem;
+	top:0.12rem;
+	width:0.25rem;
+	height:0.25rem;
+}
+.ProductService .menu_content .menu_contentTop .menu_topText{
+    height: 0.38rem;
+    width: 50%;
+    /*background: blue;*/
+    margin: 0 auto;
+    padding-top:0.14rem;
+    /*position: absolute;*/
+}
+.ProductService .menu_content .menu_contentTop .menu_topText p{
+    font-size: 0.21rem;
+    color: #3e3a39;
+    text-align: center;
+    line-height: 0.21rem;
+}
+
+.ProductService .menu_content .center{
+    /*height: 8.91666rem;*/
+    width: 93.3333%;
+    /*background: red;*/
+    margin: 0 auto;
+    position: relative;
+    /*border-bottom: 1px solid #c9c9c9;*/
+}
+.ProductService .menu_content .center ul{
+    height: 100%;
+    width: 100%;
+}
+.ProductService .menu_content .center ul li{
+    height: 30%;
+    width: 100%;
+    /*background: powderblue;*/
+}
+.ProductService .menu_content .center ul li .li_text{
+    height: 55%;
+    width: 100%;
+    /*background: pink;*/
+    margin:0 auto;
+}
+.ProductService .menu_content .center ul li .li_text .li_img{
+    height: 0.14rem;
+    width:0.14rem;
+    border-radius: 0.112rem;
+    display: inline-block;
+    margin: 0 0 0.015rem;
+    /*background: red;*/
+}
+.ProductService .menu_content .center ul li .li_text .li_img img{
+    position: absolute;
+    height: 0.14rem;
+    width:0.14rem;
+    margin:0.021rem 0 0 0;
+}
+.ProductService .menu_content .center ul li .li_text .li_txt{
+    height:100%;
+    width:90%;
+    margin-left:0.05rem;
+    /*background: blueviolet;*/
+    display: inline-block;
+}
+.ProductService .menu_content .center ul li .li_text .li_txt p{
+    font-size:0.151rem;
+    color: #3e3a39;
+}
+.ProductService .menu_content .center ul li .small_text{
+    height:45%;
+    width:100%;
+    /*background: #00a2d4;*/
+    display: inline-block;
+}
+.ProductService .menu_content .center ul li .small_text ul{
+    height:100%;
+    width:3.276rem;
+    /*background: #000;*/
+    float:right;
+    
+}
+.ProductService .menu_content .center ul li .small_text ul li{
+    height:100%;
+    width:100%;
+}
+.ProductService .menu_content .center ul li .small_text ul li p{
+    font-size: 0.14rem;
+    color: #888888;
+    border-bottom: 1px #c9c9c9 solid;
+}
+.ProductService .menu_content .Oil_card{
+    width: 100%;
+    height: 0.42rem;
+    /*background: #f2f2f2;*/
+    background: #c11920;
+    bottom: 0;
+    position: absolute;
+}
+.ProductService .menu_content .Oil_card .Oil_card_text{
+    width: 100%;
+    height: 0.28rem;
+    /*background: lime;*/
+    margin:0.07rem 0;
+    position: relative;
+}
+.ProductService .menu_content .Oil_card .Oil_card_text p{
+    width: 100%;
+    height:80%;
+    font-size:0.14rem;
+    color: white;
+    position: absolute;
+    margin:0.042rem 0;
+    text-align: center;
+}
+
+
