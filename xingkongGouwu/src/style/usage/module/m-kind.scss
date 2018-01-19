@@ -1,0 +1,188 @@
+.m-kind {
+    width:100%;
+    height:100%;
+    @include flexbox();
+    @include flex-direction(column);
+    header{
+        background: #efefef;
+        border-bottom:1px #d7d7d7 solid;
+        height:0.44rem;
+        width:100%;
+        .yo-header-ab{
+            height:0.44rem;
+            width:100%;
+            @include flexbox();
+            .regret_1{
+                width:0.40rem; 
+                height:100%;
+                img{
+                    width:0.12rem;
+                    margin:0.125rem 0 0 0.14rem; 
+                }
+            }
+            .title{
+                flex:1;
+                .sousuo{
+                    @include flexbox();
+                    height:0.28rem;
+                    background:#ffffff;
+                    color:#a9a9a9;
+                    border-radius:0.04rem;
+                    border:1px #dedede solid;
+                    margin-top:0.075rem;
+                    .link_1{
+                        flex:1;
+                        font-size:0.12rem;
+                        font-weight: normal;
+                        margin-left:0.08rem;
+                        a{
+                            display:inline-block;
+                            line-height: 0.28rem;
+                            color:#a9a9a9;
+                            width:100%;
+                            text-align:left;
+                        }
+                    }
+                    .img1{
+                        height:100%;
+                        width:0.38rem;
+                        border-left:1px #dedede solid;
+                        a{
+                            img{
+                                margin:0.02rem 0 0 0.08rem;
+                                width:0.15rem;
+                            }
+                        }
+                          
+                    }  
+                }
+            }
+            .img2{
+                width:0.45rem;
+                img{
+                    width:0.18rem;
+                    height:0.18rem;
+                    margin:0.125rem 0 0 0.14rem;
+                }
+            }
+        }
+    }
+  .nav-s{
+    height: .5rem;
+    background: #404042;
+    @include border(1px 0 0 0, #fff);
+//  border-top:1px #dedede solid;
+    ul {
+      width: 100%;
+      height: 100%;
+      @include flexbox();
+      li {
+        @include flex();
+        &:first-child i {
+//        margin-top: .08rem;
+        }
+        a {
+          height: 100%;
+          @include flexbox();
+          @include flex-direction(column);
+          @include align-items(center);
+          @include justify-content(center);
+          i, b {
+            color: #fff;
+          }
+          i {
+            font-size: .25rem;
+            line-height: .25rem;
+          }
+          b {
+            font-weight: normal;
+            font-size: .12rem;
+            // @include transform(scale(0.5));
+          }
+          &.active i,
+          &.active b {
+            font-weight: bold;
+            width:100%;
+            text-align: center;
+//          color: rgba(242, 48, 48, 1)
+            background: #141415;
+          }
+        }
+      }
+    }
+  }
+  .kind-list{
+      background:#ffffff;
+        display:flex;
+        flex:1;
+        height: 4.2rem;
+        .list-zuo{
+            width:25%;
+            height:100%;
+            overflow-y:auto;
+            ul{
+                background:#f9f9f9;
+                height:8rem;
+                li:nth-child(1){
+                    span{
+                        text-align: center;
+                        width:100%;
+                        border-left:0.03rem #e71d36 solid;
+                        box-sizing: border-box;
+                        color:#e71d36;
+                        background:#ffffff;
+                    }
+                }
+                li{
+                  
+                    span{
+                        width:100%;  
+                    }
+                    width:100%;
+                    line-height:0.5rem;
+                    text-align: center;
+                    width:100%;
+                    #list{
+                        text-align: center;
+                        width:100%;
+                        border-left:0.03rem #e71d36 solid;
+                        box-sizing: border-box;
+                        color:#e71d36;
+                        background:#ffffff;
+                    }
+                }
+            }
+        }
+        .list-you{
+            flex:1;
+            ul{
+                width:100%;
+                height:100%;
+                li{
+                    margin:0 .1rem;
+                    float:left;
+                    width:0.9rem;
+                    height:0.5rem;
+                    line-height:0.5rem;
+                    text-align: center;
+                    overflow:hidden;
+                    a{
+                        display:block;
+                        color: #252525;
+                        text-decoration: none;
+                        cursor: pointer;
+                        width:100%;
+                        color:#000000;
+                        overflow: hidden;
+                        white-space:nowrap;
+                        text-overflow: ellipsis;
+                    }
+                }
+            }
+        }
+    } 
+}
+
+
+
+

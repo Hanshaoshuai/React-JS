@@ -1,0 +1,64 @@
+@import "../fragment/yo-header";
+
+#root{
+    height:100%;
+}
+
+.list{
+    touch-action:none;
+}
+
+.yo-list-fullscreen {
+    top: .4rem;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+}
+
+
+img {border: none;}
+
+
+
+@font-face {
+  font-family: 'yofont';
+  src:url(/iconfont/iconfont.woff) format('woff'),
+  url(/iconfont/iconfont.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'yofont';
+  src:url(/iconfont/iconfont-search.woff) format('woff'),
+  url(/iconfont/iconfont-search.ttf) format('truetype');
+}
+
+@include yo-header(
+  $name: a,
+  $bgcolor: #f0f0f0,
+  $border-width: 0,
+  $item-ico-color: #fff,
+  $font-size: .12rem
+  
+){
+  border-bottom:1px #dedede solid;
+  .regret {
+    right: 0;
+    left: auto;
+  }
+  .regret_1{
+       left: 0;
+  }
+  
+}
+
+body{
+    @include border(1px 0 0 0, #dedede);
+}
+body span,body font{
+    display:inline-block;
+}
+
+footer{
+    border-top:1px solid #bbb;
+}

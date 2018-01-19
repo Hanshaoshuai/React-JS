@@ -1,0 +1,51 @@
+.m-xiangqing{
+    width:100%;
+    height:100%;
+    @include flexbox();
+    @include flex-direction(column);
+    .nav-item{
+        ul {
+            display: table;
+            border-bottom: 0.01rem solid #c2c2c2;
+            border-width: 0.01rem;
+            background: #fff none repeat scroll 0 0;
+            width: 100%;
+            li {
+                width: 25%;
+                height:0.36rem;
+                display: table-cell;
+                text-align: center;
+                span {
+                    background: #c2c2c2;
+                    float: left;
+                    height: 0.18rem;
+                    vertical-align: middle;
+                    margin-bottom: 0.06rem;
+                    width: 0.01rem;
+                }
+                a {
+                    display: block;
+                    font-size: 0.14rem;
+                    height: 0.14rem;
+                    line-height: 0.14rem;
+                    margin: 0 auto;
+                    color: #8e8e8e;
+                    padding: 0.12rem 0;
+                    ::after {
+                        background: #E71D36 none repeat scroll 0 0;
+                        content: "";
+                        display: block;
+                        height: 0.01rem;
+                        margin: 0.12rem auto -0.01rem;
+                    }
+                }
+            }
+        }
+    }
+    .nav{
+        flex:1;
+        background:#fff;
+        overflow-y:auto;
+        
+    }
+}

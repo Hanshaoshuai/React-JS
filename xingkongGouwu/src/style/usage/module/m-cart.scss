@@ -1,0 +1,379 @@
+.m-cart {
+    width:100%;
+    height:100%;
+    @include flexbox();
+    @include flex-direction(column);
+    header{
+        background: #efefef;
+        border-bottom:1px #d7d7d7 solid;
+        height:0.44rem;
+        width:100%;
+        .yo-header-ab{
+            height:0.44rem;
+            width:100%;
+            @include flexbox();
+            .regret_1{
+                width:0.40rem; 
+                height:100%;
+                img{
+                    width:0.12rem;
+                    margin:0.125rem 0 0 0.14rem; 
+                }
+            }
+            .title{
+                flex:1;
+                text-align: center;
+                line-height:0.44rem;
+            }
+            .img2{
+                width:0.45rem;
+                img{
+                    width:0.18rem;
+                    height:0.18rem;
+                    margin:0.125rem 0 0 0.14rem;
+                }
+            }
+        }
+    }
+    .nav-s{
+    height: .5rem;
+    background: #404042;
+    @include border(1px 0 0 0, #fff);
+    ul {
+      width: 100%;
+      height: 100%;
+      @include flexbox();
+      li {
+        @include flex();
+        &:first-child i {
+        }
+        a {
+          height: 100%;
+          @include flexbox();
+          @include flex-direction(column);
+          @include align-items(center);
+          @include justify-content(center);
+          i, b {
+            color: #fff;
+          }
+          i {
+            font-size: .25rem;
+            line-height: .25rem;
+          }
+          b {
+            font-weight: normal;
+            font-size: .12rem;
+           
+          }
+          &.active i,
+          &.active b {
+            font-weight: bold;
+            width:100%;
+            text-align: center;
+            background: #141415;
+          }
+        }
+      }
+    }
+  }
+    .cart-list{
+        flex:1;
+        overflow-y:auto ;
+        background:#f2f2f2;
+        .cart-content{
+           width:100%; 
+           padding-top:1.06rem;
+           text-align: center;
+           font-size: 0.13rem;
+           span{
+               height:0.22rem;
+               color:#5b414e;
+           }
+           font{
+              height:0.3rem;
+              line-height:0.30rem;
+              color:#8e8e8e;
+              a{
+                  display:inline-block;
+                  line-height:0.30rem;
+                  width:0.6rem;
+                  background:#e71d36;
+                  color:#fff;
+                  border-radius:0.04rem;
+              } 
+           }
+        }
+        .cart-content1{
+            width:100%;
+            height:100%;
+            overflow-y:auto;
+            position:relative;
+            .null-wrapper {
+                width: 3rem;
+                height: 2rem;
+                position: relative;
+                top: 50%;
+                left: 50%;
+                margin-left: -1.5rem;
+//              margin-top: 100px;
+                position:absolute;
+                top:1rem;
+                .null-notice1 {
+                    display: block;
+                    width: 3rem;
+                    height: .3rem;
+                    line-height: .3rem;
+                    font-size: .13rem;
+                    text-align: center;
+                }
+                .null-notice2 {
+                    display: block;
+                    width: 3rem;
+                    height: .3rem;
+                    line-height: .3rem;
+                    font-size: .13rem;
+                    text-align: center;
+                    color: #8e8e8e;
+                    .login-btn {
+                        display: inline-block;
+                        width: .6rem;
+                        height: .3rem;
+                        line-height: .26rem;
+                        background: #E71D36;
+                        color: #fff;
+                        font-size: .14rem;
+                        border: 2px solid #E71D36;
+                        border-radius: .03rem;
+                    }
+                }
+            }
+            .listpro{
+                width:100%;
+                height:100%;
+                position: relative;
+                flex-direction:column;
+                .listbox{
+                    padding-bottom: .05rem;
+                    background: #f2f2f2;
+                    .cart-wrapper{
+                        margin-bottom:100px;
+                        .cart-vendor {
+                            margin: .1rem .05rem;
+                            background: #fff;
+                            overflow-y: auto;
+                            .cart-vendor-name {
+                                height: .3rem;
+                                line-height: .3rem;
+                                font-weight: bold;
+                                .vendor-checkbox-wrapper {
+                                    padding: .05rem;
+                                    padding-right: .11rem;
+                                    float: left;
+                                    img{    
+                                        display: block;
+                                        height: .2rem;
+                                        width: .2rem;
+                                    }
+                                }
+                            }
+                            ul{
+                                .cart-item {
+                                    text-align: left;
+                                    height: 1.38rem;
+                                    padding-bottom: .1rem;
+                                    position: relative;
+                                    .checkbox-wrapper {
+                                        float: left;
+                                        height: 1rem;
+                                        width: .3rem;
+                                        text-align: center;
+                                        img{
+                                            display: block;
+                                            height: .2rem;
+                                            width: .2rem;
+                                            margin: auto;
+                                            margin-top: .3rem;
+                                        }
+                                    }
+                                    .cart-pro-wapper {
+                                        overflow: hidden;
+                                        height: 1rem;
+                                        margin-left: .3rem;
+                                        .cart-pro-img {
+                                            display: block;
+                                            float: left;
+                                            padding: .06rem;
+                                            width:1rem;
+                                            img{
+                                                width:100%;
+                                            }
+                                        }
+                                        .cart-pro-info {
+                                            margin-left: 1rem;
+                                            .cart-pro-name {
+                                                font-size: 13px;
+                                                height: 4.4em;
+                                                line-height: 1.4em;
+                                                vertical-align: top;
+                                                overflow: hidden;
+                                                text-overflow: ellipsis;
+                                                display: -webkit-box;
+                                                -webkit-line-clamp: 3;
+                                                -webkit-box-orient: vertical;
+                                                margin-bottom: 1.2em;
+                                                padding-top: .06rem;
+                                                padding-right: .08rem;
+                                                a {
+                                                    color: #252525;
+                                                    text-decoration: none;
+                                                    cursor: pointer;
+                                                }
+                                            }
+                                            .cart-op {
+                                                overflow: hidden;
+                                                height: .26rem;
+                                                position: relative;
+                                                .cart-pro-price {
+                                                    background: rgba(255, 255, 255, 1) none repeat scroll 0 0;
+                                                    float: left;
+                                                    margin-right: .1rem;
+                                                    white-space: nowrap;
+                                                    height: .26rem;
+                                                    line-height: .26rem;
+                                                    span {
+                                                        color: #E71D36;
+                                                        font-size: .14rem;
+                                                    }
+                                                }
+                                                .quantity-wrapper {
+                                                    float: right;
+                                                    margin-right: .1rem;
+                                                    .quantity-decrease, .quantity-increase {
+                                                        display: block;
+                                                        border: 1px solid #c2c2c2;
+                                                        line-height: .24rem;
+                                                        overflow: hidden;
+                                                        width: .32rem;
+                                                    }
+                                                    .quantity {
+                                                        border: 1px solid #c2c2c2;
+                                                        border-width: 1px 0;
+                                                        border-radius: 0;
+                                                        box-shadow: none;
+                                                        height: .26rem;
+                                                        width: .32rem;
+                                                    }
+                                                    .quantity-decrease, .quantity, .quantity-increase {
+                                                        float: left;
+                                                        font-size: .14rem;
+                                                        text-align: center;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                    .cart-del {
+                                        overflow: hidden;
+                                        height: .2rem;
+                                        line-height: .2rem;
+                                        margin-top: .1rem;
+                                        position: relative;
+                                        .cart-del-wrapper {
+                                            position: absolute;
+                                            right: .1rem;
+                                            top: -.1rem;
+                                            height: .3rem;
+                                            width: .4rem;
+                                            vertical-align: baseline;
+                                            span {
+                                                width: .4rem;
+                                                height: .2rem;
+                                                color: #8e8e8e;
+                                                text-align: right;
+                                                float: right;
+                                                margin-top: .1rem;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                .payment-total-bar {
+                    background: rgba(0, 0, 0, 0.8);
+                    bottom: 0.44rem;
+                    height: 0.50rem;
+                    overflow: hidden;
+                    width: 100%;
+                    position: fixed;
+                    .shp-chk {
+                        float: left;
+                        overflow: hidden;
+                        padding-top: 0.15rem;
+                        width: 0.60rem;
+                        height: 0.50rem;
+                        padding-left: 0.10rem;
+                        .checkbox {
+                            display: table-cell !important;
+                            margin-left: 0.11rem;
+                            height: 0.20rem;
+                            width: 0.20rem;
+                            img{
+                                height: 0.16rem;
+                                width: 0.16rem;
+                            }
+                        }
+                        .cart-checkbox-text {
+                            color: #fff !important;
+                            display: table-cell;
+                            opacity: 0.8;
+                            padding-left: 0.05rem;
+                            vertical-align: middle;
+                            font-size: 0.12rem !important;
+                            height: 0.20rem;
+                            line-height: 0.20rem;
+                        }
+                    }
+                    .shp-cart-info {
+                        display: block;
+                        float: left;
+                        margin-top: 0.08rem;
+                        min-width: 2.00rem;
+                        margin-left: 0.11rem;
+                        .shp-cart-total {
+                            color: #fff;
+                            display: block;
+                            margin-top: 0.07rem;
+                            font-size: 0.16rem;
+                            font-weight: normal;
+                        }
+                    }
+                    .btn-right-block {
+                        background: #E71D36 none repeat scroll 0 0;
+                        color: #fff;
+                        display: block;
+                        float: right;
+                        font-size: 0.18rem;
+                        font-weight: normal;
+                        line-height: 0.50rem;
+                        padding: 0 0.03rem;
+                        position: absolute;
+                        right: 0;
+                        text-align: center;
+                        width: 1.00rem;
+                    }
+                }
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+        }
+    }
+}

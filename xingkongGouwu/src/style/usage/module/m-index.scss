@@ -1,0 +1,48 @@
+.m-index{
+    height:100%;
+    @include flexbox();
+    @include flex-direction(column);
+    section{
+        flex:1;
+        background:#f2f3f5;
+        overflow:hidden;
+    }
+    footer{
+        height:.44rem;
+        background:#fff;
+        ul {
+            width:100%;
+            height:100%;
+            @include flexbox();
+            li{
+                @include flex(); 
+                
+            }
+            a {
+                width:100%;
+                height:100%;
+                @include flexbox();
+                @include flex-direction(column);
+                @include align-items(center);
+                @include justify-content(center);
+                i, b {
+                   color:#5d5f6a;
+                  }
+                i{
+                    font-size: .20rem;
+                    line-height: .20rem;
+                }
+                b{
+                    font-weight: normal;
+                    font-size: .12rem;
+//                  @include transform(scale(0.8));
+                }
+                &.active i,
+                &.active b{
+                    color: #f23030; 
+                }
+                
+            }
+        }
+    }
+}

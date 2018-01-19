@@ -1,0 +1,216 @@
+.m-user {
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    .regret_1{
+        img{
+            width:0.12rem; 
+        }
+    }
+    .title{
+        color:#000000;
+        font-weight:normal;
+        font-size:0.16rem;
+    }
+    .img2{
+          width:0.3rem;
+          padding-left:0;
+        img{
+            width:0.18rem;
+            height:0.18rem;
+        }
+    }
+    .kind-list{
+      background:#ffffff;
+      display:flex;
+      flex:1;
+      flex-direction: column;
+    }
+    .nav-s{
+    height: .5rem;
+    background: #404042;
+    @include border(1px 0 0 0, #fff);
+//  border-top:1px #dedede solid;
+    ul {
+      width: 100%;
+      height: 100%;
+      @include flexbox();
+      li {
+        @include flex();
+        &:first-child i {
+//        margin-top: .08rem;
+        }
+        a {
+          height: 100%;
+          @include flexbox();
+          @include flex-direction(column);
+          @include align-items(center);
+          @include justify-content(center);
+          i, b {
+            color: #fff;
+          }
+          i {
+            font-size: .25rem;
+            line-height: .25rem;
+          }
+          b {
+            font-weight: normal;
+            font-size: .12rem;
+            // @include transform(scale(0.5));
+          }
+          &.active i,
+          &.active b {
+            font-weight: bold;
+            width:100%;
+            text-align: center;
+//          color: rgba(242, 48, 48, 1)
+            background: #141415;
+          }
+        }
+      }
+    }
+  }
+  
+    .starbox{
+        flex:1;
+        @include flexbox();
+        @include flex-direction(column);
+        background: #f2f3f5;
+        .fullbox{
+            flex:1;
+            .center-head-layout {
+                padding-bottom: .1rem;
+                background: #f2f3f5;
+                .mcenter-head {
+                    padding-bottom: .05rem;
+                    text-align: center;
+                    background: #F35466;
+                    overflow: hidden;
+                    padding: .1rem;
+                    .customericon {
+                        float: left;
+                        margin-right: .2rem;
+                    }
+                    .customer-info {
+                        height: 1rem;
+                        text-align: left;
+                        p {
+                            color: #fff;
+                            font-size: .12rem;
+                            padding: .02rem;
+                        }
+                        .customer-name {
+                            color: #fff;
+                            font-size:.18rem;
+                            padding: .08rem;
+                        }
+                    }
+                }
+                
+                .customerorder-layout {
+                    position: relative;
+                    width: 100%;
+                    .customerorder {
+                        position: relative;
+                        display: table;
+                        width: 100%;
+                        height: .44rem;
+                        background: #fff none repeat scroll 0 0;
+                        box-shadow: 1px 1px #e2e2e2;
+                        li {
+                            display: table-cell;
+                            text-align: center;
+                            font-size: .12rem;
+                            padding: .06rem;
+                            a {
+                                color: #252525;
+                                text-decoration: none;
+                                cursor: pointer;
+                            }
+                            span{
+                                display:block;
+                            }
+                        }
+                    }
+                }
+            }
+            
+        	.customernav {
+                padding-bottom: .1rem;
+                background: #f2f3f5;
+                .customernav-wrapper {
+                    width: 100%;
+                    text-align: center;
+                    background: #fff none repeat scroll 0 0;
+                    box-shadow: 1px 1px #e2e2e2;
+                    padding: .1rem 0;
+                    font-size: 0;
+                    overflow: hidden;
+                    li {
+                        float: left;
+                        width: 33.3%;
+                        padding: .1rem .05rem;
+                        font-size: .14rem;
+                        a {
+                            color: #252525;
+                            text-decoration: none;
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+        
+        }
+        
+        .footer {
+            background: #f8f8f8 none repeat scroll 0 0;
+            color: #848689;
+            font-size: .12rem;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            max-height: .52rem;
+            .line-up {
+                border-top: 1px solid #bfbfbf;
+                border-width: 1px 0 0;
+                height: 0;
+                border-image: url(http:\/\/m.sctvgo.com/Themes/default/images/icon/line_up.gif) 2 0 2 0 round round;
+            }
+            .footer-link {
+                display: table;
+                height: .13rem;
+                margin: 0 auto;
+                padding: .18rem 0;
+                li {
+                    display: table-cell;
+                    font-size: .13rem;
+                    height: .15rem;
+                    line-height: .15rem;
+                    a {
+                        display: block;
+                        text-align: center;
+                        width: 100px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        color: #252525;
+                        text-decoration: none;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+            
+    }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+}
