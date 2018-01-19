@@ -1,0 +1,254 @@
+#WoyaoRongzi{
+    .home {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background: #f5f5f5;
+    }
+    .home .header {
+      width: 100%;
+      padding-bottom: 20px;
+    }
+    .home .header ul {
+      width: 100%;
+      background: #fe7f65;
+    }
+    .home .header ul .header-top {
+      width: 100%;
+      height: 28px;
+      background: #000000;
+    }
+    .home .header ul .header-bottom {
+      width: 1100px;
+      margin: 0 auto;
+      background: #fe7f65;
+      overflow: hidden;
+    }
+    .home .header ul .header-bottom .header-left {
+      width: 50%;
+      padding: 18px 0;
+      float: left;
+      overflow: hidden;
+    }
+    .home .header ul .header-bottom .header-left .img-left {
+      width: 66px;
+      height: 66px;
+      float: left;
+      margin-right: 10px;
+    }
+    .home .header ul .header-bottom .header-left .img-right {
+      height: 46px;
+      margin-top:12px;
+      float: left;
+    }
+    .home .header ul .header-bottom .header-right {
+      width: 50%;
+      padding: 18px 0;
+      float: right;
+      overflow: hidden;
+    }
+    .home .header ul .header-bottom .header-right ul {
+      width: 332px;
+      padding: 14px 0;
+      float: right;
+    }
+    .home .header ul .header-bottom .header-right ul .img-top {
+      float: left;
+      width: 38px;
+      height: 38px;
+      margin-right: 10px;
+    }
+    .home .header ul .header-bottom .header-right ul .img-top img {
+      float: left;
+      width: 38px;
+      height: 38px;
+    }
+    .home .header ul .header-bottom .header-right ul .img-center {
+      float: left;
+      font-size: 14px;
+      color: #fff;
+    }
+    .home .header ul .header-bottom .header-right ul .img-center p {
+      font-size: 16px;
+      line-height: 16px;
+      padding-bottom: 6px;
+    }
+    .home .header ul .header-bottom .header-right ul .img-center span {
+      display: inline-block;
+      margin-right: 10px;
+    }
+    .home .header ul .header-bottom .header-right ul .img-bottom {
+      float: right;
+      cursor: pointer;
+    }
+    .home .header ul .header-bottom .header-right ul .img-bottom img {
+      height: 38px;
+    }
+    .home .box {
+      width: 1100px;
+      background: #fff;
+      font-size: 16px;
+      margin: 0 auto;
+      padding: 40px 0 80px 0;
+    }
+    .home .box .box-content {
+      padding: 0 60px 0 60px;
+      background: #fff;
+    }
+    .home .box .box-content .list:after {
+      display: block;
+      clear: both;
+      content: "";
+      visibility: hidden;
+      height: 0;
+    }
+    .home .box .box-content .list {
+      padding: 32px;
+      border-bottom: 1px solid #e6e6e6;
+      color: #808080;
+      zoom: 1;
+      position: relative;
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+      box-shadow: 0px 0px 16px #eeeeee;
+    }
+    .home .box .box-content .list .list-top {
+      height: 88px;
+    }
+    .home .box .box-content .list .list-top ol .top-img {
+      background: #666666;
+      margin-right: 14px;
+      float: left;
+    }
+    .home .box .box-content .list .list-top ol .top-img img {
+      width: 88px;
+      height: 88px;
+      float: left;
+    }
+    .home .box .box-content .list .list-top ol .top-content {
+      height: 88px;
+      font-size: 18px;
+      float: left;
+    }
+    .home .box .box-content .list .list-top ol .top-content p {
+      height: 58px;
+      color: #3c3c3c;
+      line-height: 40px;
+    }
+    .home .box .box-content .list .list-top ol .top-content div {
+      width: 256px;
+      float: left;
+      line-height: 28px;
+    }
+    .home .box .box-content .list .list-top ol .top-content div span {
+      float: left;
+    }
+    .home .box .box-content .list .list-top ol .top-content div font {
+      line-height: 26px;
+      float: left;
+      margin-left: 12px;
+    }
+    .home .box .box-content .list .rongzi {
+      width: 220px;
+      height: 48px;
+      position: absolute;
+      top: 58px;
+      right: 30px;
+      border-radius: 2px;
+      line-height: 48px;
+      text-align: center;
+      color: #fff;
+      font-size:18px;
+      background: #fc7257;
+      cursor: pointer;
+    }
+    .home .box .box-content .mingcheng {
+      margin-top: -1px;
+    }
+    .home .box .box-content .mingcheng ul {
+      border: 1px solid #ebebeb;
+      border-top: none;
+    }
+    .home .box .box-content .mingcheng .mingcheng-top {
+      height: 54px;
+      margin: 0 auto;
+      line-height: 54px;
+      color: #3c3c3c;
+      background: #f7f7f7;
+      padding-left: 30px;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+    .home .box .box-content .mingcheng .mingcheng-top span {
+      line-height: 54px;
+    }
+    .home .box .box-content .mingcheng .mingcheng-top .top1 {
+      width: 222px;
+    }
+    .home .box .box-content .mingcheng .mingcheng-top .top2 {
+      width: 132px;
+    }
+    .home .box .box-content .mingcheng .mingcheng-top .top3 {
+      width: 196px;
+    }
+    .home .box .box-content .mingcheng .mingcheng-top .top4 {
+      width: 258px;
+    }
+    .home .box .box-content .mingcheng .mingcheng-bottom {
+      height: 56px;
+      background: #fff;
+      line-height: 56px;
+      color: #808080;
+      border-top-left-radius: 0px;
+      border-top-right-radius: 0px;
+    }
+    .home .box .box-content .mingcheng .mingcheng-bottom:nth-child(2n) {
+      background: #fbfbfb;
+    }
+    .home .box .list-bottom {
+      width: 350px;
+      margin: 0 auto;
+      height: 28px;
+      margin-top: 30px;
+    }
+    .home .box .list-bottom .bottom-left {
+      width: 30px;
+      height: 13px;
+      margin: 8px 10px 0 0;
+      float: left;
+//    background-image: url("../img/qr-10.png");
+      background-size: 100% 100%;
+      cursor: pointer;
+    }
+    .home .box .list-bottom .bottom-right {
+      width: 30px;
+      height: 13px;
+      margin: 8px 0 0 10px;
+      float: right;
+//    background-image: url('../img/qr-11.png');
+      background-size: 100% 100%;
+      cursor: pointer;
+    }
+    .home .box .list-bottom ul {
+      float: left;
+      margin: 0 auto;
+    }
+    .home .box .list-bottom ul span {
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      color: #3c3c3c;
+      text-align: center;
+      font-size: 14px;
+      margin: 0 10px 0 10px;
+      border: 1px solid #ebebeb;
+      box-sizing: border-box;
+      cursor: pointer;
+    }
+    .home .box .list-bottom .list-span {
+      background: #fc7257;
+      color: #fff;
+    }
+    /*# sourceMappingURL=index.css.map */
+
+}
