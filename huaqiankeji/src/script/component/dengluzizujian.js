@@ -7,6 +7,18 @@ class Index extends React.Component {
       name: this.props.zizujian, //来自子组件的值通过this.props.
       fu:''
     }
+    console.log(this)
+  }
+  static jingtai(){ //静态函数用法
+  	return '我是静态函数'
+//	setTimeout(()=>{
+////		alert('我是静态函数')
+////			console.log(this);
+//			return '我是静态函数'
+////			this.constructor.setState({
+////  		name:'我是静态函数'
+////  	})
+//	},3000)
   }
   render() {
   	let filter = [3, 5, 2, 2, 5, 5]

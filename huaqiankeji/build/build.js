@@ -420,9 +420,10 @@ var DengLu = function (_React$Component) {
       block: "none",
       list: [],
       zizujian: 'woshi子组件',
-      xiajicangshu: ''
-    };
-    return _this;
+      xiajicangshu: '',
+      ziJingtaishuju: ''
+      //  this.dengLu=this.dengLu.bind(this) //绑定this
+    };return _this;
   }
 
   _createClass(DengLu, [{
@@ -509,7 +510,15 @@ var DengLu = function (_React$Component) {
   }, {
     key: 'componentWillMount',
     value: function componentWillMount() {
+      var _this2 = this;
+
       console.log("componentWillMount");
+      setTimeout(function () {
+        _this2.setState({
+          ziJingtaishuju: _dengluzizujian2.default.jingtai()
+        });
+      }, 3000);
+      //	Zizujian.jingtai();  //调用子组件的静态函数；
     }
   }, {
     key: 'componentDidMount',
@@ -634,6 +643,11 @@ var DengLu = function (_React$Component) {
                       'div',
                       { style: { color: '#000000', fontSize: "30px" } },
                       this.state.xiajicangshu
+                    ),
+                    _react2.default.createElement(
+                      'div',
+                      { style: { color: '#000000', fontSize: "36px" } },
+                      this.state.ziJingtaishuju
                     )
                   )
                 )
@@ -2611,6 +2625,7 @@ var Index = function (_React$Component) {
       name: _this.props.zizujian, //来自子组件的值通过this.props.
       fu: ''
     };
+    console.log(_this);
     return _this;
   }
 
@@ -2656,6 +2671,20 @@ var Index = function (_React$Component) {
     //  }
     //}
 
+  }], [{
+    key: 'jingtai',
+    value: function jingtai() {
+      //静态函数用法
+      return '我是静态函数';
+      //	setTimeout(()=>{
+      ////		alert('我是静态函数')
+      ////			console.log(this);
+      //			return '我是静态函数'
+      ////			this.constructor.setState({
+      ////  		name:'我是静态函数'
+      ////  	})
+      //	},3000)
+    }
   }]);
 
   return Index;

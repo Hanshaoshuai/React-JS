@@ -16,8 +16,10 @@ export default class DengLu extends React.Component {
      	block:"none",
      	list: [],
      	zizujian:'woshi子组件',
-     	xiajicangshu:''
+     	xiajicangshu:'',
+     	ziJingtaishuju:''
     }
+//  this.dengLu=this.dengLu.bind(this) //绑定this
   }
   
   phoneNB(){
@@ -93,6 +95,12 @@ export default class DengLu extends React.Component {
   }
   componentWillMount(){
   	console.log("componentWillMount")
+  	setTimeout(()=>{
+	  	this.setState({
+	  		ziJingtaishuju:Zizujian.jingtai()
+	  	})
+  	},3000)
+//	Zizujian.jingtai();  //调用子组件的静态函数；
   }
   componentDidMount(){
   	console.log("componentDidMount")
@@ -152,6 +160,7 @@ export default class DengLu extends React.Component {
 										<span>登录</span>
 										<Zizujian zizujian={this.state.zizujian} todoFn={this.laizizizujian.bind(this)}></Zizujian>
 										<div style={{color:'#000000',fontSize:"30px"}}>{this.state.xiajicangshu}</div>
+										<div style={{color:'#000000',fontSize:"36px"}}>{this.state.ziJingtaishuju}</div>
 									</div>
 								</li>
 							</ul>
