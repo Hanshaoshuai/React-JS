@@ -15,6 +15,9 @@
   transition: opacity 300ms ease-in; }
 
 #Denglu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
   width: 100%;
   height: 100%; }
   #Denglu .home {
@@ -138,6 +141,8 @@
     font-size: 22px;
     margin: 0 auto;
     cursor: pointer; }
+#dengluzizujian {
+  color: #000000; }
 @charset "UTF-8";
 #RongziLeixing {
   width: 100%;
