@@ -21,7 +21,7 @@ class WoyaoRongzi extends React.Component {
 							<li  className="header-bottom">
 								<div className="header-left">
 									<img className="img-left" src=""/>
-									<img className="img-right" src="../../img/qr-1.png"/>
+									<img className="img-right" src="./img/qr-1.png"/>
 								</div>
 								<div className="header-right">
 									<ul>
@@ -31,7 +31,7 @@ class WoyaoRongzi extends React.Component {
 											<span>此房东</span>
 											<font>的是否覆盖</font>
 										</li>
-										<li className="img-bottom"><img src="../../img/qr-2.png"/></li>
+										<li className="img-bottom"><img src="./img/qr-2.png"/></li>
 									</ul>
 								</div>
 							</li>

@@ -21,7 +21,7 @@ class RongziYaosu extends React.Component {
 							<li  className="header-bottom">
 								<div className="header-left">
 									<img className="img-left" src=""/>
-									<img className="img-right" src="../../img/qr-1.png"/>
+									<img className="img-right" src="./img/qr-1.png"/>
 								</div>
 								<div className="header-right">
 									<ul>
@@ -31,14 +31,14 @@ class RongziYaosu extends React.Component {
 											<span>此房东</span>
 											<font>的是否覆盖</font>
 										</li>
-										<li className="img-bottom"><img src="../../img/qr-2.png"/></li>
+										<li className="img-bottom"><img src="./img/qr-2.png"/></li>
 									</ul>
 								</div>
 							</li>
 						</ul>
 					</div>
 					<div className="box">
-						<div className="content-img"><img src="../../img/qr-3.png"/></div>
+						<div className="content-img"><img src="./img/qr-3.png"/></div>
 						<ul className="box-content">
 							<li className="xinxi">
 								<div className="xinxi-1"><span className="colors">01基本信息</span></div>
@@ -63,7 +63,7 @@ class RongziYaosu extends React.Component {
 											<option value="选择品牌1">选择品牌1</option>
 											<option value="选择品牌2">选择品牌2</option>
 										</select>
-										<img src="../../img/anniu.png"/>
+										<img src="./img/anniu.png"/>
 									</div>
 								</div>
 								<div className="xinxi-3">

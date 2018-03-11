@@ -21,7 +21,7 @@ class ShoufeiXieyi extends React.Component {
 							<li  className="header-bottom">
 								<div className="header-left">
 									<img className="img-left" src=""/>
-									<img className="img-right" src="../../img/qr-1.png"/>
+									<img className="img-right" src="./img/qr-1.png"/>
 								</div>
 								<div className="header-right">
 									<ul>
@@ -31,7 +31,7 @@ class ShoufeiXieyi extends React.Component {
 											<span>此房东</span>
 											<font>的是否覆盖</font>
 										</li>
-										<li className="img-bottom"><img src="../../img/qr-2.png"/></li>
+										<li className="img-bottom"><img src="./img/qr-2.png"/></li>
 									</ul>
 								</div>
 							</li>
@@ -40,7 +40,7 @@ class ShoufeiXieyi extends React.Component {
 					<div className="box">
 						<ul className="box-content">
 							<ul className="list">
-								<div className="content-img"><img src="../../img/qr-8.png"/></div>
+								<div className="content-img"><img src="./img/qr-8.png"/></div>
 								<li className="xinxi">
 									<div className="xinxi-1"><span className="colors">若您本次投递的投资人及其所属投资机构：</span></div>
 								</li>
@@ -52,7 +52,7 @@ class ShoufeiXieyi extends React.Component {
 									<p className="colors">我们将按照总投资的1%收取平台服务费</p>
 								</div>
 								<div className="chakan">
-									<img src="../../img/qr-9.png"/>
+									<img src="./img/qr-9.png"/>
 								</div>
 							</ul>
 							<li className="xiayibu" onClick={this.xiaYibu.bind(this)}>

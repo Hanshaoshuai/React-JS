@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import Zizujian from './dengluzizujian.js';
 
 export default class DengLu extends React.Component {
   constructor (props) {
@@ -13,7 +14,9 @@ export default class DengLu extends React.Component {
      	phoneNumber:"",
      	passwords:"",
      	block:"none",
-     	list: []
+     	list: [],
+     	zizujian:'woshi子组件',
+     	xiajicangshu:''
     }
   }
   
@@ -100,13 +103,17 @@ export default class DengLu extends React.Component {
 			list: this.state.list
 		})
 	}
-  
-
+	laizizizujian(result){  //接收子组件的传值
+		this.setState({
+			xiajicangshu:result
+		})
+//		alert(result)
+  }
   render() {
     return (
     	<div id="Denglu">
 		  	<div className="home">
-					<img src="../../img/qr-14.png"/>
+					<img src="./img/qr-14.png"/>
 					<div className="box">
 						<div className="opasity">
 							<ReactCSSTransitionGroup transitionName="example" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
@@ -127,22 +134,24 @@ export default class DengLu extends React.Component {
 						<div className="content">
 							<ul>
 								<li className="logo">
-									<img className="logo-left" src="../../img/28.png"/>
-									<img className="logo-right" src="../../img/qr-4.png"/>
+									<img className="logo-left" src="./img/28.png"/>
+									<img className="logo-right" src="./img/qr-4.png"/>
 								</li>
 								<li className="text">
 									<div className="phone">
-										<img src='../../img/qr-5.png'/>
+										<img src='./img/qr-5.png'/>
 										<input placeholder="请输入手机号" onBlur={this.phoneBlur.bind(this)} onChange={this.phoneNB.bind(this)} ref="phoneNumber" name="phone" id="telphone_1" className="txt-input" type="text"/>
 										<span style={{display:this.state.phoneNone}} className="shouji">{this.state.texts}</span>
 									</div>
 									<div className="password phone">
-										<img src='../../img/qr-6.png'/>
+										<img src='./img/qr-6.png'/>
 										<input  placeholder="请输入密码" onBlur={this.passWordBlur.bind(this)} onChange={this.passWords.bind(this)} ref="passwords" type="password" id="pwd_1" className="txt-input txt-password" name="password"/>
 										<span style={{display:this.state.posswordNone}} className="mima">{this.state.posswordText}</span>
 									</div>
 									<div onClick={this.dengLu.bind(this)} className="item-btns">
 										<span>登录</span>
+										<Zizujian zizujian={this.state.zizujian} todoFn={this.laizizizujian.bind(this)}></Zizujian>
+										<div style={{color:'#000000',fontSize:"30px"}}>{this.state.xiajicangshu}</div>
 									</div>
 								</li>
 							</ul>
