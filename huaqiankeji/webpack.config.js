@@ -119,6 +119,14 @@ module.exports = {
 					]
 				})
 			},
+//			{
+//				test:/\.jsx$/,
+//				exclude:/node_modules/,
+//				loader:"jsx-loader",
+//				query: {
+//					presets: ['react', 'es2015']
+//				}
+//			},
 			{
 				test:/\.js$/,
 				exclude: /node_modules/, 

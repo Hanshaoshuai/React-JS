@@ -10,7 +10,7 @@ class Index extends React.Component {
     console.log(this)
   }
   static jingtai(){ //静态函数用法
-  	return '我是静态函数'
+  	return this.prop
 //	setTimeout(()=>{
 ////		alert('我是静态函数')
 ////			console.log(this);
@@ -54,5 +54,7 @@ class Index extends React.Component {
 //  }
 //}
 }
+Index.prop='我是静态属性啊'
+
 
 export default Index
