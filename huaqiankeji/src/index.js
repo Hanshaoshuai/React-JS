@@ -1,12 +1,16 @@
-import "./style/usage/DengLu.scss";
-import "./style/usage/dengluzizujian.scss";
 
-import "./style/usage/PipeiTouzi.scss";
-import "./style/usage/RongziLeixing.scss";
-import "./style/usage/RongziYaosu.scss";
-import "./style/usage/ShoufeiXieyi.scss";
-import "./style/usage/WoyaoRongzi.scss";
-import "./style/usage/YitouDi.scss";
+//import './style/usage/antd.min.css';
+//import 'antd/dist/antd.less';
+
+import "./style/usage/DengLu.less";
+import "./style/usage/dengluzizujian.less";
+
+import "./style/usage/PipeiTouzi.less";
+import "./style/usage/RongziLeixing.less";
+import "./style/usage/RongziYaosu.less";
+import "./style/usage/ShoufeiXieyi.less";
+import "./style/usage/WoyaoRongzi.less";
+import "./style/usage/YitouDi.less";
 
 import React from 'react'
 import ReactDOM from 'react-dom'

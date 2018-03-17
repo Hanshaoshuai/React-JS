@@ -1,4 +1,5 @@
 var webpack = require ('webpack')
+var path = require ('path')
 var autoprefixer=require("autoprefixer")
 var HtmlWebpackPlugin = require ('html-webpack-plugin')
 var ExtractTextPlugin = require ('extract-text-webpack-plugin')
@@ -82,7 +83,10 @@ module.exports = {
 //			},
 			{
 			  	test: /\.css$/,
-			  	exclude: /node_modules/,
+			  	exclude:[
+			  		path.resolve(__dirname,'node_modules/antd')
+			  	],
+//			  	exclude: /node_modules/,
 				use: ExtractTextPlugin.extract({
 				  	fallback: 'style-loader',
 				  	use: [
@@ -103,13 +107,29 @@ module.exports = {
 //					use: 'css-loader!sass-loader'
 //				})
 //			},
+//			{
+//			  	test: /\.scss$/,
+//			  	exclude: /node_modules/,
+//			 	use: ExtractTextPlugin.extract({
+//				  	fallback: 'style-loader',
+//				  	use: [
+//					    'css-loader','sass-loader',
+//					    {
+//					      	loader: "postcss-loader",
+//					      	options: {
+//					        	plugins: [autoprefixer]
+//					      	}
+//					    }
+//					]
+//				})
+//			},
 			{
-			  	test: /\.scss$/,
+			  	test: /\.less$/,
 			  	exclude: /node_modules/,
 			 	use: ExtractTextPlugin.extract({
 				  	fallback: 'style-loader',
 				  	use: [
-					    'css-loader','sass-loader',
+					    'css-loader','less-loader',
 					    {
 					      	loader: "postcss-loader",
 					      	options: {
