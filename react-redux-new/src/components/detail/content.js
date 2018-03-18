@@ -7,7 +7,7 @@ class ContentComponent extends React.Component {
 
 	componentDidMount() {
 		
-		fetch('/mock/article.json?id=' + this.props.id).then((response)=>{
+		fetch('./mock/article.json?id=' + this.props.id).then((response)=>{
 			return response.json();
 		}).then((json) => {
 			this.props.handleGetDataSucc(json.data);

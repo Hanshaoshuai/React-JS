@@ -1,7 +1,8 @@
 var defaultState = {
 	articles: [],
 	title: 'heihei',
-	content: 'content'
+	content: 'content',
+	zidingyi:['fjlkjf','kgjd',3]
 }
 
 export default function(state = defaultState, action) {
@@ -16,6 +17,12 @@ export default function(state = defaultState, action) {
 		return Object.assign({}, state, {
 			content: action.content,
 			title: action.title
+		})
+	}
+	
+	if (action.type == "FETCH_CONTENT") {
+		return Object.assign({}, state, {
+			zidingyi: action.zidingyi,
 		})
 	}
 

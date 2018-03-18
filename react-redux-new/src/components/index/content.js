@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Card} from 'antd';
+import {Card,Button } from 'antd';
 import {Link} from 'react-router';
 
 // UI组件
@@ -8,7 +8,7 @@ import {Link} from 'react-router';
 class ContentComponent extends React.Component {
 
 	componentDidMount() {
-		fetch('/mock/articles.json').then((response) => {
+		fetch('./mock/articles.json').then((response) => {
 			return response.json();
 		}).then((json)=> {
 			this.props.handleGetDataSucc(json.data.articles);
@@ -32,7 +32,7 @@ class ContentComponent extends React.Component {
 							)
 						})
 					}
-				   
+					<Button type="primary"><Link to={'/zidingyi'}>跳转到zidingyi</Link></Button>
 				 </Card>
 			</div>
 		)
