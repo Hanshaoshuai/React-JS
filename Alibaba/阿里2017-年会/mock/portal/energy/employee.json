@@ -1,0 +1,33 @@
+{
+    "success": true,
+    "errorMsg": "",
+    "errorCode": "",
+    "data": {
+        "energyBlockCount": 5,
+        "employee": {
+            "workNo": "员工工号",
+            "name": "员工姓名",
+            "nickName": "员工花名",
+            "deptName": "员工所属部门全称",
+            "energyValue": "10001",
+            "energyBlock": "y",
+            "draw": "2",
+            "giveEnergyValue": 123,
+            "receiveEnergyValue": 123
+        },
+        "fiveCard": [
+            {
+                "cardName": "新能量",
+                "cardValue": "energy",
+                "order": "1",
+                "light": true
+            },
+            {
+                "cardName": "新零售",
+                "cardValue": "retail",
+                "order": "2",
+                "light": false
+            }
+        ]
+    }
+}

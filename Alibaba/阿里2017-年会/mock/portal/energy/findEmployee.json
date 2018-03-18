@@ -1,0 +1,127 @@
+{
+    "success": true,
+    "errorMsg": "",
+    "errorCode": "",
+    "data": [
+        {
+            "workNo": "107114",
+            "name": "秦玉国",
+            "nickName": "玉国",
+            "energyValue": 234,
+            "canGive": true,
+            "lastGiveEnergyValue": 100
+        },
+        {
+            "workNo": "107114",
+            "name": "秦玉国",
+            "nickName": "玉国",
+            "energyValue": 234,
+            "canGive": false,
+            "lastGiveEnergyValue": 100
+        },
+        {
+            "workNo": "107114",
+            "name": "秦玉国",
+            "nickName": "玉国",
+            "energyValue": 234,
+            "canGive": false,
+            "lastGiveEnergyValue": 100
+        },
+        {
+            "workNo": "107114",
+            "name": "秦玉国",
+            "nickName": "玉国",
+            "energyValue": 234,
+            "canGive": true,
+            "lastGiveEnergyValue": 100
+        },
+        {
+            "workNo": "107114",
+            "name": "秦玉国",
+            "nickName": "玉国",
+            "energyValue": 234,
+            "canGive": true,
+            "lastGiveEnergyValue": 100
+        },
+        {
+            "workNo": "107114",
+            "name": "秦玉国",
+            "nickName": "玉国",
+            "energyValue": 234,
+            "canGive": true,
+            "lastGiveEnergyValue": 100
+        },
+        {
+            "workNo": "107114",
+            "name": "秦玉国",
+            "nickName": "玉国",
+            "energyValue": 234,
+            "canGive": true,
+            "lastGiveEnergyValue": 100
+        },
+        {
+            "workNo": "107114",
+            "name": "秦玉国",
+            "nickName": "玉国",
+            "energyValue": 234,
+            "canGive": true,
+            "lastGiveEnergyValue": 100
+        },
+        {
+            "workNo": "107114",
+            "name": "秦玉国",
+            "nickName": "玉国",
+            "energyValue": 234,
+            "canGive": true,
+            "lastGiveEnergyValue": 100
+        },
+        {
+            "workNo": "107114",
+            "name": "秦玉国",
+            "nickName": "玉国",
+            "energyValue": 234,
+            "canGive": true,
+            "lastGiveEnergyValue": 100
+        },
+        {
+            "workNo": "107114",
+            "name": "秦玉国",
+            "nickName": "玉国",
+            "energyValue": 234,
+            "canGive": true,
+            "lastGiveEnergyValue": 100
+        },
+        {
+            "workNo": "107114",
+            "name": "秦玉国",
+            "nickName": "玉国",
+            "energyValue": 234,
+            "canGive": true,
+            "lastGiveEnergyValue": 100
+        },
+        {
+            "workNo": "107114",
+            "name": "秦玉国",
+            "nickName": "玉国",
+            "energyValue": 234,
+            "canGive": true,
+            "lastGiveEnergyValue": 100
+        },
+        {
+            "workNo": "107114",
+            "name": "秦玉国",
+            "nickName": "玉国",
+            "energyValue": 234,
+            "canGive": true,
+            "lastGiveEnergyValue": 100
+        },
+        {
+            "workNo": "107114",
+            "name": "秦玉国",
+            "nickName": "玉国",
+            "energyValue": 234,
+            "canGive": true,
+            "lastGiveEnergyValue": 100
+        }
+    ]
+}

@@ -1,0 +1,84 @@
+.friend {
+    display: flex;
+    align-items: center;
+    padding: unit(10/@rem, rem) unit(20/@rem, rem);
+    background-color: transparent;
+    .rank {
+        display: none;
+        width: unit(21/@rem, rem);
+        margin-right: unit(8/@rem, rem);
+        font-size: unit(14/@rem, rem);
+        color: rgba(49, 215, 246, 0.4);
+        text-align: center;
+        i {
+            display: inline-block;
+            background-image: url(https://gw.alicdn.com/tfs/TB1qGGASpXXXXXpXXXXXXXXXXXX-42-60.png);
+            background-size: cover;
+            width: unit(21/@rem, rem);
+            height: unit(30/@rem, rem);
+        }
+        &.rank-2 {
+            i {
+                background-image: url(https://gw.alicdn.com/tfs/TB1a5CkSpXXXXcMXpXXXXXXXXXX-42-60.png);
+            }
+        }
+        &.rank-3 {
+            i {
+                background-image: url(https://gw.alicdn.com/tfs/TB1sFWaSpXXXXX7XVXXXXXXXXXX-42-60.png);
+            }
+        }
+    }
+    .avatar {
+        width: unit(40/@rem, rem);
+        height: unit(40/@rem, rem);
+        border-radius: 50%;
+    }
+    .intro {
+        flex: 1;
+        font-size: unit(14/@rem, rem);
+        padding: 0 unit(20/@rem, rem);
+        .title {
+            color: #32DCFA;
+        }
+        .subtitle {
+            margin-top: unit(4/@rem, rem);
+            color: fade(#32DCFA, 40);
+        }
+    }
+    .btn-add-energy {
+        cursor: pointer;
+        -webkit-appearance: none;
+        border: none;
+        outline: none;
+        font-size: unit(12/@rem, rem);
+        padding: unit(5/@rem, rem) unit(10/@rem, rem);
+        display: flex;
+        align-items: center;
+        color: #6DE8FF;
+        background-color: transparent;
+        background-image: url(https://gw.alicdn.com/tfs/TB1VqSuSpXXXXbXXXXXXXXXXXXX-156-68.png);
+        background-size: cover;
+        line-height: unit(24/@rem, rem);
+        padding-left: unit(28/@rem, rem);
+        width: unit(78/@rem, rem);
+        height: unit(34/@rem, rem);
+        .iconfont {
+             display: none;
+             color: #EECA7E;
+             font-size: unit(12/@rem, rem);
+             margin-right: unit(4/@rem, rem);
+         }
+        &:active {
+            opacity: 0.6;
+        }
+        &.disabled {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+    }
+    &.has-rank {
+        .rank {
+            display: inline-block;
+        }
+    }
+}

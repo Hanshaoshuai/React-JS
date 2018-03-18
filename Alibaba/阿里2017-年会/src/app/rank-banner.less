@@ -1,0 +1,166 @@
+@keyframes top0
+{
+0%   {    transform: translateY(0);}
+25%   {    transform: translateY(4px);}
+75%   {    transform: translateY(-4px);}
+100% {    transform: translateY(0);}
+}
+.rank-banner {
+    padding-bottom: 36px;
+    position: relative;
+    .title-container {
+        text-align: center;
+        margin: unit(20/@rem, rem) 0 unit(40/@rem, rem);
+        height: 16px;
+        .title {
+            display: inline-block;
+            vertical-align: top;
+            color: #32DAF8;
+            text-shadow: 0 0 7px #1D4790;
+            font-size: unit(14/@rem, rem);
+            position: relative;
+            &:before {
+                display: block;
+                content: ' ';
+                width: 20px;
+                height: 1px;
+                background-image: linear-gradient(-90deg, #3B86DC 6%, rgba(50, 220, 250, 0.00) 100%);
+                position: absolute;
+                left: -30px;
+                top: 7px;
+            }
+            &:after {
+                display: block;
+                content: ' ';
+                width: 20px;
+                height: 1px;
+                background-image: linear-gradient(90deg, #3B86DC 7%, rgba(50, 220, 250, 0.00) 100%);
+                position: absolute;
+                right: -30px;
+                top: 7px;
+            }
+        }
+    }
+    .title-container-2 {
+        height: 16px;
+        text-align: center;
+        position: absolute;
+        width: 100%;
+        top: 0px;
+        .title {
+            font-size: unit(14/@rem, rem);
+            vertical-align: top;
+            color: rgba(173, 52, 217, 1);
+            display: inline-block;
+            position: relative;
+            left: 1px;
+            top: -1px;
+        }
+    }
+    .background {
+        position: relative;
+        margin: 0 auto; // background-image: url(https://gw.alicdn.com/tfs/TB1yF1JSpXXXXafXXXXXXXXXXXX-644-338.png);
+        // background-size: cover;
+        width: unit(322/@rem, rem);
+        height: unit(169/@rem, rem);
+        .top {
+            // display: none;
+            position: ABSOLUTE;
+            width: 120px;
+            height: 125px;
+            background-image: url(https://gw.alicdn.com/tfs/TB1B0OBSpXXXXauXpXXXXXXXXXX-240-250.png);
+            background-size: cover;
+            .img-container {
+                text-align: center;
+                position: absolute;
+                width: 59px;
+                height: 68px;
+                -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+                img {
+                    height: 100%;
+                    position: relative;
+                    left: -6.5px;
+                }
+            }
+            .text-container {
+                color: #CDF5FF;
+                font-size: 12px;
+                bottom: 0;
+                width: 100%;
+                position: absolute;
+                .text {
+                    text-align: center;
+                    i {
+                        vertical-align: top;
+                        display: inline-block;
+                        height: 15px;
+                        width: 10.5px;
+                        background-size: cover;
+                        margin-right: 4px;
+                    }
+                    span {
+                        line-height: 15px;
+                    }
+                }
+            }
+            &.top-0 {
+                left: 86px;
+                top: 0px;
+                width: 151px;
+                height: 169px;
+                background-image: url(https://gw.alicdn.com/tfs/TB19AWGSpXXXXbIXXXXXXXXXXXX-302-338.png);
+                background-size: cover;
+                animation: top0 4s linear 0.3s infinite alternate;
+                .img-container {
+                    left: 36.5px;
+                    width: 80px;
+                    height: 92px;
+                    top: 7px;
+                }
+                i {
+                    background-image: url(https://gw.alicdn.com/tfs/TB1qGGASpXXXXXpXXXXXXXXXXXX-42-60.png);
+                }
+            }
+            &.top-1 {
+                left: 4px;
+                top: 11px;
+                animation: top0 4s linear 0s infinite alternate;
+                .img-container {
+                    width: 59px;
+                    height: 68px;
+                    left: 32px;
+                    top: 4px;
+                }
+                i {
+                    background-image: url(https://gw.alicdn.com/tfs/TB1a5CkSpXXXXcMXpXXXXXXXXXX-42-60.png);
+                }
+            }
+            &.top-2 {
+                left: 202px;
+                top: 11px;
+                animation: top0 4s linear 0.6s infinite alternate;
+                .img-container {
+                    left: 31.5px;
+                    top: 4px;
+                }
+                i {
+                    background-image: url(https://gw.alicdn.com/tfs/TB1sFWaSpXXXXX7XVXXXXXXXXXX-42-60.png);
+                }
+            }
+        }
+    }
+    .line {
+        background-image: url(https://gw.alicdn.com/tfs/TB1mt9vSpXXXXciXpXXXXXXXXXX-42-14.png);
+        background-size: cover;
+        height: 7px;
+        width: 21px;
+        position: absolute;
+        &.line-1 {
+            left: 26px;
+        }
+        &.line-2 {
+            right: 60px;
+            bottom: -5px;
+        }
+    }
+}

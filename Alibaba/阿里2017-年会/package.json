@@ -1,0 +1,40 @@
+{
+  "name": "ali-conf-energy",
+  "author": "jianfei",
+  "version": "0.0.1",
+  "description": "员工大会-聚五新",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.alibaba-inc.com:platform/ali-conf-energy.git"
+  },
+  "scripts": {
+    "start": "nowa server",
+    "build": "nowa build",
+    "cloud": "nowa build -d .package"
+  },
+  "homepage": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.16.2",
+    "classnames": "^2.2.5",
+    "history": "^4.6.3",
+    "i18n-helper": "~1.1.1",
+    "lodash": "^4.17.4",
+    "mobx": "^3.2.1",
+    "mobx-react": "^4.2.2",
+    "moment": "^2.18.1",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-router-dom": "^4.1.1"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.69",
+    "@types/react": "^15.0.38",
+    "@types/react-router-dom": "^4.0.7",
+    "nowa": "^1.2.1",
+    "nowa-build": "^1.17.1",
+    "nowa-server": "^1.17.0",
+    "typescript": "^2.4.1"
+  }
+}

@@ -1,0 +1,122 @@
+.energy-cards {
+    margin: 0 unit(8/@rem, rem);
+    height: unit(132/@rem, rem);
+    background-color: fade(#010034, 70);
+    border: 1px solid fade(#32DCFA, 30);
+    border-style: inset;
+
+    .hairline & {
+        border-width: 0.5px;
+    }
+
+    .cards {
+        display: flex;
+        justify-content: space-around;
+
+        .card {
+            padding-top: unit(19/@rem, rem);
+            &-icon {
+                display: block;
+                width: unit(50/@rem, rem);
+                height: unit(50/@rem, rem);
+                background-size: contain;
+                background-repeat: no-repeat;
+            }
+
+            &-name {
+                font-size: unit(10/@rem, rem);
+                margin: 0.5em 0;
+                text-align: center;
+                font-size: unit(12/@rem, rem);
+                color: #94B2FF;
+                transform: scale(10/12);
+                transform-origin: top;
+            }
+        }
+
+        .card.clicked .card-icon {
+            background-image: url("https://img.alicdn.com/tfs/TB1KjxxSpXXXXXfXFXXXXXXXXXX-47-51.png");
+            [data-dpr="2"] & {
+                background-image: url("https://img.alicdn.com/tfs/TB1AX0sSpXXXXcxXFXXXXXXXXXX-94-102.png");
+            }
+
+            [data-dpr="3"] & {
+                background-image: url("https://img.alicdn.com/tfs/TB1AX0sSpXXXXcxXFXXXXXXXXXX-94-102.png");
+            }
+        }
+
+        .card.clickable {
+            .card-icon {
+                animation: breathe 2s ease-in-out infinite;
+                background-image: url("https://img.alicdn.com/tfs/TB1PwFHSpXXXXXMXpXXXXXXXXXX-48-51.png");
+
+                [data-dpr="2"] & {
+                    background-image: url("https://img.alicdn.com/tfs/TB1yYlnSpXXXXX.XVXXXXXXXXXX-96-102.png");
+                }
+
+                [data-dpr="3"] & {
+                    background-image: url("https://img.alicdn.com/tfs/TB1IsRJSpXXXXcvXXXXXXXXXXXX-144-153.png");
+                }
+            }
+        }
+        
+        .card.unclickable .card-name {
+            color: fade(#3F54D0, 50);
+        }
+        .card.unclickable .card-icon {
+            background-image: url("https://img.alicdn.com/tfs/TB1AIMWSXXXXXa.apXXXXXXXXXX-47-51.png");
+
+            [data-dpr="2"] & {
+                background-image: url("https://img.alicdn.com/tfs/TB1QFpySpXXXXcPXpXXXXXXXXXX-94-102.png");
+            }
+
+            [data-dpr="3"] & {
+                background-image: url("https://img.alicdn.com/tfs/TB1TT8MSpXXXXaMXXXXXXXXXXXX-141-153.png");
+            }
+        }
+    }
+
+    .progress {
+        position: relative;
+        background-color: transparent;
+        margin: 0 unit(4/@rem, rem);
+        // border: 1px solid fade(#776EFB, 50);
+        .hairline & {
+            border-width: 0.5px;
+        }
+        text-align: center;
+        font-size: unit(12/@rem, rem);
+        height: unit(24/@rem, rem);
+        line-height: unit(24/@rem, rem);
+        box-shadow: 0 0 2px #70C9FC;
+        overflow: hidden;
+
+        &-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0;
+            z-index: 0;
+            background-image: linear-gradient(to right, #5A50F0, #32DCFA);
+            transition: width 0.5s ease-in-out;
+        }
+
+        &-inner {
+            position: absolute;
+            z-index: 2;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            color: #fff;
+            text-shadow: 0 0 2px fade(#488FF9, 80);
+        }
+    }
+}
+
+@keyframes breathe {
+    0% { opacity: 1 }
+    50% { opacity: 0.5 }
+    100% { opacity: 1 }
+}
