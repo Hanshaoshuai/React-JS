@@ -1,4 +1,14 @@
 .normal {
-    width: 900px;
+	width: 900px;
     margin: 3em auto 0;
-  }
+}
+.loading{
+	position:absolute;
+	width:26px;
+	height:26px;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	margin:auto;
+}

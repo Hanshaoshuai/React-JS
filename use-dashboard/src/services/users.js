@@ -4,3 +4,6 @@ import { PAGE_SIZE } from '../constants';
 export function fetch({ page }) {
   return request(`/api/users?_page=${page}&_limit=${PAGE_SIZE}`);
 }
+export function fetchs() {
+  return request(`http://datainfo.duapp.com/shopdata/getclass.php`);
+}
