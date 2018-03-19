@@ -121,6 +121,7 @@ export default class DengLu extends React.Component {
     return (
     	<div id="Denglu">
 		  	<div className="home">
+		  		<div className="imgse"></div>
 					<img src="./img/qr-14.png"/>
 					<div className="box">
 						<div className="opasity">

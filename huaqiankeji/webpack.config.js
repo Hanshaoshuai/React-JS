@@ -3,6 +3,7 @@ var path = require ('path')
 var autoprefixer=require("autoprefixer")
 var HtmlWebpackPlugin = require ('html-webpack-plugin')
 var ExtractTextPlugin = require ('extract-text-webpack-plugin')
+var ImageminPlugin = require('imagemin-webpack-plugin').default
 var OpenBrowserPlugin = require ('open-browser-webpack-plugin')
 
 module.exports = {
@@ -17,7 +18,7 @@ module.exports = {
 	devServer: {
 		contentBase: './build',
 		host: 'localhost',
-		port:9000,
+		port:8080,
 		historyApiFallback: false,
 		proxy:{
 			'/api1': {
@@ -155,13 +156,26 @@ module.exports = {
 					presets: ['react', 'es2015']
 				}
 			},
-			{
-		        test: /\.(png|jpg|gif|svg)$/,
-		        loader: 'file-loader',
-		        options: {
-		          name: '[name].[ext]?[hash]'
-		        }
-		   	},
+//			{
+//		        test: /\.(png|jpg|gif|svg)$/,		//image在HTML中时用
+//		        loader: 'file-loader',
+//		        options: {
+//		          name: '[name].[ext]?[hash]'
+//		        }
+//		   	},
+		   	{
+				test: /\.(jpe?g|png|woff|woff2|eot|ttf|svg)(\?[a-z0-9=.]+)?$/, //image背景时用
+				loader: [{
+						loader: 'url-loader',
+						query: {
+							limit: 100000,
+							name: 'img/[name].[ext]'
+						}
+					},
+					'image-webpack-loader'
+				],
+//				include: path.resolve(__dirname, 'src')
+			},
       		{
 			    test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
 			    use: [{
@@ -203,8 +217,14 @@ module.exports = {
 			allChunks:true
 		}),
 		new OpenBrowserPlugin({
-			url: 'http://localhost:9000'
-		})
+			url: 'http://localhost:8080'
+		}),
+		new ImageminPlugin({
+			disable: process.env.NODE_ENV !== 'production',
+			pngquant: {
+				quality: '90-100'
+			}
+		}),
 		
 	],
 	

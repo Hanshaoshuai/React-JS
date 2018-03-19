@@ -27,6 +27,12 @@
   position: relative;
   /*overflow: hidden;*/
 }
+#Denglu .home .imgse {
+  width: 200px;
+  height: 200px;
+  background-image: url(img/qr-14.png);
+  background-size: 100% 100%;
+}
 #Denglu .home img {
   height: 100%;
 }
