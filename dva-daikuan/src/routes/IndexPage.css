@@ -1,0 +1,62 @@
+body{
+  background:red;
+}
+
+input{
+  width:340px;
+  height:30px;
+  border:1px solid #ccc;
+  border-radius:5px;
+  padding:0 5px 0 5px;
+}
+button{
+  width:100%;
+  height:30px;
+  background:#26B99A;
+  border:1px solid #ccc;
+  border-radius:5px;
+  margin-top:30px;
+  color:#fff;
+}
+.banquan{
+  width:100%;
+  height:14px;
+  text-align:center;
+  font-size:12px;
+  margin-top:30px;
+  color:#73879C;
+}
+.denglulogo{
+  width:100%;
+  height:40px;
+}
+.spa1{
+  display: block;
+  width:80px;
+  height:1px;
+  background:#73879C;
+  position: absolute;
+  left:0px;
+  top:0px;
+}
+.spa2{
+  display: block;
+  width:100px;
+  height:40px;
+  position:absolute;
+  right:125px;
+  top:-20px;
+  text-align: center;
+  font-size:25px;
+  line-height:40px;
+  color:#73879C;
+}
+.spa3{
+  display: block;
+  width:80px;
+  height:1px;
+  background:#73879C;
+  position:absolute;
+  right:0px;
+  top:0px;
+}
