@@ -1,8 +1,0 @@
-{
-    "success": true,
-    "errorMsg": "",
-    "data": {
-        "energyValue": 50,
-        "totalEnergyValue": 5000
-    }
-}
