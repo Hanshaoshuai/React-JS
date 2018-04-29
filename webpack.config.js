@@ -2,7 +2,7 @@ var path = require('path')
 var webpack = require('webpack')
 
 
-
+// hanxiaoyu分支
 
 module.exports = {
   entry: './src/main.js',
