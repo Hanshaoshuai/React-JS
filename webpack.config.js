@@ -1,8 +1,7 @@
 var path = require('path')
 var webpack = require('webpack')
 
-// master
-
+// master和hanxiaoyu合并
 
 module.exports = {
   entry: './src/main.js',
@@ -71,6 +70,15 @@ if (process.env.NODE_ENV === 'production') {
         warnings: false
       }
     }),
+
+
+
+
+
+
+
+
+
     new webpack.LoaderOptionsPlugin({
       minimize: true
     })
@@ -78,10 +86,20 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 
+
 // 增加一个plugins
    plugins: [
       new webpack.optimize.CommonsChunkPlugin('common.js'),
       new webpack.ProvidePlugin({
+
+
+
+
+
+
+
+
+
           jQuery: "jquery",
           $: "jquery"
       })
