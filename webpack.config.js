@@ -70,6 +70,15 @@ if (process.env.NODE_ENV === 'production') {
         warnings: false
       }
     }),
+
+
+
+
+
+
+
+
+
     new webpack.LoaderOptionsPlugin({
       minimize: true
     })
@@ -82,6 +91,15 @@ if (process.env.NODE_ENV === 'production') {
    plugins: [
       new webpack.optimize.CommonsChunkPlugin('common.js'),
       new webpack.ProvidePlugin({
+
+
+
+
+
+
+
+
+
           jQuery: "jquery",
           $: "jquery"
       })
