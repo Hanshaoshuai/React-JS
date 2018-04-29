@@ -75,9 +75,6 @@ if (process.env.NODE_ENV === 'production') {
 
 /*
 
-
-
-
 // 增加一个plugins
    plugins: [
       new webpack.optimize.CommonsChunkPlugin('common.js'),
@@ -87,4 +84,5 @@ if (process.env.NODE_ENV === 'production') {
       })
 
    ]
+
 */
