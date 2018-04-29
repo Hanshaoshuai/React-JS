@@ -1,7 +1,7 @@
 var path = require('path')
 var webpack = require('webpack')
 
-
+// master
 
 
 module.exports = {
@@ -73,15 +73,11 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 
+
 // 增加一个plugins
    plugins: [
-<<<<<<< HEAD
-new webpack.optimize.CommonsChunkPlugin('common.js'),
-new webpack.ProvidePlugin({
-=======
-                new webpack.optimize.CommonsChunkPlugin('common.js'),
-                new webpack.ProvidePlugin({
->>>>>>> c0647fce2641fcd8c436d21fe80028d8b275dddb
+      new webpack.optimize.CommonsChunkPlugin('common.js'),
+      new webpack.ProvidePlugin({
           jQuery: "jquery",
           $: "jquery"
       })
