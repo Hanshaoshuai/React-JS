@@ -75,8 +75,8 @@ if (process.env.NODE_ENV === 'production') {
 
 // 增加一个plugins
    plugins: [
-      new webpack.optimize.CommonsChunkPlugin('common.js'),
-      new webpack.ProvidePlugin({
+                new webpack.optimize.CommonsChunkPlugin('common.js'),
+                new webpack.ProvidePlugin({
           jQuery: "jquery",
           $: "jquery"
       })
