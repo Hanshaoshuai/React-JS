@@ -1,8 +1,7 @@
 var path = require('path')
 var webpack = require('webpack')
 
-// master
-
+// master和hanxiaoyu合并
 
 module.exports = {
   entry: './src/main.js',
