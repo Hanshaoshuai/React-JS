@@ -1,0 +1,25 @@
+.normal {
+  font-family: Georgia, sans-serif;
+  text-align: center;
+}
+.title {
+  font-size: .26rem;
+  font-weight: normal;
+  letter-spacing: -1px;
+  margin: 0;
+}
+.welcome {
+  height: 328px;
+  background: url(../assets/yay.jpg) no-repeat center 0;
+  background-size: 388px 328px;
+}
+.list {
+  display: flex;
+  font-size: 1.2em;
+  list-style: none;
+  line-height: 1.5em;
+}
+.list code {
+  background: #f7f7f7;
+}
+/*# sourceMappingURL=IndexPage.css.map */
