@@ -7,3 +7,7 @@ export function fetch({ page }) {
 export function fetchs() {
   return request(`http://datainfo.duapp.com/shopdata/getclass.php`);
 }
+
+export function pageList() {
+  return request('/api/index.js');
+}

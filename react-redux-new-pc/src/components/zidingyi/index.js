@@ -71,6 +71,17 @@ class ContentComponent extends React.Component {
 	//  this.dengLu=this.dengLu.bind(this) //绑定this
 	}
 	componentDidMount(){
+		
+		$.ajax({
+		  url:'/api/articles.json',
+		  type: 'GET',
+		  dataType: 'json',
+		  data: {},
+		  success: function(res){
+		    console.log(res)
+		  }
+		}) 
+		
 		console.log(new Date().getTime())
 		var dom = document.getElementById('box');
 		var dom1 = document.getElementById('box1');
@@ -224,6 +235,8 @@ class ContentComponent extends React.Component {
 				<div id="box3"></div>
 				<div id="box4"></div>
 				<div id="box5"></div>
+				<div id="img"></div>
+    			<img src="./img/qr-12.png"/>
 			</div>
 		)
 	}

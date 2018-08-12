@@ -7,7 +7,8 @@
   "proxy": null,
   "proxy": {
     "/api": {
-      "target": "http://jsonplaceholder.typicode.com/",
+      //"target": "http://jsonplaceholder.typicode.com/",
+      "target": "http://127.0.0.1:8020/MyDictionary/React-JS1/React-JS/use-dashboard-pc/src/components/mock",
       "changeOrigin": true,
       "pathRewrite": { "^/api" : "" }
     }

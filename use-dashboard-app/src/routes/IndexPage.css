@@ -22,4 +22,9 @@
 .list code {
   background: #f7f7f7;
 }
+.box {
+  width: 100%;
+  height: 50px;
+  background: url(../assets/qr-12.png);
+}
 /*# sourceMappingURL=IndexPage.css.map */

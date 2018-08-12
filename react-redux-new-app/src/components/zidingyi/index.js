@@ -4,12 +4,8 @@ import { Carousel, WingBlank, Button, WhiteSpace } from 'antd-mobile';
 import "./index.less";
 
 
-
-
-
 import times from 'gettimesjs';
 var getuppercase= require('getuppercase');
-
 
 
 
@@ -25,6 +21,17 @@ class ContentComponent extends React.Component {
 	//  this.dengLu=this.dengLu.bind(this) //绑定this
 	}
 	componentDidMount(){
+		
+		$.ajax({
+		  url:'/api/articles.json',
+		  type: 'GET',
+		  dataType: 'json',
+		  data: {},
+		  success: function(res){
+		    console.log(res)
+		  }
+		}) 
+		
 		console.log(new Date().getTime())
 		let dom = document.getElementById('box');
 		let dom1 = document.getElementById('box1');
@@ -143,6 +150,8 @@ class ContentComponent extends React.Component {
 				<div id="box5"></div>
 				<Button type="primary">primary</Button>
     			<Button type="primary" disabled>primary disabled</Button>
+    			<div id="img"></div>
+    			<img src="./img/qr-12.png"/>
 			</div>
 		)
 	}

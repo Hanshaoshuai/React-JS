@@ -1,9 +1,10 @@
-var webpack = require('webpack');
-var path = require ('path')
-var autoprefixer=require("autoprefixer")
-var HtmlWebpackPlugin = require ('html-webpack-plugin')
-var ExtractTextPlugin = require ('extract-text-webpack-plugin')
-var OpenBrowserPlugin = require ('open-browser-webpack-plugin')
+const webpack = require('webpack');
+const path = require ('path')
+const autoprefixer=require("autoprefixer")
+const HtmlWebpackPlugin = require ('html-webpack-plugin')
+const ExtractTextPlugin = require ('extract-text-webpack-plugin')
+const OpenBrowserPlugin = require ('open-browser-webpack-plugin')
+const ImageminPlugin = require('imagemin-webpack-plugin').default;
 
 
 module.exports = {
@@ -12,6 +13,7 @@ module.exports = {
 	entry: './src/index.js',
 	output: {
 		path: __dirname+'/build',
+//		publicPath: '/',
 		filename: "build.js"
 	},
 	devServer: {
@@ -26,7 +28,7 @@ module.exports = {
 		   		changeOrigin: true
 			},
 			'/api': {
-			    target: 'http://images.sctvgo.com/',
+			    target: 'http://127.0.0.1:8020/MyDictionary/React-JS1/React-JS/react-redux-new-pc/mock',
 			   	pathRewrite: {'^/api': ''},
 			   	changeOrigin: true
 			}
@@ -81,22 +83,23 @@ module.exports = {
 	            }]
 	        },
 			{
-		        test: /\.(png|jpg|gif|svg)$/,
-		        loader: 'file-loader',
-		        options: {
-		          name: '[name].[ext]?[hash]'
+		        test: /\.(woff|svg|ttf|eot|woff2)(\?.*)?$/,
+		        loader: 'url-loader',
+		        exclude: /node_modules/,
+		        query: {
+		          limit: 1000,
+		          name: "static/font/[name].[hash:8].[ext]"
 		        }
-		   	},
-      		{
-			    test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-			    use: [{
-			      	loader: "url-loader",
-			      	options: {
-			        	limit: 10000,
-			        	name: 'fonts/[name].[hash:7].[ext]'    // 将字体放入fonts文件夹下
-			      	}
-			    }]
-			}
+		    },
+		    {
+		        test: /\.(png|jpg|gif|ico)$/,
+		        loader: 'url-loader',
+		        exclude: /node_modules/,
+		        query: {
+		          limit: 1000,
+		          name: "static/image/[name].[hash:8].[ext]"
+		        }
+		    }
 		]
 	},
 	plugins: [
@@ -126,7 +129,13 @@ module.exports = {
 		}),
 		new OpenBrowserPlugin({
 			url: 'http://localhost:9000'
-		})
+		}),
+		// 打包图片
+    	new ImageminPlugin({
+      		pngquant: {
+        		quality: '50-60'
+      		}
+    	})
 		
 	],
 	

@@ -9,6 +9,7 @@ export default {
     page: null,
     name: "我是原始name",
     data: [],
+    ok: ''
   },
   reducers: {
     loading(state, {type:name,query:boolean}){    //执行loading是否显示
@@ -41,6 +42,9 @@ export default {
       console.log({...state, data:data})
       return {...state, data:data}
     },
+    pagelist(state,{date}){
+    	return {...state, ok: date}
+    },
   },
   effects: {
     *fetch({ payload: { page = 1 } }, { call, put }) {
@@ -70,6 +74,16 @@ export default {
     *name({name:{name}}){
       // yield console.log(name)
       yield {type: 'name', name:{name} }   //这里的 type: 'name'是判断对应上面的 reducers 里面的函数 name
+    },
+    *posint({ payload },{ call, put }){
+    	const { data } = yield call(usersService.pageList);
+      yield console.log( data )
+      yield put({
+        type: 'pagelist',
+        payload: {
+          data
+        },
+      });
     }
   },
   //监听地址，如果地址含有app则跳转到登陆页

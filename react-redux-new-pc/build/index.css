@@ -9,7 +9,17 @@
   height: 36px;
   line-height: 36px;
   padding-left: 10px;
-}/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
+}
+#box{
+		display:-webkit-box;
+		display:-ms-flexbox;
+		display:flex;
+	}
+	#img{
+	    width:100%;
+	    height:50px;
+	    background-image:url(static/image/qr-12.986a58d3.png);
+	}/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
 /* stylelint-disable declaration-bang-space-before */
 /* stylelint-disable declaration-bang-space-before */
 /*! normalize.css v7.0.0 | MIT License | github.com/necolas/normalize.css */
