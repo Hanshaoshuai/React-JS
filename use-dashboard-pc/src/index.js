@@ -19,6 +19,6 @@ app.router(require('./router'));
 app.start('#root');
 
 
-//"lint": "eslint --ext .js src test",
+// "lint": "eslint --ext .js src test",
 //  "precommit": "npm run lint"
-//上面两行注释的需要加到package.js中
+// 上面两行注释的需要加到package.js中
