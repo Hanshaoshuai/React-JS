@@ -101,6 +101,9 @@ module.exports = {
 		    }
 		]
 	},
+	resolve: {
+    extensions: {'','.js','.css','.jsx'} //后缀名自动补全
+  },
 	plugins: [
 		new webpack.optimize.UglifyJsPlugin({
 			compress: {
