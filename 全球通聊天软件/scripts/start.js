@@ -129,7 +129,7 @@ checkBrowsers(paths.appPath, isInteractive)
       },
       "/base": {
         target: 'http://127.0.0.1:2021',
-        // target: 'http://192.168.1.102:8080',
+        // target: 'http://192.168.1.102:8080', 
         pathRewrite: { "^/base": "" },
         changeOrigin: true
       },

@@ -9,6 +9,7 @@ const VideoCallPlay = ({
   actionName,
   onFinish,
   chatNames,
+  locMyName,
 }: any) => {
   // 传输视频，不传输音频
   const [mediaStreamConstraints, setMediaStreamConstraints] = useState({
@@ -73,13 +74,16 @@ const VideoCallPlay = ({
   };
 
   const clearIntervals = () => {
+    setStart(false);
+    setCallStarted(false);
+    setActionNames('');
     clearInterval(timer); // 关闭
-    localVideo.current.srcObject?.getTracks()[0]?.stop();
-    localVideo.current.srcObject?.getTracks()[1]?.stop();
-    // remoteVideo.current.srcObject.getTracks()[1].stop();
     localPeerConnection = null;
     transceiver = null;
     webcamStream = null;
+    localVideo.current.srcObject?.getTracks()[0]?.stop();
+    localVideo.current.srcObject?.getTracks()[1]?.stop();
+    // remoteVideo.current.srcObject.getTracks()[1].stop();
     if (!start) {
       if (call) {
         if (callStarted) {
@@ -99,17 +103,20 @@ const VideoCallPlay = ({
   const startQuery = () => {
     timer = setInterval(function () {
       console.log('这个方法循环去请求去');
-      remo({ chatNames }).then((res: any) => {
-        if (res === '无数据' || res === '') {
-        } else {
+      remo({ chatNames, text: call ? chatNames : locMyName }).then(
+        (res: any) => {
           console.log('这个方法循环去请求去===>>>>', res);
-          setCallStarted(true);
-          // let msg = JSON.parse(res)
-          let msg = res;
-          // 做检测
-          chackData(msg);
+          if (res === '无数据' || res === '') {
+          } else {
+            console.log('这个方法循环去请求去===>>>>', res);
+            setCallStarted(true);
+            // let msg = JSON.parse(res)
+            let msg = res;
+            // 做检测
+            chackData(msg);
+          }
         }
-      });
+      );
     }, 1000);
   };
 
@@ -210,7 +217,7 @@ const VideoCallPlay = ({
 
   // 收到ice
   const handleNewICECandidateMsg = async (msg: any) => {
-    console.log(msg);
+    console.log('收到ice==>>', msg);
     let arr = msg.Data.split(msg.IceDataSeparator);
     console.log(arr);
     let obj = {
@@ -230,7 +237,10 @@ const VideoCallPlay = ({
   // post请求方法
   const startPost = (obj: any) => {
     console.log(obj);
-    local(obj).then((res: any) => {});
+    obj.text = call ? chatNames : locMyName;
+    local(obj).then((res: any) => {
+      console.log(res);
+    });
   };
 
   // 获取本地视频

@@ -170,7 +170,11 @@ export async function signOut(data: any) {
 // 远端请求 开始呼叫
 export async function remo(data: any) {
   try {
-    const res: any = await request(`${API_HOST}/data/remo`, 'GET', data);
+    const res: any = await request(
+      `${API_HOST}/data/${data.text}`,
+      'GET',
+      data
+    );
     return res;
   } catch (error) {
     return error;
@@ -180,7 +184,11 @@ export async function remo(data: any) {
 // 调用视频方法
 export async function local(data: any) {
   try {
-    const res: any = await request(`${API_HOST}/data/local`, 'POST', data);
+    const res: any = await request(
+      `${API_HOST}/data/${data.text}`,
+      'POST',
+      data
+    );
     return res;
   } catch (error) {
     return error;

@@ -1,23 +1,40 @@
 import './index.scss';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Toast } from 'antd-mobile';
 
 import { getToken, setToken } from '../../helpers';
 
 import { login } from '../../api';
-import Selector, { SelectorTabs } from './selector';
+// import TabSwitch, { TabSwitchPage } from './tabSwitch';
+// import { SwitchTs } from 'rollup-react-ts';
+// const { SwitchTs } = require('rollup-react-ts');
+// const { TabSwitch, TabSwitchPage } = require('rollup-react');
+// const { CombinationDrawer } = require('rollup-react');
+
+const {
+  formatDate,
+  pastTime,
+  specificPastTime,
+  countDown,
+  realTimeCountDown,
+  realTimeCountDownSeparate,
+} = require('gettimesjs');
 
 const ChatList = () => {
   const history = useHistory();
   const [telephone, setTelephone] = useState<any>();
   const [password, setPassword] = useState<any>('');
   const [setSelectedKey, setSetSelectedKey] = useState<any>(2);
+  const [formatDates, setFormatDate] = useState<any>();
   useEffect(() => {
     if (getToken()) {
-      history.push('/chatRecord');
+      history.push('/');
     }
+    setInterval(() => {
+      setFormatDate(formatDate('yyyy-MM-dd EE AM hh:mm:ss S q'));
+    }, 10);
   }, []);
 
   const onChange = (e: any, text: string) => {
@@ -140,6 +157,170 @@ const ChatList = () => {
     setSetSelectedKey(key);
   };
 
+  const list: any = [
+    {
+      key: '0',
+      title: '',
+      // width: 200,
+      transition: 0,
+      notExpanded: false,
+      fatherSonConnection: '-1',
+      value: (
+        <div style={{ width: '100px', height: '20px' }}>
+          <div onClick={() => indexFilter('0', '点击我1')}>点击我1</div>
+          <div onClick={() => indexFilter('0', '点击我2')}>点击我2</div>
+          <div onClick={() => indexFilter('0', '点击我3')}>点击我3</div>
+        </div>
+      ),
+      state: true,
+    },
+    {
+      key: '1',
+      title: '',
+      // width: 200,
+      transition: 0,
+      notExpanded: false,
+      fatherSonConnection: '0',
+      value: (
+        <div style={{ width: '160px', height: '20px' }}>
+          <div onClick={() => indexFilter('1', '一级点击我1')}>一级点击我1</div>
+          <div onClick={() => indexFilter('1', '一级点击我2')}>一级点击我2</div>
+        </div>
+      ),
+      state: false,
+    },
+    {
+      key: '2',
+      title: '',
+      // width: 700,
+      transition: 0,
+      notExpanded: false,
+      fatherSonConnection: '1',
+      value: (
+        <div
+          style={{ width: '300px', height: '20px' }}
+          onClick={() => indexFilter('2', '二级点击我')}
+        >
+          二级点击我
+        </div>
+      ),
+      state: false,
+    },
+    {
+      key: '3',
+      title: '',
+      // width: 400,
+      transition: 0,
+      notExpanded: false,
+      fatherSonConnection: '2',
+      value: (
+        <div
+          style={{ width: '300px', height: '20px' }}
+          onClick={() => indexFilter('3', '三级点击我')}
+        >
+          三级点击我
+        </div>
+      ),
+      state: false,
+    },
+    {
+      key: '4',
+      title: '',
+      // width: 500,
+      transition: 0,
+      notExpanded: false,
+      fatherSonConnection: '3',
+      value: (
+        <div
+          style={{ width: '400px', height: '20px' }}
+          onClick={() => submitClose(4)}
+        >
+          {'提交=>关闭'}
+        </div>
+      ),
+      state: false,
+    },
+  ];
+  const list1: any = [
+    {
+      key: '0',
+      title: '',
+      // width: 200,
+      transition: 0,
+      notExpanded: false,
+      fatherSonConnection: '-1',
+      value: (
+        <div style={{ width: '200px', height: '20px' }}>
+          <div onClick={() => indexFilter('0', '点击我1')}>2点击我1</div>
+          <div onClick={() => indexFilter('0', '点击我2')}>2点击我2</div>
+          <div onClick={() => indexFilter('0', '点击我3')}>2点击我3</div>
+        </div>
+      ),
+      state: true,
+    },
+    {
+      key: '1',
+      title: '',
+      // width: 200,
+      transition: 0,
+      notExpanded: false,
+      fatherSonConnection: '0',
+      value: (
+        <div style={{ width: '360px', height: '20px' }}>
+          <div onClick={() => indexFilter('1', '一级点击我1')}>
+            2一级点击我1
+          </div>
+          <div onClick={() => indexFilter('1', '一级点击我2')}>
+            2一级点击我2
+          </div>
+        </div>
+      ),
+      state: false,
+    },
+    {
+      key: '2',
+      title: '',
+      // width: 200,
+      transition: 0,
+      notExpanded: false,
+      fatherSonConnection: '1',
+      value: (
+        <div style={{ width: '400px', height: '20px' }}>
+          <div onClick={() => indexFilter('2', '二级点击我1')}>
+            3一级点击我1
+          </div>
+          <div onClick={() => indexFilter('2', '二级点击我2')}>
+            3一级点击我2
+          </div>
+        </div>
+      ),
+      state: false,
+    },
+  ];
+  const drawers = useRef<any>(null);
+  const [drawerShow, setDrawerShow] = useState(false);
+  const [filters, setFilters] = useState({});
+  const indexFilter: any = (index?: string, title?: string) => {
+    // 进入下一层抽屉
+    setFilters({ index, title });
+  };
+  const submitClose = (index: number) => {
+    // 提交事件后关闭该层抽屉
+    if (drawers) {
+      drawers.current.getInfo(index);
+    }
+  };
+  const [newList, setNewList] = useState<any>(list);
+  const onSetDrawerShows = (index: any) => {
+    if (index === 1) {
+      setNewList(list);
+    }
+    if (index === 2) {
+      setNewList(list1);
+    }
+    setDrawerShow(true);
+  };
+
   return (
     <div className="denglu">
       <div className="searchBox">
@@ -149,6 +330,11 @@ const ChatList = () => {
         </div>
       </div>
       <div className="contents">
+        <div
+          style={{ textAlign: 'center', color: '#ff7a59', fontSize: '16px' }}
+        >
+          {formatDates}
+        </div>
         <div className="logo">
           <ul>
             <li></li>
@@ -189,14 +375,32 @@ const ChatList = () => {
           </ul>
         </div>
         <div className="denglu-list denglu-bottom">合作热线：18310998379</div>
+        {/* <div onClick={() => onSetDrawerShows(1)} style={{ cursor: 'pointer' }}>
+          点击1
+        </div>
+        <div onClick={() => onSetDrawerShows(2)} style={{ cursor: 'pointer' }}>
+          点击2
+        </div> */}
       </div>
+      {/* <div>
+        <CombinationDrawer
+          ref={drawers}
+          list={newList}
+          drawerShow={drawerShow}
+          setDrawerShow={setDrawerShow}
+          filters={filters}
+          titles={true}
+          redundantWidth={35}
+          initial={true} // 设置true，初始化最多展示1个抽屉；
+        />
+      </div> */}
       {/* <div
         style={{
           width: '100%',
           height: '100%',
-          // position: 'fixed',
-          // top: '0',
-          // left: '0',
+          position: 'fixed',
+          top: '0',
+          left: '0',
           background: '#fff',
           zIndex: 1000000000,
         }}
@@ -209,8 +413,8 @@ const ChatList = () => {
             zIndex: 1000000000,
           }}
         >
-          <Selector
-            defaults={2} // 设置默认高亮；如果与<SelectorTabs/>一起使用默认值要与<SelectorTabs/>的setSelectedKey值相等
+          <TabSwitch
+            defaults={2} // 设置默认高亮；如果与<TabsPage/>一起使用默认值要与<TabsPage/>的setSelectedKey值相等
             dataList={dataList1} // 数据[]SwitchContent
             selectedKey={selectedKey} // 回调函数返回当前高亮数据；动态控制高亮回调无效：() => {}
             inclination={10} // 设置向右侧偏移度可更改 number 开启覆盖默认
@@ -229,7 +433,7 @@ const ChatList = () => {
             zIndex: 1000000000,
           }}
         >
-          <SelectorTabs
+          <TabSwitchPage
             dataList={dataList} // 数据[]SwitchContent
             inclination={0} // 设置向右侧偏移度可更改 number 开启覆盖默认
             styles={{ overflow: '' }} // 溢出内容是否遮盖或其他样式设置，hidden

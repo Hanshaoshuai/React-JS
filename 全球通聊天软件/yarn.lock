@@ -5828,6 +5828,11 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
+gettimesjs@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.npmmirror.com/gettimesjs/download/gettimesjs-1.1.6.tgz#8d5cf78c23eadeab4f0257eaa43f34903ea16308"
+  integrity sha1-jVz3jCPq3qtPAlfqpD80kD6hYwg=
+
 glob-parent@^3.1.0:
   version "3.1.0"
   resolved "https://registry.npmmirror.com/glob-parent/download/glob-parent-3.1.0.tgz?cache=0&sync_timestamp=1632954190616&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fglob-parent%2Fdownload%2Fglob-parent-3.1.0.tgz#9e6af6299d8d3bd2bd40430832bd113df906c5ae"

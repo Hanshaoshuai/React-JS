@@ -145,6 +145,7 @@ const ChatList = () => {
       messages?.text?.toName === myLocName
     ) {
       setOnFinish(true);
+      setCall(false);
     }
   }, [messages]);
 
@@ -166,6 +167,7 @@ const ChatList = () => {
   const videoCallCancel = (text: string) => {
     setVideoCalls(false);
     setOnFinish(false);
+    setCall(false);
     if (onFinish) return;
     window.socket.emit('clientmessage', {
       fromName: myLocName,
@@ -1753,59 +1755,61 @@ const ChatList = () => {
   };
 
   return (
-    <div className="yijian" onClick={tabsHid}>
-      <div className="searchBox">
-        <div className="home-search">
-          <img
-            className="xiangmu-left"
-            src="/images/fanhui.png"
-            alt=""
-            onClick={goBackS}
-          />
-          <span className="toNames">
-            {nickNameTop ? nickNameTop : localStorage.getItem('toNames')}
-          </span>
-          {chatType === 'groupChat' ? (
+    <>
+      <div className="yijian" onClick={tabsHid}>
+        <div className="searchBox">
+          <div className="home-search">
             <img
-              className="xiangmu-rigth"
-              src="/images/dashujukeshihuaico.png"
+              className="xiangmu-left"
+              src="/images/fanhui.png"
               alt=""
-              onClick={tabs}
+              onClick={goBackS}
             />
-          ) : (
-            ''
-          )}
-          <ul
-            className={`${tabShow && chatType === 'groupChat' ? 'show' : ''}`}
-          >
-            <li onClick={() => options(1)}>查看所有成员</li>
-            <li onClick={() => options(2)}>添加成员</li>
-            {myLocName !== groupOwner ? (
-              <li className="groupOwner_log" onClick={() => options(3)}>
-                退出本群
-              </li>
+            <span className="toNames">
+              {nickNameTop ? nickNameTop : localStorage.getItem('toNames')}
+            </span>
+            {chatType === 'groupChat' ? (
+              <img
+                className="xiangmu-rigth"
+                src="/images/dashujukeshihuaico.png"
+                alt=""
+                onClick={tabs}
+              />
             ) : (
-              <>
-                <li className="groupOwner" onClick={() => options(4)}>
-                  转让退出本群
-                </li>
-                <li className="groupOwner" onClick={() => options(5)}>
-                  移除本群
-                </li>
-              </>
+              ''
             )}
-          </ul>
+            <ul
+              className={`${tabShow && chatType === 'groupChat' ? 'show' : ''}`}
+            >
+              <li onClick={() => options(1)}>查看所有成员</li>
+              <li onClick={() => options(2)}>添加成员</li>
+              {myLocName !== groupOwner ? (
+                <li className="groupOwner_log" onClick={() => options(3)}>
+                  退出本群
+                </li>
+              ) : (
+                <>
+                  <li className="groupOwner" onClick={() => options(4)}>
+                    转让退出本群
+                  </li>
+                  <li className="groupOwner" onClick={() => options(5)}>
+                    移除本群
+                  </li>
+                </>
+              )}
+            </ul>
+          </div>
         </div>
-      </div>
-      <div className="content-text" id="contentTexte" ref={contentScroll}>
-        <div
-          className={`box boxTexte ${
-            expressionShow || addAnothers ? 'boxTexteB' : ''
-          }`}
-          id="box"
-          ref={boxTextes}
-        >
-          {contentList}
+        <div className="content-text" id="contentTexte" ref={contentScroll}>
+          <div
+            className={`box boxTexte ${
+              expressionShow || addAnothers ? 'boxTexteB' : ''
+            }`}
+            id="box"
+            ref={boxTextes}
+          >
+            {contentList}
+          </div>
         </div>
         {shuruShow ? (
           <div className="shuru border-top" id="shuru">
@@ -1885,73 +1889,73 @@ const ChatList = () => {
         ) : (
           ''
         )}
-      </div>
-      <div className={`tanCeng ${tanCengShow ? 'tanCengShow' : ''}`}>
-        <div className="tanCeng_cont">
-          <div className="tanCeng_cont_top">请选择转让群主</div>
-          <div className="tanCeng_cont_box">
-            <div className="tanCeng_cont_box_tex">
-              <CheckList defaultValue={checkListvalue} onChange={onChange}>
-                {imgIdLoc.map((item: any, index: number) => {
-                  if (item.name === myLocName) {
-                    return null;
-                  }
-                  return (
-                    <CheckList.Item key={index} value={item.name}>
-                      <div className="content-food border-bottom">
-                        <div>
-                          <div className="imgas">
-                            <p>
-                              <img
-                                className="border"
-                                src={item.classIcon}
-                                alt=""
-                              />
-                            </p>
+        <div className={`tanCeng ${tanCengShow ? 'tanCengShow' : ''}`}>
+          <div className="tanCeng_cont">
+            <div className="tanCeng_cont_top">请选择转让群主</div>
+            <div className="tanCeng_cont_box">
+              <div className="tanCeng_cont_box_tex">
+                <CheckList defaultValue={checkListvalue} onChange={onChange}>
+                  {imgIdLoc.map((item: any, index: number) => {
+                    if (item.name === myLocName) {
+                      return null;
+                    }
+                    return (
+                      <CheckList.Item key={index} value={item.name}>
+                        <div className="content-food border-bottom">
+                          <div>
+                            <div className="imgas">
+                              <p>
+                                <img
+                                  className="border"
+                                  src={item.classIcon}
+                                  alt=""
+                                />
+                              </p>
+                            </div>
+                            <span className="first">{item.nickName}</span>
                           </div>
-                          <span className="first">{item.nickName}</span>
                         </div>
-                      </div>
-                    </CheckList.Item>
-                  );
-                })}
-              </CheckList>
+                      </CheckList.Item>
+                    );
+                  })}
+                </CheckList>
+              </div>
+            </div>
+            <div className="tanCeng_cont_bottom">
+              <span onClick={Sure}>确定</span>
+              <span onClick={Cancel}>取消</span>
             </div>
           </div>
-          <div className="tanCeng_cont_bottom">
-            <span onClick={Sure}>确定</span>
-            <span onClick={Cancel}>取消</span>
-          </div>
         </div>
+        <ImageViewer
+          image={fileUrl}
+          visible={visible}
+          onClose={() => {
+            setVisible(false);
+          }}
+        />
+        {dataListL && (
+          <Spins styleSize={[65, 33]} color={'#ff7a59'} fontSize={'33px'} />
+        )}
+        {onPlayUrl && (
+          <div className="video-style">
+            <video
+              id="vdo"
+              className="videos"
+              controls={true}
+              autoPlay={true}
+              // name="media"
+              // muted="muted"
+              onClick={videoPlays}
+            >
+              <source src={`${onPlayUrl}`} type="" />
+            </video>
+            <div onClick={videoPlays} className="video-closure">
+              <CloseCircleOutline className="video-closure-icon" />
+            </div>
+          </div>
+        )}
       </div>
-      <ImageViewer
-        image={fileUrl}
-        visible={visible}
-        onClose={() => {
-          setVisible(false);
-        }}
-      />
-      {dataListL && (
-        <Spins styleSize={[65, 33]} color={'#ff7a59'} fontSize={'33px'} />
-      )}
-      {onPlayUrl && (
-        <div className="video-style">
-          <video
-            id="vdo"
-            className="videos"
-            controls={true}
-            autoPlay={true}
-            // name="media"
-            // muted="muted"
-            onClick={videoPlays}
-          >
-            <source src={`${onPlayUrl}`} type="" />
-          </video>
-          <div onClick={videoPlays} className="video-closure">
-            <CloseCircleOutline className="video-closure-icon" />
-          </div>
-        </div>
-      )}
       {videoCalls && (
         <VideoCallPlay
           call={call}
@@ -1960,9 +1964,10 @@ const ChatList = () => {
           actionName={actionName}
           onFinish={onFinish}
           chatNames={chatNames}
+          locMyName={locMyName}
         />
       )}
-    </div>
+    </>
   );
 };
 

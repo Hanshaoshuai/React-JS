@@ -3,7 +3,9 @@
   opacity: 0;
 }
 .yijian {
-  position: fixed;
+  // position: fixed;
+  // position: absolute;
+  position: relative;
   background: #f5f4f9;
   width: 100%;
   height: 100%;
@@ -14,7 +16,8 @@
   z-index: 1000;
 }
 .yijian .searchBox {
-  position: fixed;
+  // position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -138,7 +141,8 @@
   width: 0px;
 }
 .yijian .content-text {
-  position: fixed;
+  // position: fixed;
+  position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
@@ -165,7 +169,8 @@
   padding-bottom: 7.13rem;
 }
 .yijian .shuru {
-  position: fixed;
+  // position: fixed;
+  position: absolute;
   background: #ffffff;
   left: 0;
   bottom: 0;
@@ -318,7 +323,7 @@
   width: 0;
   height: 0;
 }
-.content-text .expression {
+.shuru .expression {
   width: 100%;
   height: 330px;
   font-size: 0.56rem;
@@ -326,27 +331,27 @@
   border-top: 1px solid rgb(231, 230, 233);
   display: none;
 }
-.content-text .expressionB {
+.shuru .expressionB {
   display: block;
 }
-.content-text .addsAnotherShow {
+.shuru .addsAnotherShow {
   display: block;
 }
 .yijian .expression::-webkit-scrollbar {
   width: 0;
   height: 0;
 }
-.content-text .expression .expressionList {
+.shuru .expression .expressionList {
   width: 95%;
   padding: 0.19rem 0;
   margin: 0 auto;
 }
-.content-text .expression .expression_box {
+.shuru .expression .expression_box {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
-.content-text .expression .expressionList span {
+.shuru .expression .expressionList span {
   display: block;
 }
 .yijian .loding {

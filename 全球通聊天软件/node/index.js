@@ -38,6 +38,7 @@ var MongoClient = require('mongodb').MongoClient;
 
 
 var app = express();
+
 app.use(bodyParser.json())// 创建 application/json 解析并注册  不然  req.body  接收不到前端传递的数据
 var url = 'mongodb://127.0.0.1:27017/runoob';
 
@@ -73,6 +74,21 @@ var server = app.listen(ports, hostName, () => {
   // var host = server.address().address;
   // var port = server.address().port;
 });
+
+// //https监听3000端口
+// var https = require('https');
+// const options = {
+//   cert: fs.readFileSync('C:/Certbot/live/hanshaoshuai.cn/fullchain.pem'),
+//   key: fs.readFileSync('C:/Certbot/live/hanshaoshuai.cn/privkey.pem')
+// };
+// var httpsServer = https.createServer(options, app);
+// httpsServer.listen(ports, () => {
+//   console.log(`服务器运行在http:${hostName}:${ports}`);
+//   // var host = server.address().address;
+//   // var port = server.address().port;
+// });;
+
+
 var io = require('socket.io')(server, { cors: true });
 
 app.use('/public', express.static(path.join(__dirname, 'public'))); //中间件来设置静态文件路径。例如你将图片CSS,JavaScript文件放在public目录下
@@ -298,7 +314,7 @@ function todo(obj, socket) {
 app.get('/data/:id', function (req, res) {
   console.log('get===>>>', req.query, req.params)
   const deviceId = req.params.id
-  // console.log(deviceId)
+  console.log('get===>>>', router)
   if (!router.__dataStore[deviceId] || router.__dataStore[deviceId].length === 0) {
     // console.log('无数据')
     res.statusCode = 200
@@ -316,7 +332,7 @@ app.get('/data/:id', function (req, res) {
 app.post('/data/:id', (req, res) => {
   console.log('post请求成功===>>>', req.params)
   const deviceId = req.params.id
-  // console.log(deviceId)
+  console.log('post请求成功===>>>', router)
   if (!router.__dataStore[deviceId]) {
     router.__dataStore[deviceId] = []
   }
