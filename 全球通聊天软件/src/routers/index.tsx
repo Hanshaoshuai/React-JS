@@ -5,6 +5,7 @@ import { getToken } from '../helpers';
 import Router from './routers';
 import Spins from '../pages/A-Spin';
 import ReactTransitionGroup from './reactTransitionGroup';
+const { ReactRouterTransitionPage } = require('react-router-transition-page');
 
 export default function Routers({ location }: SwitchProps): ReactElement {
   const history = useHistory();

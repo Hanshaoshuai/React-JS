@@ -1,5 +1,6 @@
 .denglu {
-  position: fixed;
+  // position: fixed;
+  position: absolute;
   z-index: 10;
   width: 100%;
   height: 100%;
@@ -35,11 +36,11 @@
   background-size: 100% 100%;
 }
 .denglu .contents {
-  /* position: fixed; */
+  // /* position: fixed; */
   width: 100%;
-  /* top: 25%; */
-  /* left: 0; */
-  /* z-index: 20; */
+  // /* top: 25%; */
+  // /* left: 0; */
+  // /* z-index: 20; */
   padding-top: 1.5rem;
 }
 .denglu .contents .logo {
