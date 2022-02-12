@@ -1,0 +1,95 @@
+.education {
+  width: 100%;
+  height: 100%;
+  //   background-image: url('./capture001.png');
+  overflow-y: scroll;
+  position: relative;
+  .imge1,
+  .imge2 {
+    // width: 100%;
+  }
+  .tag,
+  .goBack,
+  .titles,
+  .headPortrait1,
+  .headPortrait2 {
+    position: absolute;
+    top: 100px;
+    left: 223px;
+    // background: #f66;
+    width: 520px;
+    height: 63px;
+    display: flex;
+    line-height: 63px;
+    cursor: pointer;
+    .tagItem {
+      width: 190px;
+    }
+  }
+  .goBack {
+    top: 0px;
+    width: 250px;
+    height: 100px;
+    // background: #f66;
+  }
+  .titles {
+    display: inline-block;
+    top: 361px;
+    width: 402px;
+    height: 63px;
+    text-align: center;
+    line-height: 63px;
+    color: #fff;
+    font-size: 20px;
+    background: rgb(101, 205, 170);
+  }
+  .headPortrait1 {
+    top: 468px;
+    width: 150px;
+    height: 200px;
+    left: 279px;
+    background: rgb(101, 205, 170);
+  }
+  .headPortrait2 {
+    top: 723px;
+    width: 150px;
+    height: 200px;
+    left: 279px;
+    background: rgb(101, 205, 170);
+  }
+  .information,
+  .information1,
+  .information2 {
+    position: absolute;
+    display: block;
+    width: 765px;
+    top: 468px;
+    left: 486px;
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.8);
+    height: auto;
+    .informationItem {
+      height: 52px;
+      line-height: 52px;
+      text-align: center;
+      display: inline-block;
+      width: 50%;
+      span {
+        display: inline-block;
+        width: 50%;
+      }
+      .keyStyle {
+        text-align: right;
+        color: rgba(0, 0, 0, 0.45);
+      }
+      .keyRight {
+        text-align: left;
+      }
+    }
+  }
+  .information {
+    width: 870px;
+    height: 500px;
+    background: #fff;
+  }
+}

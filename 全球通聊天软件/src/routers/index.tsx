@@ -20,7 +20,8 @@ export default function Routers({ location }: SwitchProps): ReactElement {
       if (
         !getToken() &&
         route.pathname !== '/register' &&
-        route.pathname !== '/login'
+        route.pathname !== '/login' &&
+        route.pathname !== '/education'
       ) {
         history.push('/login');
       }
@@ -37,7 +38,10 @@ export default function Routers({ location }: SwitchProps): ReactElement {
       //   <Route path={route.path} exact={true} component={route.component} />
       // </Suspense>
 
-      <ReactTransitionGroup path={route.path} component={route.component} />
+      <ReactRouterTransitionPage
+        path={route.path}
+        component={route.component}
+      />
     );
   }
   return <Redirect to="/" />;

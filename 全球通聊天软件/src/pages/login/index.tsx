@@ -321,6 +321,10 @@ const ChatList = () => {
     setDrawerShow(true);
   };
 
+  const toEducation = () => {
+    history.push('/education');
+  };
+
   return (
     <div className="denglu">
       <div className="searchBox">
@@ -374,7 +378,9 @@ const ChatList = () => {
             </li>
           </ul>
         </div>
-        <div className="denglu-list denglu-bottom">合作热线：18310998379</div>
+        <div className="denglu-list denglu-bottom" onClick={toEducation}>
+          合作热线：18310998379
+        </div>
         {/* <div onClick={() => onSetDrawerShows(1)} style={{ cursor: 'pointer' }}>
           点击1
         </div>
