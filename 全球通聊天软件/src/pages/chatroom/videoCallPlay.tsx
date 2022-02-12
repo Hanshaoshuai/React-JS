@@ -1,6 +1,11 @@
 import { remo, local } from '../../api';
 import React, { useEffect, useRef, useState } from 'react';
 
+declare global {
+  interface Window {
+    Peer: any;
+  }
+}
 let timer: any = null;
 const VideoCallPlay = ({
   call,
@@ -125,13 +130,13 @@ const VideoCallPlay = ({
     console.log('收到-远端-type' + msg.MessageType);
     switch (msg.MessageType) {
       case '1':
-        handleVideoOfferMsg(msg);
+        handleVideoOfferMsg(msg); // 处理视频提供消息
         break;
       case '2':
-        handleVideoAnswerMsg(msg);
+        handleVideoAnswerMsg(msg); // 处理视频应答信息
         break;
       case '3':
-        handleNewICECandidateMsg(msg);
+        handleNewICECandidateMsg(msg); // 处理新的候选项目
         break;
     }
   };
@@ -176,8 +181,12 @@ const VideoCallPlay = ({
         console.log('--------本地的被动视频流---------');
         if (localVideo) {
           localVideo.current.srcObject = webcamStream;
+          // window.socket.emit('clientmessage', {
+          //   //只作为文件上传完成使用
+          //   uploadCompleted: true,
+          // });
+          console.log('本地的被动视频流', webcamStream);
         }
-        console.log(webcamStream);
       } catch (err) {
         handleGetUserMediaError(err);
         return;
@@ -257,7 +266,11 @@ const VideoCallPlay = ({
       if (localVideo) {
         localVideo.current.srcObject = webcamStream;
       }
-      console.log(webcamStream);
+      console.log(
+        '本地的视频===>>',
+        webcamStream,
+        window.URL.createObjectURL(webcamStream)
+      );
     } catch (err) {
       handleGetUserMediaError(err);
       return;
@@ -283,7 +296,6 @@ const VideoCallPlay = ({
 
   const handleICECandidateEvent = (event: any) => {
     console.log('准备回调ice事件');
-    console.log(event.candidate);
     if (event.candidate) {
       let obj = {
         Data:
@@ -295,6 +307,7 @@ const VideoCallPlay = ({
         MessageType: 3,
         IceDataSeparator: '|',
       };
+      console.log(obj);
       startPost(obj);
     }
   };
@@ -303,6 +316,7 @@ const VideoCallPlay = ({
     const mediaStream = event.streams[0];
     if (remoteVideo) {
       remoteVideo.current.srcObject = mediaStream;
+      console.log('本地的视频1111===>>', mediaStream);
     }
     // remoteStream = mediaStream;
   };

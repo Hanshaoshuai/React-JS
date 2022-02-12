@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useMemo, useCallback } from "react";
-import { Button } from "antd-mobile";
+import React, { useContext, useEffect, useMemo, useCallback } from 'react';
+import { Button } from 'antd-mobile';
 
-import { MyContext } from "../../models/context";
+import { MyContext } from '../../models/context';
 
 export default function Name() {
   const { state, dispatch } = useContext(MyContext);
@@ -10,14 +10,14 @@ export default function Name() {
   const setNames = useCallback(() => {
     const initState = state.initState;
     initState.number += 1;
-    dispatch({ type: "numberInc", initState: initState });
+    dispatch({ type: 'numberInc', initState: initState });
   }, [state.initState, dispatch]);
   return useMemo(() => {
-    console.log("Name", state.initState.count);
+    console.log('Name', state.initState.count);
     return (
       <div>
         <Button
-          style={{ background: "#1677ff", color: "#fff" }}
+          style={{ background: '#1677ff', color: '#fff' }}
           onClick={() => setNames()}
         >
           Name

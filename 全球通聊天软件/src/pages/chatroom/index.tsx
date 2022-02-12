@@ -1738,7 +1738,7 @@ const ChatList = () => {
     setDeleteFl(!deleteFl);
   };
   const upload = (dateTime: any, i: number) => {
-    onUploadProgress.onUploadProgress = (progressEvent) => {
+    onUploadProgress.onUploadProgress = (progressEvent: any) => {
       let complete =
         (((progressEvent.loaded / progressEvent.total) * 100) | 0) + '%';
       // console.log('上传=====>>>>', complete);

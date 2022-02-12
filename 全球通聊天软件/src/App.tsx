@@ -68,6 +68,19 @@ export default function App() {
     }
   };
 
+  // const pipeline = function(...funcs:any) {
+  //   return function(val:any){
+  //    return funcs.reduce(function(a: any, b: any){
+  //     return b(a);
+  //    }, val);
+  //   }
+  //  }
+
+  //  const plus1 = (a: number) => a + 1;
+  //  const mult2 = (a: number) => a * 2;
+  //  const addThenMult = pipeline(plus1, mult2);
+
+  //  console.log(addThenMult(5))
   return (
     <Router>
       <MyContext.Provider value={{ state, dispatch, messages }}>
