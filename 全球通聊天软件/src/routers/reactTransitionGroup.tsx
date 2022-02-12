@@ -108,7 +108,41 @@ const ReactTransitionGroup = ({ path, component }: any): ReactElement => {
           height: '100%',
         }}
       >
-        {onChenge()}
+        {/* {onChenge()} */}
+        {switchs && states === '上一次操作路由向下' && (
+          <div
+            style={{
+              position: 'relative',
+              width: '50%',
+              height: '100%',
+              float: 'left',
+            }}
+          >
+            {odDom}
+          </div>
+        )}
+        <div
+          style={{
+            position: 'relative',
+            width: `${switchs ? '50%' : '100%'}`,
+            height: '100%',
+            float: 'left',
+          }}
+        >
+          <Route path={path} exact={true} component={component} />
+        </div>
+        {switchs && states === '上一次操作路由返回' && (
+          <div
+            style={{
+              position: 'relative',
+              width: '50%',
+              height: '100%',
+              float: 'left',
+            }}
+          >
+            {odDom}
+          </div>
+        )}
       </div>
     );
   } else {
