@@ -32,19 +32,19 @@ const Education = () => {
     { key: '学制', value: '4' },
     { key: '学历类别', value: '普通' },
     { key: '学习形式', value: '普通全日制' },
-    { key: '分院', value: '男' },
+    { key: '分院', value: '' },
     { key: '系所', value: '计算机科学与技术' },
     { key: '班级', value: '计算机1319' },
-    { key: '学号', value: '男' },
-    { key: '入学日期', value: '男' },
-    { key: '离校日期', value: '男' },
+    { key: '学号', value: '20091131914' },
+    { key: '入学日期', value: '2009年9月15日' },
+    { key: '离校日期', value: '2013年7月1日' },
     { key: '学籍状态', value: '不在籍（毕业）' },
   ];
   const list1 = [
     { key: '姓名', value: '韩少帅' },
     { key: '性别', value: '男' },
     { key: '出生日期', value: '1991年11月20日' },
-    { key: '入学日期', value: '2011年9月15日' },
+    { key: '入学日期', value: '2009年9月15日' },
     { key: '毕业（结）日期', value: '河北农业大学' },
     { key: '学校名称', value: '河北农业大学' },
     { key: '专业', value: '计算机科学与技术' },
@@ -53,8 +53,8 @@ const Education = () => {
     { key: '学习形式', value: '普通全日制' },
     { key: '层次', value: '本科' },
     { key: '毕（结）业', value: '毕业' },
-    { key: '校（院）长姓名', value: '李XX' },
-    { key: '证书编号', value: '131419911314' },
+    { key: '校（院）长姓名', value: '王志刚' },
+    { key: '证书编号', value: '100861201305000316' },
   ];
   return (
     <div className="education">
