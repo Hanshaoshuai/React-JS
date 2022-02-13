@@ -378,7 +378,10 @@ const ChatList = () => {
             </li>
           </ul>
         </div>
-        <div className="denglu-list denglu-bottom" onClick={toEducation}>
+        <div
+          className="denglu-list denglu-bottom"
+          // onClick={toEducation}
+        >
           合作热线：18310998379
         </div>
         {/* <div onClick={() => onSetDrawerShows(1)} style={{ cursor: 'pointer' }}>
