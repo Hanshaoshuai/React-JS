@@ -341,7 +341,9 @@ const ChatList = () => {
         </div>
         <div className="logo">
           <ul>
-            <li></li>
+            <li>
+              <img src="./logo512.png" alt="" />
+            </li>
           </ul>
         </div>
         <div className="denglu-text">
