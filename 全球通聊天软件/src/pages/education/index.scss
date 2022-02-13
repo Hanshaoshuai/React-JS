@@ -57,6 +57,12 @@
     left: 279px;
     background: rgb(101, 205, 170);
   }
+  .headPortrait1,
+  .headPortrait2 {
+    img {
+      width: 100%;
+    }
+  }
   .information,
   .information1,
   .information2 {

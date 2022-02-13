@@ -1,23 +1,21 @@
 import './index.scss';
 
-import { Divider, WaterMark } from 'antd-mobile';
-import React, { useState, useRef } from 'react';
+import { WaterMark } from 'antd-mobile';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 const Education = () => {
   const history = useHistory();
-  const fs: any = useRef(null);
   const [name, setNames] = useState<any>(true);
 
   const switchs = (key: any) => {
-    // history.goBack();
     if (key === 1) {
       setNames(true);
     } else {
       setNames(false);
     }
   };
-  const goBack = (key: any) => {
+  const goBack = () => {
     history.goBack();
   };
   const list = [
@@ -83,7 +81,12 @@ const Education = () => {
         本科-河北农业大学-计算机科学与技术
       </div>
       <div className="headPortrait1">
-        <img className="imge1" src={'./head1.jpg'} alt="" id="img" />
+        <img
+          className="imge1"
+          src={`${name ? './head1.jpg' : './head2.jpg'}`}
+          alt=""
+          id="img"
+        />
       </div>
       {name && (
         <div className="headPortrait2">
