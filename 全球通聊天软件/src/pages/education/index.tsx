@@ -82,8 +82,14 @@ const Education = () => {
         />
         本科-河北农业大学-计算机科学与技术
       </div>
-      <div className="headPortrait1"></div>
-      {name && <div className="headPortrait2"></div>}
+      <div className="headPortrait1">
+        <img className="imge1" src={'./head1.jpg'} alt="" id="img" />
+      </div>
+      {name && (
+        <div className="headPortrait2">
+          <img className="imge1" src={'./head2.jpg'} alt="" id="img" />
+        </div>
+      )}
       <div className="information"></div>
       {name ? (
         <div className="information1">
