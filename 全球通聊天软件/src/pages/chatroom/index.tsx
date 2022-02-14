@@ -1700,7 +1700,8 @@ const ChatList = () => {
         fileType === 'application' ||
         fileType === 'text' ||
         fileType === 'video' ||
-        fileType === 'audio'
+        fileType === 'audio' ||
+        fileType === ''
       ) {
         upload(dateTime, i);
         const datas: any = await FileUpload(
