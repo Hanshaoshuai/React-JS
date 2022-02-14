@@ -366,6 +366,9 @@ const ChatRecord = () => {
     if (type === 5) {
       return;
     }
+    if (type === 6) {
+      history.push('projectInstance');
+    }
   };
 
   return (
@@ -407,6 +410,7 @@ const ChatRecord = () => {
             >
               <li onClick={() => options(5)}>扫一扫</li>
             </Link>
+            <li onClick={() => options(6)}>近期项目介绍</li>
           </ul>
         </div>
         <div className={`box ${!boxList ? 'box_list' : ''}`}>

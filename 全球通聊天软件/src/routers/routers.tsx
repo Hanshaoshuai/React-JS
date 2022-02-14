@@ -24,6 +24,7 @@ import AddBuildingGroup from '../pages/addBuildingGroup';
 import AllMembers from '../pages/allMembers';
 import Threejs from '../pages/threejs';
 import Education from '../pages/education';
+import ProjectInstance from '../pages/projectInstance/projectInstance';
 
 import Home from '../pages/home';
 import About from '../pages/about';
@@ -48,6 +49,7 @@ const Router: FrontEndRoute[] = [
   { path: '/about', component: About, index: 9 },
   { path: '/threejs', component: Threejs, index: 10 },
   { path: '/education', component: Education, index: 11 },
+  { path: '/projectInstance', component: ProjectInstance, index: 12 },
 ];
 
 export default Router;
