@@ -13,10 +13,10 @@ export const FileUpload = (
   return new Promise((resolve, reject) => {
     if (fileList) {
       const reader = new FileReader();
-      reader.readAsBinaryString(fileList);
+      reader.readAsDataURL(fileList);
       let dataUrl = '';
       reader.onload = (e: any) => {
-        // console.log(e.total);
+        // console.log(e.target.result);
         let size: any = 0;
         if (e.total <= 1024) {
           size = `${e.total}B`;

@@ -1042,8 +1042,10 @@ app.post('/file_upload', function (req, res) {
     let dataBuffer = null
     let dataBufferZoom = null
     if (reqs.file) {
-      dataBuffer = Buffer.from(reqs.classIcon, 'binary');
-      console.log(dataBuffer)
+      // dataBuffer = Buffer.from(reqs.classIcon, 'binary');
+      base64 = reqs.classIcon.split("base64,")[1];
+      // console.log(base64)
+      dataBuffer = Buffer.from(base64, 'base64');
     } else {
       base64Zoom = reqs.classIconZoom?.replace(/^data:image\/\w+;base64,/, "");
       base64 = reqs.classIcon.replace(/^data:image\/\w+;base64,/, ""); //去掉图片base64码前面部分data:image/png;base64

@@ -342,7 +342,7 @@ const ChatList = () => {
         <div className="logo">
           <ul>
             <li>
-              <img src="./logo512.png" alt="" />
+              <img src="./logo.jpg" alt="" />
             </li>
           </ul>
         </div>
