@@ -8,6 +8,14 @@
   left: 0;
   z-index: 900;
   background: #f5f4f9;
+  .auxiliary-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+  }
 }
 .yijian .xiangmu-header {
   // position: fixed;
@@ -92,6 +100,19 @@
   font-size: 0.3rem;
   line-height: 0.3rem;
   border-bottom: 1px solid #555555;
+  position: relative;
+  .introduce {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: -216%;
+    padding: 0 0.25rem;
+    width: auto;
+    right: auto;
+    li {
+      width: auto;
+    }
+  }
 }
 .yijian .xiangmu-header ul li:last-child {
   border: none;

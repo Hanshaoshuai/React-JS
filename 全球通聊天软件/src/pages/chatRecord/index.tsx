@@ -43,6 +43,7 @@ const ChatRecord = () => {
   const [actionName, setActionName] = useState('切换语音');
   const [onFinish, setOnFinish] = useState(false);
   const [toChatName, settoChatName] = useState('');
+  const [introduce, setIntroduce] = useState(false);
 
   useEffect(() => {
     localStorage.removeItem('addSearchFriends');
@@ -323,6 +324,7 @@ const ChatRecord = () => {
   const tabsHid = () => {
     if (tabShow) {
       setTabShow(false);
+      setIntroduce(false);
     }
   };
   const tabHind = () => {
@@ -330,7 +332,9 @@ const ChatRecord = () => {
   };
 
   const options = (type: number) => {
-    // console.log("123", type);
+    if (type !== 6) {
+      tabsHid();
+    }
     if (type === 1) {
       setBoxList(false);
       return;
@@ -366,14 +370,18 @@ const ChatRecord = () => {
     if (type === 5) {
       return;
     }
-    if (type === 6) {
+    if (type === 6 && !introduce) {
+      setIntroduce(true);
+    }
+    if (type === 7) {
       history.push('projectInstance');
     }
   };
 
   return (
     <>
-      <div className="yijian" onClick={tabsHid}>
+      <div className="yijian">
+        {tabShow && <div className="auxiliary-box" onClick={tabsHid}></div>}
         <div className="xiangmu-header">
           {!boxList ? (
             <span onClick={goBackS} className="xiangmu-left">
@@ -410,7 +418,18 @@ const ChatRecord = () => {
             >
               <li onClick={() => options(5)}>扫一扫</li>
             </Link>
-            <li onClick={() => options(6)}>近期项目介绍</li>
+            <li onClick={() => options(6)}>
+              近期项目简介
+              {introduce && (
+                // <div className="introduce" onClick={() => options(7)}>
+                //   访问韩少帅项目简介
+                // </div>
+                <ul className={`${tabShow ? 'show introduce' : ''}`}>
+                  <li onClick={() => options(7)}>查看韩少帅所负责项目</li>
+                  <li onClick={() => options(8)}>我的负责项目</li>
+                </ul>
+              )}
+            </li>
           </ul>
         </div>
         <div className={`box ${!boxList ? 'box_list' : ''}`}>
