@@ -39,7 +39,6 @@ export const FileUpload = (
           }
         }
         dataUrl = e.target.result;
-
         const formDate = new FormData();
         formDate.append('file', 'true');
         formDate.append('classIcon', dataUrl);

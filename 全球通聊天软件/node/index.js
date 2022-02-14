@@ -997,7 +997,7 @@ app.post('/file_upload', function (req, res) {
   })
   // form.on('end', function () {})
   forms.parse(req, (err, fields, files) => {
-    // console.log(err, fields, files)
+    // console.log(fields)
     if (err) {
       res.send({ code: 2001, msg: "上传失败" })
       return;
@@ -1043,6 +1043,7 @@ app.post('/file_upload', function (req, res) {
     let dataBufferZoom = null
     if (reqs.file) {
       dataBuffer = Buffer.from(reqs.classIcon, 'binary');
+      console.log(dataBuffer)
     } else {
       base64Zoom = reqs.classIconZoom?.replace(/^data:image\/\w+;base64,/, "");
       base64 = reqs.classIcon.replace(/^data:image\/\w+;base64,/, ""); //去掉图片base64码前面部分data:image/png;base64
