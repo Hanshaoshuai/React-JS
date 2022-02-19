@@ -41,6 +41,8 @@ var app = express();
 
 app.use(bodyParser.json())// 创建 application/json 解析并注册  不然  req.body  接收不到前端传递的数据
 var url = 'mongodb://127.0.0.1:27017/runoob';
+// var url = 'mongodb://192.168.124.3:27017/runoob';
+// 192.168.124.3
 
 app.use(cookieParser());
 // app.use(multer({ dest: path.join(__dirname, './uploads/'), limits: { fieldSize: 100000000000 } }).any());

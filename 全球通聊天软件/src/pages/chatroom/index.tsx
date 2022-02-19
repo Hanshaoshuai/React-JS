@@ -783,7 +783,7 @@ const ChatList = () => {
               background: `${file ? '' : '#ff7a59'}`,
               color: '#fff',
               float: 'right',
-              maxWidth: '77%',
+              maxWidth: '83.7%',
               borderRadius: '0.08rem',
               fontSize: '0.32rem',
               border: '0.01rem solid #e7e6e9',
@@ -877,7 +877,7 @@ const ChatList = () => {
                         lineHeight: '0.4rem',
                         padding: '0.16rem 0.2rem',
                         flex: '1',
-                        width: '190px',
+                        width: '3.4rem',
                       }}
                       onClick={() => fileDownload(file.url)}
                     >
@@ -889,7 +889,7 @@ const ChatList = () => {
                         flexDirection: 'column',
                         alignItems: 'center',
                         textAlign: 'center',
-                        maxWidth: '60px',
+                        width: '60px',
                         overflowWrap: 'break-word',
                         padding: '10px 8px 10px 0',
                       }}
@@ -971,7 +971,7 @@ const ChatList = () => {
     style4.padding = `${file ? '0' : '0.16rem 0.2rem'}`;
     style4.background = `${file ? '' : '#fff'}`;
     style4.lineHeight = `${file ? '0' : '0.4rem'}`;
-    style4.maxWidth = '77%';
+    style4.maxWidth = '83.7%';
     style4.borderRadius = '0.08rem';
     style4.fontSize = '0.32rem';
     style4.border = '0.01rem solid #e7e6e9';
@@ -1117,7 +1117,7 @@ const ChatList = () => {
                       lineHeight: '0.4rem',
                       padding: '0.16rem 0.2rem',
                       flex: '1',
-                      width: '190px',
+                      width: '3.4rem',
                     }}
                     onClick={() => fileDownload(file.url)}
                   >
@@ -1129,7 +1129,7 @@ const ChatList = () => {
                       flexDirection: 'column',
                       alignItems: 'center',
                       textAlign: 'center',
-                      maxWidth: '60px',
+                      width: '60px',
                       overflowWrap: 'break-word',
                       padding: '10px 8px 10px 0',
                     }}
