@@ -10134,10 +10134,10 @@ react-router-dom@^5.3.0:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
-react-router-transition-page@^1.1.8:
-  version "1.1.8"
-  resolved "https://registry.npmmirror.com/react-router-transition-page/-/react-router-transition-page-1.1.8.tgz#0b07ee8e5ffad770390f41a249363fa0bcbdeb56"
-  integrity sha512-7r+S93zEkJmaWI0yWcmFMohdpVbFsEPeGlcNobX+TJoI5x0ElotsgyUdh+u1qVKvPjFvyBaKbGmcj8bax60FmQ==
+react-router-transition-page@^1.1.9:
+  version "1.1.9"
+  resolved "https://registry.npmmirror.com/react-router-transition-page/-/react-router-transition-page-1.1.9.tgz#01f5ecf2a43f23a8d0f01c926822216aa53a44aa"
+  integrity sha512-M1cKesjVgP+XG2eGJh82BXy+lXEMd2s3er8k0Q4CdRPfZV2/EXyjktyFu3iY6+yzSUnMBeg+mPmT+YzcSyaBRQ==
   dependencies:
     "@emotion/core" "^11.0.0"
     "@emotion/react" "^11.7.1"

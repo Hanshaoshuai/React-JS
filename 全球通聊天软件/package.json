@@ -79,7 +79,7 @@
     "react-refresh": "^0.8.3",
     "react-route-transition-group": "^1.0.0",
     "react-router-dom": "^5.3.0",
-    "react-router-transition-page": "^1.1.8",
+    "react-router-transition-page": "^1.1.9",
     "redux": "^4.1.2",
     "resolve": "1.18.1",
     "resolve-url-loader": "^3.1.2",
