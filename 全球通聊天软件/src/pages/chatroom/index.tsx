@@ -133,7 +133,7 @@ const ChatList = () => {
   };
   useEffect(() => {
     //监听服务服务端emit的message事件发送的消息
-    console.log(messages);
+    // console.log(messages);
     if (firstEntry) {
       messageVariety(messages);
     }
@@ -206,7 +206,7 @@ const ChatList = () => {
     setOnPlayUrl('');
   };
   const fileDownload = (e: string) => {
-    console.log(origin + e);
+    // console.log(origin + e);
     window.open(`${origin + e}`);
   };
   const messageVariety = (data: any) => {
@@ -226,7 +226,7 @@ const ChatList = () => {
       if (data.text.groupName && !groupName) {
         return;
       }
-      console.log(data);
+      // console.log(data);
       let newList: any = contentList.slice(0);
       if (data.text.fromName === myLocName) {
         if (data.text.text_last) {
@@ -613,7 +613,7 @@ const ChatList = () => {
           addNumber: addName,
           addFriend: 2,
         }).then((data) => {
-          console.log(data);
+          // console.log(data);
           if (data.code === 200) {
             if (agreess) {
               agreess.current.classList.add('active');
@@ -645,7 +645,7 @@ const ChatList = () => {
           myName: myName,
           friends: 'yes',
         }).then((data) => {
-          console.log(data);
+          // console.log(data);
           if (data.code === 200) {
             Toast.show({
               icon: 'success',
@@ -709,7 +709,7 @@ const ChatList = () => {
         myName: myName,
         friends: 'no',
       }).then((data) => {
-        console.log(data);
+        // console.log(data);
         if (data.code === 200) {
           if (agreess) {
             agreess.current.classList.add('active');
@@ -1224,7 +1224,7 @@ const ChatList = () => {
       nickName: nickNameTop,
       groupName,
     }).then((data) => {
-      console.log(data);
+      // console.log(data);
       setDataListL(false);
       if (data.code && data.code === 200 && data.body.length > 0) {
         if (data.total) {
@@ -1680,15 +1680,15 @@ const ChatList = () => {
   };
 
   const setFileList = async (list: any) => {
-    console.log(list);
+    // console.log(list);
 
     setAddAnothers(false);
     texts.current.blur();
     const dateTime: any = new Date().getTime();
     for (let i = 0; i < list.length; i++) {
-      console.log(list[i]);
+      // console.log(list[i]);
       const fileType = list[i].type.split('/')[0];
-      console.log(fileType);
+      // console.log(fileType);
       const nameList = list[i].name.split('.');
       const type = nameList[nameList.length - 1];
       let clientmessage = {};

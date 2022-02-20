@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
-import { Button, Space } from "antd-mobile";
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { Button, Space } from 'antd-mobile';
 
-import Cropper from "react-cropper"; // 引入Cropper
-import "cropperjs/dist/cropper.css"; // 引入Cropper对应的css
+import Cropper from 'react-cropper'; // 引入Cropper
+import 'cropperjs/dist/cropper.css'; // 引入Cropper对应的css
 
-import "./HooksCropperModal.scss";
+import './HooksCropperModal.scss';
 
 const HooksCropperModal = ({ uploadedImageFile, onClose, onSubmit }: any) => {
   const [src, setSrc] = useState<any>(null);
@@ -24,7 +24,7 @@ const HooksCropperModal = ({ uploadedImageFile, onClose, onSubmit }: any) => {
     }
   }, [uploadedImageFile]);
   const convertBase64UrlToBlob = (urlData: any) => {
-    var bytes = window.atob(urlData.split(",")[1]); //去掉url的头，并转换为byte
+    var bytes = window.atob(urlData.split(',')[1]); //去掉url的头，并转换为byte
 
     //处理异常,将ascii码小于0的转换为大于0
     var ab = new ArrayBuffer(bytes.length);
@@ -33,10 +33,10 @@ const HooksCropperModal = ({ uploadedImageFile, onClose, onSubmit }: any) => {
       ia[i] = bytes.charCodeAt(i);
     }
 
-    return new Blob([ab], { type: "image/png" });
+    return new Blob([ab], { type: 'image/png' });
   };
   const imageSize = (base64Str: any) => {
-    const indexBase64 = base64Str.indexOf("base64,");
+    const indexBase64 = base64Str.indexOf('base64,');
     if (indexBase64 < 0) return -1;
     const str = base64Str.substr(indexBase64 + 6);
     return (str.length * 1).toFixed(2);
@@ -57,12 +57,12 @@ const HooksCropperModal = ({ uploadedImageFile, onClose, onSubmit }: any) => {
     // let filename = uploadedImageFile.name;
     // TODO: 这里可以尝试修改上传图片的尺寸
     if (cropperRef) {
-      let dataurl = "";
+      let dataurl = '';
       let size = 1;
       for (let i = 0; i < 10; i++) {
-        dataurl = cropperRef.getCroppedCanvas().toDataURL("image/jpeg", size);
+        dataurl = cropperRef.getCroppedCanvas().toDataURL('image/jpeg', size);
         if (imageSize(dataurl) <= 1000000) {
-          console.log(imageSize(dataurl));
+          // console.log(imageSize(dataurl));
           // console.log(dataurl);
           //把选中裁切好的的图片传出去
           onSubmit(dataurl);
@@ -71,7 +71,7 @@ const HooksCropperModal = ({ uploadedImageFile, onClose, onSubmit }: any) => {
           return;
         }
         size -= 0.1;
-        console.log(imageSize(dataurl));
+        // console.log(imageSize(dataurl));
       }
 
       // cropperRef.getCroppedCanvas().toBlob((e: any) => {
@@ -110,7 +110,7 @@ const HooksCropperModal = ({ uploadedImageFile, onClose, onSubmit }: any) => {
                 rotatable={true} //是否旋转
               />
             ) : (
-              ""
+              ''
             )}
           </div>
           <div className="preview-container">
@@ -119,14 +119,14 @@ const HooksCropperModal = ({ uploadedImageFile, onClose, onSubmit }: any) => {
         </div>
         <div className="button-row">
           <Button
-            style={{ margin: "9px 91px 9px 0", padding: "0 13px" }}
+            style={{ margin: '9px 91px 9px 0', padding: '0 13px' }}
             onClick={() => onClose(false)}
           >
             取消
           </Button>
           <Button
             color="success"
-            style={{ margin: "9px 0 9px 91px", padding: "0 13px" }}
+            style={{ margin: '9px 0 9px 91px', padding: '0 13px' }}
             onClick={handleSubmit}
           >
             确定

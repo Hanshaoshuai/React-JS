@@ -90,7 +90,7 @@ export const Upload = (file: any, type: any, imgId?: any, myName?: any) => {
           // console.log(formDate);
           fileUpload(formDate)
             .then((data) => {
-              console.log(data);
+              // console.log(data);
               if (data.icon) {
                 localStorage.setItem('imgId', data.id);
                 if (imgId && myName) {

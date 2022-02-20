@@ -328,13 +328,13 @@ const ChatRecord = () => {
 
   const handleGetResultImgUrl = async (blob: any) => {
     // const str = URL.createObjectURL(blob);
-    console.log(blob);
+    // console.log(blob);
     const { icon, apathZoom }: any = await Upload(blob, type, imgId, myName);
     if (icon) {
       setMyHead(icon);
       setMyHeadZoom(apathZoom);
     }
-    console.log(icon);
+    // console.log(icon);
   };
 
   const setHooksModalVisibles = () => {

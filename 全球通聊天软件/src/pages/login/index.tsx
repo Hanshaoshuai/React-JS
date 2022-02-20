@@ -158,7 +158,7 @@ const ChatList = () => {
   ];
   const selectedKey = (state: any) => {
     const { e, key, value } = state;
-    console.log(state, e, key, value);
+    // console.log(state, e, key, value);
     setSetSelectedKey(key);
   };
 
