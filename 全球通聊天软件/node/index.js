@@ -1306,11 +1306,29 @@ app.get('/get1', function (req, res) {
     if (!data) return;
     objs = JSON.parse(data.toString());
     if (objs.length > 0) {
-      objs.sort(function (a, b) {
-        return a.dateTime - b.dateTime;
-      });
+      // objs.sort(function (a, b) {
+      //   return a.dateTime - b.dateTime;
+      // });
+      const newList = [];
+      let size = (req.query.page * 1) * (req.query.pageSize * 1)
+      if (size < objs.length) {
+        for (let i = objs.length - 1; i > 0; i--) {
+          if (size > 0) {
+            newList.push(objs[i]);
+          } else {
+            break;
+          }
+          size -= 1;
+        }
+        newList.sort(function (a, b) {
+          return a.dateTime - b.dateTime;
+        });
+        list.body = newList;
+      } else {
+        list.body = objs;
+        list.total = true;
+      }
       list.code = 200;
-      list.body = objs;
       // console.log('读取文件', list);
       res.send(list);
     } else {

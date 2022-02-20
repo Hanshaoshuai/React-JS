@@ -46,6 +46,8 @@ let nickNames = '';
 let domListL: any = [];
 let toChatNameLength = 0;
 let locComplete: any = '';
+let page = 1;
+let scrollSize = 0;
 const ChatList = () => {
   const chatNames: any = localStorage.getItem('toChatName');
   const agreess: any = useRef();
@@ -62,8 +64,7 @@ const ChatList = () => {
   const [inputContent, setInputContent] = useState('');
 
   const [shuruShow, setShuruShow] = useState(false);
-  const [page] = useState(1);
-  const [pageSize] = useState(10);
+  const [pageSize] = useState(19);
   const [textNameOld] = useState(localStorage.getItem('textName'));
   const [Myimg] = useState<any>(localStorage.getItem('myapathZoom'));
   const [Youimg] = useState<any>(localStorage.getItem('headPortrait'));
@@ -104,6 +105,9 @@ const ChatList = () => {
   const [actionName, setActionName] = useState('切换语音');
   const [onFinish, setOnFinish] = useState(false);
 
+  const [Loadings, setLoadings] = useState(false);
+  const [total, setTotal] = useState(false);
+
   useEffect(() => {
     if (!voiceSotten && texts && texts.current) {
       texts.current.innerText = inputContent;
@@ -119,8 +123,14 @@ const ChatList = () => {
 
   useEffect(() => {
     getList('');
+    page = 1;
+    scrollSize = 0;
+    return componentWillUnmount;
   }, []);
-
+  const componentWillUnmount = () => {
+    page = 1;
+    scrollSize = 0;
+  };
   useEffect(() => {
     //监听服务服务端emit的message事件发送的消息
     console.log(messages);
@@ -360,6 +370,12 @@ const ChatList = () => {
     if (contentScroll !== null) {
       const el_height = contentScroll.current.scrollHeight; //   ===>  获得滚动条的高度
       contentScroll.current.scrollTop = el_height; //  ===> 设置滚动条的位置，滚动到底部
+      console.log(contentScroll.current.scrollHeight, scrollSize);
+      if (page > 1) {
+        console.log(contentScroll.current.scrollHeight, scrollSize);
+        contentScroll.current.scrollTop =
+          contentScroll.current.scrollHeight - scrollSize;
+      }
     }
   }, []);
 
@@ -1195,6 +1211,12 @@ const ChatList = () => {
     // if (getListL && getListL.length > 0) {
     //   dataCollation(getListL, types);
     // }
+    if (Loadings || total) {
+      if (total) {
+        setLoadings(false);
+      }
+      return;
+    }
     requestMessage({
       type: chatType,
       page: page,
@@ -1207,9 +1229,14 @@ const ChatList = () => {
       console.log(data);
       setDataListL(false);
       if (data.code && data.code === 200 && data.body.length > 0) {
+        if (data.total) {
+          setTotal(true);
+        }
+        setLoadings(false);
+        page += 1;
         dataCollation(data.body, types);
         // setGetListL(data.body);
-        localStorage.setItem('getListL', JSON.stringify(data.body));
+        // localStorage.setItem('getListL', JSON.stringify(data.body));
       } else {
         setShuruShow(true);
       }
@@ -1755,6 +1782,21 @@ const ChatList = () => {
     };
   };
 
+  const onScroll = (e: any) => {
+    console.log(
+      e.target.clientHeight,
+      e.target.scrollTop,
+      e.target.scrollHeight
+    );
+    if (e.target.scrollTop === 0) {
+      setLoadings(true);
+      scrollSize = e.target.scrollHeight;
+      getList('');
+    } else {
+      setLoadings(false);
+    }
+  };
+
   return (
     <>
       <div className="yijian" onClick={tabsHid}>
@@ -1801,7 +1843,12 @@ const ChatList = () => {
             </ul>
           </div>
         </div>
-        <div className="content-text" id="contentTexte" ref={contentScroll}>
+        <div
+          className="content-text"
+          id="contentTexte"
+          ref={contentScroll}
+          onScroll={(e) => onScroll(e)}
+        >
           <div
             className={`box boxTexte ${
               expressionShow || addAnothers ? 'boxTexteB' : ''
@@ -1809,6 +1856,20 @@ const ChatList = () => {
             id="box"
             ref={boxTextes}
           >
+            {Loadings && (
+              <div
+                style={{
+                  color: 'rgba(255, 122, 89)',
+                  fontSize: '20px',
+                  width: '100%',
+                  height: '41px',
+                  lineHeight: '41px',
+                  textAlign: 'center',
+                }}
+              >
+                <Loading color="currentColor" />
+              </div>
+            )}
             {contentList}
           </div>
         </div>
