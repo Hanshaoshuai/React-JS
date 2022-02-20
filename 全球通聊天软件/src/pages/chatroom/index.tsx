@@ -370,9 +370,7 @@ const ChatList = () => {
     if (contentScroll !== null) {
       const el_height = contentScroll.current.scrollHeight; //   ===>  获得滚动条的高度
       contentScroll.current.scrollTop = el_height; //  ===> 设置滚动条的位置，滚动到底部
-      console.log(contentScroll.current.scrollHeight, scrollSize);
       if (page > 1) {
-        console.log(contentScroll.current.scrollHeight, scrollSize);
         contentScroll.current.scrollTop =
           contentScroll.current.scrollHeight - scrollSize;
       }
@@ -1783,11 +1781,11 @@ const ChatList = () => {
   };
 
   const onScroll = (e: any) => {
-    console.log(
-      e.target.clientHeight,
-      e.target.scrollTop,
-      e.target.scrollHeight
-    );
+    // console.log(
+    //   e.target.clientHeight,
+    //   e.target.scrollTop,
+    //   e.target.scrollHeight
+    // );
     if (e.target.scrollTop === 0) {
       setLoadings(true);
       scrollSize = e.target.scrollHeight;
