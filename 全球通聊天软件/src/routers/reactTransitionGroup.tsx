@@ -109,18 +109,19 @@ const ReactTransitionGroup = ({ path, component }: any): ReactElement => {
         }}
       >
         {/* {onChenge()} */}
-        {switchs && states === '上一次操作路由向下' && (
-          <div
-            style={{
-              position: 'relative',
-              width: '50%',
-              height: '100%',
-              float: 'left',
-            }}
-          >
-            {odDom}
-          </div>
-        )}
+        <div
+          style={{
+            position: 'relative',
+            width: '50%',
+            height: '100%',
+            float: 'left',
+            display: `${
+              switchs && states === '上一次操作路由向下' ? 'block' : 'none'
+            }`,
+          }}
+        >
+          {odDom}
+        </div>
         <div
           style={{
             position: 'relative',
@@ -131,18 +132,19 @@ const ReactTransitionGroup = ({ path, component }: any): ReactElement => {
         >
           <Route path={path} exact={true} component={component} />
         </div>
-        {switchs && states === '上一次操作路由返回' && (
-          <div
-            style={{
-              position: 'relative',
-              width: '50%',
-              height: '100%',
-              float: 'left',
-            }}
-          >
-            {odDom}
-          </div>
-        )}
+        <div
+          style={{
+            position: 'relative',
+            width: '50%',
+            height: '100%',
+            float: 'left',
+            display: `${
+              switchs && states === '上一次操作路由返回' ? 'block' : 'none'
+            }`,
+          }}
+        >
+          {odDom}
+        </div>
       </div>
     );
   } else {
