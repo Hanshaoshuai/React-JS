@@ -22,19 +22,24 @@ const {
   realTimeCountDownSeparate,
 } = require('gettimesjs');
 
+let times: any = null;
 const ChatList = () => {
   const history = useHistory();
   const [telephone, setTelephone] = useState<any>();
   const [password, setPassword] = useState<any>('');
   const [setSelectedKey, setSetSelectedKey] = useState<any>(2);
   const [formatDates, setFormatDate] = useState<any>();
+
   useEffect(() => {
-    if (getToken()) {
-      history.push('/');
-    }
-    setInterval(() => {
+    return componentWillUnmount;
+  }, []);
+  useEffect(() => {
+    times = setInterval(() => {
       setFormatDate(formatDate('yyyy-MM-dd EE AM hh:mm:ss S q'));
     }, 10);
+    if (getToken() && localStorage.getItem('name')) {
+      history.push('/');
+    }
   }, []);
 
   const onChange = (e: any, text: string) => {
@@ -74,11 +79,11 @@ const ChatList = () => {
           localStorage.setItem('myName', data.nickName);
           localStorage.setItem('name', telephone);
           localStorage.setItem('imgId', data.imgId);
-          history.push('/');
           Toast.show({
             icon: 'success',
             content: data.msg,
           });
+          history.push('/');
         } else if (data.code === 2001) {
           //用户不存在请先注册
           Toast.show({
@@ -325,6 +330,10 @@ const ChatList = () => {
     history.push('/education');
   };
 
+  const componentWillUnmount = () => {
+    clearInterval(times);
+  };
+
   return (
     <div className="denglu">
       <div className="searchBox">
@@ -335,7 +344,12 @@ const ChatList = () => {
       </div>
       <div className="contents">
         <div
-          style={{ textAlign: 'center', color: '#ff7a59', fontSize: '16px' }}
+          style={{
+            textAlign: 'center',
+            color: '#ff7a59',
+            fontSize: '16px',
+            marginBottom: '10px',
+          }}
         >
           {formatDates}
         </div>

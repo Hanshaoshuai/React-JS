@@ -76,7 +76,7 @@ const ChatRecord = () => {
         }
       });
     }
-  }, [localStorage.getItem('myHeadPortrait')]);
+  }, [myHeadPortrait]);
   useEffect(() => {
     //消息监听
     getBuddyLists();

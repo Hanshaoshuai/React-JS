@@ -43,7 +43,7 @@ const ProjectInstance = () => {
           <List.Item
             prefix={<UnorderedListOutline />}
             onClick={() => {
-              setOnPlayUrl('./projectImages/head1.jpg');
+              setOnPlayUrl('./projectImages/2022-02-14_06-55-39.mp4');
             }}
           >
             工程数字资产
@@ -51,7 +51,7 @@ const ProjectInstance = () => {
           <List.Item
             prefix={<UnorderedListOutline />}
             onClick={() => {
-              setOnPlayUrl('./projectImages/head1.jpg');
+              setOnPlayUrl('./projectImages/2022-02-14_06-13-05.mp4');
             }}
           >
             三峡升船机数字化平台
@@ -59,7 +59,7 @@ const ProjectInstance = () => {
           <List.Item
             prefix={<UnorderedListOutline />}
             onClick={() => {
-              setOnPlayUrl('./projectImages/head1.jpg');
+              setOnPlayUrl('./projectImages/2022-02-14_07-00-39.mp4');
             }}
           >
             物联网
