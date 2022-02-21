@@ -245,7 +245,7 @@ const SuperMap = () => {
       const entity = window.viewer.entities.getById(
         infoBoxContainer.current.id
       );
-      console.log(entity);
+      // console.log(entity);
       if (!entity) return;
       const Cartesian3 = entity.position._value;
       const position = window.Cesium.SceneTransforms.wgs84ToWindowCoordinates(
