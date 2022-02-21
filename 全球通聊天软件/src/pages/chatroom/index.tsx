@@ -1209,7 +1209,7 @@ const ChatList = () => {
     // if (getListL && getListL.length > 0) {
     //   dataCollation(getListL, types);
     // }
-    if (Loadings || total) {
+    if ((Loadings || total) && scrollSize !== 0) {
       if (total) {
         setLoadings(false);
       }
