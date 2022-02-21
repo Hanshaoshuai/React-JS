@@ -1687,6 +1687,13 @@ const ChatList = () => {
     const dateTime: any = new Date().getTime();
     for (let i = 0; i < list.length; i++) {
       // console.log(list[i]);
+      if (list[i].size === 0) {
+        Toast.show({
+          icon: 'fail',
+          content: '此文件为空文件！',
+        });
+        break;
+      }
       const fileType = list[i].type.split('/')[0];
       // console.log(fileType);
       const nameList = list[i].name.split('.');
