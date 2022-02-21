@@ -77,7 +77,7 @@ export const UploadImg = (
           // console.log(formDate);
           fileUpload(formDate)
             .then((data) => {
-              console.log(data);
+              // console.log(data);
               if (data.code === 200) {
                 resolve(data);
               } else {

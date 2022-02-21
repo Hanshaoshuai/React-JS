@@ -34,7 +34,7 @@ export default function App() {
   const dispatchs = useDispatch();
   const schedule: any = useSelector<any>((state) => state.schedule);
 
-  console.log(schedule);
+  // console.log(schedule);
 
   const [state, dispatch] = useReducer(reducer, states);
   const [messages, setMessages] = useState({});

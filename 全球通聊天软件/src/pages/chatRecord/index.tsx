@@ -68,7 +68,7 @@ const ChatRecord = () => {
         myName: myNameL,
         type: 'chat',
       }).then((data) => {
-        console.log(data);
+        // console.log(data);
         if (data.code && data.imges) {
           setImgeSrc(data.apathZoom);
           localStorage.setItem('myHeadPortrait', data.imges);
@@ -84,7 +84,7 @@ const ChatRecord = () => {
     //   localStorage.setItem("myHeadPortrait", messages.icon);
     //   setImgeSrc(messages.icon);
     // }
-    console.log(messages);
+    // console.log(messages);
     if (
       messages?.text?.VideoAndVoice === '视频' &&
       messages?.text?.toName === localName

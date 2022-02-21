@@ -49,7 +49,7 @@ const SuperMap = () => {
         selectionIndicator: false, //关闭默认高亮
       });
       window.viewer = viewer;
-      console.log(viewer);
+      // console.log(viewer);
       markerList[0] &&
         markerList.forEach((item: any) => {
           viewer.entities.removeById(item.id);
@@ -85,7 +85,7 @@ const SuperMap = () => {
           });
         });
       if (viewer.scene) {
-        console.log(viewer.scene);
+        // console.log(viewer.scene);
         setClickEvent(viewer.scene);
       }
       //视角变更监控
@@ -131,7 +131,7 @@ const SuperMap = () => {
       handler.setInputAction((evt: any) => {
         const pick = scene.pick(evt.position); // 自定义坐标点数据
         var position = scene.pickPosition(evt.position); // 地图坐标
-        console.log(evt, position, pick);
+        // console.log(evt, position, pick);
         if (pick?.id) {
           if (infoBoxContainer && infoBoxContainer.current) {
             infoBoxContainer.current.id = pick.id.id;

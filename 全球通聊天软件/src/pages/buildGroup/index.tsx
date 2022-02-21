@@ -85,7 +85,7 @@ const ChatList = () => {
       return;
     }
     newFriendList = unique(friendList, checkListName);
-    console.log(newFriendList);
+    // console.log(newFriendList);
     for (var i = 0; i < newFriendList.length; i++) {
       if (newFriendList[i].name === localName) {
         keys = true;
@@ -133,7 +133,7 @@ const ChatList = () => {
           icon: 'success',
           content: data.msg,
         });
-        console.log(objs_name);
+        // console.log(objs_name);
         window.socket.emit('clientmessage', {
           fromName: localStorage.getItem('name'),
           toName: objs_name,

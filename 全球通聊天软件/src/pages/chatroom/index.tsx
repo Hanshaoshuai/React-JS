@@ -133,7 +133,7 @@ const ChatList = () => {
   };
   useEffect(() => {
     //监听服务服务端emit的message事件发送的消息
-    console.log(messages);
+    // console.log(messages);
     if (firstEntry) {
       messageVariety(messages);
     }
@@ -206,7 +206,7 @@ const ChatList = () => {
     setOnPlayUrl('');
   };
   const fileDownload = (e: string) => {
-    console.log(origin + e);
+    // console.log(origin + e);
     window.open(`${origin + e}`);
   };
   const messageVariety = (data: any) => {
@@ -226,7 +226,7 @@ const ChatList = () => {
       if (data.text.groupName && !groupName) {
         return;
       }
-      console.log(data);
+      // console.log(data);
       let newList: any = contentList.slice(0);
       if (data.text.fromName === myLocName) {
         if (data.text.text_last) {
@@ -370,9 +370,7 @@ const ChatList = () => {
     if (contentScroll !== null) {
       const el_height = contentScroll.current.scrollHeight; //   ===>  获得滚动条的高度
       contentScroll.current.scrollTop = el_height; //  ===> 设置滚动条的位置，滚动到底部
-      console.log(contentScroll.current.scrollHeight, scrollSize);
       if (page > 1) {
-        console.log(contentScroll.current.scrollHeight, scrollSize);
         contentScroll.current.scrollTop =
           contentScroll.current.scrollHeight - scrollSize;
       }
@@ -615,7 +613,7 @@ const ChatList = () => {
           addNumber: addName,
           addFriend: 2,
         }).then((data) => {
-          console.log(data);
+          // console.log(data);
           if (data.code === 200) {
             if (agreess) {
               agreess.current.classList.add('active');
@@ -647,7 +645,7 @@ const ChatList = () => {
           myName: myName,
           friends: 'yes',
         }).then((data) => {
-          console.log(data);
+          // console.log(data);
           if (data.code === 200) {
             Toast.show({
               icon: 'success',
@@ -711,7 +709,7 @@ const ChatList = () => {
         myName: myName,
         friends: 'no',
       }).then((data) => {
-        console.log(data);
+        // console.log(data);
         if (data.code === 200) {
           if (agreess) {
             agreess.current.classList.add('active');
@@ -1226,7 +1224,7 @@ const ChatList = () => {
       nickName: nickNameTop,
       groupName,
     }).then((data) => {
-      console.log(data);
+      // console.log(data);
       setDataListL(false);
       if (data.code && data.code === 200 && data.body.length > 0) {
         if (data.total) {
@@ -1682,15 +1680,15 @@ const ChatList = () => {
   };
 
   const setFileList = async (list: any) => {
-    console.log(list);
+    // console.log(list);
 
     setAddAnothers(false);
     texts.current.blur();
     const dateTime: any = new Date().getTime();
     for (let i = 0; i < list.length; i++) {
-      console.log(list[i]);
+      // console.log(list[i]);
       const fileType = list[i].type.split('/')[0];
-      console.log(fileType);
+      // console.log(fileType);
       const nameList = list[i].name.split('.');
       const type = nameList[nameList.length - 1];
       let clientmessage = {};
@@ -1783,11 +1781,11 @@ const ChatList = () => {
   };
 
   const onScroll = (e: any) => {
-    console.log(
-      e.target.clientHeight,
-      e.target.scrollTop,
-      e.target.scrollHeight
-    );
+    // console.log(
+    //   e.target.clientHeight,
+    //   e.target.scrollTop,
+    //   e.target.scrollHeight
+    // );
     if (e.target.scrollTop === 0) {
       setLoadings(true);
       scrollSize = e.target.scrollHeight;

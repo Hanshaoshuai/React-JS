@@ -47,9 +47,9 @@ const VideoCallPlay = ({
   }, [onFinish]);
 
   const onActionName = () => {
-    console.log(actionNames);
+    // console.log(actionNames);
     if (actionNames === '切换语音') {
-      console.log(actionNames);
+      // console.log(actionNames);
       setActionNames('静音');
       setMediaStreamConstraints({
         video: false,
@@ -107,13 +107,13 @@ const VideoCallPlay = ({
   // 这个方法循环去请求去GET
   const startQuery = () => {
     timer = setInterval(function () {
-      console.log('这个方法循环去请求去');
+      // console.log('这个方法循环去请求去');
       remo({ chatNames, text: call ? chatNames : locMyName }).then(
         (res: any) => {
-          console.log('这个方法循环去请求去===>>>>', res);
+          // console.log('这个方法循环去请求去===>>>>', res);
           if (res === '无数据' || res === '') {
           } else {
-            console.log('这个方法循环去请求去===>>>>', res);
+            // console.log('这个方法循环去请求去===>>>>', res);
             setCallStarted(true);
             // let msg = JSON.parse(res)
             let msg = res;
@@ -127,7 +127,7 @@ const VideoCallPlay = ({
 
   // 检测函数
   const chackData = (msg: any) => {
-    console.log('收到-远端-type' + msg.MessageType);
+    // console.log('收到-远端-type' + msg.MessageType);
     switch (msg.MessageType) {
       case '1':
         handleVideoOfferMsg(msg); // 处理视频提供消息
@@ -143,7 +143,7 @@ const VideoCallPlay = ({
 
   // 返回需要发送的数据
   const sendDataByType = (type: any) => {
-    console.log(localPeerConnection.localDescription.sdp);
+    // console.log(localPeerConnection.localDescription.sdp);
     let obj: any = {
       Data: localPeerConnection.localDescription.sdp,
       IceDataSeparator: ' ',
@@ -161,7 +161,7 @@ const VideoCallPlay = ({
 
   // 收到别的 offer 需要调用post发送 内容
   const handleVideoOfferMsg = async (msg: any) => {
-    console.log('远端-收到offer');
+    // console.log('远端-收到offer');
     if (!localPeerConnection) {
       createPeerConnection();
     }
@@ -178,14 +178,14 @@ const VideoCallPlay = ({
         webcamStream = await navigator.mediaDevices.getUserMedia(
           mediaStreamConstraints
         );
-        console.log('--------本地的被动视频流---------');
+        // console.log('--------本地的被动视频流---------');
         if (localVideo) {
           localVideo.current.srcObject = webcamStream;
           // window.socket.emit('clientmessage', {
           //   //只作为文件上传完成使用
           //   uploadCompleted: true,
           // });
-          console.log('本地的被动视频流', webcamStream);
+          // console.log('本地的被动视频流', webcamStream);
         }
       } catch (err) {
         handleGetUserMediaError(err);
@@ -205,7 +205,7 @@ const VideoCallPlay = ({
     await localPeerConnection.setLocalDescription(
       await localPeerConnection.createAnswer()
     );
-    console.log(localPeerConnection);
+    // console.log(localPeerConnection);
     // 调用 post 请求 回复
     /////////////////////////////////////////////////
     let objs = sendDataByType('Answer');
@@ -214,21 +214,21 @@ const VideoCallPlay = ({
 
   // 收到answer
   const handleVideoAnswerMsg = async (msg: any) => {
-    console.log('收到answer');
+    // console.log('收到answer');
     let obj: any = {
       type: 'answer',
       sdp: msg.Data,
     };
     var desc = new RTCSessionDescription(obj);
-    console.log(desc);
+    // console.log(desc);
     await localPeerConnection.setRemoteDescription(desc).catch();
   };
 
   // 收到ice
   const handleNewICECandidateMsg = async (msg: any) => {
-    console.log('收到ice==>>', msg);
+    // console.log('收到ice==>>', msg);
     let arr = msg.Data.split(msg.IceDataSeparator);
-    console.log(arr);
+    // console.log(arr);
     let obj = {
       candidate: arr[0],
       sdpMid: arr[1],
@@ -238,17 +238,17 @@ const VideoCallPlay = ({
     try {
       await localPeerConnection.addIceCandidate(candidate);
     } catch (err) {
-      console.log('iec 调用失败');
-      console.log(err);
+      // console.log('iec 调用失败');
+      // console.log(err);
     }
   };
 
   // post请求方法
   const startPost = (obj: any) => {
-    console.log(obj);
+    // console.log(obj);
     obj.text = call ? chatNames : locMyName;
     local(obj).then((res: any) => {
-      console.log(res);
+      // console.log(res);
     });
   };
 
@@ -262,15 +262,15 @@ const VideoCallPlay = ({
       webcamStream = await navigator.mediaDevices.getUserMedia(
         mediaStreamConstraints
       );
-      console.log('--------本地的---------');
+      // console.log('--------本地的---------');
       if (localVideo) {
         localVideo.current.srcObject = webcamStream;
       }
-      console.log(
-        '本地的视频===>>',
-        webcamStream,
-        window.URL.createObjectURL(webcamStream)
-      );
+      // console.log(
+      //   '本地的视频===>>',
+      //   webcamStream,
+      //   window.URL.createObjectURL(webcamStream)
+      // );
     } catch (err) {
       handleGetUserMediaError(err);
       return;
@@ -295,7 +295,7 @@ const VideoCallPlay = ({
   };
 
   const handleICECandidateEvent = (event: any) => {
-    console.log('准备回调ice事件');
+    // console.log('准备回调ice事件');
     if (event.candidate) {
       let obj = {
         Data:
@@ -307,7 +307,7 @@ const VideoCallPlay = ({
         MessageType: 3,
         IceDataSeparator: '|',
       };
-      console.log(obj);
+      // console.log(obj);
       startPost(obj);
     }
   };
@@ -316,24 +316,24 @@ const VideoCallPlay = ({
     const mediaStream = event.streams[0];
     if (remoteVideo) {
       remoteVideo.current.srcObject = mediaStream;
-      console.log('本地的视频1111===>>', mediaStream);
+      // console.log('本地的视频1111===>>', mediaStream);
     }
     // remoteStream = mediaStream;
   };
 
   const handleNegotiationNeededEvent = async () => {
-    console.log('进入 createOffer()');
+    // console.log('进入 createOffer()');
     try {
       const offer = await localPeerConnection.createOffer();
       await localPeerConnection.setLocalDescription(offer);
       let obj = sendDataByType('Offer');
-      console.log(obj);
+      // console.log(obj);
       startPost(obj);
     } catch {}
   };
 
   const handleGetUserMediaError = (e: any) => {
-    console.log(e);
+    // console.log(e);
     switch (e.name) {
       case 'NotFoundError':
         alert(

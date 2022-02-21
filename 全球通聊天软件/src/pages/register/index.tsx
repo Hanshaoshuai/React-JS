@@ -38,7 +38,7 @@ const Register = () => {
     setType(typeName[typeName.length - 1]);
     setHooksModalFile(fileN);
     setHooksModalVisible(true);
-    console.log(fileN, typeName[typeName.length - 1]);
+    // console.log(fileN, typeName[typeName.length - 1]);
   };
 
   const handleGetResultImgUrl = async (blob: any) => {

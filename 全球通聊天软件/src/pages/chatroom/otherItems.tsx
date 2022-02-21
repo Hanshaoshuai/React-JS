@@ -36,13 +36,13 @@ const OtherItems = ({
   }, [deleteFl]);
 
   const photoAlbum = () => {
-    console.log('e.target.value');
+    // console.log('e.target.value');
   };
   const documents = () => {
-    console.log('e.target.value');
+    // console.log('e.target.value');
   };
   const videoCall = () => {
-    console.log('e.target.value');
+    // console.log('e.target.value');
     setVisible(true);
   };
 
