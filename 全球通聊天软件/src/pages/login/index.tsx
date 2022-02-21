@@ -6,7 +6,7 @@ import { Toast } from 'antd-mobile';
 
 import { getToken, setToken } from '../../helpers';
 
-import { login } from '../../api';
+import { login, informationDetails } from '../../api';
 // import TabSwitch, { TabSwitchPage } from './tabSwitch';
 // import { SwitchTs } from 'rollup-react-ts';
 // const { SwitchTs } = require('rollup-react-ts');
@@ -83,7 +83,18 @@ const ChatList = () => {
             icon: 'success',
             content: data.msg,
           });
-          history.push('/');
+          informationDetails({
+            toChatName: telephone,
+            myName: data.nickName,
+            type: 'chat',
+          }).then((data) => {
+            // console.log(data);
+            if (data.code && data.imges) {
+              localStorage.setItem('myHeadPortrait', data.imges);
+              localStorage.setItem('myapathZoom', data.apathZoom);
+            }
+            history.push('/');
+          });
         } else if (data.code === 2001) {
           //用户不存在请先注册
           Toast.show({
