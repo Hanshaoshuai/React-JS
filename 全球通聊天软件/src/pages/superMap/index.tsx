@@ -222,19 +222,19 @@ const SuperMap = () => {
       handler.setInputAction((evt: any) => {
         const pick = scene.pick(evt.position); // 自定义坐标点数据
         var position = scene.pickPosition(evt.position); // 地图坐标
-        console.log(
-          '地图坐标',
-          evt,
-          pick,
-          position,
-          { ...pick, position }
-          // window.Cesium.Cartesian3.fromDegrees(
-          //   // 转换真正地图坐标
-          //   position.x,
-          //   position.y,
-          //   position.z
-          // )
-        );
+        // console.log(
+        //   '地图坐标',
+        //   evt,
+        //   pick,
+        //   position,
+        //   { ...pick, position }
+        //   // window.Cesium.Cartesian3.fromDegrees(
+        //   //   // 转换真正地图坐标
+        //   //   position.x,
+        //   //   position.y,
+        //   //   position.z
+        //   // )
+        // );
         if (pick?.id) {
           if (infoBoxContainer && infoBoxContainer.current) {
             infoBoxContainer.current.id = pick.id.id;
