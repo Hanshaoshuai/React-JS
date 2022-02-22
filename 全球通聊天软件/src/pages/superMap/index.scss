@@ -11,7 +11,8 @@
     z-index: 11000;
     background-color: black;
     .cesium-viewer-bottom,
-    .cesium-viewer-navigationContainer {
+    // .cesium-viewer-navigationContainer
+    {
       display: none;
     }
   }

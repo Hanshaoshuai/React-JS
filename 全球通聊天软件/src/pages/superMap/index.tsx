@@ -43,6 +43,7 @@ const SuperMap = () => {
       }
       viewer = new window.Cesium.Viewer('cesiumContainer', {
         //初始化
+        // 关闭有上角图标
         navigation: false,
         infoBox: false,
         terrainProvider: new window.Cesium.CesiumTerrainProvider({
@@ -181,6 +182,11 @@ const SuperMap = () => {
         }
       };
     }
+
+    const timeout = setTimeout(() => {
+      selfRotate();
+      clearTimeout(timeout);
+    }, 4100);
     return () => {
       cameraChangedListener && cameraChangedListener();
     };
@@ -214,6 +220,10 @@ const SuperMap = () => {
         },
         duration: 4,
       });
+      const timeout = setTimeout(() => {
+        viewer.clock.shouldAnimate = true;
+        clearTimeout(timeout);
+      }, 4100);
     }
   };
   const setClickEvent = (scene: any) => {
@@ -242,6 +252,7 @@ const SuperMap = () => {
           setSwitchsX(evt.position.x); // 自定义坐标点相对屏幕像素x
           setSwitchsY(evt.position.y); // 自定义坐标点相对屏幕像素y
           setTitles({ ...pick, position });
+          viewer.clock.shouldAnimate = false;
           setSwitchsVisibility(true);
         }
       }, window.Cesium.ScreenSpaceEventType.LEFT_CLICK);
@@ -275,7 +286,7 @@ const SuperMap = () => {
   const realspace = () => {
     // setResets(!resets);
     setSwitchsVisibility(false);
-
+    viewer.clock.shouldAnimate = false;
     if (ua.indexOf('windows') >= 0) {
       urls = 'http://{s}/realspace/services/3D-NewCBD/rest/realspace';
       destination = {
@@ -321,6 +332,23 @@ const SuperMap = () => {
       },
     });
     setClickEvent(scene);
+  };
+
+  const selfRotate = () => {
+    viewer.clock.multiplier = 300;
+    // viewer.clock.shouldAnimate = true; // 地球自转设置
+    let previousTime = viewer.clock.currentTime.secondsOfDay;
+    const onTickCallback = () => {
+      const spinRate = 0.5;
+      const currentTime = viewer.clock.currentTime.secondsOfDay;
+      const delta = (currentTime - previousTime) / 1000;
+      previousTime = currentTime;
+      viewer.scene.camera.rotate(
+        window.Cesium.Cartesian3.UNIT_Z,
+        -spinRate * delta
+      );
+    };
+    viewer.clock.onTick.addEventListener(onTickCallback);
   };
 
   const switchs = () => {
