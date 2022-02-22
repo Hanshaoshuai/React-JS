@@ -73,9 +73,9 @@ const SuperMap = () => {
                 item.state === 'operation'
                   ? '/images/user__easyico.png'
                   : '/images/user__easyico.png',
-              width: 44,
-              height: 50,
-              pixelOffset: new window.Cesium.Cartesian2(0, -30),
+              width: 31,
+              height: 31,
+              pixelOffset: new window.Cesium.Cartesian2(0, 0),
             },
             name: item.name,
             label: new window.Cesium.LabelGraphics({
@@ -84,7 +84,7 @@ const SuperMap = () => {
               // pixelOffset: new Cesium.Cartesian2(0, 30),
               distanceDisplayCondition: {
                 near: 100,
-                far: 1500000,
+                far: 1900000,
               },
             }),
             description: '',
