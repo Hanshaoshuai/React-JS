@@ -28,11 +28,18 @@ const SuperMap = () => {
   const [switchsY, setSwitchsY] = useState(0);
   const [titles, setTitles] = useState<any>({});
   const [fullScreen, setFullScreen] = useState<any>(true);
-
+  let iconWidth = 19;
+  let iconHeight = 19;
+  let itemHeight = 914130;
+  if (ua.indexOf('windows') >= 0) {
+    iconWidth = 61;
+    iconHeight = 61;
+    itemHeight = 541319;
+  }
   const [markerList] = useState<any>([
-    { id: 0, name: '标点', longitude: 910, latitude: 170, height: 330000 },
-    { id: 1, name: '标点1', longitude: 920, latitude: 180, height: 330000 },
-    { id: 2, name: '标点2', longitude: 900, latitude: 180, height: 330000 },
+    { id: 0, name: '标点', longitude: 910, latitude: 170, height: itemHeight },
+    { id: 1, name: '标点1', longitude: 920, latitude: 180, height: itemHeight },
+    { id: 2, name: '标点2', longitude: 900, latitude: 180, height: itemHeight },
   ]);
 
   useEffect(() => {
@@ -73,8 +80,8 @@ const SuperMap = () => {
                 item.state === 'operation'
                   ? '/images/user__easyico.png'
                   : '/images/user__easyico.png',
-              width: 31,
-              height: 31,
+              width: iconWidth,
+              height: iconHeight,
               pixelOffset: new window.Cesium.Cartesian2(0, 0),
             },
             name: item.name,
@@ -353,6 +360,7 @@ const SuperMap = () => {
 
   const switchs = () => {
     setSwitchsVisibility(false);
+    viewer.clock.shouldAnimate = true;
   };
   const onFullScreen = () => {
     if (fullScreen) {
