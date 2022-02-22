@@ -72,12 +72,12 @@ export function Drag(mv: any, box = document.body) {
     console.log('平板');
     mv.ontouchstart = movedown;
     mv.ontouchmove = move;
-    window.ontouchend = moveup;
+    // window.ontouchend = moveup;
   } else {
     console.log('手机');
     mv.ontouchstart = movedown;
     mv.ontouchmove = move;
-    window.ontouchend = moveup;
+    // window.ontouchend = moveup;
   }
 
   //   var mover = new Mover(

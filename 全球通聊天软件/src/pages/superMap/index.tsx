@@ -360,7 +360,9 @@ const SuperMap = () => {
 
   const switchs = () => {
     setSwitchsVisibility(false);
-    viewer.clock.shouldAnimate = true;
+    if (titles.id?.name) {
+      viewer.clock.shouldAnimate = true;
+    }
   };
   const onFullScreen = () => {
     if (fullScreen) {
