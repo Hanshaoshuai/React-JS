@@ -45,9 +45,10 @@
     color: #fff;
     padding: 10px;
     .pop-ups-title {
-      width: 100%;
+      // width: 100%;
       position: relative;
-      padding: 10px 5px;
+      height: 26px;
+      padding: 5px 5px;
       border-radius: 3px;
       background-color: rgba(126, 125, 125, 0.8);
       margin-bottom: 10px;
@@ -75,6 +76,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-top: 10px;
   }
   .switch {
     position: absolute;

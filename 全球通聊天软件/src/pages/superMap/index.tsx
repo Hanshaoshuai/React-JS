@@ -2,6 +2,7 @@ import { Button } from 'antd-mobile';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { CloseCircleOutline } from 'antd-mobile-icons';
+import { Drag } from '../../helpers';
 // import banner from "../../../public/images/playground.glb"; // 引入全景图
 import './index.scss';
 
@@ -16,6 +17,9 @@ declare global {
 let cameraChangedListener: any = null;
 let viewer: any = null;
 const SuperMap = () => {
+  var ua: any = navigator.userAgent.toLowerCase();
+  let urls = '';
+  let destination = null;
   const history = useHistory();
   const infoBoxContainer = useRef<HTMLDivElement>(null);
   const [visibility, setVisibility] = useState(true);
@@ -88,10 +92,12 @@ const SuperMap = () => {
       if (viewer.scene) {
         // console.log(viewer.scene);
         setClickEvent(viewer.scene);
-        const scene = viewer.scene;
-        scene.globe.enableLighting = true;
-        scene.sun = new window.Cesium.Sun();
-        scene.sun.glowFactor = 5; // 太阳光大小
+        if (ua.indexOf('windows') >= 0) {
+          const scene = viewer.scene;
+          scene.globe.enableLighting = true;
+          scene.sun = new window.Cesium.Sun();
+          scene.sun.glowFactor = 5; // 太阳光大小
+        }
       }
       //视角变更监控
       cameraChangedListener =
@@ -182,9 +188,13 @@ const SuperMap = () => {
 
   useEffect(() => {
     initialization();
+    if (infoBoxContainer) {
+      Drag(infoBoxContainer.current);
+    }
   }, []);
   const reset = () => {
     initialization();
+    switchs();
   };
   const initialization = () => {
     // 初始化视角
@@ -212,24 +222,26 @@ const SuperMap = () => {
       handler.setInputAction((evt: any) => {
         const pick = scene.pick(evt.position); // 自定义坐标点数据
         var position = scene.pickPosition(evt.position); // 地图坐标
-        console.log(
-          '地图坐标',
-          evt,
-          position
-          // window.Cesium.Cartesian3.fromDegrees(
-          //   // 转换真正地图坐标
-          //   position.x,
-          //   position.y,
-          //   position.z
-          // )
-        );
+        // console.log(
+        //   '地图坐标',
+        //   evt,
+        //   pick,
+        //   position,
+        //   { ...pick, position }
+        //   // window.Cesium.Cartesian3.fromDegrees(
+        //   //   // 转换真正地图坐标
+        //   //   position.x,
+        //   //   position.y,
+        //   //   position.z
+        //   // )
+        // );
         if (pick?.id) {
           if (infoBoxContainer && infoBoxContainer.current) {
             infoBoxContainer.current.id = pick.id.id;
           }
           setSwitchsX(evt.position.x); // 自定义坐标点相对屏幕像素x
           setSwitchsY(evt.position.y); // 自定义坐标点相对屏幕像素y
-          setTitles(pick?.id);
+          setTitles({ ...pick, position });
           setSwitchsVisibility(true);
         }
       }, window.Cesium.ScreenSpaceEventType.LEFT_CLICK);
@@ -247,7 +259,9 @@ const SuperMap = () => {
         infoBoxContainer.current.id
       );
       // console.log(entity);
-      if (!entity) return;
+      if (!entity) {
+        return;
+      }
       const Cartesian3 = entity.position._value;
       const position = window.Cesium.SceneTransforms.wgs84ToWindowCoordinates(
         scene,
@@ -261,27 +275,40 @@ const SuperMap = () => {
   const realspace = () => {
     // setResets(!resets);
     setSwitchsVisibility(false);
-    const promise: any = window.viewer.scene.open(
-      'http://www.supermapol.com/realspace/services/3D-jinjiang/rest/realspace',
-      undefined,
-      {
-        subdomains: ['www.supermapol.com'],
-      }
-    );
+
+    if (ua.indexOf('windows') >= 0) {
+      urls = 'http://{s}/realspace/services/3D-NewCBD/rest/realspace';
+      destination = {
+        x: -2177536.8298188746, // 不带负号，数字减小往上移动
+        y: 4381226.303062158, // 加大往左移动
+        z: 4093133.2575022844, // 镜头的高度
+      };
+    } else if (navigator.userAgent.indexOf('iPad') >= 0) {
+      urls =
+        'http://www.supermapol.com/realspace/services/3D-jinjiang/rest/realspace';
+      destination = {
+        x: -2766646.8109041643,
+        y: 5086139.242121006,
+        z: 2675753.0881470772,
+      };
+    } else {
+      urls =
+        'http://www.supermapol.com/realspace/services/3D-jinjiang/rest/realspace';
+      destination = {
+        x: -2766646.8109041643,
+        y: 5086139.242121006,
+        z: 2675753.0881470772,
+      };
+    }
+
+    const promise: any = window.viewer.scene.open(urls, undefined, {
+      subdomains: ['www.supermapol.com'],
+    });
     window.Cesium.when(promise);
     const scene = viewer.scene;
     viewer.camera.flyTo({
       // 角度动画；不同模型需要调整角度
-      destination: {
-        x: -2766646.8109041643,
-        y: 5086139.242121006,
-        z: 2675753.0881470772,
-      },
-      // {
-      //   x: -2177536.8298188746, // 不带负号，数字减小往上移动
-      //   y: 4381226.303062158, // 加大往左移动
-      //   z: 4093133.2575022844, // 镜头的高度
-      // },
+      destination: destination,
       // window.Cesium.Cartesian3.fromDegrees( // 转换真正地图坐标
       //   -2179495.606468646,
       //   4380208.518509638,
@@ -375,19 +402,29 @@ const SuperMap = () => {
         className="pop-ups"
         style={{
           display: `${switchsVisibility ? 'block' : 'none'}`,
-          width: '410px',
+          width: '41%',
           height: 'auto',
           top: `${switchsY + 19}px`,
           left: `${switchsX + 19}px`,
         }}
       >
         <div className="pop-ups-title">
+          {`_id:${titles?.id}`}
           <div className="switch" onClick={switchs}>
             <CloseCircleOutline className="video-closure-icon" />
           </div>
           {titles.name}
         </div>
-        {`_id：${titles.id}`}
+        {titles.position && (
+          <div>
+            {`x：${titles.position?.x}`}
+            <br />
+            {`y：${titles.position?.y}`}
+            <br />
+            {`z：${titles.position?.y}`}
+          </div>
+        )}
+
         <div className="button-box">
           <Button className="button" color="primary" onClick={realspace}>
             进入设备
