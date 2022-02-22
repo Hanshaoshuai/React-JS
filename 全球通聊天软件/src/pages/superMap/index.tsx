@@ -212,16 +212,17 @@ const SuperMap = () => {
       handler.setInputAction((evt: any) => {
         const pick = scene.pick(evt.position); // 自定义坐标点数据
         var position = scene.pickPosition(evt.position); // 地图坐标
-        // console.log(
-        //   '地图坐标',
-        //   evt,
-        //   position,
-        //   window.Cesium.Cartesian3.fromDegrees(  // 转换真正地图坐标
-        //     position.x,
-        //     position.y,
-        //     position.z
-        //   )
-        // );
+        console.log(
+          '地图坐标',
+          evt,
+          position
+          // window.Cesium.Cartesian3.fromDegrees(
+          //   // 转换真正地图坐标
+          //   position.x,
+          //   position.y,
+          //   position.z
+          // )
+        );
         if (pick?.id) {
           if (infoBoxContainer && infoBoxContainer.current) {
             infoBoxContainer.current.id = pick.id.id;
@@ -261,7 +262,7 @@ const SuperMap = () => {
     // setResets(!resets);
     setSwitchsVisibility(false);
     const promise: any = window.viewer.scene.open(
-      'http://www.supermapol.com/realspace/services/3D-SampleCodeForFan20200420/rest/realspace',
+      'http://www.supermapol.com/realspace/services/3D-jinjiang/rest/realspace',
       undefined,
       {
         subdomains: ['www.supermapol.com'],
@@ -270,12 +271,17 @@ const SuperMap = () => {
     window.Cesium.when(promise);
     const scene = viewer.scene;
     viewer.camera.flyTo({
-      // 角度动画；
+      // 角度动画；不同模型需要调整角度
       destination: {
-        x: -2177536.8298188746, // 减小往上移动
-        y: 4381226.303062158, // 加大往左移动
-        z: 4093133.2575022844, // 镜头的高度
+        x: -2766646.8109041643,
+        y: 5086139.242121006,
+        z: 2675753.0881470772,
       },
+      // {
+      //   x: -2177536.8298188746, // 不带负号，数字减小往上移动
+      //   y: 4381226.303062158, // 加大往左移动
+      //   z: 4093133.2575022844, // 镜头的高度
+      // },
       // window.Cesium.Cartesian3.fromDegrees( // 转换真正地图坐标
       //   -2179495.606468646,
       //   4380208.518509638,
