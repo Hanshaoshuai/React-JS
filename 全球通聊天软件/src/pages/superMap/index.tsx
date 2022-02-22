@@ -88,10 +88,10 @@ const SuperMap = () => {
       if (viewer.scene) {
         // console.log(viewer.scene);
         setClickEvent(viewer.scene);
-        // const scene = viewer.scene;
-        // scene.globe.enableLighting = true;
-        // scene.sun = new window.Cesium.Sun();
-        // scene.sun.glowFactor = 5; // 太阳光大小
+        const scene = viewer.scene;
+        scene.globe.enableLighting = true;
+        scene.sun = new window.Cesium.Sun();
+        scene.sun.glowFactor = 5; // 太阳光大小
       }
       //视角变更监控
       cameraChangedListener =
@@ -261,7 +261,7 @@ const SuperMap = () => {
     // setResets(!resets);
     setSwitchsVisibility(false);
     const promise: any = window.viewer.scene.open(
-      'http://{s}/realspace/services/3D-NewCBD/rest/realspace',
+      'http://www.supermapol.com/realspace/services/3D-SampleCodeForFan20200420/rest/realspace',
       undefined,
       {
         subdomains: ['www.supermapol.com'],
