@@ -88,10 +88,10 @@ const SuperMap = () => {
       if (viewer.scene) {
         // console.log(viewer.scene);
         setClickEvent(viewer.scene);
-        const scene = viewer.scene;
-        scene.globe.enableLighting = true;
-        scene.sun = new window.Cesium.Sun();
-        scene.sun.glowFactor = 5; // 太阳大小
+        // const scene = viewer.scene;
+        // scene.globe.enableLighting = true;
+        // scene.sun = new window.Cesium.Sun();
+        // scene.sun.glowFactor = 5; // 太阳光大小
       }
       //视角变更监控
       cameraChangedListener =
