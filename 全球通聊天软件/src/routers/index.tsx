@@ -35,13 +35,13 @@ export default function Routers({ location }: SwitchProps): ReactElement {
       //       <Spins styleSize={[65, 33]} color={'#ff7a59'} fontSize={'33px'} />
       //     }
       //   >
-      //   <Route path={route.path} exact={true} component={route.component} />
+      <Route path={route.path} exact={true} component={route.component} />
       // </Suspense>
 
-      <ReactRouterTransitionPage
-        path={route.path}
-        component={route.component}
-      />
+      // <ReactRouterTransitionPage
+      //   path={route.path}
+      //   component={route.component}
+      // />
     );
   }
   return <Redirect to="/" />;
