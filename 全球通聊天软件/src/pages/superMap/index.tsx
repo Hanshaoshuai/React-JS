@@ -416,59 +416,63 @@ const SuperMap = () => {
     setVisibility(false);
   };
   return (
-    <div
-      className="cesiumContainer-box"
-      style={{ display: `${visibility ? 'block' : 'none'}` }}
-    >
-      <div className="switch switch-box" onClick={cesiumContainerNone}>
-        <CloseCircleOutline className="video-closure-icon" />
-      </div>
-      <div id="cesiumContainer" className="cesiumContainer"></div>
-      <div className="cesiumContainer-button">
-        <Button className="button" color="primary" onClick={realspace}>
-          添加S3M图层
-        </Button>
-        <Button className="button" color="primary" onClick={reset}>
-          重置
-        </Button>
-        <Button className="button" color="primary" onClick={onFullScreen}>
-          {fullScreen ? '全屏' : '小屏'}
-        </Button>
-      </div>
-      <div
-        ref={infoBoxContainer}
-        className="pop-ups"
-        style={{
-          display: `${switchsVisibility ? 'block' : 'none'}`,
-          width: '41%',
-          height: 'auto',
-          top: `${switchsY + 19}px`,
-          left: `${switchsX + 19}px`,
-        }}
-      >
-        <div className="pop-ups-title">
-          {`_id:${titles.id?.name || titles?.id}`}
-          <div className="switch" onClick={switchs}>
+    <>
+      {visibility && (
+        <div
+          className="cesiumContainer-box"
+          style={{ display: `${visibility ? 'block' : 'none'}` }}
+        >
+          <div className="switch switch-box" onClick={cesiumContainerNone}>
             <CloseCircleOutline className="video-closure-icon" />
           </div>
-        </div>
-        {titles.position && (
-          <div>
-            {`x：${titles.position?.x}`}
-            <br />
-            {`y：${titles.position?.y}`}
-            <br />
-            {`z：${titles.position?.y}`}
+          <div id="cesiumContainer" className="cesiumContainer"></div>
+          <div className="cesiumContainer-button">
+            <Button className="button" color="primary" onClick={realspace}>
+              添加S3M图层
+            </Button>
+            <Button className="button" color="primary" onClick={reset}>
+              重置
+            </Button>
+            <Button className="button" color="primary" onClick={onFullScreen}>
+              {fullScreen ? '全屏' : '小屏'}
+            </Button>
           </div>
-        )}
+          <div
+            ref={infoBoxContainer}
+            className="pop-ups"
+            style={{
+              display: `${switchsVisibility ? 'block' : 'none'}`,
+              width: '41%',
+              height: 'auto',
+              top: `${switchsY + 19}px`,
+              left: `${switchsX + 19}px`,
+            }}
+          >
+            <div className="pop-ups-title">
+              {`_id:${titles.id?.name || titles?.id}`}
+              <div className="switch" onClick={switchs}>
+                <CloseCircleOutline className="video-closure-icon" />
+              </div>
+            </div>
+            {titles.position && (
+              <div>
+                {`x：${titles.position?.x}`}
+                <br />
+                {`y：${titles.position?.y}`}
+                <br />
+                {`z：${titles.position?.y}`}
+              </div>
+            )}
 
-        <div className="button-box">
-          <Button className="button" color="primary" onClick={realspace}>
-            进入设备
-          </Button>
+            <div className="button-box">
+              <Button className="button" color="primary" onClick={realspace}>
+                进入设备
+              </Button>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 
