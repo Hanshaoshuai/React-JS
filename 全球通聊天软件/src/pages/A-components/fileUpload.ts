@@ -13,10 +13,10 @@ export const FileUpload = (
   return new Promise((resolve, reject) => {
     if (fileList) {
       const reader = new FileReader();
-      reader.readAsDataURL(fileList);
-      let dataUrl = '';
-      reader.onload = (e: any) => {
-        // console.log(e.target.result);
+      reader.readAsArrayBuffer(fileList);
+      let dataUrl: any = '';
+      reader.onload = async (e: any) => {
+        console.log(e.target.result);
         let size: any = 0;
         if (e.total <= 1024) {
           size = `${e.total}B`;
@@ -39,6 +39,8 @@ export const FileUpload = (
           }
         }
         dataUrl = e.target.result;
+        dataUrl = await new Response(dataUrl).text();
+        // console.log(text);
         const formDate = new FormData();
         formDate.append('file', 'true');
         formDate.append('classIcon', dataUrl);

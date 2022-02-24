@@ -1686,17 +1686,17 @@ const ChatList = () => {
     texts.current.blur();
     const dateTime: any = new Date().getTime();
     for (let i = 0; i < list.length; i++) {
-      // console.log(list[i]);
+      console.log(list[i]);
       if (list[i].size === 0) {
         Toast.show({
           icon: 'fail',
           content: '此文件为空文件！',
         });
         break;
-      } else if (list[i].size >= 310000000) {
+      } else if (list[i].size >= 510000000) {
         Toast.show({
           icon: 'fail',
-          content: '暂不支持310M以上文件发送！',
+          content: '暂不支持510M以上文件发送！',
         });
         break;
       }
