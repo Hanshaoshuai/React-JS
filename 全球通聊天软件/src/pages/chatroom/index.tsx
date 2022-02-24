@@ -1687,23 +1687,24 @@ const ChatList = () => {
     const dateTime: any = new Date().getTime();
     for (let i = 0; i < list.length; i++) {
       console.log(list[i]);
-      if (list[i].size === 0) {
+      const newList = list[i];
+      if (newList.size === 0) {
         Toast.show({
           icon: 'fail',
           content: '此文件为空文件！',
         });
         break;
-      } else if (list[i].size >= 510000000) {
+      } else if (newList.size >= 330000000) {
         Toast.show({
           icon: 'fail',
           content: '暂不支持510M以上文件发送！',
         });
         break;
       }
-      const fileType = list[i].type.split('/')[0];
+      const fileType = newList.type.split('/')[0];
       // console.log(fileType);
-      const nameList = list[i].name.split('.');
-      const type = nameList[nameList.length - 1];
+      const nameList = newList.name.split('.');
+      let type: any = nameList[nameList.length - 1];
       let clientmessage = {};
       if (chatType === 'chat') {
         clientmessage = {
@@ -1733,7 +1734,6 @@ const ChatList = () => {
         index: dateTime + i,
         url: '',
       });
-
       if (
         fileType === 'application' ||
         fileType === 'text' ||
@@ -1741,25 +1741,94 @@ const ChatList = () => {
         fileType === 'audio' ||
         fileType === ''
       ) {
-        upload(dateTime, i);
-        const datas: any = await FileUpload(
-          list[i],
-          dateTime + i,
-          nameList,
-          type,
-          fileType,
-          clientmessage
-        );
-        if (datas.code === 200) {
-          window.socket.emit('clientmessage', {
-            //只作为文件上传完成使用
-            uploadCompleted: true,
-          });
+        if (newList.size >= 200000000) {
+          let id = 0;
+          let size = newList.size, //总大小shardSize = 2 * 1024 * 1024,
+            shardSize = 10 * 1024 * 1024, //以10MB为一个分片,每个分片的大小
+            shardCount = Math.ceil(size / shardSize); //总片数
+          // start = id * shardSize,
+          // end = start + shardSize;
+          const toFileUpload = async () => {
+            var start = id * shardSize;
+            var end = start + shardSize;
+            let packet = newList.slice(start, end); //将文件进行切片
+            let typeF = '';
+            if (id < shardCount) {
+              typeF = '分片上传';
+            } else {
+              typeF = type;
+            }
+            const datas: any = await FileUpload(
+              packet,
+              id + 1,
+              shardCount,
+              typeF,
+              fileType,
+              clientmessage
+            );
+            if (datas.code === 200) {
+              id += 1;
+              const dom: any = document.getElementById(`${dateTime + i}`);
+              console.log(datas, id, shardCount);
+              if (dom) {
+                let complete = (((id / shardCount) * 100) | 0) + '%';
+                dom.innerHTML = complete;
+              }
+              if (id < shardCount) {
+                toFileUpload();
+              } else if (id === shardCount) {
+                // var start = id * shardSize;
+                // var end = start + shardSize;
+                let packet = newList.slice(start, end); //将文件进行切片
+                const datas: any = await FileUpload(
+                  packet,
+                  dateTime + i,
+                  nameList,
+                  type,
+                  fileType,
+                  clientmessage,
+                  '分片上传最后',
+                  newList.size,
+                  id,
+                  shardCount
+                );
+                if (datas.code === 200) {
+                  const dom: any = document.getElementById(`${dateTime + i}`);
+                  if (dom) {
+                    let complete = (((id / shardCount) * 100) | 0) + '%';
+                    dom.innerHTML = complete;
+                  }
+                  window.socket.emit('clientmessage', {
+                    //只作为文件上传完成使用
+                    uploadCompleted: true,
+                  });
+                }
+              }
+              // console.log(datas);
+            }
+          };
+          toFileUpload();
+        } else {
+          upload(dateTime, i);
+          const datas: any = await FileUpload(
+            newList,
+            dateTime + i,
+            nameList,
+            type,
+            fileType,
+            clientmessage
+          );
+          if (datas.code === 200) {
+            window.socket.emit('clientmessage', {
+              //只作为文件上传完成使用
+              uploadCompleted: true,
+            });
+          }
         }
       } else {
         upload(dateTime, i);
         const datas: any = await UploadImg(
-          list[i],
+          newList,
           dateTime + i,
           type,
           clientmessage,

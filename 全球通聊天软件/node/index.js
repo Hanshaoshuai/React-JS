@@ -988,6 +988,7 @@ const addText = async (obj, apath, filePath, apathZoom) => {
 }
 
 // 上传图片
+let classIcon = ''
 app.post('/file_upload', function (req, res) {
   // console.log('未处理上传的文件信息', req);  // 上传的文件信息 image imgId clientmessage
   const forms = formidable({ multiples: false, maxFieldsSize: 10000000000 });
@@ -1039,15 +1040,72 @@ app.post('/file_upload', function (req, res) {
         }
       }
     }
+
+
+
+    if (reqs.type === '分片上传') {
+      // classIcon += reqs.classIcon;
+      // res.send({ code: 200, msg: "分片上传继续" })
+
+
+      let files = reqs.classIcon
+      const { fileName, lengthId, shardCount } = reqs
+      // 切片上传目录
+      const chunksPath = filePath
+      // 切片文件
+      const chunksFileName = fileName + lengthId + '-' + shardCount
+
+      if (!fs.existsSync(chunksPath)) {
+        fs.mkdirSync(chunksPath)
+      }
+      // 秒传，如果切片已上传，则立即返回
+      if (fs.existsSync(chunksFileName)) {
+        res.send({ code: 200, msg: "切片上传完成" })
+        //   reqs.body = {undefined
+        // code: 0,
+        // msg: ‘切片上传完成’
+        return;
+      }
+      // // 创建可读流
+      // const reader = fs.createReadStream(files.path);
+      // 创建可写流
+      const upStream = fs.createWriteStream(chunksFileName);
+      //写入数据到流
+      upStream.write(files, 'utf8')
+      upStream.end()
+      // // 可读流通过管道写入可写流
+      // reader.pipe(upStream);
+
+      // reader.on('end', () => {
+      //   // 文件上传成功后，删除本地切片文件
+      //   fs.unlinkSync(files)
+      // })
+      res.send({ code: 200, msg: "分片上传请继续" })
+      // ctx.response.body = {undefined
+      // code: 0,
+      // msg: ‘切片上传完成’
+      // }
+      // })
+      return;
+    }
+
+
     let base64 = null
     let base64Zoom = null
     let dataBuffer = null
     let dataBufferZoom = null
     if (reqs.file) {
-      dataBuffer = Buffer.from(reqs.classIcon, 'binary');
-      // base64 = reqs.classIcon.split("base64,")[1];
-      console.log(reqs.classIcon)
-      // dataBuffer = Buffer.from(base64, 'base64');
+      if (reqs.length) {
+        dataBuffer = Buffer.from(classIcon ? classIcon + reqs.classIcon : reqs.classIcon, 'base64');
+      } else {
+        base64 = reqs.classIcon.split("base64,")[1];
+        dataBuffer = Buffer.from(base64, 'base64');
+      }
+
+      // dataBuffer = Buffer.from(classIcon + reqs.classIcon, 'binary');
+      // 
+      // console.log(reqs.classIcon)
+      // 
     } else {
       base64Zoom = reqs.classIconZoom?.replace(/^data:image\/\w+;base64,/, "");
       base64 = reqs.classIcon.replace(/^data:image\/\w+;base64,/, ""); //去掉图片base64码前面部分data:image/png;base64
@@ -1056,6 +1114,7 @@ app.post('/file_upload', function (req, res) {
       }
       dataBuffer = Buffer.from(base64, 'base64'); //把base64码转成buffer对象，
     }
+    classIcon = ''
     // fs.createReadStream(base64).pipe(fs.createWriteStream(`${filePath}/${fileName}Zoom.${reqs.type}`));
     // let apath = `http://localhost:3000/node/images/${fileName}.${reqs.type}`
     // console.log(filePath)
