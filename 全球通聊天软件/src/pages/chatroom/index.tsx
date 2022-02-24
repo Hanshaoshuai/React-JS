@@ -1693,6 +1693,12 @@ const ChatList = () => {
           content: '此文件为空文件！',
         });
         break;
+      } else if (list[i].size >= 300000000) {
+        Toast.show({
+          icon: 'fail',
+          content: '暂不支持300M以上的文件发送！',
+        });
+        break;
       }
       const fileType = list[i].type.split('/')[0];
       // console.log(fileType);
