@@ -1697,7 +1697,7 @@ const ChatList = () => {
       } else if (newList.size >= 330000000) {
         Toast.show({
           icon: 'fail',
-          content: '暂不支持510M以上文件发送！',
+          content: '暂不支持330M以上文件发送！',
         });
         break;
       }
