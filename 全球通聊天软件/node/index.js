@@ -1046,14 +1046,14 @@ app.post('/file_upload', function (req, res) {
     if (reqs.type === '分片上传' || reqs.length === '分片上传最后') {
       // classIcon += reqs.classIcon;
       // res.send({ code: 200, msg: "分片上传继续" })
-
+      filePath = path.join(__dirname, './fileList')
 
       let files = reqs.classIcon
       const { fileName, lengthId, shardCount, typeName, type } = reqs
       // 切片上传目录
       const chunksPath = filePath + '/'
       // 切片文件
-      const chunksFileName = `fileList/${fileName}.${typeName || type}`
+      const chunksFileName = `${filePath}/${fileName}.${typeName || type}`
       // const chunksFileName = `${filePath}/${fileName}.${typeName || type}`
 
       if (!fs.existsSync(chunksPath)) {
