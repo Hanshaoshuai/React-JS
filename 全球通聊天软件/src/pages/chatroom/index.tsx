@@ -1686,7 +1686,7 @@ const ChatList = () => {
     texts.current.blur();
     const dateTime: any = new Date().getTime();
     for (let i = 0; i < list.length; i++) {
-      console.log(list[i]);
+      // console.log(list[i]);
       const newList = list[i];
       if (newList.size === 0) {
         Toast.show({
@@ -1760,7 +1760,7 @@ const ChatList = () => {
             } else {
               typeF = type;
             }
-            console.log(id, shardCount);
+            // console.log(id, shardCount);
             const datas: any = await FileUpload(
               packet,
               id + 1,

@@ -23,7 +23,7 @@ export const FileUpload = (
         const formDate = new FormData();
         dataUrl = e.target.result;
         dataUrl = dataUrl.split('base64,')[1];
-        console.log(length[0], Nsize);
+        // console.log(length[0], Nsize);
         if (type === '分片上传') {
           // if (dateTime === 0) {
           // dataUrl = dataUrl.split('base64,')[1];
