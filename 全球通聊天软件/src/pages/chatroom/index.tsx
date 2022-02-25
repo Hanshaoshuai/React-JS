@@ -1741,7 +1741,7 @@ const ChatList = () => {
         fileType === 'audio' ||
         fileType === ''
       ) {
-        if (newList.size >= 31000000) {
+        if (newList.size >= 310000000) {
           // 超过31M文件走流，存入node接口根目录；
           let id = 0;
           let size = newList.size, //总大小shardSize = 2 * 1024 * 1024,
@@ -1800,15 +1800,15 @@ const ChatList = () => {
                   shardCount
                 );
                 if (datas.code === 200) {
+                  window.socket.emit('clientmessage', {
+                    //只作为文件上传完成使用
+                    uploadCompleted: true,
+                  });
                   const dom: any = document.getElementById(`${dateTime + i}`);
                   if (dom) {
                     let complete = (((id / shardCount) * 100) | 0) + '%';
                     dom.innerHTML = complete;
                   }
-                  window.socket.emit('clientmessage', {
-                    //只作为文件上传完成使用
-                    uploadCompleted: true,
-                  });
                 }
               }
               // console.log(datas);
