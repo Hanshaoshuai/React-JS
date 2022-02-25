@@ -1043,35 +1043,35 @@ app.post('/file_upload', function (req, res) {
 
 
 
-    if (reqs.type === '分片上传') {
+    if (reqs.type === '分片上传' || reqs.length === '分片上传最后') {
       // classIcon += reqs.classIcon;
       // res.send({ code: 200, msg: "分片上传继续" })
 
 
       let files = reqs.classIcon
-      const { fileName, lengthId, shardCount } = reqs
+      const { fileName, lengthId, shardCount, typeName, type } = reqs
       // 切片上传目录
-      const chunksPath = filePath
+      const chunksPath = filePath + '/'
       // 切片文件
-      const chunksFileName = fileName + lengthId + '-' + shardCount
+      const chunksFileName = `fileList/${fileName}.${typeName || type}`
+      // const chunksFileName = `${filePath}/${fileName}.${typeName || type}`
 
       if (!fs.existsSync(chunksPath)) {
         fs.mkdirSync(chunksPath)
       }
-      // 秒传，如果切片已上传，则立即返回
-      if (fs.existsSync(chunksFileName)) {
-        res.send({ code: 200, msg: "切片上传完成" })
-        //   reqs.body = {undefined
-        // code: 0,
-        // msg: ‘切片上传完成’
-        return;
+      // // 秒传，如果切片已上传，则立即返回
+      if (lengthId === '1' && fs.existsSync(chunksFileName)) {
+        // res.send({ code: 200, msg: "切片上传完成" })
+        fs.unlinkSync(chunksFileName) // 第一次上传切片，如果文件已存在删除文件操作
       }
       // // 创建可读流
       // const reader = fs.createReadStream(files.path);
       // 创建可写流
-      const upStream = fs.createWriteStream(chunksFileName);
+      const upStream = fs.createWriteStream(chunksFileName, {
+        flags: 'a', //如果要把内容追加到文件原有的内容的后面，则设置flags为'a',此时设置start无效
+      });
       //写入数据到流
-      upStream.write(files, 'utf8')
+      upStream.write(files, 'base64')
       upStream.end()
       // // 可读流通过管道写入可写流
       // reader.pipe(upStream);
@@ -1080,14 +1080,25 @@ app.post('/file_upload', function (req, res) {
       //   // 文件上传成功后，删除本地切片文件
       //   fs.unlinkSync(files)
       // })
-      res.send({ code: 200, msg: "分片上传请继续" })
       // ctx.response.body = {undefined
       // code: 0,
       // msg: ‘切片上传完成’
       // }
       // })
+      if (reqs.length === '分片上传最后') {
+        const tos = () => {
+          res.send({ code: 200, msg: "上传成功", icon: apath, id: fileName, apath, apathZoom })
+        }
+        if ((reqs.image || reqs.file) && addText(reqs, apath, filePath, apathZoom)) {
+          tos()
+        } else if (reqs.image !== "true") { tos() }
+        return;
+      } else {
+        res.send({ code: 200, msg: "分片上传请继续" })
+      }
       return;
     }
+
 
 
     let base64 = null
@@ -1098,8 +1109,9 @@ app.post('/file_upload', function (req, res) {
       if (reqs.length) {
         dataBuffer = Buffer.from(classIcon ? classIcon + reqs.classIcon : reqs.classIcon, 'base64');
       } else {
-        base64 = reqs.classIcon.split("base64,")[1];
-        dataBuffer = Buffer.from(base64, 'base64');
+        // base64 = reqs.classIcon.split("base64,")[1];
+        // dataBuffer = Buffer.from(base64, 'base64');
+        dataBuffer = Buffer.from(reqs.classIcon, 'base64');
       }
 
       // dataBuffer = Buffer.from(classIcon + reqs.classIcon, 'binary');

@@ -1694,10 +1694,10 @@ const ChatList = () => {
           content: '此文件为空文件！',
         });
         break;
-      } else if (newList.size >= 330000000) {
+      } else if (newList.size >= 190000000000) {
         Toast.show({
           icon: 'fail',
-          content: '暂不支持330M以上文件发送！',
+          content: '暂不支持190G以上文件发送！',
         });
         break;
       }
@@ -1741,10 +1741,12 @@ const ChatList = () => {
         fileType === 'audio' ||
         fileType === ''
       ) {
-        if (newList.size >= 200000000) {
+        if (newList.size >= 31000000) {
+          // 超过31M文件走流，存入node接口根目录；
           let id = 0;
           let size = newList.size, //总大小shardSize = 2 * 1024 * 1024,
-            shardSize = 10 * 1024 * 1024, //以10MB为一个分片,每个分片的大小
+            // shardSize = 1000, //以10MB为一个分片,每个分片的大小
+            shardSize = 20 * 1024 * 1024, //以10MB为一个分片,每个分片的大小
             shardCount = Math.ceil(size / shardSize); //总片数
           // start = id * shardSize,
           // end = start + shardSize;
@@ -1764,21 +1766,25 @@ const ChatList = () => {
               shardCount,
               typeF,
               fileType,
-              clientmessage
+              clientmessage,
+              nameList,
+              type
             );
             if (datas.code === 200) {
               id += 1;
               const dom: any = document.getElementById(`${dateTime + i}`);
-              console.log(datas, id, shardCount);
+              // console.log(datas, id, shardCount);
               if (dom) {
                 let complete = (((id / shardCount) * 100) | 0) + '%';
                 dom.innerHTML = complete;
               }
-              if (id < shardCount) {
+              if (id < shardCount - 1) {
                 toFileUpload();
-              } else if (id === shardCount) {
-                // var start = id * shardSize;
-                // var end = start + shardSize;
+              }
+              if (id === shardCount - 1) {
+                start = id * shardSize;
+                end = start + shardSize;
+                id += 1;
                 let packet = newList.slice(start, end); //将文件进行切片
                 const datas: any = await FileUpload(
                   packet,

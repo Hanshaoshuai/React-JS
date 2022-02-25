@@ -22,14 +22,17 @@ export const FileUpload = (
       reader.onload = async (e: any) => {
         const formDate = new FormData();
         dataUrl = e.target.result;
+        dataUrl = dataUrl.split('base64,')[1];
         // console.log(dataUrl);
         if (type === '分片上传') {
           // if (dateTime === 0) {
-          dataUrl = dataUrl.split('base64,')[1];
+          // dataUrl = dataUrl.split('base64,')[1];
           // }
           // console.log(dataUrl);
+          formDate.append('fileName', length[0]);
           formDate.append('type', '分片上传');
           formDate.append('classIcon', dataUrl);
+          formDate.append('typeName', Nsize);
         } else {
           let size: any = 0;
           if ((Nsize || fileList.size) <= 1024) {
@@ -53,10 +56,9 @@ export const FileUpload = (
             }
           }
           // console.log(text);
-
+          formDate.append('fileName', nameList[0]);
           formDate.append('classIcon', dataUrl);
           formDate.append('imgId', dateTime);
-          formDate.append('fileName', nameList[0]);
           formDate.append('type', type);
           formDate.append('size', size);
           formDate.append('fileType', fileType);
@@ -68,9 +70,10 @@ export const FileUpload = (
         if (isDebug) {
           formDate.append('isDebug', isDebug);
         }
-        if (length) {
+        if (length === '分片上传最后') {
           formDate.append('length', length);
         }
+        // resolve({ code: 200 });
         fileUpload(formDate)
           .then((data) => {
             //   console.log(data);
