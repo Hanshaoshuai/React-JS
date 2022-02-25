@@ -1066,16 +1066,29 @@ app.post('/file_upload', function (req, res) {
       }
       // // 创建可读流
       // const reader = fs.createReadStream(files.path);
-      // 创建可写流
+
+
+      // 第一种方式 创建可写流
       const upStream = fs.createWriteStream(chunksFileName, {
-        flags: 'a', //如果要把内容追加到文件原有的内容的后面，则设置flags为'a',此时设置start无效
+        flags: 'a' //如果要把内容追加到文件原有的内容的后面，则设置flags为'a',此时设置start无效
       });
       //写入数据到流
       upStream.write(files, 'base64')
       upStream.end()
+
+      //  第二种方式
+      // fs.writeFile(`${chunksFileName}`, Buffer.from(files, 'base64'), { 'flag': 'a' }, (err) => {
+      //   if (err) {
+      //     // console.log('2222', err)
+      //     res.send({ code: 2001, msg: "单片上传失败" })
+      //   } else {
+      //     console.log('2222==>>', err)
+      //   }
+      // })
+
+
       // // 可读流通过管道写入可写流
       // reader.pipe(upStream);
-
       // reader.on('end', () => {
       //   // 文件上传成功后，删除本地切片文件
       //   fs.unlinkSync(files)
