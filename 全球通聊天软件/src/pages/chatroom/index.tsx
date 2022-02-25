@@ -1746,7 +1746,7 @@ const ChatList = () => {
           let id = 0;
           let size = newList.size, //总大小shardSize = 2 * 1024 * 1024,
             // shardSize = 1000, //以10MB为一个分片,每个分片的大小
-            shardSize = 20 * 1024 * 1024, //以10MB为一个分片,每个分片的大小
+            shardSize = 10 * 1024 * 1024, //以10MB为一个分片,每个分片的大小
             shardCount = Math.ceil(size / shardSize); //总片数
           // start = id * shardSize,
           // end = start + shardSize;
@@ -1760,6 +1760,7 @@ const ChatList = () => {
             } else {
               typeF = type;
             }
+            console.log(id, shardCount);
             const datas: any = await FileUpload(
               packet,
               id + 1,

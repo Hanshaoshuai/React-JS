@@ -1000,7 +1000,7 @@ app.post('/file_upload', function (req, res) {
   })
   // form.on('end', function () {})
   forms.parse(req, (err, fields, files) => {
-    // console.log(fields)
+    console.log(fields.typeName)
     if (err) {
       res.send({ code: 2001, msg: "上传失败" })
       return;
