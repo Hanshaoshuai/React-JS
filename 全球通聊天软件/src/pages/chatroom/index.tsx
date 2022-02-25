@@ -1741,7 +1741,7 @@ const ChatList = () => {
         fileType === 'audio' ||
         fileType === ''
       ) {
-        if (newList.size >= 310000000) {
+        if (newList.size >= 31000000) {
           // 超过31M文件走流，存入node接口根目录；
           let id = 0;
           let size = newList.size, //总大小shardSize = 2 * 1024 * 1024,
