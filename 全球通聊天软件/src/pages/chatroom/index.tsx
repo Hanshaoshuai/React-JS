@@ -1910,7 +1910,7 @@ const ChatList = () => {
     const timeout = setTimeout(() => {
       scrollHeights(); //滚动底部
       clearTimeout(timeout);
-    }, 500);
+    }, 310);
   };
 
   return (
