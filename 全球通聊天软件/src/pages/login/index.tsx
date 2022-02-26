@@ -75,7 +75,7 @@ const ChatList = () => {
             content: data.msg,
           });
         } else if (data.code === 200) {
-          setToken(telephone);
+          setToken(telephone, true);
           localStorage.setItem('myName', data.nickName);
           localStorage.setItem('name', telephone);
           localStorage.setItem('imgId', data.imgId);
