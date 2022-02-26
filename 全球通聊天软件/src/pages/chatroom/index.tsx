@@ -1471,7 +1471,10 @@ const ChatList = () => {
     scrollSize = 0;
     setExpressionShow(false);
     setAddAnothers(false);
-    scrollHeights();
+    const timeout = setTimeout(() => {
+      scrollHeights(); //滚动底部
+      clearTimeout(timeout);
+    }, 130);
     // moveCursor();
   };
   const tabs = () => {
@@ -1907,15 +1910,6 @@ const ChatList = () => {
     }
   };
 
-  const toPlay = () => {
-    scrollSize = 0;
-    const timeout = setTimeout(() => {
-      scrollHeights(); //滚动底部
-      onchange();
-      clearTimeout(timeout);
-    }, 130);
-  };
-
   return (
     <>
       <div className="yijian" onClick={tabsHid}>
@@ -1984,7 +1978,7 @@ const ChatList = () => {
           </div>
         </div>
         {shuruShow || chatNames === myLocName ? (
-          <div className="shuru border-top" id="shuru" onClick={toPlay}>
+          <div className="shuru border-top" id="shuru">
             <ul>
               <li>
                 <img
