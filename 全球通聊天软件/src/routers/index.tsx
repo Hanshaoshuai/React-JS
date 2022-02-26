@@ -12,7 +12,7 @@ export default function Routers({ location }: SwitchProps): ReactElement {
   const route = Router.find((r) => r.path === location?.pathname);
 
   useEffect(() => {
-    console.log(getToken());
+    // console.log(getToken());
     if (!getToken()) {
       history.push('/login');
     }

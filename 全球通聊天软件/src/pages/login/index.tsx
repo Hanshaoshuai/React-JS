@@ -360,6 +360,7 @@ const ChatList = () => {
             color: '#ff7a59',
             fontSize: '16px',
             marginBottom: '10px',
+            height: '21px',
           }}
         >
           {formatDates}
