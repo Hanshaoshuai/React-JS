@@ -1907,6 +1907,7 @@ const ChatList = () => {
   };
 
   const toPlay = () => {
+    scrollSize = 0;
     const timeout = setTimeout(() => {
       scrollHeights(); //滚动底部
       clearTimeout(timeout);
