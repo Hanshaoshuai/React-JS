@@ -33,14 +33,13 @@ const reducer: any = reducers();
 export default function App() {
   const dispatchs = useDispatch();
   const schedule: any = useSelector<any>((state) => state.schedule);
-
+  const [myLocName] = useState<any>(localStorage.getItem('name'));
   // console.log(schedule);
 
   const [state, dispatch] = useReducer(reducer, states);
-  const [messages, setMessages] = useState({});
+  const [messages, setMessages] = useState<any>({});
   useEffect(() => {
     window.socket.on('message', function (data: any) {
-      console.log('message====>>>>>', data);
       setMessages(data);
     });
     // window.socket.on("classIcon", (data: any) => {
@@ -56,6 +55,24 @@ export default function App() {
       })
     );
   }, []);
+  useEffect(() => {
+    // console.log('message====>>>>>', messages);
+    if (
+      messages?.text?.fromName &&
+      myLocName &&
+      messages?.text.fromName !== myLocName
+    ) {
+      const play: any = document.getElementById('play');
+      if (play) {
+        if (messages?.text.mp3) {
+          play.src = `/mp3/${messages.text.mp3}.mp3`;
+          play.play();
+        } else {
+          play.play();
+        }
+      }
+    }
+  }, [messages]);
 
   const destroyGlobalSpinner = () => {
     const splash = document.querySelector('#splash-spinner');
@@ -83,9 +100,7 @@ export default function App() {
   //  console.log(addThenMult(5))
   return (
     <>
-      <audio id="play1">
-        <source src="auto/旅行.mp3"></source>
-      </audio>
+      <audio id="play" src="/mp3/1.mp3"></audio>
       <Router>
         <MyContext.Provider value={{ state, dispatch, messages }}>
           <Switch>
