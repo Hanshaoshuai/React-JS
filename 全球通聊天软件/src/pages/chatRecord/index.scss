@@ -137,17 +137,21 @@
 }
 .box .fankiu .content-food {
   position: relative;
-  width: 95%;
+  // width: 95%;
   margin: 0 auto;
-  padding: 0.22rem 0 0.22rem 0;
+  // padding: 0.22rem 0 0.22rem 0;
+  padding: 0.22rem !important;
   /*line-height:0.46rem;*/
   font-size: 0.32rem;
   display: flex;
+  &:active {
+    background: rgba(206, 205, 205, 0.5);
+  }
 }
 .box .fankiu .content-food .times {
   position: absolute;
   top: 0.22rem;
-  right: 0rem;
+  right: 0.22rem !important;
   color: #bbbbbb;
   font-size: 0.24rem;
 }
