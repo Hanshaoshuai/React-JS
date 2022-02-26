@@ -1468,6 +1468,7 @@ const ChatList = () => {
     setInputContent(texts.current.innerText);
   };
   const onchange = () => {
+    scrollSize = 0;
     setExpressionShow(false);
     setAddAnothers(false);
     scrollHeights();
@@ -1910,8 +1911,9 @@ const ChatList = () => {
     scrollSize = 0;
     const timeout = setTimeout(() => {
       scrollHeights(); //滚动底部
+      onchange();
       clearTimeout(timeout);
-    }, 200);
+    }, 130);
   };
 
   return (
