@@ -1960,7 +1960,7 @@ const ChatList = () => {
             {contentList}
           </div>
         </div>
-        {shuruShow ? (
+        {shuruShow || chatNames === myLocName ? (
           <div className="shuru border-top" id="shuru">
             <ul>
               <li>
