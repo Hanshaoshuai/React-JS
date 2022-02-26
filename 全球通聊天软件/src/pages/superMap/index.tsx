@@ -1,6 +1,7 @@
 import { Button } from 'antd-mobile';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Toast } from 'antd-mobile';
 import { CloseCircleOutline } from 'antd-mobile-icons';
 import { Drag } from '../../helpers';
 // import banner from "../../../public/images/playground.glb"; // 引入全景图
@@ -415,6 +416,22 @@ const SuperMap = () => {
   const cesiumContainerNone = () => {
     setVisibility(false);
   };
+  const viewItems = (id: any) => {
+    // id = id.tostring();
+    console.log(id);
+    if (id === '4') {
+      Toast.show({
+        icon: 'fail',
+        content: '暂无！',
+      });
+    } else if (id === '1') {
+      window.open('http://hanshaoshuai.cn:41913');
+    } else if (id === '3') {
+      window.open('http://hanshaoshuai.cn:31419');
+    } else if (id === '5') {
+      window.open('http://hanshaoshuai.cn:31419');
+    }
+  };
   return (
     <>
       {visibility && (
@@ -465,8 +482,14 @@ const SuperMap = () => {
             )}
 
             <div className="button-box">
-              <Button className="button" color="primary" onClick={realspace}>
-                进入设备
+              <Button
+                className="button"
+                color="primary"
+                onClick={
+                  titles.id?.name ? realspace : () => viewItems(titles.id)
+                }
+              >
+                {titles.id?.name ? '进入设备' : ' 查看项目'}
               </Button>
             </div>
           </div>
