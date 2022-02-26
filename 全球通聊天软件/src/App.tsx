@@ -40,7 +40,7 @@ export default function App() {
   const [messages, setMessages] = useState({});
   useEffect(() => {
     window.socket.on('message', function (data: any) {
-      // console.log('message====>>>>>', data);
+      console.log('message====>>>>>', data);
       setMessages(data);
     });
     // window.socket.on("classIcon", (data: any) => {
@@ -82,12 +82,17 @@ export default function App() {
 
   //  console.log(addThenMult(5))
   return (
-    <Router>
-      <MyContext.Provider value={{ state, dispatch, messages }}>
-        <Switch>
-          <Routers />
-        </Switch>
-      </MyContext.Provider>
-    </Router>
+    <>
+      <audio id="play1">
+        <source src="auto/旅行.mp3"></source>
+      </audio>
+      <Router>
+        <MyContext.Provider value={{ state, dispatch, messages }}>
+          <Switch>
+            <Routers />
+          </Switch>
+        </MyContext.Provider>
+      </Router>
+    </>
   );
 }

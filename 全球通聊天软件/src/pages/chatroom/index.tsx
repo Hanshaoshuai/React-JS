@@ -16,7 +16,7 @@ import {
 } from 'antd-mobile-icons';
 
 import { expressionList } from './expression';
-import { moment, isObject } from '../../helpers';
+import { moment, isObject, IsURL } from '../../helpers';
 import { MyContext } from '../../models/context';
 import OtherItems from './otherItems';
 import { UploadImg } from '../A-components/uploadImg';
