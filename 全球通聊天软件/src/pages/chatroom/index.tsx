@@ -553,11 +553,12 @@ const ChatList = () => {
     const myName = window.localStorage.getItem('name');
 
     const style: any = {
-      width: '4.04rem',
-      margin: '0 auto',
+      // width: '4.04rem',
+      // margin: '0 auto',
       minHeight: '1.26rem',
       position: 'relative',
       background: '#fff',
+      margin: '0.16rem 0.2rem',
     };
 
     const style1: any = {};
@@ -793,11 +794,11 @@ const ChatList = () => {
           <span
             style={{
               display: 'inline-block',
-              padding: `${file ? '0' : '0.16rem 0.2rem'}`,
+              // padding: `${file ? '0' : '0.16rem 0.2rem'}`,
               background: `${file ? '' : '#ff7a59'}`,
               color: '#fff',
               float: 'right',
-              maxWidth: '83.7%',
+              maxWidth: '4.95rem',
               borderRadius: '0.08rem',
               fontSize: '0.32rem',
               border: '0.01rem solid #e7e6e9',
@@ -849,7 +850,7 @@ const ChatList = () => {
                       ? '100px'
                       : file?.fileType !== 'image'
                       ? 'auto'
-                      : 'auto'
+                      : '100%'
                   }`,
                   height: `${file?.fileType === 'video' ? '100px' : 'auto'}`,
                   minHeight: `${file?.fileType !== 'image' && '42px'}`,
@@ -891,7 +892,7 @@ const ChatList = () => {
                         lineHeight: '0.4rem',
                         padding: '0.16rem 0.2rem',
                         flex: '1',
-                        width: '3.4rem',
+                        width: '3.31rem',
                       }}
                       onClick={() => fileDownload(file.url)}
                     >
@@ -930,7 +931,15 @@ const ChatList = () => {
                 )}
               </span>
             ) : (
-              cont
+              <div style={{ padding: '0.16rem 0.2rem' }}>
+                {IsURL(cont) ? (
+                  <a href={cont} target="view_window">
+                    {cont}
+                  </a>
+                ) : (
+                  cont
+                )}
+              </div>
             )}
           </span>
           <div
@@ -982,15 +991,16 @@ const ChatList = () => {
 
     const style4: any = {};
     style4.display = 'inline-block';
-    style4.padding = `${file ? '0' : '0.16rem 0.2rem'}`;
+    // style4.padding = `${file ? '0' : '0.16rem 0.2rem'}`;
     style4.background = `${file ? '' : '#fff'}`;
     style4.lineHeight = `${file ? '0' : '0.4rem'}`;
-    style4.maxWidth = '83.7%';
+    style4.maxWidth = '4.95rem';
     style4.borderRadius = '0.08rem';
     style4.fontSize = '0.32rem';
     style4.border = '0.01rem solid #e7e6e9';
     style4.wordWrap = 'break-word';
     style4.float = 'left';
+    style4.overflow = 'hidden';
 
     const style1: any = {};
     style1.width = '14%';
@@ -1089,7 +1099,7 @@ const ChatList = () => {
                     ? '100px'
                     : file?.fileType !== 'image'
                     ? 'auto'
-                    : 'auto'
+                    : '100%'
                 }`,
                 height: `${file?.fileType === 'video' ? '100px' : 'auto'}`,
                 minHeight: `${file?.fileType !== 'image' && '42px'}`,
@@ -1131,7 +1141,7 @@ const ChatList = () => {
                       lineHeight: '0.4rem',
                       padding: '0.16rem 0.2rem',
                       flex: '1',
-                      width: '3.4rem',
+                      width: '3.31rem',
                     }}
                     onClick={() => fileDownload(file.url)}
                   >
@@ -1173,6 +1183,18 @@ const ChatList = () => {
             cont
           )}
         </span>
+      );
+    } else {
+      cont = (
+        <div style={{ padding: '0.16rem 0.2rem' }}>
+          {IsURL(cont) ? (
+            <a href={cont} target="view_window">
+              {cont}
+            </a>
+          ) : (
+            cont
+          )}
+        </div>
       );
     }
 
@@ -1937,23 +1959,14 @@ const ChatList = () => {
           onScroll={(e) => onScroll(e)}
         >
           <div
-            className={`box boxTexte ${
+            className={`box boxTexte ${total && 'boxTop'} ${
               expressionShow || addAnothers ? 'boxTexteB' : ''
             }`}
             id="box"
             ref={boxTextes}
           >
             {Loadings && (
-              <div
-                style={{
-                  color: 'rgba(255, 122, 89)',
-                  fontSize: '20px',
-                  width: '100%',
-                  height: '41px',
-                  lineHeight: '41px',
-                  textAlign: 'center',
-                }}
-              >
+              <div className="boxLoading">
                 <Loading color="currentColor" />
               </div>
             )}
