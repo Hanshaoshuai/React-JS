@@ -1415,10 +1415,13 @@ const ChatList = () => {
   };
   const voices = () => {
     Flength += 1;
+    scrollSize = 0;
     setVoiceSotten(!voiceSotten);
     setExpressionShow(false);
+    ontimeout();
   };
   const expressions = () => {
+    scrollSize = 0;
     setVoiceSotten(false);
     if (texts && expressionShow) {
       moveCursor();
@@ -1426,6 +1429,13 @@ const ChatList = () => {
     setExpressionShow(!expressionShow);
     setAddAnothers(false);
     onTimes();
+    ontimeout();
+  };
+  const ontimeout = () => {
+    const timeout = setTimeout(() => {
+      scrollHeights(); //滚动底部
+      clearTimeout(timeout);
+    }, 130);
   };
   const moveCursor = () => {
     texts.current.focus();
@@ -1471,10 +1481,7 @@ const ChatList = () => {
     scrollSize = 0;
     setExpressionShow(false);
     setAddAnothers(false);
-    const timeout = setTimeout(() => {
-      scrollHeights(); //滚动底部
-      clearTimeout(timeout);
-    }, 130);
+    ontimeout();
     // moveCursor();
   };
   const tabs = () => {
@@ -1548,12 +1555,14 @@ const ChatList = () => {
   };
 
   const addsAnother = () => {
+    scrollSize = 0;
     setAddAnothers(!addAnothers);
     setExpressionShow(false);
     if (addAnothers) {
       moveCursor();
     }
     onTimes();
+    ontimeout();
   };
 
   const options = (type: number) => {
