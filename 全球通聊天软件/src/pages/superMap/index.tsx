@@ -152,9 +152,9 @@ const SuperMap = () => {
       //     //       height: 34.8,
       //     //       pixelOffset: new window.Cesium.Cartesian2(0, -30),
       //     //     },
-      //     //     name: '三峡大坝',
+      //     //     name: '项目',
       //     //     label: new window.Cesium.LabelGraphics({
-      //     //       text: '三峡大坝',
+      //     //       text: '项目',
       //     //       font: '14px sans-serif bold',
       //     //       // pixelOffset: new Cesium.Cartesian2(0, 30),
       //     //       distanceDisplayCondition: {
