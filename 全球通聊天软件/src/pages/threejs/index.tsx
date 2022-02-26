@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import * as THREE from "three"; // 引入 Three.js 插件
+import React, { useState, useRef, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import * as THREE from 'three'; // 引入 Three.js 插件
 // import banner from "../../../public/images/playground.glb"; // 引入全景图
 
 const Pano = () => {
@@ -20,18 +20,18 @@ const Pano = () => {
 
   useEffect(() => {
     geometry.scale(-1, 1, 1);
-    let texture = new THREE.TextureLoader().load("/images/user__easyico.png");
+    let texture = new THREE.TextureLoader().load('/images/world-image.jpg');
     material = new THREE.MeshBasicMaterial({ map: texture });
     mesh = new THREE.Mesh(geometry, material);
 
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.domElement.style.position = "absolute";
-    renderer.domElement.style.top = "0";
-    renderer.domElement.style.left = "0";
+    renderer.domElement.style.position = 'absolute';
+    renderer.domElement.style.top = '0';
+    renderer.domElement.style.left = '0';
     renderer.domElement.style.zIndex = 1000;
     renderer.domElement.onclick = (e: any) => {
       if (e && !history?.location) {
-        renderer.domElement.style.display = "none";
+        renderer.domElement.style.display = 'none';
       }
     };
     document.body.appendChild(renderer.domElement);
@@ -40,7 +40,7 @@ const Pano = () => {
 
     camera.position.z = 300;
 
-    window.addEventListener("resize", onWindowResize, false);
+    window.addEventListener('resize', onWindowResize, false);
 
     animate();
     console.log(renderer);

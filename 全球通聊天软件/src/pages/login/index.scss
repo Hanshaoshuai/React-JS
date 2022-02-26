@@ -144,11 +144,15 @@
 }
 .denglu .contents .denglu-text ul li span {
   display: inline-block;
-  width: 0.28rem;
-  height: 0.32rem;
-  margin: 0.1rem 0.32rem 0 0.26rem !important;
+  width: 0.52rem !important;
+  height: 0.52rem !important;
+  margin: 0 0.19rem !important;
   // background-image: url("/images/yonghu.png");
   background-size: 100% 100%;
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }
 .denglu .contents .denglu-text ul li font {
   display: inline-block;

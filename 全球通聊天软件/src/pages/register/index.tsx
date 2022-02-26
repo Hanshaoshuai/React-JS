@@ -16,7 +16,7 @@ const Register = () => {
   const [password, setPassword] = useState<any>('');
   const [value, setValue] = useState<any>('Sir');
   const [percentBlock] = useState<any>(false);
-  const [imgSrc, setImgSrc] = useState<any>('');
+  const [imgSrc, setImgSrc] = useState<any>('/images/touxiang.jpg');
   const [imgApathZoom, setImgApathZoom] = useState<any>('');
   const [hooksModalFile, setHooksModalFile] = useState<any>('');
   const [hooksModalVisible, setHooksModalVisible] = useState<any>(false);
@@ -182,7 +182,9 @@ const Register = () => {
         <div className="denglu-text">
           <ul>
             <li>
-              <span></span>
+              <span>
+                <img src="/images/6nichengzhao.png" alt="" />
+              </span>
               <input
                 placeholder="请输入昵称"
                 type="text"
@@ -192,7 +194,9 @@ const Register = () => {
               <a onClick={quxiao}></a>
             </li>
             <li>
-              <span className="shouJi"></span>
+              <span className="shouJi">
+                <img src="/images/yonghu.png" alt="" />
+              </span>
               <input
                 placeholder="请输入手机号"
                 type="number"
@@ -202,9 +206,11 @@ const Register = () => {
               <a onClick={quxiao}></a>
             </li>
             <li>
-              <span></span>
+              <span>
+                <img src="/images/yanzhengma2.png" alt="" />
+              </span>
               <input
-                placeholder="请输验证码"
+                placeholder="请输验证码（暂不需要）"
                 onChange={(e) => onChange(e, '2')}
                 className="last mint-field-core"
               />
@@ -213,7 +219,9 @@ const Register = () => {
               </a>
             </li>
             <li>
-              <span></span>
+              <span>
+                <img src="/images/mima.png" alt="" />
+              </span>
               <input
                 placeholder="请输入密码"
                 type="password"

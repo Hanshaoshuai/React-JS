@@ -374,7 +374,9 @@ const ChatList = () => {
         <div className="denglu-text">
           <ul>
             <li>
-              <span></span>
+              <span>
+                <img src="/images/yonghu.png" alt="" />
+              </span>
               <input
                 onChange={(e) => onChange(e, '1')}
                 placeholder="请输入手机号"
@@ -383,7 +385,9 @@ const ChatList = () => {
               />
             </li>
             <li>
-              <span></span>
+              <span>
+                <img src="/images/mima.png" alt="" />
+              </span>
               <input
                 onChange={(e) => onChange(e, '2')}
                 placeholder="请输入密码"
