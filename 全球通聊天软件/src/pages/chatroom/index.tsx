@@ -2073,7 +2073,7 @@ const ChatList = () => {
     (node) => {
       if (node !== null) {
         // console.log(node);
-        if (navigator.mediaDevices.getUserMedia) {
+        if (navigator?.mediaDevices?.getUserMedia) {
           //navigator.mediaDevices.getUserMedia()会提示用户给予使用媒体输入的许可，媒体输入会产生一个MediaStream，里面包含了请求的媒体类型的轨道//
           let chunks: any = [];
           const constraints = {
