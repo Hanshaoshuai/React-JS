@@ -194,3 +194,13 @@ export async function local(data: any) {
     return error;
   }
 }
+
+// 音频已阅读
+export async function isRead(data: any) {
+  try {
+    const res: any = await request(`${API_HOST}/isRead`, 'POST', data);
+    return res;
+  } catch (error) {
+    return error;
+  }
+}

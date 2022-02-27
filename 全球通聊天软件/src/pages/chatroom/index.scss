@@ -302,6 +302,7 @@
   color: #ff7a59;
 }
 .yijian .shuru ul li .voice_botten .voice_botten_text {
+  user-select: none;
 }
 .yijian .shuru ul li .voice {
   width: 0.68rem;
@@ -341,7 +342,7 @@
 }
 .shuru .expression {
   width: 100%;
-  height: 330px;
+  height: 5.9rem;
   font-size: 0.56rem;
   overflow-y: auto;
   border-top: 1px solid rgb(231, 230, 233);

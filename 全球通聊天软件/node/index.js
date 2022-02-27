@@ -919,6 +919,53 @@ app.post('/queryFile', function (req, res) {
   })
 })
 
+
+// 音频阅读接口
+app.post('/isRead', function (req, res) {
+  var fromTos = null, objs = [], obj = req.body;
+  const writeFiles = (fromTo) => {
+    // console.log(fromTo, obj)
+    fs.readFile('./chatRecord/' + fromTo, function (error, data) {
+      if (error) {
+        res.send({ code: 2001, msg: "更新失败" })
+        return false;
+      }
+      //console.log(data);  //data是读取的十六进制的数据。  也可以在参数中加入编码格式"utf8"来解决十六进制的问题;
+      // console.log('读取出所有行的信息 ', data.toString());  //读取出所有行的信息
+      objs = JSON.parse(data.toString());
+      objs = objs.map((item) => {
+        if (item?.file?.url === obj.fileUrl) {
+          item.file.voice.voice = false
+        }
+        return item;
+      })
+      objs = JSON.stringify(objs);
+      fs.writeFile(
+        './chatRecord/' + fromTo,
+        objs,
+        'utf8',
+        function (error) {
+          if (error) {
+            return false;
+          } else {
+            res.send({ code: 200, msg: "更新完成" })
+            return true;
+          }
+
+        }
+      );
+
+    });
+  }
+  if (obj.type === 'groupChat') {
+    fromTos = obj.groupName;
+    writeFiles(fromTos);
+  } else {
+    fromTos = (obj.fromName * 1 + obj.toName * 1).toString() + '.txt';
+    writeFiles(fromTos);
+  }
+})
+
 const addText = async (obj, apath, filePath, apathZoom) => {
   // console.log(obj)
   obj.clientmessage = JSON.parse(obj.clientmessage);
@@ -949,6 +996,9 @@ const addText = async (obj, apath, filePath, apathZoom) => {
                 item.file.fileName = true;
               } else {
                 item.file.length = obj.length
+              }
+              if (obj.voice) {
+                item.file.voice = obj.voice
               }
 
               // console.log(item)

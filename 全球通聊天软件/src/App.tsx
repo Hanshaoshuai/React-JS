@@ -68,6 +68,7 @@ export default function App() {
           play.src = `/mp3/${messages.text.mp3}.mp3`;
           play.play();
         } else {
+          play.src = '/mp3/1.mp3';
           play.play();
         }
       }

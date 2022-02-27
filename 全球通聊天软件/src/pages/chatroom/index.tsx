@@ -8,15 +8,16 @@ import React, {
   useCallback,
 } from 'react';
 import { useHistory } from 'react-router-dom';
-import { CheckList, Toast, Loading, ImageViewer } from 'antd-mobile';
+import { CheckList, Toast, Loading, ImageViewer, Badge } from 'antd-mobile';
 import {
   PlayOutline,
   CloseCircleOutline,
   FileOutline,
+  SoundOutline,
 } from 'antd-mobile-icons';
 
 import { expressionList } from './expression';
-import { moment, isObject, IsURL } from '../../helpers';
+import { moment, isObject, IsURL, userAgent } from '../../helpers';
 import { MyContext } from '../../models/context';
 import OtherItems from './otherItems';
 import { UploadImg } from '../A-components/uploadImg';
@@ -32,6 +33,7 @@ import {
   buildingGroupMove,
   uploadFile,
   fileUpload,
+  isRead,
 } from '../../api';
 import { onUploadProgress } from '../../services/request';
 import { sync } from 'resolve';
@@ -91,6 +93,7 @@ const ChatList = () => {
   const [deleteFl, setDeleteFl] = useState(false);
   const [visible, setVisible] = useState(false);
   const [fileUrl, setFileUrl] = useState('');
+  const [audioUrl, setAudioUrl] = useState('');
   const [getBuddyLists] = useState(
     JSON.parse(localStorage.getItem('getBuddyLists') || '[]')
   );
@@ -165,6 +168,49 @@ const ChatList = () => {
     videoRef.play() as any;
     setplays(true);
   }, [onPlayUrl]);
+
+  useEffect(() => {
+    const play: any = document.getElementById('play');
+    if (audioUrl) {
+      play.setAttribute('index', audioUrl);
+      play.src = `${audioUrl}`;
+      play.play();
+      const ended = () => {
+        setAudioUrl('');
+        play.setAttribute('index', '');
+        // console.log('ended');
+        play.removeEventListener('ended', ended, false);
+      };
+
+      play.addEventListener('ended', ended, false);
+    }
+  }, [audioUrl]);
+
+  const onPause = (url: string) => {
+    const play: any = document.getElementById('play');
+    if (play.getAttribute('index') === url) {
+      // console.log(url, audioUrl);
+      setAudioUrl('');
+      play.setAttribute('index', '');
+      play.src = ``;
+      play.pause();
+    }
+  };
+
+  const onRead = (url: string) => {
+    isRead({
+      fromName: myLocName,
+      toName: chatNames,
+      type: chatType,
+      groupName: groupName,
+      fileUrl: url,
+    }).then((res) => {
+      // console.log(res);
+      if (res?.code === 200) {
+        getList('');
+      }
+    });
+  };
 
   const onSetVideoCalls = (text: string) => {
     setCall(true);
@@ -733,7 +779,7 @@ const ChatList = () => {
     };
     return (
       <div key={domKeys} style={style}>
-        <p style={style1}>{cont}</p>
+        <div style={style1}>{cont}</div>
         <span ref={agreess} style={style2} onClick={agrees}>
           {type === 'no' ? '是' : '同意'}
         </span>
@@ -886,47 +932,95 @@ const ChatList = () => {
                   />
                 ) : (
                   <>
-                    <div
-                      style={{
-                        fontSize: '0.32rem',
-                        lineHeight: '0.4rem',
-                        padding: '0.16rem 0.2rem',
-                        flex: '1',
-                        width: '3.31rem',
-                      }}
-                      onClick={() => fileDownload(file.url)}
-                    >
-                      {file.url.split('/')[file.url.split('/').length - 1]}
-                    </div>
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        textAlign: 'center',
-                        width: '60px',
-                        overflowWrap: 'break-word',
-                        padding: '10px 8px 10px 0',
-                      }}
-                    >
-                      <FileOutline
+                    {file?.voice ? (
+                      <div
                         style={{
-                          width: '30px',
-                          height: '30px',
+                          padding: '0.16rem 0.2rem',
+                          position: 'relative',
                         }}
-                      />
-                      <span
-                        style={{
-                          fontSize: '13px',
-                          lineHeight: '14px',
-                          display: 'inline-block',
-                          width: '100%',
-                          textAlign: 'center',
+                        onClick={(e: any) => {
+                          // console.log(file);
+                          setAudioUrl(file.url);
+                          onPause(file.url);
                         }}
                       >
-                        {file.size}
-                      </span>
-                    </div>
+                        <span
+                          style={{
+                            padding: '0 0.2rem 0 0.1rem',
+                            fontSize: '0.32rem',
+                            verticalAlign: '0.125em',
+                          }}
+                        >
+                          {`${file.voice.number}"`}
+                        </span>
+                        <SoundOutline
+                          style={{
+                            transform: 'rotate(180deg)',
+                          }}
+                        />
+                        {/* {file.voice.voice && (
+                          <div
+                            style={{
+                              position: 'absolute',
+                              top: '0',
+                              bottom: '0',
+                              left: '-0.6rem',
+                              margin: 'auto',
+                              height: '10px',
+                            }}
+                          >
+                            <Badge
+                              color="rgb(255, 122, 89)"
+                              content={Badge.dot}
+                            ></Badge>
+                          </div>
+                        )} */}
+                      </div>
+                    ) : (
+                      <>
+                        <div
+                          style={{
+                            fontSize: '0.32rem',
+                            lineHeight: '0.4rem',
+                            padding: '0.16rem 0.2rem',
+                            flex: '1',
+                            width: '3.31rem',
+                          }}
+                          onClick={() => fileDownload(file.url)}
+                        >
+                          {file.url.split('/')[file.url.split('/').length - 1]}
+                        </div>
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            textAlign: 'center',
+                            width: '60px',
+                            overflowWrap: 'break-word',
+                            padding: '10px 8px 10px 0',
+                          }}
+                        >
+                          <FileOutline
+                            style={{
+                              width: '30px',
+                              height: '30px',
+                            }}
+                          />
+                          <span
+                            style={{
+                              fontSize: '13px',
+                              lineHeight: '14px',
+                              display: 'inline-block',
+                              width: '100%',
+                              textAlign: 'center',
+                            }}
+                          >
+                            {file.size}
+                          </span>
+                        </div>
+                      </>
+                    )}
                   </>
                 )}
               </span>
@@ -1000,7 +1094,7 @@ const ChatList = () => {
     style4.border = '0.01rem solid #e7e6e9';
     style4.wordWrap = 'break-word';
     style4.float = 'left';
-    style4.overflow = 'hidden';
+    // style4.overflow = 'hidden';
 
     const style1: any = {};
     style1.width = '14%';
@@ -1135,47 +1229,94 @@ const ChatList = () => {
                 />
               ) : (
                 <>
-                  <div
-                    style={{
-                      fontSize: '0.32rem',
-                      lineHeight: '0.4rem',
-                      padding: '0.16rem 0.2rem',
-                      flex: '1',
-                      width: '3.31rem',
-                    }}
-                    onClick={() => fileDownload(file.url)}
-                  >
-                    {file.url.split('/')[file.url.split('/').length - 1]}
-                  </div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      textAlign: 'center',
-                      width: '60px',
-                      overflowWrap: 'break-word',
-                      padding: '10px 8px 10px 0',
-                    }}
-                  >
-                    <FileOutline
+                  {file?.voice ? (
+                    <div
                       style={{
-                        width: '30px',
-                        height: '30px',
+                        padding: '0.16rem 0.2rem',
+                        position: 'relative',
                       }}
-                    />
-                    <span
-                      style={{
-                        fontSize: '13px',
-                        lineHeight: '14px',
-                        display: 'inline-block',
-                        width: '100%',
-                        textAlign: 'center',
+                      onClick={(e: any) => {
+                        setAudioUrl(file.url);
+                        onPause(file.url);
+
+                        if (file.voice.voice) {
+                          onRead(file.url);
+                        }
                       }}
                     >
-                      {file.size}
-                    </span>
-                  </div>
+                      <SoundOutline />
+                      <span
+                        style={{
+                          padding: '0 0.1rem 0 0.2rem',
+                          fontSize: '0.32rem',
+                          verticalAlign: '0.125em',
+                        }}
+                      >
+                        {`${file.voice.number}"`}
+                      </span>
+                      {file.voice.voice && (
+                        <div
+                          style={{
+                            position: 'absolute',
+                            top: '0',
+                            bottom: '0',
+                            right: '-0.5rem',
+                            margin: 'auto',
+                            width: '0.13rem',
+                            height: '0.13rem',
+                            background: '#ff7a59',
+                            borderRadius: '0.13rem',
+                          }}
+                        >
+                          {/* <Badge color="#ff7a59" content={Badge.dot}></Badge> */}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <>
+                      <div
+                        style={{
+                          fontSize: '0.32rem',
+                          lineHeight: '0.4rem',
+                          padding: '0.16rem 0.2rem',
+                          flex: '1',
+                          width: '3.31rem',
+                        }}
+                        onClick={() => fileDownload(file.url)}
+                      >
+                        {file.url.split('/')[file.url.split('/').length - 1]}
+                      </div>
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          textAlign: 'center',
+                          width: '60px',
+                          overflowWrap: 'break-word',
+                          padding: '10px 8px 10px 0',
+                        }}
+                      >
+                        <FileOutline
+                          style={{
+                            width: '30px',
+                            height: '30px',
+                          }}
+                        />
+                        <span
+                          style={{
+                            fontSize: '13px',
+                            lineHeight: '14px',
+                            display: 'inline-block',
+                            width: '100%',
+                            textAlign: 'center',
+                          }}
+                        >
+                          {file.size}
+                        </span>
+                      </div>
+                    </>
+                  )}
                 </>
               )}
             </span>
@@ -1438,7 +1579,10 @@ const ChatList = () => {
     }, 130);
   };
   const moveCursor = () => {
-    texts.current.focus();
+    if (!texts.current) {
+      return;
+    }
+    texts.current?.focus();
     // 光标移动到最后
     let range = document.createRange();
     range.selectNodeContents(texts.current);
@@ -1543,13 +1687,15 @@ const ChatList = () => {
         });
       }
     }
-    texts.current.innerText = '';
+    if (texts.current) {
+      texts.current.innerText = '';
+    }
     setInputContent('');
     moveCursor();
     if (!text && !expressionShow) {
-      texts.current.focus();
+      texts.current?.focus();
     } else {
-      texts.current.blur();
+      texts.current?.blur();
     }
     return false;
   };
@@ -1714,11 +1860,11 @@ const ChatList = () => {
     setCheckListvalue(e);
   };
 
-  const setFileList = async (list: any) => {
+  const setFileList = async (list: any, voice?: any) => {
     // console.log(list);
 
     setAddAnothers(false);
-    texts.current.blur();
+    texts.current?.blur();
     const dateTime: any = new Date().getTime();
     for (let i = 0; i < list.length; i++) {
       // console.log(list[i]);
@@ -1738,7 +1884,10 @@ const ChatList = () => {
       }
       const fileType = newList.type.split('/')[0];
       // console.log(fileType);
-      const nameList = newList.name.split('.');
+      const nameList = newList.name?.split('.') || [
+        new Date().getTime(),
+        'mp3',
+      ];
       let type: any = nameList[nameList.length - 1];
       let clientmessage = {};
       if (chatType === 'chat') {
@@ -1768,6 +1917,7 @@ const ChatList = () => {
         size: '',
         index: dateTime + i,
         url: '',
+        voice: voice ? voice : null,
       });
       if (
         fileType === 'application' ||
@@ -1919,6 +2069,114 @@ const ChatList = () => {
     }
   };
 
+  const voiceBotten = useCallback(
+    (node) => {
+      if (node !== null) {
+        // console.log(node);
+        if (navigator.mediaDevices.getUserMedia) {
+          //navigator.mediaDevices.getUserMedia()会提示用户给予使用媒体输入的许可，媒体输入会产生一个MediaStream，里面包含了请求的媒体类型的轨道//
+          let chunks: any = [];
+          const constraints = {
+            audio: true, //这里打开我么的音频
+          };
+          let timeouts = false;
+          let CTimeout: any = null;
+          let startTime: any = 0;
+          let stopTime: any = 0;
+          navigator.mediaDevices.getUserMedia(constraints).then(
+            (MediaStream) => {
+              const mediaRecorder: any = new MediaRecorder(MediaStream); //构造函数会创建一个对指定的 MediaStream 进行录制的 MediaRecorder 对象
+              if (userAgent() === 'cp') {
+                node.onmousedown = (e: any) => {
+                  timeouts = false;
+                  startTime = new Date().getTime();
+                  CTimeout = setTimeout(() => {
+                    timeouts = true;
+                    clearTimeout(CTimeout);
+                  }, 1000);
+                  mediaRecorder?.state === 'inactive' && mediaRecorder.start(); //当鼠标按下的时候进行录制
+                };
+                node.onmouseup = (e: any) => {
+                  stopTime = new Date().getTime();
+                  if (!timeouts) {
+                    clearTimeout(CTimeout);
+                    Toast.show({
+                      icon: 'fail',
+                      content: '时间太短！',
+                    });
+                  }
+                  mediaRecorder?.state === 'recording' && mediaRecorder.stop(); //当鼠标松开的时候关闭录制
+                };
+              } else {
+                node.ontouchstart = (e: any) => {
+                  timeouts = false;
+                  startTime = new Date().getTime();
+                  CTimeout = setTimeout(() => {
+                    timeouts = true;
+                    clearTimeout(CTimeout);
+                  }, 1000);
+                  // console.log(mediaRecorder);
+                  mediaRecorder?.state === 'inactive' && mediaRecorder.start(); //当鼠标按下的时候进行录制
+                };
+                node.ontouchend = (e: any) => {
+                  stopTime = new Date().getTime();
+                  if (!timeouts) {
+                    clearTimeout(CTimeout);
+                    Toast.show({
+                      icon: 'fail',
+                      content: '时间太短！',
+                    });
+                  }
+                  // console.log(mediaRecorder);
+                  mediaRecorder?.state === 'recording' && mediaRecorder.stop(); //当鼠标松开的时候关闭录制
+                };
+              }
+              mediaRecorder.ondataavailable = (e: any) => {
+                //响应运行代码Blob数据被提供使用
+                chunks = [];
+                chunks.push(e.data);
+              };
+              mediaRecorder.onstop = (e: any) => {
+                //将收集好的音频数据创建成Blob 对象，然后 通过 URL.createObjectURL 创建成 HTML 中 <audio> 标签可使用的资源链接。
+                if (timeouts) {
+                  let blob = new Blob(chunks, {
+                    type: 'audio/ogg; codecs=opus',
+                  });
+                  timeouts = false;
+                  const number = ((stopTime - startTime) / 1000).toFixed(1);
+                  // console.log(number);
+                  setFileList([blob], { voice: true, number });
+                }
+
+                // chunks = []; //其中，在使用完收到的音频数据后
+                // var audioURL = window.URL.createObjectURL(blob);
+                // const chatArr = [];
+
+                // chatArr.push(audioURL); //这里将收到的音频数据放到一个数组中,为了在下面循环出来
+                // console.log(blob, chatArr);
+                // updata(chatArr)         //执行这个方法将我们的audio循环添加出来
+              };
+            },
+            () => {
+              console.error('授权失败！');
+              Toast.show({
+                icon: 'fail',
+                content: '授权失败！',
+              });
+            }
+          );
+        } else {
+          console.error('浏览器不支持 getUserMedia');
+          Toast.show({
+            icon: 'fail',
+            content: '浏览器不支持 getUserMedia！',
+          });
+        }
+      }
+    },
+    [voiceSotten]
+  );
+
   return (
     <>
       <div className="yijian" onClick={tabsHid}>
@@ -2000,7 +2258,9 @@ const ChatList = () => {
                 />
                 {voiceSotten ? (
                   <div className="voice_botten">
-                    <div className="voice_botten_text">按住&nbsp;说话</div>
+                    <div className="voice_botten_text" ref={voiceBotten}>
+                      按住&nbsp;说话
+                    </div>
                   </div>
                 ) : (
                   <p

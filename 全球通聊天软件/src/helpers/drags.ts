@@ -1,7 +1,22 @@
 //
+export function userAgent() {
+  var ua: any = navigator.userAgent.toLowerCase().indexOf('windows');
+  var iPad: any = navigator.userAgent.indexOf('iPad');
+  var type = '';
+  if (ua >= 0) {
+    // console.log('pc端');
+    type = 'pc';
+  } else if (iPad >= 0) {
+    // console.log('平板');
+    type = '平板';
+  } else {
+    // console.log('手机');
+    type = '手机';
+  }
+  return type;
+}
 
 export function Drag(mv: any, box = document.body) {
-  var ua: any = navigator.userAgent.toLowerCase();
   var startx = 0;
   var starty: any;
   var startLeft: any;
@@ -62,22 +77,22 @@ export function Drag(mv: any, box = document.body) {
       // releaseCapture();
     } //事件捕获仅支持ie
   };
-  if (ua.indexOf('windows') >= 0) {
+  if (userAgent() === 'pc') {
     mv.onmousedown = movedown;
     mv.onmousemove = move;
     window.onmouseup = moveup;
     //非ie浏览器
     document.addEventListener('mousemove', move, true);
-  } else if (navigator.userAgent.indexOf('iPad') >= 0) {
+  } else if (userAgent() === '平板') {
     console.log('平板');
     mv.ontouchstart = movedown;
     mv.ontouchmove = move;
-    // window.ontouchend = moveup;
+    // mv.ontouchend = moveup;
   } else {
     console.log('手机');
     mv.ontouchstart = movedown;
     mv.ontouchmove = move;
-    // window.ontouchend = moveup;
+    // mv.ontouchend = moveup;
   }
 
   //   var mover = new Mover(
