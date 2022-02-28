@@ -197,7 +197,7 @@ const ChatList = () => {
     }
   };
 
-  const onRead = (url: string) => {
+  const onRead = (url: string, indexId: any) => {
     isRead({
       fromName: myLocName,
       toName: chatNames,
@@ -207,7 +207,11 @@ const ChatList = () => {
     }).then((res) => {
       // console.log(res);
       if (res?.code === 200) {
-        getList('');
+        // getList('');
+        const dom = document.getElementById(`${indexId}`);
+        if (dom) {
+          dom.style.display = 'none';
+        }
       }
     });
   };
@@ -1240,7 +1244,7 @@ const ChatList = () => {
                         onPause(file.url);
 
                         if (file.voice.voice) {
-                          onRead(file.url);
+                          onRead(file.url, file.index);
                         }
                       }}
                     >
@@ -1256,6 +1260,7 @@ const ChatList = () => {
                       </span>
                       {file.voice.voice && (
                         <div
+                          id={file.index}
                           style={{
                             position: 'absolute',
                             top: '0',

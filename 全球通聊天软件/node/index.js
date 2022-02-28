@@ -71,24 +71,24 @@ app.all('*', function (req, res, next) {
 // var hostName = '127.0.0.1';
 var hostName = ''; // 这个ip地址，之前一直以为是在这里指定IP地址，意味着输入这个IP地址就能访问到你的服务器了，其实并不是。如果指定IP地址，是意味着只有ip地址为这个才可以访问。所以，通常，如果任何人都可以访问，则不写// 页面调用接口，服务器IP加上下面的端口号就可以了
 var ports = 2021;
-// var server = app.listen(ports, hostName, () => {
-//   console.log(`服务器运行在http:${hostName}:${ports}`);
-//   // var host = server.address().address;
-//   // var port = server.address().port;
-// });
-
-// //https监听3000端口
-var https = require('https');
-const options = {
-  cert: fs.readFileSync('D:/Nginx/7325819_hanshaoshuai.cn_nginx/7325819_hanshaoshuai.cn.pem'),
-  key: fs.readFileSync('D:/Nginx/7325819_hanshaoshuai.cn_nginx/7325819_hanshaoshuai.cn.key')
-};
-var server = https.createServer(options, app);
-server.listen(ports, () => {
+var server = app.listen(ports, hostName, () => {
   console.log(`服务器运行在http:${hostName}:${ports}`);
   // var host = server.address().address;
   // var port = server.address().port;
-});;
+});
+
+// //https监听3000端口
+// var https = require('https');
+// const options = {
+//   cert: fs.readFileSync('D:/Nginx/7325819_hanshaoshuai.cn_nginx/7325819_hanshaoshuai.cn.pem'),
+//   key: fs.readFileSync('D:/Nginx/7325819_hanshaoshuai.cn_nginx/7325819_hanshaoshuai.cn.key')
+// };
+// var server = https.createServer(options, app);
+// server.listen(ports, () => {
+//   console.log(`服务器运行在http:${hostName}:${ports}`);
+//   // var host = server.address().address;
+//   // var port = server.address().port;
+// });;
 
 
 var io = require('socket.io')(server, { cors: true });
