@@ -425,11 +425,11 @@ const SuperMap = () => {
         content: '暂无！',
       });
     } else if (id === '1') {
-      window.open('http://hanshaoshuai.cn:41913');
+      window.open('https://hanshaoshuai.cn:41913');
     } else if (id === '3') {
-      window.open('http://hanshaoshuai.cn:31419');
+      window.open('https://hanshaoshuai.cn:31419');
     } else if (id === '5') {
-      window.open('http://hanshaoshuai.cn:31419');
+      window.open('https://hanshaoshuai.cn:31419');
     }
   };
   return (
