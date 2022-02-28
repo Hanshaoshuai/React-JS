@@ -1896,21 +1896,10 @@ const ChatList = () => {
         return;
       }
       const fileType = newList.type.split('/')[0];
-      // console.log(fileType);
       let nameList = newList.name?.split('.') || [];
-      let nameString = '';
-      nameList.map((item: any, index: number) => {
-        if (index < nameList.length - 1) {
-          nameString += item;
-        }
-        return item;
-      });
       let type: any = nameList[nameList.length - 1];
-      const listName = [];
-      listName.push(nameString);
-      listName.push(type);
-      nameList = nameString ? listName : [new Date().getTime(), 'mp3'];
-
+      const listName = newList.name?.split(`.${type}`) || '';
+      nameList = listName ? listName : [new Date().getTime(), 'mp3'];
       let clientmessage = {};
       if (chatType === 'chat') {
         clientmessage = {
