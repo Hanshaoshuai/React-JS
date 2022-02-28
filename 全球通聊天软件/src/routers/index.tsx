@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { SwitchProps, Route, Redirect, useHistory } from 'react-router-dom';
 import { getToken } from '../helpers';
 
@@ -10,10 +10,11 @@ const { ReactRouterTransitionPage } = require('react-router-transition-page');
 export default function Routers({ location }: SwitchProps): ReactElement {
   const history = useHistory();
   const route = Router.find((r) => r.path === location?.pathname);
+  const [myLocName] = useState<any>(localStorage.getItem('name'));
 
   useEffect(() => {
     // console.log(getToken());
-    if (!getToken()) {
+    if (!getToken() || !myLocName) {
       history.push('/login');
     }
     history.listen((route) => {

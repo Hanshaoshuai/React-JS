@@ -878,7 +878,7 @@ const ChatList = () => {
                       lineHeight: '12px',
                     }}
                   >
-                    上传中...
+                    发送中...
                   </span>
                 </>
               </span>
@@ -1866,7 +1866,10 @@ const ChatList = () => {
     setAddAnothers(false);
     texts.current?.blur();
     const dateTime: any = new Date().getTime();
-    for (let i = 0; i < list.length; i++) {
+    let i = 0;
+
+    // for (let i = 0; i < list.length; i++) {
+    const forList = async () => {
       // console.log(list[i]);
       const newList = list[i];
       if (newList.size === 0) {
@@ -1874,13 +1877,23 @@ const ChatList = () => {
           icon: 'fail',
           content: '此文件为空文件！',
         });
-        break;
+        // break;
+        if (i < list.length) {
+          i++;
+          forList();
+        }
+        return;
       } else if (newList.size >= 190000000000) {
         Toast.show({
           icon: 'fail',
           content: '暂不支持190G以上文件发送！',
         });
-        break;
+        // break;
+        if (i < list.length) {
+          i++;
+          forList();
+        }
+        return;
       }
       const fileType = newList.type.split('/')[0];
       // console.log(fileType);
@@ -1985,6 +1998,10 @@ const ChatList = () => {
                   shardCount
                 );
                 if (datas.code === 200) {
+                  if (i < list.length) {
+                    i++;
+                    forList();
+                  }
                   window.socket.emit('clientmessage', {
                     //只作为文件上传完成使用
                     uploadCompleted: true,
@@ -2011,6 +2028,10 @@ const ChatList = () => {
             clientmessage
           );
           if (datas.code === 200) {
+            if (i < list.length) {
+              i++;
+              forList();
+            }
             window.socket.emit('clientmessage', {
               //只作为文件上传完成使用
               uploadCompleted: true,
@@ -2028,13 +2049,19 @@ const ChatList = () => {
         );
         // console.log(datas);
         if (datas.code === 200) {
+          if (i < list.length) {
+            i++;
+            forList();
+          }
           window.socket.emit('clientmessage', {
             //只作为图片上传完成使用
             uploadCompleted: true,
           });
         }
       }
-    }
+    };
+    // }
+    forList();
     setDeleteFl(!deleteFl);
   };
   const upload = (dateTime: any, i: number) => {
@@ -2044,6 +2071,10 @@ const ChatList = () => {
       // console.log('上传=====>>>>', complete);
       if (complete === '100%') {
         complete = '99%';
+        window.socket.emit('clientmessage', {
+          //只作为图片上传完成使用
+          uploadCompleted: true,
+        });
       }
       const dom: any = document.getElementById(`${dateTime + i}`);
       if (dom) {
