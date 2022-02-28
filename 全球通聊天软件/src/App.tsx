@@ -29,13 +29,12 @@ window.socket = io(IP);
 // const socket = io(IP);
 const states: any = state();
 const reducer: any = reducers();
-
 export default function App() {
   const dispatchs = useDispatch();
   const schedule: any = useSelector<any>((state) => state.schedule);
   const [myLocName] = useState<any>(localStorage.getItem('name'));
+  let indexId: any = 0;
   // console.log(schedule);
-
   const [state, dispatch] = useReducer(reducer, states);
   const [messages, setMessages] = useState<any>({});
   useEffect(() => {
@@ -58,12 +57,14 @@ export default function App() {
   useEffect(() => {
     // console.log('message====>>>>>', messages);
     if (
-      messages?.text?.fromName &&
-      myLocName &&
+      ((messages?.text?.fromName && myLocName) ||
+        messages?.text === 'uploadCompleted') &&
       messages?.text.fromName !== myLocName
     ) {
-      const play: any = document.getElementById('play');
-      if (play) {
+      const play: any = document.getElementById('play1');
+      indexId++;
+      if (play && indexId === 1) {
+        // console.log('message====>>>>>', play);
         if (messages?.text.mp3) {
           play.src = `/mp3/${messages.text.mp3}.mp3`;
           play.play();
@@ -71,6 +72,8 @@ export default function App() {
           play.src = '/mp3/1.mp3';
           play.play();
         }
+      } else {
+        indexId = 0;
       }
     }
   }, [messages]);
@@ -101,6 +104,7 @@ export default function App() {
   //  console.log(addThenMult(5))
   return (
     <>
+      <audio id="play1" src="/mp3/1.mp3"></audio>
       <audio id="play" src="/mp3/1.mp3"></audio>
       <Router>
         <MyContext.Provider value={{ state, dispatch, messages }}>
