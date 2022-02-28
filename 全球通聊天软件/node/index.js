@@ -438,6 +438,9 @@ function creatNameber(obj, socket) {
                 objs[i].dateTime = parseInt(Date.parse(new Date())).toString();
                 if (!obj.text) {
                   obj.text = `[${obj.file.fileClass}文件]`
+                  if (obj.file.voice) {
+                    obj.text = `[语音]`
+                  }
                   if (obj.file.fileType === 'image') {
                     obj.text = `[${obj.file.fileClass}图片]`
                   }
