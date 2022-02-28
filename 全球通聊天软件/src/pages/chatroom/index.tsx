@@ -1885,9 +1885,11 @@ const ChatList = () => {
       }
       const fileType = newList.type.split('/')[0];
       let nameList = newList.name?.split('.') || [];
-      let type: any = nameList[nameList.length - 1];
+      let type: any = nameList[nameList.length - 1] || 'mp3';
       const listName = newList.name?.split(`.${type}`) || '';
+
       nameList = listName ? listName : [new Date().getTime(), 'mp3'];
+      console.log(type, fileType, nameList, listName);
       let clientmessage = {};
       if (chatType === 'chat') {
         clientmessage = {
