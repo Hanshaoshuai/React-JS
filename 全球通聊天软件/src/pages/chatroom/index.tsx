@@ -1113,25 +1113,27 @@ const ChatList = () => {
     style2.borderRadius = '0.08rem';
     const onImaF = () => {
       //				对方个人资料
-      if (yes) {
-        if (DianJi) {
-          // console.log(DianJi);
-          const imglist = JSON.parse(localStorage.getItem('imgIdLoc') || '[]');
-          for (var i = 0; i < imglist.length; i++) {
-            if (imglist[i].name === DianJi) {
-              localStorage.setItem(
-                'headPortrait_groupChat',
-                imglist[i].classIcon
-              );
-              newYouimg = imglist[i].classIcon;
-              localStorage.setItem('toChatName_groupChat', DianJi);
-              break;
-            }
+      // console.log(yes, DianJi);
+      // if (yes) {
+      if (DianJi) {
+        // console.log(DianJi);
+        const imglist = JSON.parse(localStorage.getItem('imgIdLoc') || '[]');
+        for (var i = 0; i < imglist.length; i++) {
+          if (imglist[i].name === DianJi) {
+            localStorage.setItem(
+              'headPortrait_groupChat',
+              imglist[i].classIcon
+            );
+            newYouimg = imglist[i].classIcon;
+            localStorage.setItem('toChatName_groupChat', DianJi);
+            break;
           }
         }
-        localStorage.setItem('personalInformation', '1');
-        history.push('/personalInformation');
       }
+      localStorage.setItem('personalInformation', '1');
+      history.push('/personalInformation');
+      // }
+      // history.push('/personalInformation');
     };
 
     const style6: any = {};
@@ -1556,7 +1558,8 @@ const ChatList = () => {
     } else {
       localStorage.removeItem('type');
       localStorage.removeItem('imgIdLoc');
-      history.goBack();
+      // history.goBack();
+      history.push('/');
     }
   };
   const voices = () => {
