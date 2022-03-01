@@ -2003,10 +2003,10 @@ const ChatList = () => {
                     toFileUpload = null;
                   }
                   itemId++;
-                  // window.socket.emit('clientmessage', {
-                  //   //只作为文件上传完成使用
-                  //   uploadCompleted: true,
-                  // });
+                  window.socket.emit('clientmessage', {
+                    //只作为文件上传完成使用
+                    uploadCompleted: true,
+                  });
                   const dom: any = document.getElementById(`${dateTime + i}`);
                   if (dom) {
                     let complete = (((id / shardCount) * 100) | 0) + '%';
@@ -2019,7 +2019,8 @@ const ChatList = () => {
           };
           toFileUpload();
         } else {
-          upload(dateTime, i, itemId, list.length, overload);
+          let dom: any = document.getElementById(`${dateTime + i}`);
+          upload(dom, i, itemId, list.length, overload);
           const datas: any = await FileUpload(
             newList,
             dateTime + i,
@@ -2041,7 +2042,8 @@ const ChatList = () => {
           }
         }
       } else {
-        upload(dateTime, i, itemId, list.length, overload);
+        let dom: any = document.getElementById(`${dateTime + i}`);
+        upload(dom, i, itemId, list.length, overload);
         const datas: any = await UploadImg(
           newList,
           dateTime + i,
@@ -2064,7 +2066,7 @@ const ChatList = () => {
     }
   };
   const upload = (
-    dateTime: any,
+    dom: any,
     i: number,
     itemId: number,
     length: number,
@@ -2076,6 +2078,7 @@ const ChatList = () => {
       // console.log('上传=====>>>>', complete);
       if (complete === '100%') {
         complete = '99%';
+        dom = null;
         if (itemId >= length) {
           setDeleteFl(!deleteFl);
           window.socket.emit('clientmessage', {
@@ -2084,7 +2087,6 @@ const ChatList = () => {
           });
         }
       }
-      const dom: any = document.getElementById(`${dateTime + i}`);
       if (dom) {
         dom.innerHTML = complete;
       }
