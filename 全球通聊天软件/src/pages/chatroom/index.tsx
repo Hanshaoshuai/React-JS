@@ -1942,11 +1942,8 @@ const ChatList = () => {
           // 超过31M文件走流，存入node接口根目录；
           let id = 0;
           let size = newList.size, //总大小shardSize = 2 * 1024 * 1024,
-            // shardSize = 1000, //以10MB为一个分片,每个分片的大小
             shardSize = 10 * 1024 * 1024, //以10MB为一个分片,每个分片的大小
             shardCount = Math.ceil(size / shardSize); //总片数
-          // start = id * shardSize,
-          // end = start + shardSize;
           // eslint-disable-next-line no-loop-func
           let toFileUpload: any = async () => {
             var start = id * shardSize;
@@ -2019,8 +2016,7 @@ const ChatList = () => {
           };
           toFileUpload();
         } else {
-          let dom: any = document.getElementById(`${dateTime + i}`);
-          upload(dom, i, itemId, list.length, overload);
+          upload(dateTime, i, itemId, list.length, overload);
           const datas: any = await FileUpload(
             newList,
             dateTime + i,
@@ -2031,19 +2027,11 @@ const ChatList = () => {
           );
           if (datas.code === 200) {
             itemId++;
-            // console.log(i, list.length - 1);
-            // if (i === list.length - 1) {
-            //   setDeleteFl(!deleteFl);
-            // }
-            // window.socket.emit('clientmessage', {
             //   //只作为文件上传完成使用
-            //   uploadCompleted: true,
-            // });
           }
         }
       } else {
-        let dom: any = document.getElementById(`${dateTime + i}`);
-        upload(dom, i, itemId, list.length, overload);
+        upload(dateTime, i, itemId, list.length, overload);
         const datas: any = await UploadImg(
           newList,
           dateTime + i,
@@ -2054,19 +2042,13 @@ const ChatList = () => {
         // console.log(datas);
         if (datas.code === 200) {
           itemId++;
-          // if (i === list.length - 1) {
-          //   setDeleteFl(!deleteFl);
-          // }
-          // window.socket.emit('clientmessage', {
           //   //只作为图片上传完成使用
-          //   uploadCompleted: true,
-          // });
         }
       }
     }
   };
   const upload = (
-    dom: any,
+    dateTime: any,
     i: number,
     itemId: number,
     length: number,
@@ -2078,7 +2060,6 @@ const ChatList = () => {
       // console.log('上传=====>>>>', complete);
       if (complete === '100%') {
         complete = '99%';
-        dom = null;
         if (itemId >= length) {
           setDeleteFl(!deleteFl);
           window.socket.emit('clientmessage', {
@@ -2087,7 +2068,8 @@ const ChatList = () => {
           });
         }
       }
-      if (dom) {
+      const dom: any = document.getElementById(`${dateTime + i}`);
+      if (dom && dom.innerText !== '99%') {
         dom.innerHTML = complete;
       }
 
