@@ -2065,11 +2065,11 @@ const ChatList = () => {
         complete = '99%';
         if (itemId >= length) {
           setDeleteFl(!deleteFl);
-          window.socket.emit('clientmessage', {
-            //只作为图片上传完成使用
-            uploadCompleted: true,
-          });
         }
+        window.socket.emit('clientmessage', {
+          //只作为图片上传完成使用
+          uploadCompleted: true,
+        });
       }
       const dom: any = document.getElementById(`${dateTime + i}`);
       if (dom && dom.innerText !== '99%') {
