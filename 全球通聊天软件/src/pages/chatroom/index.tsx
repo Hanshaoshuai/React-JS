@@ -2000,7 +2000,7 @@ const ChatList = () => {
                 if (datas.code === 200) {
                   if (itemId >= list.length) {
                     setDeleteFl(!deleteFl);
-                    toFileUpload = null;
+                    // toFileUpload = null;
                     smallFile = 0;
                   }
                   itemId++;
@@ -2065,12 +2065,16 @@ const ChatList = () => {
       if (complete === '100%') {
         complete = '99%';
         smallFile++;
+        if (dateTime && smallFile <= overload && overload >= 1) {
+          // setDeleteFl(!deleteFl);
+          window.socket.emit('clientmessage', {
+            //只作为图片上传完成使用
+            uploadCompleted: true,
+          });
+        }
         if (itemId >= length) {
           smallFile = 0;
           setDeleteFl(!deleteFl);
-        }
-        if (smallFile <= overload) {
-          // setDeleteFl(!deleteFl);
           window.socket.emit('clientmessage', {
             //只作为图片上传完成使用
             uploadCompleted: true,
