@@ -1866,12 +1866,11 @@ const ChatList = () => {
   };
 
   const setFileList = async (list: any, voice?: any) => {
-    console.log(list);
-
+    // console.log(list);
     setAddAnothers(false);
     texts.current?.blur();
     const dateTime: any = new Date().getTime();
-
+    let itemId = 1;
     for (let i = 0; i < list.length; i++) {
       const newList = list[i];
       if (i > list.length - 1) return;
@@ -1991,7 +1990,6 @@ const ChatList = () => {
                   shardCount
                 );
                 if (datas.code === 200) {
-                  console.log('分片上传最后', i);
                   if (i === list.length - 1) {
                     setDeleteFl(!deleteFl);
                     toFileUpload = null;
@@ -2012,7 +2010,7 @@ const ChatList = () => {
           };
           toFileUpload();
         } else {
-          upload(dateTime, i);
+          upload(dateTime, i, itemId, list.length);
           const datas: any = await FileUpload(
             newList,
             dateTime + i,
@@ -2022,6 +2020,7 @@ const ChatList = () => {
             clientmessage
           );
           if (datas.code === 200) {
+            itemId++;
             // console.log(i, list.length - 1);
             // if (i === list.length - 1) {
             //   setDeleteFl(!deleteFl);
@@ -2033,7 +2032,7 @@ const ChatList = () => {
           }
         }
       } else {
-        upload(dateTime, i);
+        upload(dateTime, i, itemId, list.length);
         const datas: any = await UploadImg(
           newList,
           dateTime + i,
@@ -2043,6 +2042,7 @@ const ChatList = () => {
         );
         // console.log(datas);
         if (datas.code === 200) {
+          itemId++;
           // if (i === list.length - 1) {
           //   setDeleteFl(!deleteFl);
           // }
@@ -2054,18 +2054,25 @@ const ChatList = () => {
       }
     }
   };
-  const upload = (dateTime: any, i: number) => {
+  const upload = (
+    dateTime: any,
+    i: number,
+    itemId?: number,
+    length?: number
+  ) => {
     onUploadProgress.onUploadProgress = (progressEvent: any) => {
       let complete =
         (((progressEvent.loaded / progressEvent.total) * 100) | 0) + '%';
       // console.log('上传=====>>>>', complete);
       if (complete === '100%') {
         complete = '99%';
-        setDeleteFl(!deleteFl);
-        window.socket.emit('clientmessage', {
-          //只作为图片上传完成使用
-          uploadCompleted: true,
-        });
+        if (itemId === length) {
+          setDeleteFl(!deleteFl);
+          window.socket.emit('clientmessage', {
+            //只作为图片上传完成使用
+            uploadCompleted: true,
+          });
+        }
       }
       const dom: any = document.getElementById(`${dateTime + i}`);
       if (dom) {
