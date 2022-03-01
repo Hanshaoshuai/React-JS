@@ -1871,6 +1871,13 @@ const ChatList = () => {
     texts.current?.blur();
     const dateTime: any = new Date().getTime();
     let itemId = 1;
+    let overload = false;
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].size >= 31000000) {
+        overload = true;
+        break;
+      }
+    }
     for (let i = 0; i < list.length; i++) {
       const newList = list[i];
       if (i > list.length - 1) return;
@@ -1940,6 +1947,7 @@ const ChatList = () => {
             shardCount = Math.ceil(size / shardSize); //总片数
           // start = id * shardSize,
           // end = start + shardSize;
+          // eslint-disable-next-line no-loop-func
           let toFileUpload: any = async () => {
             var start = id * shardSize;
             var end = start + shardSize;
@@ -1990,14 +1998,15 @@ const ChatList = () => {
                   shardCount
                 );
                 if (datas.code === 200) {
-                  if (i === list.length - 1) {
+                  if (itemId >= list.length) {
                     setDeleteFl(!deleteFl);
                     toFileUpload = null;
                   }
-                  window.socket.emit('clientmessage', {
-                    //只作为文件上传完成使用
-                    uploadCompleted: true,
-                  });
+                  itemId++;
+                  // window.socket.emit('clientmessage', {
+                  //   //只作为文件上传完成使用
+                  //   uploadCompleted: true,
+                  // });
                   const dom: any = document.getElementById(`${dateTime + i}`);
                   if (dom) {
                     let complete = (((id / shardCount) * 100) | 0) + '%';
@@ -2010,7 +2019,7 @@ const ChatList = () => {
           };
           toFileUpload();
         } else {
-          upload(dateTime, i, itemId, list.length);
+          upload(dateTime, i, itemId, list.length, overload);
           const datas: any = await FileUpload(
             newList,
             dateTime + i,
@@ -2032,7 +2041,7 @@ const ChatList = () => {
           }
         }
       } else {
-        upload(dateTime, i, itemId, list.length);
+        upload(dateTime, i, itemId, list.length, overload);
         const datas: any = await UploadImg(
           newList,
           dateTime + i,
@@ -2057,8 +2066,9 @@ const ChatList = () => {
   const upload = (
     dateTime: any,
     i: number,
-    itemId?: number,
-    length?: number
+    itemId: number,
+    length: number,
+    overload: boolean
   ) => {
     onUploadProgress.onUploadProgress = (progressEvent: any) => {
       let complete =
@@ -2066,7 +2076,7 @@ const ChatList = () => {
       // console.log('上传=====>>>>', complete);
       if (complete === '100%') {
         complete = '99%';
-        if (itemId === length) {
+        if (itemId >= length) {
           setDeleteFl(!deleteFl);
           window.socket.emit('clientmessage', {
             //只作为图片上传完成使用
