@@ -57,16 +57,18 @@ export default function App() {
   useEffect(() => {
     // console.log('message====>>>>>', messages);
     if (
+      messages.text !== '上线了' &&
+      messages?.text?.fromName &&
       ((messages?.text?.fromName && myLocName) ||
-        messages?.text === 'uploadCompleted') &&
-      messages?.text.fromName !== myLocName
+        messages?.text === 'uploadCompleted' ||
+        messages?.text?.fromName !== myLocName)
     ) {
       const play: any = document.getElementById('play');
       indexId++;
       if (play && indexId === 1) {
         // console.log('message====>>>>>', play);
-        if (messages?.text.mp3) {
-          play.src = `/mp3/${messages.text.mp3}.mp3`;
+        if (messages?.text?.mp3) {
+          play.src = `/mp3/${messages?.text?.mp3}.mp3`;
           play.play();
         } else {
           play.src = '/mp3/1.mp3';
