@@ -1991,6 +1991,7 @@ const ChatList = () => {
                   shardCount
                 );
                 if (datas.code === 200) {
+                  console.log('分片上传最后', i);
                   if (i === list.length - 1) {
                     setDeleteFl(!deleteFl);
                     toFileUpload = null;
@@ -2022,13 +2023,13 @@ const ChatList = () => {
           );
           if (datas.code === 200) {
             // console.log(i, list.length - 1);
-            if (i === list.length - 1) {
-              setDeleteFl(!deleteFl);
-            }
-            window.socket.emit('clientmessage', {
-              //只作为文件上传完成使用
-              uploadCompleted: true,
-            });
+            // if (i === list.length - 1) {
+            //   setDeleteFl(!deleteFl);
+            // }
+            // window.socket.emit('clientmessage', {
+            //   //只作为文件上传完成使用
+            //   uploadCompleted: true,
+            // });
           }
         }
       } else {
@@ -2042,13 +2043,13 @@ const ChatList = () => {
         );
         // console.log(datas);
         if (datas.code === 200) {
-          if (i === list.length - 1) {
-            setDeleteFl(!deleteFl);
-          }
-          window.socket.emit('clientmessage', {
-            //只作为图片上传完成使用
-            uploadCompleted: true,
-          });
+          // if (i === list.length - 1) {
+          //   setDeleteFl(!deleteFl);
+          // }
+          // window.socket.emit('clientmessage', {
+          //   //只作为图片上传完成使用
+          //   uploadCompleted: true,
+          // });
         }
       }
     }
@@ -2060,6 +2061,7 @@ const ChatList = () => {
       // console.log('上传=====>>>>', complete);
       if (complete === '100%') {
         complete = '99%';
+        setDeleteFl(!deleteFl);
         window.socket.emit('clientmessage', {
           //只作为图片上传完成使用
           uploadCompleted: true,
