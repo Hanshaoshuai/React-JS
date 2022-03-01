@@ -61,7 +61,7 @@ export default function App() {
         messages?.text === 'uploadCompleted') &&
       messages?.text.fromName !== myLocName
     ) {
-      const play: any = document.getElementById('play1');
+      const play: any = document.getElementById('play');
       indexId++;
       if (play && indexId === 1) {
         // console.log('message====>>>>>', play);
@@ -104,7 +104,6 @@ export default function App() {
   //  console.log(addThenMult(5))
   return (
     <>
-      <audio id="play1" src="/mp3/1.mp3"></audio>
       <audio id="play" src="/mp3/1.mp3"></audio>
       <Router>
         <MyContext.Provider value={{ state, dispatch, messages }}>

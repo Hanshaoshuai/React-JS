@@ -1941,7 +1941,7 @@ const ChatList = () => {
             shardCount = Math.ceil(size / shardSize); //总片数
           // start = id * shardSize,
           // end = start + shardSize;
-          const toFileUpload = async () => {
+          let toFileUpload: any = async () => {
             var start = id * shardSize;
             var end = start + shardSize;
             let packet = newList.slice(start, end); //将文件进行切片
@@ -1993,6 +1993,7 @@ const ChatList = () => {
                 if (datas.code === 200) {
                   if (i === list.length - 1) {
                     setDeleteFl(!deleteFl);
+                    toFileUpload = null;
                   }
                   window.socket.emit('clientmessage', {
                     //只作为文件上传完成使用
