@@ -2067,9 +2067,10 @@ const ChatList = () => {
         smallFile++;
         if (itemId >= length) {
           smallFile = 0;
+          setDeleteFl(!deleteFl);
         }
         if (smallFile <= overload) {
-          setDeleteFl(!deleteFl);
+          // setDeleteFl(!deleteFl);
           window.socket.emit('clientmessage', {
             //只作为图片上传完成使用
             uploadCompleted: true,
