@@ -50,6 +50,7 @@ let toChatNameLength = 0;
 let locComplete: any = '';
 let page = 1;
 let scrollSize = 0;
+let smallFile = 0;
 const ChatList = () => {
   const chatNames: any = localStorage.getItem('toChatName');
   const agreess: any = useRef();
@@ -1874,11 +1875,10 @@ const ChatList = () => {
     texts.current?.blur();
     const dateTime: any = new Date().getTime();
     let itemId = 1;
-    let overload = false;
+    let overload = 0;
     for (let i = 0; i < list.length; i++) {
-      if (list[i].size >= 31000000) {
-        overload = true;
-        break;
+      if (list[i].size < 31000000) {
+        overload++;
       }
     }
     for (let i = 0; i < list.length; i++) {
@@ -2001,6 +2001,7 @@ const ChatList = () => {
                   if (itemId >= list.length) {
                     setDeleteFl(!deleteFl);
                     toFileUpload = null;
+                    smallFile = 0;
                   }
                   itemId++;
                   window.socket.emit('clientmessage', {
@@ -2055,7 +2056,7 @@ const ChatList = () => {
     i: number,
     itemId: number,
     length: number,
-    overload: boolean
+    overload: number
   ) => {
     onUploadProgress.onUploadProgress = (progressEvent: any) => {
       let complete =
@@ -2063,19 +2064,22 @@ const ChatList = () => {
       // console.log('上传=====>>>>', complete);
       if (complete === '100%') {
         complete = '99%';
+        smallFile++;
         if (itemId >= length) {
-          setDeleteFl(!deleteFl);
+          smallFile = 0;
         }
-        window.socket.emit('clientmessage', {
-          //只作为图片上传完成使用
-          uploadCompleted: true,
-        });
+        if (smallFile <= overload) {
+          setDeleteFl(!deleteFl);
+          window.socket.emit('clientmessage', {
+            //只作为图片上传完成使用
+            uploadCompleted: true,
+          });
+        }
       }
       const dom: any = document.getElementById(`${dateTime + i}`);
       if (dom && dom.innerText !== '99%') {
         dom.innerHTML = complete;
       }
-
       // setProgress(complete);
     };
   };
