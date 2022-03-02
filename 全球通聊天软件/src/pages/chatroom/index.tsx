@@ -1998,6 +1998,8 @@ const ChatList = () => {
                   shardCount
                 );
                 if (datas.code === 200) {
+                  page = 1;
+                  scrollSize = 0;
                   if (itemId >= list.length) {
                     setDeleteFl(!deleteFl);
                     // toFileUpload = null;
@@ -2030,6 +2032,8 @@ const ChatList = () => {
             clientmessage
           );
           if (datas.code === 200) {
+            page = 1;
+            scrollSize = 0;
             itemId++;
             //   //只作为文件上传完成使用
           }
@@ -2045,6 +2049,8 @@ const ChatList = () => {
         );
         // console.log(datas);
         if (datas.code === 200) {
+          page = 1;
+          scrollSize = 0;
           itemId++;
           //   //只作为图片上传完成使用
         }
@@ -2096,8 +2102,8 @@ const ChatList = () => {
     //   e.target.scrollHeight
     // );
     if (e.target.scrollTop === 0) {
-      setLoadings(true);
       scrollSize = e.target.scrollHeight;
+      setLoadings(true);
       getList('');
     } else {
       setLoadings(false);
