@@ -2096,8 +2096,8 @@ const ChatList = () => {
     //   e.target.scrollHeight
     // );
     if (e.target.scrollTop === 0) {
-      setLoadings(true);
       scrollSize = e.target.scrollHeight;
+      setLoadings(true);
       getList('');
     } else {
       setLoadings(false);
