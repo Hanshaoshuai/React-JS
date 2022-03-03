@@ -1182,10 +1182,16 @@ const ChatList = () => {
     style7.color = 'rgb(180, 180, 180)';
 
     const imgStyle: any = { borderRadius: '0.08rem' };
-    if (file?.length === 'width') {
-      imgStyle.width = '130px';
-    } else {
-      imgStyle.height = '190px';
+    if (file?.length) {
+      let imgList = file?.length.split('_');
+      if (imgList[0] === 'width') {
+        imgStyle.width = `130px`;
+        imgList[1] &&
+          (imgStyle.height = `${130 / (imgList[1] / imgList[2])}px`);
+      } else {
+        imgList[1] && (imgStyle.width = `${190 * (imgList[1] / imgList[2])}px`);
+        imgStyle.height = '190px';
+      }
     }
 
     if (file) {
