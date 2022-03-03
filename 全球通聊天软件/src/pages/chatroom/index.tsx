@@ -139,6 +139,7 @@ const ChatList = () => {
     page = 1;
     scrollSize = 0;
     imagelistId = {};
+    imagelistIndex = 0;
   };
   useEffect(() => {
     //监听服务服务端emit的message事件发送的消息
@@ -1419,6 +1420,7 @@ const ChatList = () => {
     if (page === 1) {
       setImagesList([]);
       imagelistId = {};
+      imagelistIndex = 0;
     }
     if ((Loadings || total) && scrollSize !== 0) {
       if (total) {
@@ -1921,7 +1923,6 @@ const ChatList = () => {
 
   const setFileList = async (list: any, voice?: any) => {
     // console.log(list);
-    page = 1;
     setAddAnothers(false);
     texts.current?.blur();
     const dateTime: any = new Date().getTime();
@@ -2051,6 +2052,7 @@ const ChatList = () => {
                 if (datas.code === 200) {
                   page = 1;
                   scrollSize = 0;
+                  imagelistIndex = 0;
                   if (itemId >= list.length) {
                     setDeleteFl(!deleteFl);
                     // toFileUpload = null;
@@ -2084,6 +2086,7 @@ const ChatList = () => {
           );
           if (datas.code === 200) {
             page = 1;
+            imagelistIndex = 0;
             scrollSize = 0;
             itemId++;
             //   //只作为文件上传完成使用
@@ -2101,6 +2104,7 @@ const ChatList = () => {
         // console.log(datas);
         if (datas.code === 200) {
           page = 1;
+          imagelistIndex = 0;
           scrollSize = 0;
           itemId++;
           //   //只作为图片上传完成使用
@@ -2124,12 +2128,18 @@ const ChatList = () => {
         smallFile++;
         if (dateTime && smallFile < overload && overload >= 1) {
           // setDeleteFl(!deleteFl);
+          page = 1;
+          imagelistIndex = 0;
+          scrollSize = 0;
           window.socket.emit('clientmessage', {
             //只作为图片上传完成使用
             uploadCompleted: true,
           });
         }
         if (itemId >= length) {
+          page = 1;
+          imagelistIndex = 0;
+          scrollSize = 0;
           smallFile = 0;
           setDeleteFl(!deleteFl);
           window.socket.emit('clientmessage', {
