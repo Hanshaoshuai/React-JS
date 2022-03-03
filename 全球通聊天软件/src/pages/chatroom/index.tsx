@@ -833,9 +833,10 @@ const ChatList = () => {
       let imgList = file?.length.split('_');
       if (imgList[0] === 'width') {
         imgStyle.width = `130px`;
-        imgStyle.height = `${130 / (imgList[1] / imgList[2])}px`;
+        imgList[1] &&
+          (imgStyle.height = `${130 / (imgList[1] / imgList[2])}px`);
       } else {
-        imgStyle.width = `${190 * (imgList[1] / imgList[2])}px`;
+        imgList[1] && (imgStyle.width = `${190 * (imgList[1] / imgList[2])}px`);
         imgStyle.height = '190px';
       }
     }
