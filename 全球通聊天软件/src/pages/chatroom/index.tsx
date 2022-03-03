@@ -829,10 +829,15 @@ const ChatList = () => {
     style2.width = '100%';
 
     const imgStyle: any = { borderRadius: '0.08rem' };
-    if (file?.length === 'width') {
-      imgStyle.width = '130px';
-    } else {
-      imgStyle.height = '190px';
+    if (file?.length) {
+      let imgList = file?.length.split('_');
+      if (imgList[0] === 'width') {
+        imgStyle.width = `130px`;
+        imgStyle.height = `${130 / (imgList[1] / imgList[2])}px`;
+      } else {
+        imgStyle.width = `${190 * (imgList[1] / imgList[2])}px`;
+        imgStyle.height = '190px';
+      }
     }
 
     return (

@@ -69,9 +69,9 @@ export const UploadImg = (
             formDate.append('isDebug', isDebug);
           }
           if (image.width > image.height || image.width === image.height) {
-            formDate.append('length', 'width');
+            formDate.append('length', `width_${image.width}_${image.height}`);
           } else {
-            formDate.append('length', 'height');
+            formDate.append('length', `height_${image.width}_${image.height}`);
           }
           // image.url = reader.result;
           // console.log(formDate);
