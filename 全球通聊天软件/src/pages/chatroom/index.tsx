@@ -51,6 +51,8 @@ let locComplete: any = '';
 let page = 1;
 let scrollSize = 0;
 let smallFile = 0;
+let imagelistId: any = {};
+let imagelistIndex = 0;
 const ChatList = () => {
   const chatNames: any = localStorage.getItem('toChatName');
   const agreess: any = useRef();
@@ -111,6 +113,8 @@ const ChatList = () => {
 
   const [Loadings, setLoadings] = useState(false);
   const [total, setTotal] = useState(false);
+  const [imagesList, setImagesList] = useState<any>([]);
+  const [defaultIndex, setDefaultIndex] = useState<any>(0);
 
   useEffect(() => {
     if (!voiceSotten && texts && texts.current) {
@@ -134,6 +138,7 @@ const ChatList = () => {
   const componentWillUnmount = () => {
     page = 1;
     scrollSize = 0;
+    imagelistId = {};
   };
   useEffect(() => {
     //监听服务服务端emit的message事件发送的消息
@@ -243,8 +248,10 @@ const ChatList = () => {
     setExpressionShow(false);
     setAddAnothers(false);
   };
+
   const setVisibles = (url: any) => {
-    setFileUrl(url);
+    // setFileUrl(url);
+    setDefaultIndex(imagelistId[url]);
     setVisible(true);
   };
 
@@ -794,7 +801,10 @@ const ChatList = () => {
       </div>
     );
   };
-
+  const setMulti = (url: any) => {
+    console.log(imagesList);
+    ImageViewer.Multi.show({ images: imagesList });
+  };
   const My = (type: any, cont: string, file?: any) => {
     // console.log(file);
     domKeys += 1;
@@ -933,7 +943,14 @@ const ChatList = () => {
                     style={imgStyle}
                     src={file.apathZoom}
                     alt=""
-                    onClick={() => setVisibles(file.url)}
+                    onClick={
+                      // () => setMulti(file.url)
+                      // () => {
+                      //   console.log(imagesList);
+                      //   ImageViewer.Multi.show({ images: file.url });
+                      // }
+                      () => setVisibles(file.url)
+                    }
                   />
                 ) : (
                   <>
@@ -1232,7 +1249,14 @@ const ChatList = () => {
                   style={imgStyle}
                   src={file.apathZoom}
                   alt=""
-                  onClick={() => setVisibles(file.url)}
+                  onClick={
+                    // () => setMulti(file.url)
+                    // () => {
+                    //   console.log(imagesList);
+                    //   ImageViewer.Multi.show({ images: file.url });
+                    // }
+                    () => setVisibles(file.url)
+                  }
                 />
               ) : (
                 <>
@@ -1534,6 +1558,11 @@ const ChatList = () => {
           );
         }
         setShuruShowL = true;
+      }
+      if (item.file?.fileType === 'image') {
+        setImagesList((imagesList: any) => [...imagesList, ...[item.file.url]]);
+        imagelistId[item.file.url] = imagelistIndex;
+        imagelistIndex++;
       }
       return item;
     });
@@ -2404,13 +2433,23 @@ const ChatList = () => {
             </div>
           </div>
         </div>
-        <ImageViewer
+        {/* <ImageViewer
           image={fileUrl}
           visible={visible}
           onClose={() => {
             setVisible(false);
           }}
-        />
+        /> */}
+        {visible && (
+          <ImageViewer.Multi
+            images={imagesList}
+            visible={visible}
+            defaultIndex={defaultIndex}
+            onClose={() => {
+              setVisible(false);
+            }}
+          />
+        )}
         {dataListL && (
           <Spins styleSize={[65, 33]} color={'#ff7a59'} fontSize={'33px'} />
         )}
