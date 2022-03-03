@@ -1416,6 +1416,10 @@ const ChatList = () => {
     // if (getListL && getListL.length > 0) {
     //   dataCollation(getListL, types);
     // }
+    if (page === 1) {
+      setImagesList([]);
+      imagelistId = {};
+    }
     if ((Loadings || total) && scrollSize !== 0) {
       if (total) {
         setLoadings(false);
@@ -1438,7 +1442,6 @@ const ChatList = () => {
           setTotal(true);
         }
         setLoadings(false);
-        page += 1;
         dataCollation(data.body, types);
         // setGetListL(data.body);
         // localStorage.setItem('getListL', JSON.stringify(data.body));
@@ -1583,7 +1586,12 @@ const ChatList = () => {
     } else {
     }
     setShuruShow(setShuruShowL);
-    setContentList([...domList, ...contentList]);
+    if (page === 1) {
+      setContentList(domList);
+    } else {
+      setContentList([...domList, ...contentList]);
+    }
+    page += 1;
     // setContentList(domList);
   };
   const onTimes = () => {
@@ -1913,6 +1921,7 @@ const ChatList = () => {
 
   const setFileList = async (list: any, voice?: any) => {
     // console.log(list);
+    page = 1;
     setAddAnothers(false);
     texts.current?.blur();
     const dateTime: any = new Date().getTime();
@@ -2113,7 +2122,7 @@ const ChatList = () => {
       if (complete === '100%') {
         complete = '99%';
         smallFile++;
-        if (dateTime && smallFile <= overload && overload >= 1) {
+        if (dateTime && smallFile < overload && overload >= 1) {
           // setDeleteFl(!deleteFl);
           window.socket.emit('clientmessage', {
             //只作为图片上传完成使用
