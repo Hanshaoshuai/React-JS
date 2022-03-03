@@ -264,9 +264,13 @@ const ChatList = () => {
     setplays(!plays);
     setOnPlayUrl('');
   };
-  const fileDownload = (e: string) => {
+  const fileDownload = (e: string, url?: boolean) => {
     // console.log(origin + e);
-    window.open(`${origin + e}`);
+    if (url) {
+      window.open(`${e}`);
+    } else {
+      window.open(`${origin + e}`);
+    }
   };
   const messageVariety = (data: any) => {
     if (data.text === 'uploadCompleted') {
@@ -1056,9 +1060,15 @@ const ChatList = () => {
             ) : (
               <div style={{ padding: '0.16rem 0.2rem' }}>
                 {IsURL(cont) ? (
-                  <a href={cont} target="view_window">
+                  // <a href={cont} target="view_window">
+                  //   {cont}
+                  // </a>
+                  <span
+                    onClick={() => fileDownload(cont, true)}
+                    style={{ color: '#1b24ff' }}
+                  >
                     {cont}
-                  </a>
+                  </span>
                 ) : (
                   cont
                 )}
@@ -1374,9 +1384,15 @@ const ChatList = () => {
       cont = (
         <div style={{ padding: '0.16rem 0.2rem' }}>
           {IsURL(cont) ? (
-            <a href={cont} target="view_window">
+            // <a href={cont} target="view_window">
+            //   {cont}
+            // </a>
+            <span
+              onClick={() => fileDownload(cont, true)}
+              style={{ color: '#1b24ff' }}
+            >
               {cont}
-            </a>
+            </span>
           ) : (
             cont
           )}
