@@ -1444,31 +1444,42 @@ app.get('/get1', function (req, res) {
     }
     //console.log(data);  //data是读取的十六进制的数据。  也可以在参数中加入编码格式"utf8"来解决十六进制的问题;
     // console.log('读取出所有行的信息 ',data.toString());  //读取出所有行的信息
-    if (!data) return;
+    if (!data) {
+      res.send({ code: 200, body: [] });
+      return
+    };
     objs = JSON.parse(data.toString());
     if (objs.length > 0) {
       // objs.sort(function (a, b) {
       //   return a.dateTime - b.dateTime;
       // });
-      const newList = [];
+      // let newList = [];
       let size = (req.query.page * 1) * (req.query.pageSize * 1)
+      // if (size < objs.length) {
+      //   for (let i = objs.length - 1; i > 0; i--) {
+      //     if (size > 0) {
+      //       newList.push(objs[i]);
+      //     } else {
+      //       break;
+      //     }
+      //     size -= 1;
+      //   }
+      //   newList.sort(function (a, b) {
+      //     return a.dateTime - b.dateTime;
+      //   });
+      //   list.body = newList;
+      // } else {
+      //   list.body = objs;
+      //   list.total = true;
+      // }
+      objs.reverse()
       if (size < objs.length) {
-        for (let i = objs.length - 1; i > 0; i--) {
-          if (size > 0) {
-            newList.push(objs[i]);
-          } else {
-            break;
-          }
-          size -= 1;
-        }
-        newList.sort(function (a, b) {
-          return a.dateTime - b.dateTime;
-        });
-        list.body = newList;
+        list.body = objs.slice(size - req.query.pageSize * 1, size)
       } else {
-        list.body = objs;
+        list.body = objs.slice(size - (req.query.pageSize * 1), objs.length)
         list.total = true;
       }
+      list.body.reverse()
       list.code = 200;
       // console.log('读取文件', list);
       res.send(list);

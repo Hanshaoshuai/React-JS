@@ -1542,7 +1542,8 @@ const ChatList = () => {
     } else {
     }
     setShuruShow(setShuruShowL);
-    setContentList(domList);
+    setContentList([...domList, ...contentList]);
+    // setContentList(domList);
   };
   const onTimes = () => {
     const times = setTimeout(() => {
