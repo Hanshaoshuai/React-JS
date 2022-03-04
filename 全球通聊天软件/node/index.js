@@ -975,8 +975,7 @@ app.post('/isRead', function (req, res) {
 const addText = async (obj, apath, filePath, apathZoom, index) => {
   // console.log(obj)
   let newClientmessage = JSON.parse(obj.clientmessage);
-  var fromTos = null,
-    objs = [];
+  var fromTos = null
   let yes = false;
   const writeFiles = (fromTo) => {
     fs.exists(filePath, function (err) {
@@ -989,8 +988,8 @@ const addText = async (obj, apath, filePath, apathZoom, index) => {
           }
           //console.log(data);  //data是读取的十六进制的数据。  也可以在参数中加入编码格式"utf8"来解决十六进制的问题;
           // console.log('读取出所有行的信息 ', data.toString());  //读取出所有行的信息
-          objs = JSON.parse(data.toString());
-          objs = objs.map((item) => {
+          let newList = JSON.parse(data.toString());
+          let objs = newList.map((item) => {
             // console.log(item.file?.index * 1 === obj.imgId * 1, item.file?.index, obj.imgId)
             if (item.file && (item.file.index * 1 === obj.imgId * 1)) {
               item.file.styleLength = obj.styleLength ? obj.styleLength : item.file.styleLength
