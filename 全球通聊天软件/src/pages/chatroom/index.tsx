@@ -810,6 +810,22 @@ const ChatList = () => {
     console.log(imagesList);
     ImageViewer.Multi.show({ images: imagesList });
   };
+  const styleLength = (file: any) => {
+    let styleLength: any = {};
+    if (file?.styleLength) {
+      let imgList = file?.styleLength.split('_');
+      if (imgList[0] === 'width') {
+        styleLength.width = `130px`;
+        imgList[1] &&
+          (styleLength.height = `${130 / (imgList[1] / imgList[2])}px`);
+      } else {
+        imgList[1] &&
+          (styleLength.width = `${190 * (imgList[1] / imgList[2])}px`);
+        styleLength.height = '190px';
+      }
+    }
+    return styleLength;
+  };
   const My = (type: any, cont: string, file?: any) => {
     // console.log(file);
     domKeys += 1;
@@ -845,6 +861,8 @@ const ChatList = () => {
         imgStyle.height = '190px';
       }
     }
+    const newStyleLength = styleLength(file);
+    // console.log(newStyleLength);
 
     return (
       <div
@@ -919,19 +937,23 @@ const ChatList = () => {
                   borderRadius: '0.08rem',
                   width: `${
                     file?.fileType === 'video'
-                      ? '100px'
+                      ? `${file?.styleLength ? newStyleLength.width : '100px'}`
                       : file?.fileType !== 'image'
                       ? 'auto'
                       : '100%'
                   }`,
-                  height: `${file?.fileType === 'video' ? '100px' : 'auto'}`,
+                  height: `${
+                    file?.fileType === 'video'
+                      ? `${file?.styleLength ? newStyleLength.height : '100px'}`
+                      : 'auto'
+                  }`,
                   minHeight: `${file?.fileType !== 'image' && '42px'}`,
                   fontSize: '0.41rem',
                   background: `${
                     file?.fileType === 'image'
                       ? 'url(/images/tuPianJiaZaiZhong.png)'
                       : file?.fileType === 'video'
-                      ? 'rgb(207, 206, 210)'
+                      ? `url(${file?.apathZoom})`
                       : '#FFF'
                   }`,
                   backgroundSize: '100% 100%',
@@ -1205,6 +1227,8 @@ const ChatList = () => {
         imgStyle.height = '190px';
       }
     }
+    const newStyleLength = styleLength(file);
+    // console.log(newStyleLength);
 
     if (file) {
       cont = (
@@ -1237,19 +1261,23 @@ const ChatList = () => {
                 borderRadius: '0.08rem',
                 width: `${
                   file?.fileType === 'video'
-                    ? '100px'
+                    ? `${file?.styleLength ? newStyleLength.width : '100px'}`
                     : file?.fileType !== 'image'
                     ? 'auto'
                     : '100%'
                 }`,
-                height: `${file?.fileType === 'video' ? '100px' : 'auto'}`,
+                height: `${
+                  file?.fileType === 'video'
+                    ? `${file?.styleLength ? newStyleLength.height : '100px'}`
+                    : 'auto'
+                }`,
                 minHeight: `${file?.fileType !== 'image' && '42px'}`,
                 fontSize: '0.41rem',
                 background: `${
                   file?.fileType === 'image'
                     ? 'url(/images/tuPianJiaZaiZhong.png)'
                     : file?.fileType === 'video'
-                    ? 'rgb(207, 206, 210)'
+                    ? `url(${file?.apathZoom})`
                     : '#FFF'
                 }`,
                 backgroundSize: '100% 100%',
@@ -2035,7 +2063,9 @@ const ChatList = () => {
               fileType,
               clientmessage,
               nameList,
-              type
+              type,
+              newList,
+              dateTime + i
             );
             if (datas.code === 200) {
               id += 1;
@@ -2098,7 +2128,9 @@ const ChatList = () => {
             nameList,
             type,
             fileType,
-            clientmessage
+            clientmessage,
+            1,
+            '不分片'
           );
           if (datas.code === 200) {
             page = 1;

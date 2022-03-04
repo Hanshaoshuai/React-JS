@@ -972,9 +972,9 @@ app.post('/isRead', function (req, res) {
   }
 })
 
-const addText = async (obj, apath, filePath, apathZoom) => {
+const addText = async (obj, apath, filePath, apathZoom, index) => {
   // console.log(obj)
-  obj.clientmessage = JSON.parse(obj.clientmessage);
+  let newClientmessage = JSON.parse(obj.clientmessage);
   var fromTos = null,
     objs = [];
   let yes = false;
@@ -993,20 +993,21 @@ const addText = async (obj, apath, filePath, apathZoom) => {
           objs = objs.map((item) => {
             // console.log(item.file?.index * 1 === obj.imgId * 1, item.file?.index, obj.imgId)
             if (item.file && (item.file.index * 1 === obj.imgId * 1)) {
+              item.file.styleLength = obj.styleLength ? obj.styleLength : item.file.styleLength
               item.file.url = apath;
               item.file.apathZoom = apathZoom;
-              item.file.fileType = obj.fileType
+              item.file.fileType = obj?.fileType
               item.file.file = true;
-              item.file.size = obj.size;
+              item.file.size = obj?.size;
               if (obj.fileName) {
                 item.file.fileName = true;
               } else {
                 item.file.length = obj.length
               }
-              if (obj.voice) {
+
+              if (obj?.voice) {
                 item.file.voice = obj.voice
               }
-
               // console.log(item)
             }
             return item;
@@ -1033,11 +1034,11 @@ const addText = async (obj, apath, filePath, apathZoom) => {
       }
     })
   }
-  if (obj.clientmessage.type === 'groupChat') {
-    fromTos = obj.clientmessage.groupName;
+  if (newClientmessage.type === 'groupChat') {
+    fromTos = newClientmessage.groupName;
     yes = writeFiles(fromTos);
   } else {
-    fromTos = (obj.clientmessage.fromName * 1 + obj.clientmessage.toName * 1).toString() + '.txt';
+    fromTos = (newClientmessage.fromName * 1 + newClientmessage.toName * 1).toString() + '.txt';
     yes = writeFiles(fromTos);
   }
   return yes;
@@ -1056,7 +1057,7 @@ app.post('/file_upload', function (req, res) {
   })
   // form.on('end', function () {})
   forms.parse(req, (err, fields, files) => {
-    // console.log(fields.typeName)
+    // console.log(fields)
     if (err) {
       res.send({ code: 2001, msg: "上传失败" })
       return;
@@ -1075,6 +1076,9 @@ app.post('/file_upload', function (req, res) {
     let filePath = path.join(__dirname, '../images/Avatars')
     let apath = `/images/Avatars/${fileName}.${reqs.type}`
     let apathZoom = `/images/Avatars/${fileName}Zoom.${reqs.type}`
+    if (reqs.lengthId === '1' && reqs.styleLength) {
+      apathZoom = `/images/file/${fileName}Zoom.jpg`
+    }
 
     if (reqs.file) { // 文件或视频处理
       fileName = reqs.fileName
@@ -1099,7 +1103,7 @@ app.post('/file_upload', function (req, res) {
 
 
 
-    if (reqs.type === '分片上传' || reqs.length === '分片上传最后') {
+    if (reqs.type === '分片上传' || reqs.length === '分片上传最后' || reqs.length === '不分片') {
       // classIcon += reqs.classIcon;
       // res.send({ code: 200, msg: "分片上传继续" })
       // filePath = path.join(__dirname, './fileList');
@@ -1109,7 +1113,7 @@ app.post('/file_upload', function (req, res) {
       // 切片上传目录
       const chunksPath = filePath + '/'
       // 切片文件
-      const chunksFileName = `${filePath}/${fileName}.${typeName || type}`
+      let chunksFileName = `${filePath}/${fileName}.${typeName || type}`
       // apath = `/node/fileList/${fileName}.${reqs.type}`
       // const chunksFileName = `${filePath}/${fileName}.${typeName || type}`
 
@@ -1117,10 +1121,34 @@ app.post('/file_upload', function (req, res) {
         fs.mkdirSync(chunksPath)
       }
       // // 秒传，如果切片已上传，则立即返回
-      if (lengthId === '1' && fs.existsSync(chunksFileName)) {
-        // res.send({ code: 200, msg: "切片上传完成" })
-        fs.unlinkSync(chunksFileName) // 第一次上传切片，如果文件已存在删除文件操作
+      if (lengthId === '1' || reqs.styleLength) {
+        // 如果是视频做个封面图
+        if (reqs.styleLength) {
+          let chunksFileNames = `${filePath}/${fileName}Zoom.jpg`
+          // if (lengthId === '1' && fs.existsSync(chunksFileNames)) {
+          //   fs.access(chunksFileNames, (err) => {
+          //     if (err) {
+          //       console.log(err.message);
+          //     } else {
+          //       fs.unlinkSync(chunksFileNames) // 第一次上传切片，如果文件已存在删除文件操作
+          //     }
+          //   })
+          //   fs.access(chunksFileName, (err) => {
+          //     if (err) {
+          //       console.log(err.message);
+          //     } else {
+          //       fs.unlinkSync(chunksFileName) // 第一次上传切片，如果文件已存在删除文件操作
+          //     }
+          //   })
+          //   // res.send({ code: 200, msg: "切片上传完成" })
+          // }
+          const upStream = fs.createWriteStream(chunksFileNames);
+          upStream.write(reqs.classIconZoom.split("base64,")[1], 'base64')
+          upStream.end()
+          addText(reqs, apath, filePath, apathZoom, true)
+        }
       }
+
       // // 创建可读流
       // const reader = fs.createReadStream(files.path);
 
@@ -1155,7 +1183,8 @@ app.post('/file_upload', function (req, res) {
       // msg: ‘切片上传完成’
       // }
       // })
-      if (reqs.length === '分片上传最后') {
+      if (reqs.length === '分片上传最后' || reqs.length === '不分片') {
+        apathZoom = `/images/file/${fileName}Zoom.jpg`
         const tos = () => {
           res.send({ code: 200, msg: "上传成功", icon: apath, id: fileName, apath, apathZoom })
         }
