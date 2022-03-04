@@ -2078,7 +2078,9 @@ const ChatList = () => {
               if (id < shardCount - 1) {
                 toFileUpload();
               }
+
               if (id === shardCount - 1) {
+                console.log('分片上传最后');
                 start = id * shardSize;
                 end = start + shardSize;
                 id += 1;
@@ -2137,6 +2139,10 @@ const ChatList = () => {
             imagelistIndex = 0;
             scrollSize = 0;
             itemId++;
+            window.socket.emit('clientmessage', {
+              //只作为图片上传完成使用
+              uploadCompleted: true,
+            });
             //   //只作为文件上传完成使用
           }
         }
@@ -2155,6 +2161,10 @@ const ChatList = () => {
           imagelistIndex = 0;
           scrollSize = 0;
           itemId++;
+          window.socket.emit('clientmessage', {
+            //只作为图片上传完成使用
+            uploadCompleted: true,
+          });
           //   //只作为图片上传完成使用
         }
       }
@@ -2179,10 +2189,6 @@ const ChatList = () => {
           page = 1;
           imagelistIndex = 0;
           scrollSize = 0;
-          window.socket.emit('clientmessage', {
-            //只作为图片上传完成使用
-            uploadCompleted: true,
-          });
         }
         if (itemId >= length) {
           page = 1;
@@ -2190,10 +2196,10 @@ const ChatList = () => {
           scrollSize = 0;
           smallFile = 0;
           setDeleteFl(!deleteFl);
-          window.socket.emit('clientmessage', {
-            //只作为图片上传完成使用
-            uploadCompleted: true,
-          });
+          // window.socket.emit('clientmessage', {
+          //   //只作为图片上传完成使用
+          //   uploadCompleted: true,
+          // });
         }
       }
       const dom: any = document.getElementById(`${dateTime + i}`);

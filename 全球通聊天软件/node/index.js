@@ -34,6 +34,7 @@ const router = Router()
 router.__dataStore = {}
 
 const formidable = require('formidable');
+const { promises } = require('stream');
 var MongoClient = require('mongodb').MongoClient;
 
 
@@ -977,61 +978,64 @@ const addText = async (obj, apath, filePath, apathZoom, index) => {
   let newClientmessage = JSON.parse(obj.clientmessage);
   var fromTos = null
   let yes = false;
-  const writeFiles = (fromTo) => {
-    fs.exists(filePath, function (err) {
-      // console.log('123', apath, filePath, err, fromTo)
-      if (err) {
-        fs.readFile('./chatRecord/' + fromTo, function (error, data) {
-          if (error) {
-            // console.log('读取文件error', error);
-            return false;
-          }
-          //console.log(data);  //data是读取的十六进制的数据。  也可以在参数中加入编码格式"utf8"来解决十六进制的问题;
-          // console.log('读取出所有行的信息 ', data.toString());  //读取出所有行的信息
-          let newList = JSON.parse(data.toString());
-          let objs = newList.map((item) => {
-            // console.log(item.file?.index * 1 === obj.imgId * 1, item.file?.index, obj.imgId)
-            if (item.file && (item.file.index * 1 === obj.imgId * 1)) {
-              item.file.styleLength = obj.styleLength ? obj.styleLength : item.file.styleLength
-              item.file.url = apath;
-              item.file.apathZoom = apathZoom;
-              item.file.fileType = obj?.fileType
-              item.file.file = true;
-              item.file.size = obj?.size;
-              if (obj.fileName) {
-                item.file.fileName = true;
-              } else {
-                item.file.length = obj.length
-              }
-
-              if (obj?.voice) {
-                item.file.voice = obj.voice
-              }
-              // console.log(item)
+  const writeFiles = async (fromTo) => {
+    let setFile = await new Promise((res, rej) => {
+      fs.exists(filePath, function (err) {
+        // console.log('123', apath, filePath, err, fromTo)
+        if (err) {
+          fs.readFile('./chatRecord/' + fromTo, function (error, data) {
+            if (error) {
+              // console.log('读取文件error', error);
+              return false;
             }
-            return item;
-          })
-          objs = JSON.stringify(objs);
-          // console.log(objs)
-          fs.writeFile(
-            './chatRecord/' + fromTo,
-            objs,
-            'utf8',
-            function (error) {
-              if (error) {
-                // console.log(error);
-                return false;
-              } else {
-                // console.log('写入成功');
-                return true;
+            //console.log(data);  //data是读取的十六进制的数据。  也可以在参数中加入编码格式"utf8"来解决十六进制的问题;
+            // console.log('读取出所有行的信息 ', data.toString());  //读取出所有行的信息
+            let newList = JSON.parse(data.toString());
+            let objs = newList.map((item) => {
+              // console.log(item.file?.index * 1 === obj.imgId * 1, item.file?.index, obj.imgId)
+              if (item.file && (item.file.index * 1 === obj.imgId * 1)) {
+                if (obj.styleLength) {
+                  item.file.styleLength = obj.styleLength
+                }
+                item.file.url = apath;
+                item.file.apathZoom = apathZoom;
+                item.file.fileType = obj?.fileType
+                item.file.file = true;
+                item.file.size = obj?.size || '';
+                if (obj.fileName) {
+                  item.file.fileName = true;
+                } else {
+                  item.file.length = obj.length
+                }
+
+                if (obj?.voice) {
+                  item.file.voice = obj.voice
+                }
+                // console.log(item)
               }
-
-            }
-          );
-
-        });
-      }
+              return item;
+            })
+            objs = JSON.stringify(objs);
+            // console.log(objs)
+            fs.writeFile(
+              './chatRecord/' + fromTo,
+              objs,
+              'utf8',
+              function (error) {
+                if (error) {
+                  // console.log(error);
+                  return false;
+                } else {
+                  // console.log('写入成功');
+                  res(true)
+                }
+              }
+            );
+          });
+        }
+      })
     })
+    return setFile;
   }
   if (newClientmessage.type === 'groupChat') {
     fromTos = newClientmessage.groupName;
@@ -1055,7 +1059,7 @@ app.post('/file_upload', function (req, res) {
     // }
   })
   // form.on('end', function () {})
-  forms.parse(req, (err, fields, files) => {
+  forms.parse(req, async (err, fields, files) => {
     // console.log(fields)
     if (err) {
       res.send({ code: 2001, msg: "上传失败" })
@@ -1112,7 +1116,7 @@ app.post('/file_upload', function (req, res) {
       // 切片上传目录
       const chunksPath = filePath + '/'
       // 切片文件
-      let chunksFileName = `${filePath}/${fileName}.${typeName || type}`
+      let chunksFileName = `${__dirname}/${fileName}.${typeName || type}`
       // apath = `/node/fileList/${fileName}.${reqs.type}`
       // const chunksFileName = `${filePath}/${fileName}.${typeName || type}`
 
@@ -1120,10 +1124,12 @@ app.post('/file_upload', function (req, res) {
         fs.mkdirSync(chunksPath)
       }
       // // 秒传，如果切片已上传，则立即返回
+      let ffff = null
       if (lengthId === '1' || reqs.styleLength) {
+        // console.log('分片首次上传')
         // 如果是视频做个封面图
         if (reqs.styleLength) {
-          let chunksFileNames = `${filePath}/${fileName}Zoom.jpg`
+          let chunksFileNames = `${__dirname}/${fileName}Zoom.jpg`
           // if (lengthId === '1' && fs.existsSync(chunksFileNames)) {
           //   fs.access(chunksFileNames, (err) => {
           //     if (err) {
@@ -1144,14 +1150,17 @@ app.post('/file_upload', function (req, res) {
           const upStream = fs.createWriteStream(chunksFileNames);
           upStream.write(reqs.classIconZoom.split("base64,")[1], 'base64')
           upStream.end()
-          addText(reqs, apath, filePath, apathZoom, true)
+          ffff = await new Promise((resolve, reject) => {
+            const add = addText(reqs, apath, __dirname, apathZoom, true)
+            resolve(add)
+          })
         }
       }
 
       // // 创建可读流
       // const reader = fs.createReadStream(files.path);
 
-
+      console.log(ffff)
       // 第一种方式 创建可写流
       const upStream = fs.createWriteStream(chunksFileName, {
         flags: 'a' //如果要把内容追加到文件原有的内容的后面，则设置flags为'a',此时设置start无效
@@ -1183,6 +1192,7 @@ app.post('/file_upload', function (req, res) {
       // }
       // })
       if (reqs.length === '分片上传最后' || reqs.length === '不分片') {
+        // console.log('分片上传最后')
         apathZoom = `/images/file/${fileName}Zoom.jpg`
         const tos = () => {
           res.send({ code: 200, msg: "上传成功", icon: apath, id: fileName, apath, apathZoom })
