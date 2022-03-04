@@ -2107,10 +2107,10 @@ const ChatList = () => {
                     smallFile = 0;
                   }
                   itemId++;
-                  // window.socket.emit('clientmessage', {
-                  //   //只作为文件上传完成使用
-                  //   uploadCompleted: true,
-                  // });
+                  window.socket.emit('clientmessage', {
+                    //只作为文件上传完成使用
+                    uploadCompleted: true,
+                  });
                   const dom: any = document.getElementById(`${dateTime + i}`);
                   if (dom) {
                     let complete = (((id / shardCount) * 100) | 0) + '%';
@@ -2196,10 +2196,10 @@ const ChatList = () => {
           scrollSize = 0;
           smallFile = 0;
           setDeleteFl(!deleteFl);
-          window.socket.emit('clientmessage', {
-            //只作为图片上传完成使用
-            uploadCompleted: true,
-          });
+          // window.socket.emit('clientmessage', {
+          //   //只作为图片上传完成使用
+          //   uploadCompleted: true,
+          // });
         }
       }
       const dom: any = document.getElementById(`${dateTime + i}`);
