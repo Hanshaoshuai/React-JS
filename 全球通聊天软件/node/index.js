@@ -973,7 +973,7 @@ app.post('/isRead', function (req, res) {
   }
 })
 
-const addText = async (obj, apath, filePath, apathZoom, index) => {
+const addText = async (obj, apath, filePath, apathZoom, typeFileName) => {
   // console.log(obj)
   let newClientmessage = JSON.parse(obj.clientmessage);
   var fromTos = null
@@ -1000,7 +1000,7 @@ const addText = async (obj, apath, filePath, apathZoom, index) => {
                 item.file.url = apath;
                 item.file.apathZoom = apathZoom;
                 item.file.fileType = obj?.fileType
-                item.file.file = true;
+                item.file.file = typeFileName === 'img' ? true : typeFileName === 'file' ? true : false;
                 item.file.size = obj?.size || '';
                 if (obj.fileName) {
                   item.file.fileName = true;
@@ -1124,7 +1124,6 @@ app.post('/file_upload', function (req, res) {
         fs.mkdirSync(chunksPath)
       }
       // // 秒传，如果切片已上传，则立即返回
-      let ffff = null
       if (lengthId === '1' || reqs.styleLength) {
         // console.log('分片首次上传')
         // 如果是视频做个封面图
@@ -1150,7 +1149,7 @@ app.post('/file_upload', function (req, res) {
           const upStream = fs.createWriteStream(chunksFileNames);
           upStream.write(reqs.classIconZoom.split("base64,")[1], 'base64')
           upStream.end()
-          ffff = await new Promise((resolve, reject) => {
+          await new Promise((resolve, reject) => {
             const add = addText(reqs, apath, __dirname, apathZoom, true)
             resolve(add)
           })
@@ -1160,7 +1159,7 @@ app.post('/file_upload', function (req, res) {
       // // 创建可读流
       // const reader = fs.createReadStream(files.path);
 
-      console.log(ffff)
+      // console.log(playTo)
       // 第一种方式 创建可写流
       const upStream = fs.createWriteStream(chunksFileName, {
         flags: 'a' //如果要把内容追加到文件原有的内容的后面，则设置flags为'a',此时设置start无效
@@ -1197,7 +1196,7 @@ app.post('/file_upload', function (req, res) {
         const tos = () => {
           res.send({ code: 200, msg: "上传成功", icon: apath, id: fileName, apath, apathZoom })
         }
-        if ((reqs.image || reqs.file) && addText(reqs, apath, filePath, apathZoom)) {
+        if ((reqs.image || reqs.file) && addText(reqs, apath, filePath, apathZoom, 'file')) {
           tos()
         } else if (reqs.image !== "true") { tos() }
         return;
@@ -1262,7 +1261,7 @@ app.post('/file_upload', function (req, res) {
               const tos = () => {
                 res.send({ code: 200, msg: "首次上传成功", icon: apath, id: fileName, apath, apathZoom })
               }
-              if ((reqs.image || reqs.file) && addText(reqs, apath, filePath, apathZoom)) {
+              if ((reqs.image || reqs.file) && addText(reqs, apath, filePath, apathZoom, 'img')) {
                 tos()
               } else if (reqs.image !== "true") { tos() }
             }
@@ -1378,7 +1377,7 @@ app.post('/file_upload', function (req, res) {
             const tos = () => {
               res.send({ code: 200, msg: "上传成功", icon: apath, id: fileName, apath, apathZoom })
             }
-            if ((reqs.image || reqs.file) && addText(reqs, apath, filePath, apathZoom)) {
+            if ((reqs.image || reqs.file) && addText(reqs, apath, filePath, apathZoom, 'img')) {
               tos()
             } else if (reqs.image !== "true") { tos() }
 
