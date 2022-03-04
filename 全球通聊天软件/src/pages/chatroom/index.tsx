@@ -17,7 +17,7 @@ import {
 } from 'antd-mobile-icons';
 
 import { expressionList } from './expression';
-import { moment, isObject, IsURL, userAgent } from '../../helpers';
+import { moment, isObject, IsURL } from '../../helpers';
 import { MyContext } from '../../models/context';
 import OtherItems from './otherItems';
 import { UploadImg } from '../A-components/uploadImg';
@@ -2242,7 +2242,7 @@ const ChatList = () => {
           navigator.mediaDevices.getUserMedia(constraints).then(
             (MediaStream) => {
               const mediaRecorder: any = new MediaRecorder(MediaStream); //构造函数会创建一个对指定的 MediaStream 进行录制的 MediaRecorder 对象
-              if (userAgent() === 'cp') {
+              if (window.modelName === 'pc') {
                 node.onmousedown = (e: any) => {
                   timeouts = false;
                   startTime = new Date().getTime();

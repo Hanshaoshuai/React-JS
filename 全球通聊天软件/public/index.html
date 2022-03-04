@@ -27,18 +27,15 @@
     <link rel="stylesheet" href="%PUBLIC_URL%/Cesium/Widgets/widgets.css" />
     <title>全球通</title>
     <script type="text/javascript">
-      var typeName = (function userAgent() {
+      window.modelName = (function userAgent() {
         var ua = navigator.userAgent.toLowerCase().indexOf('windows');
         var iPad = navigator.userAgent.indexOf('iPad');
         var type = '';
         if (ua >= 0) {
-          // console.log('pc端');
           type = 'pc';
         } else if (iPad >= 0) {
-          // console.log('平板');
           type = '平板';
         } else {
-          // console.log('手机');
           type = '手机';
         }
         return type;
@@ -97,12 +94,10 @@
         },
       ]);
       // 设置基础字体大小及字体缩放比例
-      if (typeName === '手机') {
+      if (modelName === '手机') {
         vl(100, 750);
-        // vl(100, 1080);
-      } else if (typeName === '平板') {
+      } else if (modelName === '平板') {
         vl(100, 1024);
-        // vl(100, 1080);
       } else {
         vl(100, 1920);
       }
