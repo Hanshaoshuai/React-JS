@@ -1116,7 +1116,7 @@ app.post('/file_upload', function (req, res) {
       // 切片上传目录
       const chunksPath = filePath + '/'
       // 切片文件
-      let chunksFileName = `${__dirname}/${fileName}.${typeName || type}`
+      let chunksFileName = `${filePath}/${fileName}.${typeName || type}`
       // apath = `/node/fileList/${fileName}.${reqs.type}`
       // const chunksFileName = `${filePath}/${fileName}.${typeName || type}`
 
@@ -1129,7 +1129,7 @@ app.post('/file_upload', function (req, res) {
         // console.log('分片首次上传')
         // 如果是视频做个封面图
         if (reqs.styleLength) {
-          let chunksFileNames = `${__dirname}/${fileName}Zoom.jpg`
+          let chunksFileNames = `${filePath}/${fileName}Zoom.jpg`
           // if (lengthId === '1' && fs.existsSync(chunksFileNames)) {
           //   fs.access(chunksFileNames, (err) => {
           //     if (err) {
