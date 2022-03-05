@@ -95,10 +95,10 @@ export const FileUpload = (
           formDate.append('typeName', Nsize);
         } else {
           let size: any = 0;
-          if ((Nsize || fileList.size) <= 1024) {
+          if (((Nsize && Nsize !== '不分片') || fileList.size) <= 1024) {
             size = `${Nsize || fileList.size}B`;
           } else {
-            size = (Nsize || fileList.size) / 1024;
+            size = ((Nsize && Nsize !== '不分片') || fileList.size) / 1024;
             if (size <= 1024) {
               size = `${size.toFixed(2)}K`;
             } else {
