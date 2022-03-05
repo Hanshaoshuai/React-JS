@@ -1,6 +1,12 @@
 import './index.scss';
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useHistory, Link } from 'react-router-dom';
 
 import {
@@ -14,14 +20,17 @@ import { moment } from '../../helpers';
 import Spins from '../A-Spin';
 
 import VideoCallPlay from '../chatroom/videoCallPlay';
+import { setBadge } from '../../actions';
 
 import { MyContext } from '../../models/context';
 
+let badge: number = 0;
 // let imgIdLoc: any = "";
 // let groupNameLoc: any = "";
 const ChatRecord = () => {
   const history = useHistory();
-  const { messages } = useContext(MyContext);
+  const { state, messages, dispatch } = useContext(MyContext);
+  const { pathname } = state;
   const [localName] = useState<any>(localStorage.getItem('name') || '');
   const [myNameL] = useState<any>(localStorage.getItem('myName') || '');
   const [tabShow, setTabShow] = useState<any>(false);
@@ -105,6 +114,13 @@ const ChatRecord = () => {
       setOnFinish(true);
     }
   }, [messages]);
+  useEffect(() => {
+    if (window.location.search === '?list=1') {
+      options(2);
+    } else {
+      options(1);
+    }
+  }, [pathname]);
 
   const videoCallCancel = () => {
     setVideoCalls(false);
@@ -126,6 +142,7 @@ const ChatRecord = () => {
       // console.log(data);
       if (data.code === 200) {
         if (data.body?.length > 0) {
+          badge = 0;
           setFriendList(data.body);
           setGetBuddyListsL(data.body);
           localStorage.setItem('getBuddyLists', JSON.stringify(data.body));
@@ -138,7 +155,7 @@ const ChatRecord = () => {
   };
 
   const goBackS = () => {
-    history.push('/personalInformation');
+    history.push('/personalInformation?personal=1');
   };
 
   const linkFriends = (
@@ -329,6 +346,7 @@ const ChatRecord = () => {
   };
   const tabHind = () => {
     setBoxList(false);
+    history.push('/');
   };
 
   const options = (type: number) => {
@@ -337,10 +355,12 @@ const ChatRecord = () => {
     }
     if (type === 1) {
       setBoxList(false);
+      history.push('/');
       return;
     }
     if (type === 2) {
       setBoxList(true);
+      history.push('/?list=1');
       if (dataList.length) {
         return;
       }
@@ -378,6 +398,242 @@ const ChatRecord = () => {
     }
   };
 
+  const boxRef = useCallback(
+    (node: any) => {
+      if (node) {
+        if (node.offsetHeight >= document.documentElement.clientHeight) {
+          node.style.paddingBottom = '0.9rem';
+        }
+      }
+    },
+    [friendList]
+  );
+  const constList = useMemo(() => {
+    return friendList.map((item: any, index: any) => {
+      var text = 'no',
+        fromName = 'no',
+        toName = 'no',
+        newsNumber: any = '',
+        friendName = '',
+        toNames = '',
+        headPortrait = '',
+        chatRecord = '',
+        toFriends = '',
+        sex = '',
+        remarksName = '',
+        myRegion = '',
+        remarksNuber = 'no';
+      friendName = item.name;
+      toNames = item.nickName;
+      // headPortrait = item.headPortrait;
+      headPortrait = item.apathZoom;
+
+      if (item.name === localStorage.getItem('name')) {
+        window.localStorage.setItem('mySex', item.sex);
+        window.localStorage.setItem('LLNumber', item.LLNumber);
+        if (item.myRegion) {
+          window.localStorage.setItem('myRegion', item.myRegion);
+        } else {
+          window.localStorage.setItem('myRegion', '');
+        }
+        friendName = item.name;
+        toNames = item.nickName;
+        // headPortrait = item.headPortrait;
+        headPortrait = item.apathZoom;
+        sex = item.sex;
+      }
+      item.linkFriends.map((e: any) => {
+        if (e.friendName === localName && e.adopt === 'yes') {
+          text = 'yes';
+          fromName = e.fromName;
+          toName = e.toName;
+          newsNumber = e.newsNumber;
+          remarksNuber = e.remarksNuber;
+          if (e.remarksName) {
+            remarksName = e.remarksName;
+          }
+          if (e.chatRecord && e.chatRecord.addName) {
+            if (e.chatRecord.addName === myNameL) {
+              chatRecord = `来自 ${e.toName} 好友验证请求`;
+            } else {
+              chatRecord = '您向对方发送了好友验证请求！请耐心等待...';
+            }
+          } else {
+            if (e.chatRecord.friends === 'yes') {
+              if (e.chatRecord.from === localName) {
+                chatRecord = '你通过了对方的好友验证请求，现在可以开始聊天啦😄';
+              } else {
+                chatRecord = e.chatRecord.text;
+              }
+            } else {
+              if (e.chatRecord.friends === 'no') {
+                chatRecord = '对方拒绝了您的好友验证请求！';
+                toFriends = 'no';
+              } else {
+                chatRecord = e.chatRecord;
+              }
+            }
+          }
+        } else {
+          if (e.friendName === localName) {
+            fromName = e.fromName;
+            toName = e.toName;
+            newsNumber = e.newsNumber;
+            if (e.remarksName) {
+              remarksName = e.remarksName;
+            }
+            if (e.toName === '') {
+              if (e.chatRecord && e.chatRecord.addName) {
+                chatRecord = '您向对方发送了好友验证请求！请耐心等待...';
+              } else {
+                if (e.adopt === '') {
+                  text = 'yes';
+                  toFriends = 'no';
+                  chatRecord = '对方拒绝了您的好友验证请求！';
+                } else {
+                  chatRecord = e.chatRecord;
+                }
+              }
+            } else {
+              if (e.chatRecord && e.chatRecord.addName) {
+                chatRecord = `来自 ${e.toName} 的好友验证请求！`;
+              } else {
+                if (e.adopt === '') {
+                  text = 'yes';
+                  toFriends = 'no';
+                  chatRecord = '您拒绝了对方的好友验证请求！';
+                } else {
+                  chatRecord = e.chatRecord;
+                }
+              }
+            }
+          }
+        }
+        return e;
+      });
+      let css_b = '',
+        nickName = item.nickName,
+        nickName1 = 'no',
+        imga_first = 'block',
+        imga_last = 'none',
+        localNumber = 0,
+        nickNameGrou = 'no',
+        imgList = [],
+        groupChatNumber = null,
+        groupOwner = 'no',
+        textName = 'no';
+      if (newsNumber * 1 === 0) {
+        css_b = 'fromumber';
+      } else {
+        css_b = '';
+      }
+      // console.log('lllll',toNames)
+      if (remarksName !== '') {
+        nickName = remarksName;
+        nickName1 = remarksName;
+      } else {
+        nickName1 = nickName;
+      }
+      if (item.buildingGroupName) {
+        groupOwner = item.groupOwner;
+        // imgIdLoc = item.imgId;
+        // groupNameLoc = item.name;
+        // console.log('lllll',groupNameLoc)
+        localNumber = item.imgId.length;
+        nickName = item.buildingGroupName;
+        toNames = item.buildingGroupName;
+        nickNameGrou = nickName;
+        textName = item.textName;
+        for (var q = 0; q < localNumber; q++) {
+          imgList.push(item.imgId[q].classIcon);
+        }
+        if (item.text === '') {
+          chatRecord = '可以开始群聊啦！';
+        } else {
+          chatRecord = item.text;
+        }
+        imga_first = 'none';
+        imga_last = 'block';
+        groupChatNumber = item.linkFriends;
+        for (var p = 0; p < item.name.length; p++) {
+          // console.log(groupChatNumber[p].name,'----',groupChatNumber[p].newsNumber)
+          if (
+            item.name[p].name === localName &&
+            item.name[p].newsNumber * 1 === 0
+          ) {
+            css_b = 'fromumber';
+            break;
+          } else if (item.name[p].name === localName) {
+            css_b = '';
+            newsNumber = item.name[p].newsNumber * 1;
+            badge += newsNumber * 1;
+          }
+        }
+      }
+      return (
+        <div
+          className="content-food"
+          key={index}
+          onClick={() =>
+            toChat(
+              remarksNuber,
+              textName,
+              groupOwner,
+              localNumber,
+              nickNameGrou,
+              nickName1,
+              text,
+              fromName,
+              toName,
+              friendName,
+              toNames,
+              headPortrait,
+              sex,
+              toFriends,
+              item.groupName,
+              item.imgId,
+              item.name
+            )
+          }
+        >
+          <div className="imgas">
+            <p style={{ display: `${imga_first}` }}>
+              <img className="border" src={item.apathZoom} alt="" />
+            </p>
+            <p
+              style={{
+                display: `${imga_last}`,
+                border: '1px #dddddd solid',
+                background: '#f5f4f9',
+              }}
+            >
+              {imgList.map((i: any, keys: any) => {
+                return (
+                  <a key={keys}>
+                    <img className="border_s" src={i} alt="" />
+                  </a>
+                );
+              })}
+            </p>
+            <span className={`hint ${css_b}`}>
+              {newsNumber > 99 ? '99+' : newsNumber}
+            </span>
+          </div>
+          <div className="texts">
+            <span className="first">{nickName}</span>
+            <span className="lalst">{chatRecord ? chatRecord : '图片...'}</span>
+            <div className="texts-bottom border-bottom"></div>
+          </div>
+          <div className="times">{moment(parseInt(item.dateTime))}</div>
+        </div>
+      );
+    });
+  }, [friendList]);
+
+  useEffect(() => {
+    dispatch({ type: 'badge', badge: badge });
+  }, [friendList]);
+
   return (
     <>
       <div className="yijian">
@@ -396,7 +652,7 @@ const ChatRecord = () => {
             />
           )}
           <span className="xiangmu-left-go"></span>
-          <span>{boxList ? '已注册人员' : '聊聊'}</span>
+          <span>{boxList ? '人员列表' : '聊聊'}</span>
           <img
             src="/images/dashujukeshihuaico.png"
             alt=""
@@ -405,7 +661,7 @@ const ChatRecord = () => {
           />
           <ul className={`${tabShow ? 'show' : ''}`}>
             <li onClick={() => options(1)}>好友</li>
-            <li onClick={() => options(2)}>已注册人员</li>
+            {/* <li onClick={() => options(2)}>人员列表</li> */}
             <li onClick={() => options(3)}>发起群聊</li>
             <li onClick={() => options(4)}>添加好友</li>
             <Link
@@ -464,237 +720,13 @@ const ChatRecord = () => {
           <div id="gengduo">获取更多数据</div>
         </div>
         <div className="box box_friend">
-          <div className="fankiu" style={{ paddingTop: '0.9rem' }}>
+          <div className="fankiu" style={{ paddingTop: '0.9rem' }} ref={boxRef}>
             {/* {friendList.length > 0
             ? friendList.map((item: any) => {
                 return item;
               })
             : ""} */}
-            {friendList.length > 0
-              ? friendList.map((item: any, index: any) => {
-                  var text = 'no',
-                    fromName = 'no',
-                    toName = 'no',
-                    newsNumber: any = '',
-                    friendName = '',
-                    toNames = '',
-                    headPortrait = '',
-                    chatRecord = '',
-                    toFriends = '',
-                    sex = '',
-                    remarksName = '',
-                    myRegion = '',
-                    remarksNuber = 'no';
-                  friendName = item.name;
-                  toNames = item.nickName;
-                  // headPortrait = item.headPortrait;
-                  headPortrait = item.apathZoom;
-
-                  if (item.name === localStorage.getItem('name')) {
-                    window.localStorage.setItem('mySex', item.sex);
-                    window.localStorage.setItem('LLNumber', item.LLNumber);
-                    if (item.myRegion) {
-                      window.localStorage.setItem('myRegion', item.myRegion);
-                    } else {
-                      window.localStorage.setItem('myRegion', '');
-                    }
-                    friendName = item.name;
-                    toNames = item.nickName;
-                    // headPortrait = item.headPortrait;
-                    headPortrait = item.apathZoom;
-                    sex = item.sex;
-                  }
-                  item.linkFriends.map((e: any) => {
-                    if (e.friendName === localName && e.adopt === 'yes') {
-                      text = 'yes';
-                      fromName = e.fromName;
-                      toName = e.toName;
-                      newsNumber = e.newsNumber;
-                      remarksNuber = e.remarksNuber;
-                      if (e.remarksName) {
-                        remarksName = e.remarksName;
-                      }
-                      if (e.chatRecord && e.chatRecord.addName) {
-                        if (e.chatRecord.addName === myNameL) {
-                          chatRecord = `来自 ${e.toName} 好友验证请求`;
-                        } else {
-                          chatRecord =
-                            '您向对方发送了好友验证请求！请耐心等待...';
-                        }
-                      } else {
-                        if (e.chatRecord.friends === 'yes') {
-                          if (e.chatRecord.from === localName) {
-                            chatRecord =
-                              '你通过了对方的好友验证请求，现在可以开始聊天啦😄';
-                          } else {
-                            chatRecord = e.chatRecord.text;
-                          }
-                        } else {
-                          if (e.chatRecord.friends === 'no') {
-                            chatRecord = '对方拒绝了您的好友验证请求！';
-                            toFriends = 'no';
-                          } else {
-                            chatRecord = e.chatRecord;
-                          }
-                        }
-                      }
-                    } else {
-                      if (e.friendName === localName) {
-                        fromName = e.fromName;
-                        toName = e.toName;
-                        newsNumber = e.newsNumber;
-                        if (e.remarksName) {
-                          remarksName = e.remarksName;
-                        }
-                        if (e.toName === '') {
-                          if (e.chatRecord && e.chatRecord.addName) {
-                            chatRecord =
-                              '您向对方发送了好友验证请求！请耐心等待...';
-                          } else {
-                            if (e.adopt === '') {
-                              text = 'yes';
-                              toFriends = 'no';
-                              chatRecord = '对方拒绝了您的好友验证请求！';
-                            } else {
-                              chatRecord = e.chatRecord;
-                            }
-                          }
-                        } else {
-                          if (e.chatRecord && e.chatRecord.addName) {
-                            chatRecord = `来自 ${e.toName} 的好友验证请求！`;
-                          } else {
-                            if (e.adopt === '') {
-                              text = 'yes';
-                              toFriends = 'no';
-                              chatRecord = '您拒绝了对方的好友验证请求！';
-                            } else {
-                              chatRecord = e.chatRecord;
-                            }
-                          }
-                        }
-                      }
-                    }
-                    return e;
-                  });
-                  let css_b = '',
-                    nickName = item.nickName,
-                    nickName1 = 'no',
-                    imga_first = 'block',
-                    imga_last = 'none',
-                    localNumber = 0,
-                    nickNameGrou = 'no',
-                    imgList = [],
-                    groupChatNumber = null,
-                    groupOwner = 'no',
-                    textName = 'no';
-                  if (newsNumber * 1 === 0) {
-                    css_b = 'fromumber';
-                  } else {
-                    css_b = '';
-                  }
-                  // console.log('lllll',toNames)
-                  if (remarksName !== '') {
-                    nickName = remarksName;
-                    nickName1 = remarksName;
-                  } else {
-                    nickName1 = nickName;
-                  }
-                  if (item.buildingGroupName) {
-                    groupOwner = item.groupOwner;
-                    // imgIdLoc = item.imgId;
-                    // groupNameLoc = item.name;
-                    // console.log('lllll',groupNameLoc)
-                    localNumber = item.imgId.length;
-                    nickName = item.buildingGroupName;
-                    toNames = item.buildingGroupName;
-                    nickNameGrou = nickName;
-                    textName = item.textName;
-                    for (var q = 0; q < localNumber; q++) {
-                      imgList.push(item.imgId[q].classIcon);
-                    }
-                    if (item.text === '') {
-                      chatRecord = '可以开始群聊啦！';
-                    } else {
-                      chatRecord = item.text;
-                    }
-                    imga_first = 'none';
-                    imga_last = 'block';
-                    groupChatNumber = item.linkFriends;
-                    for (var p = 0; p < item.name.length; p++) {
-                      // console.log(groupChatNumber[p].name,'----',groupChatNumber[p].newsNumber)
-                      if (
-                        item.name[p].name === localName &&
-                        item.name[p].newsNumber * 1 === 0
-                      ) {
-                        css_b = 'fromumber';
-                        break;
-                      } else if (item.name[p].name === localName) {
-                        css_b = '';
-                        newsNumber = item.name[p].newsNumber * 1;
-                      }
-                    }
-                  }
-                  return (
-                    <div
-                      className="content-food"
-                      key={index}
-                      onClick={() =>
-                        toChat(
-                          remarksNuber,
-                          textName,
-                          groupOwner,
-                          localNumber,
-                          nickNameGrou,
-                          nickName1,
-                          text,
-                          fromName,
-                          toName,
-                          friendName,
-                          toNames,
-                          headPortrait,
-                          sex,
-                          toFriends,
-                          item.groupName,
-                          item.imgId,
-                          item.name
-                        )
-                      }
-                    >
-                      <div className="imgas">
-                        <p style={{ display: `${imga_first}` }}>
-                          <img className="border" src={item.apathZoom} alt="" />
-                        </p>
-                        <p
-                          style={{
-                            display: `${imga_last}`,
-                            border: '1px #dddddd solid',
-                            background: '#f5f4f9',
-                          }}
-                        >
-                          {imgList.map((i: any, keys: any) => {
-                            return (
-                              <a key={keys}>
-                                <img className="border_s" src={i} alt="" />
-                              </a>
-                            );
-                          })}
-                        </p>
-                        <span className={`hint ${css_b}`}>{newsNumber}</span>
-                      </div>
-                      <div className="texts">
-                        <span className="first">{nickName}</span>
-                        <span className="lalst">
-                          {chatRecord ? chatRecord : '图片...'}
-                        </span>
-                        <div className="texts-bottom border-bottom"></div>
-                      </div>
-                      <div className="times">
-                        {moment(parseInt(item.dateTime))}
-                      </div>
-                    </div>
-                  );
-                })
-              : ''}
+            {friendList.length > 0 ? constList : ''}
           </div>
           {friendList.length === 0 ? (
             <div className="bottom">暂无好友</div>

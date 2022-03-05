@@ -5,6 +5,7 @@ import React, { useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { registers } from '../../api';
 import { Upload } from '../A-components/upload';
+import InformationSettings from '../informationSettings';
 import HooksCropperModal from '../HooksCropperModal/HooksCropperModal';
 
 const Register = () => {
@@ -21,6 +22,7 @@ const Register = () => {
   const [hooksModalFile, setHooksModalFile] = useState<any>('');
   const [hooksModalVisible, setHooksModalVisible] = useState<any>(false);
   const [type, setType] = useState<any>('');
+  const [settings, setSettings] = useState<any>(false);
 
   const yijianHind = () => {
     // history.goBack();
@@ -109,13 +111,21 @@ const Register = () => {
       });
       return;
     }
-    if (!imgId) {
-      Toast.show({
-        content: '请输上传你的头像！',
-        position: 'top',
-      });
-      return;
-    }
+    // if (!imgId) {
+    //   Toast.show({
+    //     content: '请输上传你的头像！',
+    //     position: 'top',
+    //   });
+    //   return;
+    // }
+    setSettings(true);
+  };
+  const goBackS = (e: boolean) => {
+    setSettings(e);
+  };
+  const callback = (e: any) => {
+    const imgId = localStorage.getItem('imgId');
+    // console.log(e);
     const obj = {
       nickName: name,
       name: telephone,
@@ -124,6 +134,7 @@ const Register = () => {
       imgId,
       headPortrait: imgSrc,
       apathZoom: imgApathZoom,
+      information: e,
     };
     // console.log(obj);
     registers(obj).then((res) => {
@@ -145,6 +156,11 @@ const Register = () => {
   };
   return (
     <div className="denglu">
+      <InformationSettings
+        display={settings}
+        goBackS={goBackS}
+        callback={callback}
+      />
       <div className="xiangmu-header" onClick={yijianHind}>
         <span className="xiangmu-left"></span>
         <span>注册</span>

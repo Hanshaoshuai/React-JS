@@ -1,0 +1,101 @@
+.InformationSettings {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  .container {
+    height: 100vh;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+  }
+
+  .side {
+    flex: none;
+  }
+
+  .main {
+    flex: auto;
+  }
+
+  .content {
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    color: #cccccc;
+    &.active {
+      display: flex;
+    }
+  }
+  .xiangCe {
+    // overflow-y: auto;
+    width: 100% !important;
+    padding: 0 !important;
+    height: calc(100% - 1.4rem) !important;
+    .container {
+      height: 100%;
+      .main {
+        overflow-y: auto;
+      }
+      .content {
+        overflow-y: auto;
+        // justify-content: left;
+        align-items: flex-start;
+        span {
+          padding: 0.1rem 0.19rem;
+          width: auto;
+          font-size: 0.31rem;
+          margin: 0.14rem;
+        }
+      }
+    }
+    .adm-side-bar-item {
+      font-size: 0.31rem;
+    }
+    .adm-side-bar-item-active {
+      color: #ff7a59;
+      .adm-side-bar-item-highlight {
+        background: #ff7a59;
+      }
+    }
+    .main-key1 {
+      width: 100%;
+      height: auto;
+      font-size: 0.2rem;
+    }
+    .main-key2 {
+      width: 95%;
+      // text-align: center;
+      padding-bottom: 0.3rem;
+      .main-Selector {
+        padding: 0 0.3rem;
+      }
+      .adm-divider-content {
+        font-size: 0.28rem;
+        color: #ff7a59;
+      }
+      .adm-selector {
+        font-size: 0.25rem;
+      }
+      .adm-selector-item-multiple-active {
+        color: #ff7a59;
+      }
+      .adm-selector-check-mark-wrapper {
+        border-bottom: solid 8px #ff7a59;
+        border-right: solid 10px #ff7a59;
+      }
+    }
+  }
+}
+.contents_search_leng {
+  height: calc(100% - 0.9rem) !important;
+  .ziZhu {
+    height: 100%;
+  }
+  .denglu-food {
+    margin: 0.3rem !important;
+  }
+}

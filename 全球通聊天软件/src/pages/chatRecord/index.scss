@@ -236,17 +236,18 @@
 }
 .box .fankiu .content-food .hint {
   position: absolute;
-  top: -0.08rem;
-  right: -0.08rem;
+  top: -0.1rem;
+  left: 0.8rem;
   display: inline-block;
-  width: 0.36rem;
-  height: 0.36rem;
+  /* width: 0.36rem; */
+  /* height: 0.36rem; */
   color: #fff;
-  font-size: 0.24rem;
-  line-height: 0.36rem;
-  text-align: center;
+  font-size: 0.23rem;
+  line-height: 0.23rem;
+  /* text-align: center; */
   background: #ff7a59;
   border-radius: 0.3rem;
+  padding: 0.03rem 0.08rem;
 }
 .box .fankiu .content-food span {
   line-height: 0.92rem;
@@ -281,4 +282,42 @@
 }
 .box .fankiu .content-food .imgas .fromumber {
   display: none;
+}
+.TabBar-list {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: #f8f8f8;
+  z-index: 1000;
+  .adm-tab-bar-item {
+    padding: 0.08rem 0.1rem 0.12rem 0.1rem;
+    color: #414141;
+  }
+  .adm-badge-fixed {
+    top: 6px;
+    background: #ff7a59;
+  }
+  .adm-tab-bar-item-title {
+    line-height: 0.25rem;
+    font-size: 0.25rem;
+  }
+  .adm-tab-bar-item-icon {
+    font-size: 0.41rem;
+    height: 0.4rem;
+    margin: 2px 0 3px;
+  }
+  .adm-badge-content {
+    font-size: 0.21rem;
+    line-height: 0.22rem;
+    padding: 0.02rem 0.075rem;
+  }
+  .adm-tab-bar-item-active {
+    color: #ff7a59;
+  }
+  .adm-badge-dot {
+    width: 0.19rem;
+    height: 0.19rem;
+    border-radius: 0.1rem;
+  }
 }

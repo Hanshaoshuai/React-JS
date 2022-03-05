@@ -1,8 +1,17 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState, useContext } from 'react';
 import { SwitchProps, Route, Redirect, useHistory } from 'react-router-dom';
 import { getToken } from '../helpers';
 
+import { TabBar, Badge } from 'antd-mobile';
+import {
+  AppOutline,
+  MessageOutline,
+  MessageFill,
+  UnorderedListOutline,
+  UserOutline,
+} from 'antd-mobile-icons';
 import Router from './routers';
+import { MyContext } from '../models/context';
 import Spins from '../pages/A-Spin';
 import ReactTransitionGroup from './reactTransitionGroup';
 const { ReactRouterTransitionPage } = require('react-router-transition-page');
@@ -11,7 +20,9 @@ export default function Routers({ location }: SwitchProps): ReactElement {
   const history = useHistory();
   const route = Router.find((r) => r.path === location?.pathname);
   const [myLocName] = useState<any>(localStorage.getItem('name'));
-
+  const { state, dispatch } = useContext(MyContext);
+  const { pathname } = state;
+  const { badge }: any = state;
   useEffect(() => {
     // console.log(getToken());
     if (!getToken() || !myLocName) {
@@ -19,6 +30,15 @@ export default function Routers({ location }: SwitchProps): ReactElement {
     }
     history.listen((route) => {
       // console.log(route); // 这个route里面有当前路由的各个参数信息
+      if (route.search) {
+        dispatch({
+          type: 'pathname',
+          pathname: `${route.pathname}${route.search}`,
+        });
+      } else {
+        dispatch({ type: 'pathname', pathname: route.pathname });
+      }
+
       if (
         !getToken() &&
         route.pathname !== '/register' &&
@@ -28,7 +48,46 @@ export default function Routers({ location }: SwitchProps): ReactElement {
         history.push('/login');
       }
     });
+    console.log();
+    if (window.location.search) {
+      dispatch({
+        type: 'pathname',
+        pathname: `${window.location.pathname}${window.location.search}`,
+      });
+    } else {
+      dispatch({ type: 'pathname', pathname: window.location.pathname });
+    }
   }, []);
+  const tabsList: any = [
+    {
+      key: '/',
+      title: '聊聊',
+      icon: (active: boolean) =>
+        active ? <MessageFill /> : <MessageOutline />,
+      badge: badge / 2,
+    },
+    {
+      key: '/?list=1',
+      title: '推荐',
+      icon: <UnorderedListOutline />,
+      badge: '',
+    },
+    {
+      key: '/dynamic',
+      title: '动态',
+      icon: <AppOutline />,
+      badge: Badge.dot,
+    },
+    {
+      key: '/personalInformation?personal=1',
+      title: '我的',
+      icon: <UserOutline />,
+    },
+  ];
+  const setActive = (e: string) => {
+    dispatch({ type: 'pathname', pathname: e });
+    history.push(`${e}`);
+  };
 
   if (route && route.path) {
     return (
@@ -37,7 +96,26 @@ export default function Routers({ location }: SwitchProps): ReactElement {
       //       <Spins styleSize={[65, 33]} color={'#ff7a59'} fontSize={'33px'} />
       //     }
       //   >
-      <Route path={route.path} exact={true} component={route.component} />
+      <>
+        <Route path={route.path} exact={true} component={route.component} />
+        {(pathname === '/' ||
+          pathname === '/?list=1' ||
+          pathname === '/personalInformation?personal=1') && (
+          <div className="TabBar-list">
+            <div className="border-top"></div>
+            <TabBar activeKey={pathname} onChange={setActive}>
+              {tabsList.map((item: any) => (
+                <TabBar.Item
+                  key={item.key}
+                  icon={item.icon}
+                  title={item.title}
+                  badge={item.badge}
+                />
+              ))}
+            </TabBar>
+          </div>
+        )}
+      </>
       // </Suspense>
 
       // <ReactRouterTransitionPage

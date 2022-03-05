@@ -1,11 +1,15 @@
 const reducer = (state: any, action: any) => {
   switch (action.type) {
-    case "stepInc":
+    case 'stepInc':
       return Object.assign({}, state, { step: state.step + 1 });
-    case "numberInc":
+    case 'numberInc':
       return Object.assign({}, state, { initState: action.initState });
-    case "count":
+    case 'count':
       return Object.assign({}, state, { initState: action.initState });
+    case 'badge':
+      return Object.assign({}, state, { badge: action.badge });
+    case 'pathname':
+      return Object.assign({}, state, { pathname: action.pathname });
     default:
       return state;
   }

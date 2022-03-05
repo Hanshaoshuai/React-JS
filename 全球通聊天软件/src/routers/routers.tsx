@@ -25,6 +25,7 @@ import AllMembers from '../pages/allMembers';
 import Threejs from '../pages/threejs';
 import Education from '../pages/education';
 import ProjectInstance from '../pages/projectInstance/projectInstance';
+import Dynamic from '../pages/dynamic';
 
 import Home from '../pages/home';
 import About from '../pages/about';
@@ -50,6 +51,7 @@ const Router: FrontEndRoute[] = [
   { path: '/threejs', component: Threejs, index: 10 },
   { path: '/education', component: Education, index: 11 },
   { path: '/projectInstance', component: ProjectInstance, index: 12 },
+  { path: '/dynamic', component: Dynamic, index: 13 },
 ];
 
 export default Router;
