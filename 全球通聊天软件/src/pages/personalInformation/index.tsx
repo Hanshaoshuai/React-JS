@@ -479,6 +479,7 @@ const ChatRecord = () => {
     } else if (settings === '?personal=1&setSettings=1') {
       setSettingsName(true);
     }
+    console.log(settings);
   }, [settings]);
   return (
     <div className="personalInformation" onClick={tabsHid}>

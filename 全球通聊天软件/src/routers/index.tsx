@@ -49,18 +49,19 @@ export default function Routers({ location }: SwitchProps): ReactElement {
       }
 
       if (route.search === '?personal=1') {
+        console.log('111', route.search);
         dispatch({
           type: 'settings',
-          pathname: '?personal=1',
+          settings: '?personal=1',
         });
       } else if (route.search === '?personal=1&setSettings=1') {
+        console.log('222', route.search);
         dispatch({
           type: 'settings',
-          pathname: '?personal=1&setSettings=1',
+          settings: '?personal=1&setSettings=1',
         });
       }
     });
-    // console.log();
     if (window.location.search) {
       dispatch({
         type: 'pathname',
