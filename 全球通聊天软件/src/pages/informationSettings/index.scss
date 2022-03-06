@@ -39,6 +39,7 @@
       height: 100%;
       .main {
         overflow-y: auto;
+        position: relative;
       }
       .content {
         overflow-y: auto;
@@ -49,6 +50,8 @@
           width: auto;
           font-size: 0.31rem;
           margin: 0.14rem;
+          word-break: break-all;
+          word-wrap: break-word;
         }
       }
     }
@@ -66,16 +69,15 @@
       height: auto;
       font-size: 0.2rem;
     }
+    .main-key0 {
+      padding-top: 0.1rem;
+    }
     .main-key2 {
       width: 95%;
       // text-align: center;
       padding-bottom: 0.3rem;
       .main-Selector {
         padding: 0 0.3rem;
-      }
-      .adm-divider-content {
-        font-size: 0.28rem;
-        color: #ff7a59;
       }
       .adm-selector {
         font-size: 0.25rem;
@@ -88,6 +90,24 @@
         border-right: solid 10px #ff7a59;
       }
     }
+    .main-Divider {
+      width: 95%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      margin: auto !important;
+      z-index: 1300;
+    }
+    .adm-divider {
+      margin: 0;
+      padding: 0.26rem 0;
+      background: #ffffff;
+    }
+    .adm-divider-content {
+      font-size: 0.28rem;
+      color: #ff7a59;
+    }
   }
 }
 .contents_search_leng {
@@ -98,4 +118,21 @@
   .denglu-food {
     margin: 0.3rem !important;
   }
+}
+.adm-modal-wrap,
+.adm-dialog-wrap {
+  z-index: 13000;
+}
+.adm-dialog-wrap-input {
+  .adm-input-element {
+    text-align: center;
+  }
+}
+.adm-dialog-wrap {
+  .adm-button {
+    color: #ff7a59;
+  }
+}
+.adm-picker-header-button {
+  color: #ff7a59;
 }

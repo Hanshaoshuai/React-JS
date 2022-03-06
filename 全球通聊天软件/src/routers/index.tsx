@@ -47,8 +47,20 @@ export default function Routers({ location }: SwitchProps): ReactElement {
       ) {
         history.push('/login');
       }
+
+      if (route.search === '?personal=1') {
+        dispatch({
+          type: 'settings',
+          pathname: '?personal=1',
+        });
+      } else if (route.search === '?personal=1&setSettings=1') {
+        dispatch({
+          type: 'settings',
+          pathname: '?personal=1&setSettings=1',
+        });
+      }
     });
-    console.log();
+    // console.log();
     if (window.location.search) {
       dispatch({
         type: 'pathname',

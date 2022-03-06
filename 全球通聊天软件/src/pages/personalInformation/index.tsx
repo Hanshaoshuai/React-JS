@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Toast, ImageViewer } from 'antd-mobile';
 import HooksCropperModal from '../HooksCropperModal/HooksCropperModal';
+import InformationSettings from '../informationSettings';
 
 import { clearAll } from '../../helpers';
 import { MyContext } from '../../models/context';
@@ -19,11 +20,12 @@ import { Upload } from '../A-components/upload';
 
 const localNames = window.localStorage.getItem('name');
 const ChatRecord = () => {
-  const { messages } = useContext(MyContext);
+  const { state } = useContext(MyContext);
+  const { settings } = state;
   const history = useHistory();
   const fs: any = useRef(null);
   const [localName, setLocalName] = useState<any>('');
-  const [tabTex, setTabTex] = useState<any>('个人资料');
+  const [tabTex, setTabTex] = useState<any>('我的');
   const [LLNumber, setLLNumber] = useState<any>(
     localStorage.getItem('LLNumber') || ''
   );
@@ -76,6 +78,9 @@ const ChatRecord = () => {
   const [FileVl, setFileVl] = useState<any>('');
   const [type, setType] = useState<any>('');
   const [visible, setVisible] = useState(false);
+
+  const [settingsName, setSettingsName] = useState<any>(false);
+  const [name, setNames] = useState<any>('');
 
   useEffect(() => {
     informationDetailsQ();
@@ -187,7 +192,7 @@ const ChatRecord = () => {
         setToNames(localStorage.getItem('toNames'));
         setRemarksNuber(localStorage.getItem('remarksNuber'));
       } else {
-        setTabTex('个人资料');
+        setTabTex('我的');
         setNickName('');
         setSetRegion('');
       }
@@ -453,8 +458,38 @@ const ChatRecord = () => {
     // console.log(onInputText);
     informationDetailsQ(onInputText);
   };
+  const callback = (e: any) => {
+    console.log(e);
+    setSettingsName(false);
+  };
+  const goBackSettings = () => {
+    history.push('/personalInformation?personal=1');
+    setSettingsName(false);
+  };
+  const setName = (e: string) => {
+    setNames(e);
+  };
+  const dataSetting = () => {
+    setSettingsName(true);
+    history.push('/personalInformation?personal=1&setSettings=1');
+  };
+  useEffect(() => {
+    if (settings === '?personal=1') {
+      setSettingsName(false);
+    } else if (settings === '?personal=1&setSettings=1') {
+      setSettingsName(true);
+    }
+  }, [settings]);
   return (
     <div className="personalInformation" onClick={tabsHid}>
+      <InformationSettings
+        display={settingsName}
+        goBackS={goBackSettings}
+        callback={callback}
+        setName={setName}
+        name={name}
+        labelData={{}}
+      />
       {addSearchFriends ? (
         <>
           <div className="searchBox home-search-go">
@@ -485,12 +520,12 @@ const ChatRecord = () => {
       ) : (
         <div className="searchBox">
           <div className="home-search">
-            <img
+            {/* <img
               src="/images/fanhui.png"
               className="xiangmu-left"
               alt=""
               onClick={goBackS}
-            />
+            /> */}
             <span>{tabTex}</span>
             {friend &&
             !remove &&
@@ -600,7 +635,11 @@ const ChatRecord = () => {
           </div>
           <div className="denglu-text">
             {!personalInformation && !searchResults ? (
-              <div className="sheZhi denglu_sheZhi" onClick={setUp}>
+              <div
+                className="sheZhi denglu_sheZhi"
+                // onClick={setUp}
+                onClick={dataSetting}
+              >
                 资料设置
               </div>
             ) : friend &&

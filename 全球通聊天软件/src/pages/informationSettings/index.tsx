@@ -3,9 +3,20 @@ import './index.scss';
 
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { SideBar, Tag, Divider, Selector } from 'antd-mobile';
+import {
+  SideBar,
+  Tag,
+  Divider,
+  Selector,
+  Picker,
+  Dialog,
+  Input,
+  Toast,
+  CascadePicker,
+} from 'antd-mobile';
 import classNames from 'classnames';
 import {
+  options0,
   options,
   options1,
   options2,
@@ -16,9 +27,19 @@ import {
   options7,
   options8,
   options9,
+  basicColumnsObj,
 } from './options';
 
-const InformationSettings = ({ display, goBackS, callback }: any) => {
+const InformationSettings = ({
+  display,
+  goBackS,
+  callback,
+  setName,
+  name,
+  labelData,
+}: any) => {
+  const [newOptions0, setNewOptions0] = useState<any>([...options0]);
+  let valueInputText = '';
   const history = useHistory();
   const [imgIdLoc] = useState<any>(
     JSON.parse(window.localStorage.getItem('imgIdLoc') || '[]')
@@ -26,32 +47,116 @@ const InformationSettings = ({ display, goBackS, callback }: any) => {
   const [displayBlock, setDisplayBlock] = useState(false);
   const [activeKey, setActiveKey] = useState('key1');
   const [information, setInformation] = useState<any>({});
+  const [basicInformation, setBasicInformation] = useState<any>({});
+  const [basicList, setBasicList] = useState<any>('');
+
+  const [visible, setVisible] = useState(false);
+  const [visibleCascade, setVisibleCascade] = useState(false);
+  const [value, setValue] = useState<(string | null)[]>([]);
+  const [basicColumns, setBasicColumns] = useState<any>([]);
+  const [visibleModal, setVisibleModal] = useState(false);
+  const [valueInput, setValueInput] = useState<any>(name);
+  const [changes, setChanges] = useState(false);
 
   useEffect(() => {
     if (!display) {
       let timeout = setTimeout(() => {
         setDisplayBlock(false);
         clearTimeout(timeout);
-      }, 300);
+      }, 270);
     } else {
       setDisplayBlock(true);
     }
   }, [display]);
 
-  // const goBackS = () => {
-  //   if (!localStorage.getItem('type')) {
-  //     history.push('/');
-  //   } else {
-  //     history.goBack();
-  //   }
-  //   localStorage.removeItem('personalInformation');
-  // };
+  useEffect(() => {
+    if (name) {
+      setValueInput(name);
+    }
+  }, [name]);
+
   const determine = () => {
-    callback(information);
+    // let res = false;
+    // newOptions0.map((item:any)=>{
+    //   if(item.value){
+    //     res = true
+    //   }
+    //   return item;
+    // })
+    // if(res){
+    //   Toast.show('基本资料填写完整');
+    //   return;
+    // }
+    callback({ newOptions0, information });
   };
 
   const selectorKey = (list: any, name: string) => {
     setInformation(Object.assign({}, information, { [name]: list }));
+  };
+
+  useEffect(() => {
+    if (basicList) {
+      if (basicList === '户籍' || basicList === '工作所在地') {
+        setVisibleCascade(true);
+      } else {
+        setVisible(true);
+      }
+    }
+  }, [changes]);
+  const onSetBasicInformation = async (value: any) => {
+    // console.log(value);
+    if (value === '昵称') {
+      const result = await Dialog.confirm({
+        content: (
+          <Input
+            className="adm-dialog-wrap-input"
+            placeholder="请输入昵称"
+            // value={valueInput}
+            onChange={(val) => {
+              valueInputText = val;
+            }}
+          />
+        ),
+      });
+      // console.log(result);
+      if (!result || valueInputText.length >= 13) {
+        Toast.show('昵称太长！请在13个字符内');
+        valueInputText = valueInput;
+        setValueInput(valueInput);
+      } else {
+        setValueInput(valueInputText);
+        setName(valueInputText);
+        let newList = newOptions0.map((item: any) => {
+          if (item.label === '昵称') {
+            item.value = valueInputText;
+          }
+          return item;
+        });
+        setNewOptions0(newList);
+      }
+      return;
+    }
+    setChanges(!changes);
+    setBasicList(value);
+    setBasicColumns(basicColumnsObj[value]);
+  };
+  const onConfirm = (e: any) => {
+    let newList = newOptions0.map((item: any) => {
+      if (item.label === basicList) {
+        if (basicList === '户籍' || basicList === '工作所在地') {
+          item.value = e[1] ? `${e[0]}-${e[1]}` : e[0];
+        } else {
+          item.value = e[0];
+        }
+      }
+      return item;
+    });
+    // console.log(e, basicList, newList);
+    setNewOptions0(newList);
+    setValue(e);
+  };
+  const onAction = (e: any) => {
+    // console.log(e);
   };
 
   const toChat = (classIcon: string, name: string, nickName: any) => {
@@ -81,7 +186,35 @@ const InformationSettings = ({ display, goBackS, callback }: any) => {
       badge: '',
     },
   ];
-
+  const onScroll = (e: any) => {
+    // console.log(
+    //   e,
+    //   e.target.scrollTop,
+    //   e.target.getElementsByClassName('adm-divider')[2].offsetTop,
+    //   e.target.getElementsByClassName('adm-divider')[2].offsetTop -
+    //     e.target.scrollTop
+    // );
+    const domList: any = e.target.getElementsByClassName('adm-divider') || [];
+    [...domList].map((item: any, index: number) => {
+      if (index > 1) {
+        // console.log(item.offsetHeight);
+        let numbers = item.offsetTop - e.target.scrollTop;
+        if (numbers > 0 && numbers < item.offsetHeight) {
+          // console.log(index, item.innerText, Math.floor(numbers));
+        }
+        if (Math.floor(numbers) > 0 && Math.floor(numbers) < 50) {
+          domList[0].children[0].innerText = item.innerText;
+        } else if (
+          Math.floor(numbers) > 50 &&
+          Math.floor(numbers) < 100 &&
+          domList[index - 1]
+        ) {
+          domList[0].children[0].innerText = domList[index - 1].innerText;
+        }
+      }
+      return item;
+    });
+  };
   return (
     <div
       style={{ display: `${displayBlock ? 'block' : 'none'}` }}
@@ -97,7 +230,7 @@ const InformationSettings = ({ display, goBackS, callback }: any) => {
             alt=""
             onClick={() => goBackS(false)}
           />
-          <span>个人资料</span>
+          <span>资料设置</span>
         </div>
       </div>
       <div className="contents contents_search_leng">
@@ -118,22 +251,18 @@ const InformationSettings = ({ display, goBackS, callback }: any) => {
                     activeKey === 'key1' && 'active'
                   )}
                 >
-                  <div className={'main-key1'}>
-                    <Tag round color="#ff7a59">
-                      昵称：
-                    </Tag>
-                    <Tag round color="#ff7a59">
-                      户籍：
-                    </Tag>
-                    <Tag round color="#ff7a59">
-                      学历：
-                    </Tag>
-                    <Tag round color="#ff7a59">
-                      工作所在地：
-                    </Tag>
-                    <Tag round color="#ff7a59">
-                      星座：
-                    </Tag>
+                  <div className={'main-key0 main-key1'}>
+                    {newOptions0.map((item: any) => (
+                      <Tag
+                        round
+                        color="#ff7a59"
+                        onClick={() => onSetBasicInformation(item.label)}
+                        key={item.label}
+                      >
+                        {item.label}：
+                        {item.label === '昵称' ? valueInput : item.value}
+                      </Tag>
+                    ))}
                   </div>
                 </div>
                 <div
@@ -141,13 +270,17 @@ const InformationSettings = ({ display, goBackS, callback }: any) => {
                     'content',
                     activeKey === 'key2' && 'active'
                   )}
+                  onScroll={(e) => onScroll(e)}
                 >
+                  <Divider className={'main-Divider'} contentPosition="left">
+                    状态
+                  </Divider>
                   <div className={'main-key1 main-key2'}>
                     <Divider contentPosition="left">状态</Divider>
                     <div className={'main-Selector'}>
                       <Selector
                         options={options}
-                        defaultValue={[]}
+                        defaultValue={labelData?.ZHUANG_TAI || []}
                         multiple={true}
                         onChange={(arr, extend) => {
                           // console.log(arr, extend.items);
@@ -159,7 +292,7 @@ const InformationSettings = ({ display, goBackS, callback }: any) => {
                     <div className={'main-Selector'}>
                       <Selector
                         options={options1}
-                        defaultValue={[]}
+                        defaultValue={labelData?.XING_GE || []}
                         multiple={true}
                         onChange={(arr, extend) => {
                           // console.log(arr, extend.items);
@@ -171,7 +304,7 @@ const InformationSettings = ({ display, goBackS, callback }: any) => {
                     <div className={'main-Selector'}>
                       <Selector
                         options={options3}
-                        defaultValue={[]}
+                        defaultValue={labelData?.JIA_ZHI_GUAN || []}
                         multiple={true}
                         onChange={(arr, extend) => {
                           // console.log(arr, extend.items);
@@ -183,7 +316,7 @@ const InformationSettings = ({ display, goBackS, callback }: any) => {
                     <div className={'main-Selector'}>
                       <Selector
                         options={options4}
-                        defaultValue={[]}
+                        defaultValue={labelData?.AI_HAO || []}
                         multiple={true}
                         onChange={(arr, extend) => {
                           // console.log(arr, extend.items);
@@ -195,7 +328,7 @@ const InformationSettings = ({ display, goBackS, callback }: any) => {
                     <div className={'main-Selector'}>
                       <Selector
                         options={options5}
-                        defaultValue={[]}
+                        defaultValue={labelData?.SHU_JI || []}
                         multiple={true}
                         onChange={(arr, extend) => {
                           // console.log(arr, extend.items);
@@ -207,7 +340,7 @@ const InformationSettings = ({ display, goBackS, callback }: any) => {
                     <div className={'main-Selector'}>
                       <Selector
                         options={options6}
-                        defaultValue={[]}
+                        defaultValue={labelData?.MEI_SHI || []}
                         multiple={true}
                         onChange={(arr, extend) => {
                           // console.log(arr, extend.items);
@@ -219,7 +352,7 @@ const InformationSettings = ({ display, goBackS, callback }: any) => {
                     <div className={'main-Selector'}>
                       <Selector
                         options={options7}
-                        defaultValue={[]}
+                        defaultValue={labelData?.YUN_DONG || []}
                         multiple={true}
                         onChange={(arr, extend) => {
                           // console.log(arr, extend.items);
@@ -231,7 +364,7 @@ const InformationSettings = ({ display, goBackS, callback }: any) => {
                     <div className={'main-Selector'}>
                       <Selector
                         options={options8}
-                        defaultValue={[]}
+                        defaultValue={labelData?.DIAN_YING || []}
                         multiple={true}
                         onChange={(arr, extend) => {
                           // console.log(arr, extend.items);
@@ -243,7 +376,7 @@ const InformationSettings = ({ display, goBackS, callback }: any) => {
                     <div className={'main-Selector'}>
                       <Selector
                         options={options9}
-                        defaultValue={[]}
+                        defaultValue={labelData?.YOU_XI || []}
                         multiple={true}
                         onChange={(arr, extend) => {
                           // console.log(arr, extend.items);
@@ -262,6 +395,54 @@ const InformationSettings = ({ display, goBackS, callback }: any) => {
           </div>
         </div>
       </div>
+      {visible && (
+        <Picker
+          columns={basicColumns}
+          visible={visible}
+          onClose={() => {
+            setVisible(false);
+          }}
+          value={value}
+          onConfirm={onConfirm}
+          // onSelect={(val, extend) => {
+          //   console.log('onSelect', val, extend.items);
+          // }}
+        ></Picker>
+      )}
+      {visibleCascade && (
+        <CascadePicker
+          options={basicColumns}
+          visible={visibleCascade}
+          onClose={() => {
+            setVisibleCascade(false);
+          }}
+          value={value}
+          onConfirm={onConfirm}
+          // onSelect={(val, extend) => {
+          //   console.log('onSelect', val, extend.items);
+          // }}
+        ></CascadePicker>
+      )}
+      <Dialog
+        className="Dialog-box"
+        visible={visibleModal}
+        content="人在天边月上明"
+        closeOnAction
+        onAction={(e) => onAction(e)}
+        onClose={() => {
+          setVisibleModal(false);
+        }}
+        // actions={[
+        //   {
+        //     key: 'confirm',
+        //     text: '确定',
+        //   },
+        //   {
+        //     key: 'confirm',
+        //     text: '取消',
+        //   },
+        // ]}
+      />
     </div>
   );
 };

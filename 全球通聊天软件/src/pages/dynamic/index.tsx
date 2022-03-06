@@ -12,12 +12,12 @@ const Dynamic = () => {
   useEffect(() => {}, []);
 
   const goBackS = () => {
-    if (!localStorage.getItem('type')) {
-      history.push('/');
-    } else {
-      history.goBack();
-    }
-    localStorage.removeItem('personalInformation');
+    // if (!localStorage.getItem('type')) {
+    //   history.push('/');
+    // } else {
+    history.goBack();
+    // }
+    // localStorage.removeItem('personalInformation');
   };
 
   const toChat = (classIcon: string, name: string, nickName: any) => {
@@ -51,7 +51,7 @@ const Dynamic = () => {
       <div className="contents contents_search_leng">
         <div className="denglu-text ziZhu">
           <div className="xiangCe">
-            {imgIdLoc.map((item: any, index: number) => {
+            {/* {imgIdLoc.map((item: any, index: number) => {
               return (
                 <div
                   key={index}
@@ -64,7 +64,7 @@ const Dynamic = () => {
                   <span className={'names'}>{item.nickName}</span>
                 </div>
               );
-            })}
+            })} */}
           </div>
         </div>
       </div>

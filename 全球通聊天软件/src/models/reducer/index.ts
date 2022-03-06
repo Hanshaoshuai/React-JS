@@ -10,6 +10,8 @@ const reducer = (state: any, action: any) => {
       return Object.assign({}, state, { badge: action.badge });
     case 'pathname':
       return Object.assign({}, state, { pathname: action.pathname });
+    case 'settings':
+      return Object.assign({}, state, { settings: action.settings });
     default:
       return state;
   }

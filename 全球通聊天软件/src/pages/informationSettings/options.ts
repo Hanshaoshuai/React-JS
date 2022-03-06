@@ -28,7 +28,6 @@ export const options = [
     value: '添加自定义',
   },
 ];
-
 export const options1 = [
   {
     label: '温柔',
@@ -1295,3 +1294,128 @@ export const options9 = [
     value: '奇迹暖暖',
   },
 ];
+export const options0: any = [
+  {
+    label: '昵称',
+    value: '',
+  },
+  {
+    label: '户籍',
+    value: '',
+  },
+  {
+    label: '学历',
+    value: '',
+  },
+  {
+    label: '工作所在地',
+    value: '',
+  },
+  {
+    label: '星座',
+    value: '',
+  },
+  {
+    label: '体重',
+    value: '',
+  },
+];
+let list = [];
+for (let i = 30; i < 201; i++) {
+  if (i === 30) {
+    list = [];
+  }
+  list.push({ label: `${i}kg`, value: `${i}kg` });
+}
+export const basicColumnsObj: any = {
+  //   ["北京", "天津", "上海", "重庆", "新疆", "西藏", "宁夏", "内蒙古",
+  //              "广西", "黑龙江", "吉林", "辽宁", "河北", "山东", "江苏", "安徽",
+  //              "浙江", "福建", "广东", "海南", "云南", "贵州", "四川", "湖南",
+  //              "湖北", "河南", "山西", "陕西", "甘肃", "青海", "江西", "台湾", "香港", "澳门"]
+  户籍: [
+    {
+      label: '浙江',
+      value: '浙江',
+      children: [
+        {
+          label: '杭州',
+          value: '杭州',
+        },
+        {
+          label: '宁波',
+          value: '宁波',
+        },
+      ],
+    },
+    {
+      label: '江苏',
+      value: '江苏',
+      children: [
+        {
+          label: '南京',
+          value: '南京',
+        },
+        {
+          label: '苏州',
+          value: '苏州',
+        },
+      ],
+    },
+  ],
+  学历: [
+    [
+      { label: '专科以下', value: '专科以下' },
+      { label: '专科', value: '专科' },
+      { label: '本科', value: '本科' },
+      { label: '硕士研究生', value: '硕士研究生' },
+      { label: '博士研究生', value: '博士研究生' },
+    ],
+  ],
+  工作所在地: [
+    {
+      label: '浙江',
+      value: '浙江',
+      children: [
+        {
+          label: '杭州',
+          value: '杭州',
+        },
+        {
+          label: '宁波',
+          value: '宁波',
+        },
+      ],
+    },
+    {
+      label: '江苏',
+      value: '江苏',
+      children: [
+        {
+          label: '南京',
+          value: '南京',
+        },
+        {
+          label: '苏州',
+          value: '苏州',
+        },
+      ],
+    },
+  ],
+  星座: [
+    [
+      { label: '白羊座', value: '白羊座' },
+      { label: '金牛座', value: '金牛座' },
+      { label: '双子座', value: '双子座' },
+      { label: '巨蟹座', value: '巨蟹座' },
+      { label: '狮子座', value: '狮子座' },
+      { label: '处女座', value: '处女座' },
+      { label: '天平座', value: '天平座' },
+      { label: '天蝎座', value: '天蝎座' },
+      { label: '射手座', value: '射手座' },
+      { label: '魔蝎座', value: '魔蝎座' },
+      { label: '水瓶座', value: '水瓶座' },
+      { label: '双鱼座', value: '双鱼座' },
+    ],
+  ],
+  体重: [list],
+};

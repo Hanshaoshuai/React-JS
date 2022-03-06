@@ -111,13 +111,13 @@ const Register = () => {
       });
       return;
     }
-    // if (!imgId) {
-    //   Toast.show({
-    //     content: '请输上传你的头像！',
-    //     position: 'top',
-    //   });
-    //   return;
-    // }
+    if (!imgId) {
+      Toast.show({
+        content: '请输上传你的头像！',
+        position: 'top',
+      });
+      return;
+    }
     setSettings(true);
   };
   const goBackS = (e: boolean) => {
@@ -126,6 +126,14 @@ const Register = () => {
   const callback = (e: any) => {
     const imgId = localStorage.getItem('imgId');
     // console.log(e);
+    // const {information,newOptions0}=e
+    if (!name) {
+      Toast.show({
+        content: '为自己起个名字吧！',
+        position: 'top',
+      });
+      return;
+    }
     const obj = {
       nickName: name,
       name: telephone,
@@ -154,12 +162,18 @@ const Register = () => {
       }
     });
   };
+  const setName = (e: string) => {
+    setNames(e);
+  };
   return (
     <div className="denglu">
       <InformationSettings
         display={settings}
         goBackS={goBackS}
         callback={callback}
+        setName={setName}
+        name={name}
+        labelData={{}}
       />
       <div className="xiangmu-header" onClick={yijianHind}>
         <span className="xiangmu-left"></span>
@@ -202,6 +216,7 @@ const Register = () => {
                 <img src="/images/6nichengzhao.png" alt="" />
               </span>
               <input
+                value={name}
                 placeholder="请输入昵称"
                 type="text"
                 className="nickName mint-field-core"

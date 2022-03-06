@@ -401,7 +401,7 @@ const ChatRecord = () => {
   const boxRef = useCallback(
     (node: any) => {
       if (node) {
-        if (node.offsetHeight >= document.documentElement.clientHeight) {
+        if (node.offsetHeight + 51.9 >= document.documentElement.clientHeight) {
           node.style.paddingBottom = '0.9rem';
         }
       }
@@ -409,6 +409,7 @@ const ChatRecord = () => {
     [friendList]
   );
   const constList = useMemo(() => {
+    badge = 0;
     return friendList.map((item: any, index: any) => {
       var text = 'no',
         fromName = 'no',
@@ -449,6 +450,7 @@ const ChatRecord = () => {
           toName = e.toName;
           newsNumber = e.newsNumber;
           remarksNuber = e.remarksNuber;
+          badge += newsNumber * 1;
           if (e.remarksName) {
             remarksName = e.remarksName;
           }
@@ -479,6 +481,7 @@ const ChatRecord = () => {
             fromName = e.fromName;
             toName = e.toName;
             newsNumber = e.newsNumber;
+            badge += newsNumber * 1;
             if (e.remarksName) {
               remarksName = e.remarksName;
             }
@@ -639,18 +642,21 @@ const ChatRecord = () => {
       <div className="yijian">
         {tabShow && <div className="auxiliary-box" onClick={tabsHid}></div>}
         <div className="xiangmu-header">
-          {!boxList ? (
-            <span onClick={goBackS} className="xiangmu-left">
-              <img src={imgeSrc} alt="" id="img" />
-            </span>
-          ) : (
-            <img
-              className="img-left"
-              src="/images/fanhui.png"
-              alt=""
-              onClick={tabHind}
-            />
-          )}
+          {
+            !boxList && (
+              <span onClick={goBackS} className="xiangmu-left">
+                <img src={imgeSrc} alt="" id="img" />
+              </span>
+            )
+            // : (
+            // <img
+            //   className="img-left"
+            //   src="/images/fanhui.png"
+            //   alt=""
+            //   onClick={tabHind}
+            // />
+            // )
+          }
           <span className="xiangmu-left-go"></span>
           <span>{boxList ? '人员列表' : '聊聊'}</span>
           <img
