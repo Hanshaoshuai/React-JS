@@ -6,7 +6,6 @@ import { createStore } from 'redux';
 import reducerAll from './reducer/index';
 import App from './App';
 import './index.scss';
-import SuperMap from './pages/superMap';
 
 const store = createStore(
   reducerAll
@@ -16,7 +15,6 @@ const store = createStore(
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <SuperMap />
       <App />
     </Provider>
   </React.StrictMode>,

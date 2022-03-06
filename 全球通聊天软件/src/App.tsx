@@ -7,6 +7,7 @@ import Routers from './routers';
 import { state, reducers } from './models';
 import { MyContext } from './models/context';
 import { APIS } from './api/ip';
+import SuperMap from './pages/superMap';
 
 // const io = require("socket.io");
 import io from 'socket.io-client';
@@ -38,6 +39,7 @@ export default function App() {
   // console.log(schedule);
   const [state, dispatch] = useReducer(reducer, states);
   const [messages, setMessages] = useState<any>({});
+  const [superMaps, setSuperMaps] = useState(false);
   useEffect(() => {
     window.socket.on('message', function (data: any) {
       setMessages(data);
@@ -54,6 +56,7 @@ export default function App() {
         list: [1, 2, 3],
       })
     );
+    setSuperMaps(true);
   }, []);
   useEffect(() => {
     // console.log('message====>>>>>', messages);
@@ -107,6 +110,7 @@ export default function App() {
   //  console.log(addThenMult(5))
   return (
     <>
+      {superMaps && <SuperMap />}
       <audio id="play" src="/mp3/1.mp3"></audio>
       <Router>
         <MyContext.Provider value={{ state, dispatch, messages }}>
