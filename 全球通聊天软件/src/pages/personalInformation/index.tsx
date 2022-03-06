@@ -459,7 +459,7 @@ const ChatRecord = () => {
     informationDetailsQ(onInputText);
   };
   const callback = (e: any) => {
-    console.log(e);
+    // console.log(e);
     setSettingsName(false);
   };
   const goBackSettings = () => {
@@ -479,7 +479,7 @@ const ChatRecord = () => {
     } else if (settings === '?personal=1&setSettings=1') {
       setSettingsName(true);
     }
-    console.log(settings);
+    // console.log(settings);
   }, [settings]);
   return (
     <div className="personalInformation" onClick={tabsHid}>
