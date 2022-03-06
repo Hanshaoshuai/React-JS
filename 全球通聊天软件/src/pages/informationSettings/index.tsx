@@ -118,7 +118,7 @@ const InformationSettings = ({
           />
         ),
       });
-      console.log(result);
+      // console.log(result);
       if (!result || valueInputText.length >= 13) {
         if (result && valueInputText.length >= 13) {
           Toast.show('昵称太长！请在13个字符内');
