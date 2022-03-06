@@ -119,6 +119,10 @@
     margin: 0.3rem !important;
   }
 }
+.adm-dialog,
+.adm-popup {
+  z-index: 190000 !important;
+}
 .adm-modal-wrap,
 .adm-dialog-wrap {
   z-index: 13000;

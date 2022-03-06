@@ -63,7 +63,7 @@ const InformationSettings = ({
       let timeout = setTimeout(() => {
         setDisplayBlock(false);
         clearTimeout(timeout);
-      }, 270);
+      }, 230);
     } else {
       setDisplayBlock(true);
     }
