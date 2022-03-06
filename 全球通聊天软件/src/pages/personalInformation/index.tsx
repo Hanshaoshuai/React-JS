@@ -474,12 +474,13 @@ const ChatRecord = () => {
     history.push('/personalInformation?personal=1&setSettings=1');
   };
   useEffect(() => {
-    if (settings === '?personal=1') {
+    if (window.location.search === '?personal=1') {
       setSettingsName(false);
-    } else if (settings === '?personal=1&setSettings=1') {
+      // console.log('111', settings, window.location.search);
+    } else if (window.location.search === '?personal=1&setSettings=1') {
       setSettingsName(true);
+      // console.log('222', settings, window.location.search);
     }
-    // console.log(settings);
   }, [settings]);
   return (
     <div className="personalInformation" onClick={tabsHid}>

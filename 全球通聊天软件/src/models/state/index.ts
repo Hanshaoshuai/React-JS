@@ -2,7 +2,7 @@ const initState = { count: 0, step: 0, number: 0 };
 const list: any = [];
 const badge: number = 0;
 const pathname: string = '/';
-const settings: string = '';
+const settings: string = '?personal=1';
 
 export default function initStates() {
   return {
