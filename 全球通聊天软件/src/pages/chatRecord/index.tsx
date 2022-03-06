@@ -408,6 +408,16 @@ const ChatRecord = () => {
     },
     [friendList]
   );
+  const boxRef1 = useCallback(
+    (node: any) => {
+      if (node) {
+        if (node.offsetHeight + 51.9 >= document.documentElement.clientHeight) {
+          node.style.paddingBottom = '0.9rem';
+        }
+      }
+    },
+    [friendList]
+  );
   const constList = useMemo(() => {
     badge = 0;
     return friendList.map((item: any, index: any) => {
@@ -695,7 +705,7 @@ const ChatRecord = () => {
           </ul>
         </div>
         <div className={`box ${!boxList ? 'box_list' : ''}`}>
-          <div className="fankiu">
+          <div className="fankiu" ref={boxRef}>
             <div
               style={{ width: '100%', height: '0.9rem', background: '#f5f4f9' }}
             ></div>
@@ -726,7 +736,11 @@ const ChatRecord = () => {
           <div id="gengduo">获取更多数据</div>
         </div>
         <div className="box box_friend">
-          <div className="fankiu" style={{ paddingTop: '0.9rem' }} ref={boxRef}>
+          <div
+            className="fankiu"
+            style={{ paddingTop: '0.9rem' }}
+            ref={boxRef1}
+          >
             {/* {friendList.length > 0
             ? friendList.map((item: any) => {
                 return item;
