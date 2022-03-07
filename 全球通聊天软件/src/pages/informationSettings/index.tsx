@@ -91,6 +91,9 @@ const InformationSettings = ({
   }, [labelOption]);
 
   useEffect(() => {
+    // if(labelData.ZHUANG_TAI){
+    //   options.push()
+    // }
     setInformation(labelData);
   }, [labelData]);
 
