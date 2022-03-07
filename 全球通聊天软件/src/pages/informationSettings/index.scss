@@ -2,7 +2,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1900;
+  z-index: 1009;
   .container {
     height: 100vh;
     background-color: #ffffff;
@@ -139,4 +139,21 @@
 }
 .adm-picker-header-button {
   color: #ff7a59;
+}
+.adm-space-item1 {
+  margin-top: 12px;
+  display: inline-block;
+  cursor: pointer;
+  .adm-selector-item1 {
+    border-radius: 2px;
+    color: #333333;
+    background-color: #f5f5f5;
+    padding: 8px 16px;
+    background-color: #ff7a59;
+    color: #ffffff;
+    &:active {
+      background-color: #e7f1ff;
+      color: #ff7a59;
+    }
+  }
 }

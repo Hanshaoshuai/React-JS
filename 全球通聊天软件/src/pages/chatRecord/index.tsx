@@ -173,7 +173,7 @@ const ChatRecord = () => {
       localStorage.setItem('toChatName', name.toString());
       localStorage.setItem('personalInformation', '1');
     }
-    history.push('/personalInformation');
+    history.push('/personalInformation?personal=1');
   };
 
   const claerNumeber = (
@@ -406,7 +406,7 @@ const ChatRecord = () => {
         }
       }
     },
-    [friendList]
+    [dataList]
   );
   const boxRef1 = useCallback(
     (node: any) => {

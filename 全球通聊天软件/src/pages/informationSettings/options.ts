@@ -23,10 +23,6 @@ export const options = [
     label: '相互倾诉',
     value: '相互倾诉',
   },
-  {
-    label: '添加自定义',
-    value: '添加自定义',
-  },
 ];
 export const options1 = [
   {

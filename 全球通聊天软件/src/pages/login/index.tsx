@@ -92,6 +92,10 @@ const ChatList = () => {
             if (data.code && data.imges) {
               localStorage.setItem('myHeadPortrait', data.imges);
               localStorage.setItem('myapathZoom', data.apathZoom);
+              localStorage.setItem(
+                'myInformation',
+                JSON.stringify(data.information)
+              );
             }
             history.push('/');
           });

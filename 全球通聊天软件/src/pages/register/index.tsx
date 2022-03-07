@@ -174,6 +174,7 @@ const Register = () => {
         setName={setName}
         name={name}
         labelData={{}}
+        indexId={true}
       />
       <div className="xiangmu-header" onClick={yijianHind}>
         <span className="xiangmu-left"></span>

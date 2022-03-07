@@ -17,7 +17,7 @@ import {
   logout,
 } from '../../api';
 import { Upload } from '../A-components/upload';
-
+let indexId: any = false;
 const localNames = window.localStorage.getItem('name');
 const ChatRecord = () => {
   const { state } = useContext(MyContext);
@@ -81,9 +81,21 @@ const ChatRecord = () => {
 
   const [settingsName, setSettingsName] = useState<any>(false);
   const [name, setNames] = useState<any>('');
+  const [labelData, setLabelData] = useState<any>({});
+  const [labelOption, setLabelOption] = useState<any>({});
 
   useEffect(() => {
     informationDetailsQ();
+    if (window.location.search === '?personal=1&setSettings=1') {
+      indexId = true;
+    }
+    if (localStorage.getItem('myInformation')) {
+      const { information, newOptions0 } = JSON.parse(
+        localStorage.getItem('myInformation') || '{}'
+      );
+      setLabelData(information || {});
+      setLabelOption(newOptions0 || []);
+    }
   }, []);
   // useEffect(() => {
   //   if (messages.icon) {
@@ -463,6 +475,7 @@ const ChatRecord = () => {
     setSettingsName(false);
   };
   const goBackSettings = () => {
+    indexId = true;
     history.push('/personalInformation?personal=1');
     setSettingsName(false);
   };
@@ -476,6 +489,7 @@ const ChatRecord = () => {
   useEffect(() => {
     if (window.location.search === '?personal=1') {
       setSettingsName(false);
+      indexId = true;
       // console.log('111', settings, window.location.search);
     } else if (window.location.search === '?personal=1&setSettings=1') {
       setSettingsName(true);
@@ -490,7 +504,9 @@ const ChatRecord = () => {
         callback={callback}
         setName={setName}
         name={name}
-        labelData={{}}
+        labelData={labelData}
+        indexId={indexId}
+        labelOption={labelOption}
       />
       {addSearchFriends ? (
         <>
@@ -522,12 +538,14 @@ const ChatRecord = () => {
       ) : (
         <div className="searchBox">
           <div className="home-search">
-            {/* <img
-              src="/images/fanhui.png"
-              className="xiangmu-left"
-              alt=""
-              onClick={goBackS}
-            /> */}
+            {(tabTex === '详细资料' || tabTex === '添加备注') && (
+              <img
+                src="/images/fanhui.png"
+                className="xiangmu-left"
+                alt=""
+                onClick={goBackS}
+              />
+            )}
             <span>{tabTex}</span>
             {friend &&
             !remove &&

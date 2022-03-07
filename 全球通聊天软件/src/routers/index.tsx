@@ -49,7 +49,6 @@ export default function Routers({ location }: SwitchProps): ReactElement {
       }
 
       if (route.search === '?personal=1') {
-        // console.log('111', route.search);
         dispatch({
           type: 'settings',
           settings: '?personal=1',
@@ -98,6 +97,7 @@ export default function Routers({ location }: SwitchProps): ReactElement {
     },
   ];
   const setActive = (e: string) => {
+    if (window.location.search === e) return;
     dispatch({ type: 'pathname', pathname: e });
     history.push(`${e}`);
   };
@@ -113,21 +113,22 @@ export default function Routers({ location }: SwitchProps): ReactElement {
         <Route path={route.path} exact={true} component={route.component} />
         {(pathname === '/' ||
           pathname === '/?list=1' ||
-          pathname === '/personalInformation?personal=1') && (
-          <div className="TabBar-list">
-            <div className="border-top"></div>
-            <TabBar activeKey={pathname} onChange={setActive}>
-              {tabsList.map((item: any) => (
-                <TabBar.Item
-                  key={item.key}
-                  icon={item.icon}
-                  title={item.title}
-                  badge={item.badge}
-                />
-              ))}
-            </TabBar>
-          </div>
-        )}
+          pathname === '/personalInformation?personal=1') &&
+          !localStorage.getItem('personalInformation') && (
+            <div className="TabBar-list">
+              <div className="border-top"></div>
+              <TabBar activeKey={pathname} onChange={setActive}>
+                {tabsList.map((item: any) => (
+                  <TabBar.Item
+                    key={item.key}
+                    icon={item.icon}
+                    title={item.title}
+                    badge={item.badge}
+                  />
+                ))}
+              </TabBar>
+            </div>
+          )}
       </>
       // </Suspense>
 

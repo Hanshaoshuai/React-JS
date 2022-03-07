@@ -1188,7 +1188,7 @@ const ChatList = () => {
         }
       }
       localStorage.setItem('personalInformation', '1');
-      history.push('/personalInformation');
+      history.push('/personalInformation?personal=1');
       // }
       // history.push('/personalInformation');
     };

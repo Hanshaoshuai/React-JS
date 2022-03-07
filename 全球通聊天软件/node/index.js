@@ -2435,6 +2435,7 @@ app.post('/remarks1', function (req, res) {
               result.myRegion = result_1[0].myRegion;
             }
             result.sex = result_1[0].sex;
+            result.information = result_1[0].information;
             for (var i = 0; i < obj.length; i++) {
               // console.log(obj[i].friendName);imgId
               if (obj[i].friendName === req.body.myName) {
