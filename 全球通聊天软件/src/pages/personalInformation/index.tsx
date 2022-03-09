@@ -5,6 +5,8 @@ import { useHistory } from 'react-router-dom';
 import { Toast, ImageViewer } from 'antd-mobile';
 import HooksCropperModal from '../HooksCropperModal/HooksCropperModal';
 import InformationSettings from '../informationSettings';
+import { RightOutline } from 'antd-mobile-icons';
+import Dynamic from '../dynamic';
 
 import { clearAll } from '../../helpers';
 import { MyContext } from '../../models/context';
@@ -486,16 +488,25 @@ const ChatRecord = () => {
     setSettingsName(true);
     history.push('/personalInformation?personal=1&setSettings=1');
   };
+  const [toDynamic, setToDynamic] = useState(false);
   useEffect(() => {
+    // console.log(settings);
     if (window.location.search === '?personal=1') {
       setSettingsName(false);
       indexId = true;
+      setToDynamic(false);
       // console.log('111', settings, window.location.search);
     } else if (window.location.search === '?personal=1&setSettings=1') {
       setSettingsName(true);
       // console.log('222', settings, window.location.search);
+    } else if (window.location.search === '?dynamic=1') {
+      setToDynamic(true);
     }
   }, [settings]);
+  const onDynamic = () => {
+    setToDynamic(true);
+    history.push('/personalInformation?dynamic=1');
+  };
   return (
     <div className="personalInformation" onClick={tabsHid}>
       <InformationSettings
@@ -685,8 +696,15 @@ const ChatRecord = () => {
               <span>{myRegion ? myRegion : '未设置'}</span>
             </div>
             <div className="xiangCe">
-              <span>个人相册</span>
-              <span></span>
+              <span className="xiangCeTite">个人相册</span>
+              <div className="xiangCeImg" onClick={onDynamic}>
+                <img src="" alt="" />
+                <img src="" alt="" />
+                <img src="" alt="" />
+                <span>
+                  <RightOutline />
+                </span>
+              </div>
             </div>
           </div>
           {friend && (searchResults || !personalInformation || !fromType) ? (
@@ -755,6 +773,16 @@ const ChatRecord = () => {
       ) : (
         ''
       )}
+      <Dynamic
+        name={'个人相册'}
+        onBack={() => {
+          indexId = true;
+          history.push('/personalInformation?personal=1');
+          setToDynamic(false);
+        }}
+        display={toDynamic}
+        indexId={indexId}
+      />
     </div>
   );
 };

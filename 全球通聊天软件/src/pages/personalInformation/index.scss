@@ -276,12 +276,25 @@
 .personalInformation .contents .denglu-text .xiangCe {
   width: 90.8%;
   margin: 0 auto;
-  padding: 0.2rem 0;
+  padding: 0.3rem 0;
+  display: flex;
+  justify-items: center;
+  height: 1.1rem;
 }
-.personalInformation .contents .denglu-text .xiangCe span {
-  padding: 0.5rem 0;
+.personalInformation .contents .denglu-text .xiangCe .xiangCeTite {
+  // padding: 0.5rem 0;
+  line-height: 1.1rem;
 }
-
+.personalInformation .contents .denglu-text .xiangCe .xiangCeImg {
+  flex: 1;
+  height: 100%;
+  span {
+    line-height: 1.1rem;
+    float: right;
+    width: auto;
+    color: #d0d0d0;
+  }
+}
 .personalInformation .contents .denglu-text .xiangCe .font_list {
   width: 20%;
   /* background:#f5f4f9; */

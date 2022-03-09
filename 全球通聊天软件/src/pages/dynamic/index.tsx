@@ -1,24 +1,40 @@
 import '../personalInformation/index.scss';
 import './index.scss';
 
+import { CameraOutline } from 'antd-mobile-icons';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import CameraOutList from './cameraOutList';
 
-const Dynamic = () => {
+const Dynamic = ({ name, onBack, display, indexId }: any) => {
   const history = useHistory();
+  const [displayBlock, setDisplayBlock] = useState(false);
+  const [cameraOut, setCameraOut] = useState(false);
   const [imgIdLoc] = useState<any>(
     JSON.parse(window.localStorage.getItem('imgIdLoc') || '[]')
   );
-
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (!display && indexId) {
+      let timeout = setTimeout(() => {
+        setDisplayBlock(false);
+        // goBackS(false);
+        clearTimeout(timeout);
+      }, 230);
+    } else if (display) {
+      setDisplayBlock(true);
+    }
+  }, [display]);
 
   const goBackS = () => {
-    // if (!localStorage.getItem('type')) {
-    //   history.push('/');
-    // } else {
-    history.goBack();
-    // }
-    // localStorage.removeItem('personalInformation');
+    if (cameraOut) {
+      setCameraOut(false);
+      return;
+    }
+    if (name) {
+      onBack(false);
+    } else {
+      history.goBack();
+    }
   };
 
   const toChat = (classIcon: string, name: string, nickName: any) => {
@@ -35,9 +51,16 @@ const Dynamic = () => {
 
     history.push('/personalInformation');
   };
-
+  const onCameraOutline = () => {
+    setCameraOut(true);
+  };
   return (
-    <div className="personalInformation">
+    <div
+      style={{ display: `${displayBlock || !name ? 'block' : 'none'}` }}
+      className={`personalInformation ${
+        display ? 'right-in-enter' : name ? 'right-in-leave' : ''
+      } personalInformationDynamic`}
+    >
       <div className="searchBox">
         <div className="home-search">
           <img
@@ -46,7 +69,7 @@ const Dynamic = () => {
             alt=""
             onClick={goBackS}
           />
-          <span>朋友圈</span>
+          <span>{name ? name : '朋友圈'}</span>
         </div>
       </div>
       <div className="contents contents_search_leng">
@@ -73,6 +96,26 @@ const Dynamic = () => {
             </div>
           </div>
 
+          {name && (
+            <div className="dynamic-const-box">
+              <div className="dynamic-const-box-img">
+                <span>今天</span>
+              </div>
+              <div className="dynamic-const-box-text">
+                <div className="dynamic-const-box-text-name">
+                  上传你的照片
+                  <br />
+                  开始记录你的生活
+                </div>
+                <div className="dynamic-const-box-text-test">
+                  <span onClick={onCameraOutline}>
+                    <CameraOutline />
+                  </span>
+                </div>
+              </div>
+              <div className="border-bottom"></div>
+            </div>
+          )}
           <div className="dynamic-const-box">
             <div className="dynamic-const-box-img">
               <img src="" alt="" />
@@ -97,6 +140,19 @@ const Dynamic = () => {
           </div>
         </div>
       </div>
+      {cameraOut && (
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            position: 'absolute',
+            top: '0',
+            left: '0',
+          }}
+        >
+          <CameraOutList />
+        </div>
+      )}
     </div>
   );
 };

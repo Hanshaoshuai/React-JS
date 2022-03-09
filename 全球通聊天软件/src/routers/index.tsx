@@ -59,12 +59,21 @@ export default function Routers({ location }: SwitchProps): ReactElement {
           type: 'settings',
           settings: '?personal=1&setSettings=1',
         });
+      } else if (route.search === '?dynamic=1') {
+        dispatch({
+          type: 'settings',
+          settings: '?dynamic=1',
+        });
       }
     });
     if (window.location.search) {
       dispatch({
         type: 'pathname',
         pathname: `${window.location.pathname}${window.location.search}`,
+      });
+      dispatch({
+        type: 'settings',
+        settings: `${window.location.search}`,
       });
     } else {
       dispatch({ type: 'pathname', pathname: window.location.pathname });

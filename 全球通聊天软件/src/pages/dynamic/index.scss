@@ -46,14 +46,19 @@
       width: 1.2rem;
       height: 1rem;
       //   background-color: chocolate;
-      img {
+      img,
+      span {
         width: 0.7rem;
         height: 0.7rem;
         // background-color: aqua;
         border-radius: 0.07rem;
         float: right;
         margin-top: -0.1rem;
-        margin-right: 0.2rem;
+        margin-right: 0.15rem;
+      }
+      span {
+        font-size: 0.35rem;
+        font-weight: 600;
       }
     }
     .dynamic-const-box-text {
@@ -70,6 +75,14 @@
         line-height: 0.41rem;
         font-size: 0.3rem;
         color: #333333;
+        span {
+          display: inline-block;
+          font-size: 1.9rem;
+          border-radius: 0.09rem;
+          color: rgb(218, 217, 217);
+          border: 1px solid rgb(218, 217, 217);
+          margin-top: 0.1rem;
+        }
       }
       .dynamic-const-box-text-img {
         width: 100%;
@@ -84,7 +97,7 @@
         // height: 0.25rem;
         line-height: 0.25rem;
         overflow: hidden;
-        padding-top: 0.05rem;
+        padding-top: 0.1rem;
         .dynamic-const-box-text-bottom-left {
           font-size: 0.25rem;
           float: left;
@@ -102,6 +115,68 @@
       position: absolute;
       bottom: 0;
       left: 0;
+    }
+  }
+}
+.personalInformationDynamic {
+  z-index: 1010;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.contents_search_leng {
+  overflow-y: auto;
+}
+.cameraOutList {
+  //   width: 100%;
+  height: calc(100% - 2.6rem);
+  background-color: #fff;
+  padding: 1.3rem 1rem;
+  .mint-field-core {
+    resize: none;
+    // width: 80%;
+    min-height: 1.9rem;
+    max-height: 2.2rem;
+    padding: 0.14rem 0.14rem;
+    line-height: 0.38rem;
+    text-align: justify;
+    border-bottom: 1px solid #ff7a59;
+    box-sizing: border-box;
+    outline: none;
+    cursor: pointer;
+    color: #555555;
+    caret-color: #ff7a59;
+    font-size: 0.32rem;
+    // margin-left: 0.88rem;
+    overflow-y: auto;
+    margin-top: 0;
+    margin-bottom: 0;
+    -webkit-user-modify: read-write-plaintext-only;
+    &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
+    /*为空时显示 element attribute content*/
+    &:empty:before {
+      content: attr(placeholder); /* element attribute*/
+      /*content: 'this is content';*/
+      color: #red;
+    }
+    /*焦点时内容为空*/
+    &:focus:before {
+      content: none;
+    }
+  }
+  .cameraOutListFileList {
+    padding-top: 0.3rem;
+    .otherItemsList {
+      color: #dad9d9;
+      p {
+        padding: 0;
+        margin: 0;
+        font-size: 1.9rem;
+        line-height: 0;
+      }
     }
   }
 }
