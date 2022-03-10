@@ -1047,6 +1047,77 @@ const addText = async (obj, apath, filePath, apathZoom, typeFileName) => {
   return yes;
 }
 
+// 朋友圈上传图片和视频
+
+app.post('/friendsCircleFileUpload', function (req, res) {
+  const forms = formidable({ multiples: false, maxFieldsSize: 10000000000 });
+  forms.on('progress', function (bytesReceived, bytesExpected) {
+    // console.log(bytesReceived, bytesExpected);当有数据块被处理之后会触发该事件，对于创建进度条非常有用
+    // if (bytesReceived === bytesExpected) {
+    //   console.log('end===>>>');
+    // }
+  })
+  // fileList, // 分片的内容
+  // typeF, // 分片上传是否到最后\或不分片
+  // name, // 文件名字
+  // type, // 文件名后缀
+  // fileType, // 文件类型
+  // dateTime, // 时间戳
+  // fileSize,
+  // videoImgZoom, // video缩略图
+  // index, // 第几片上传
+  forms.parse(req, async (err, fields, files) => {
+    if (err) {
+      res.send({ code: 2001, msg: "上传失败" })
+      return;
+    }
+    let reqs = fields;
+    let fileName = reqs.name;
+
+    let filePath = path.join(__dirname, '../friendsCircle/')
+    let apath = `/friendsCircle/${fileName}.${reqs.type}`
+    let apathZoom = `/friendsCircle/${fileName}Zoom.jpg`
+    if (reqs.isDebug) {
+      filePath = path.join(__dirname, '../public/friendsCircle/')
+    }
+    if (!fs.existsSync(filePath)) {
+      fs.mkdirSync(filePath)
+    }
+    let chunksFileName = `${filePath}/${fileName}.${reqs.type}`
+    if (reqs.typeF === '分片上传') {
+      // console.log(reqs.index)
+      if (reqs.index === '0') {
+        let chunksFileNames = `${filePath}/${fileName}Zoom.jpg`
+        const upStream = fs.createWriteStream(chunksFileNames);
+        upStream.write(reqs.videoImgZoom.split("base64,")[1], 'base64')
+        upStream.end()
+      }
+      const upStreamV = fs.createWriteStream(chunksFileName, {
+        flags: 'a' //如果要把内容追加到文件原有的内容的后面，则设置flags为'a',此时设置start无效
+      });
+      //写入数据到流
+      upStreamV.write(reqs.base64, 'base64')
+      upStreamV.end()
+      res.send({ code: 200, msg: "分片上传进行中" })
+    } else if (reqs.typeF === 'no' || reqs.typeF === '分片上传最后') {
+      // console.log(reqs.index)
+      if (reqs.typeF === 'no') {
+        let chunksFileNames = `${filePath}/${fileName}Zoom.jpg`
+        const upStream = fs.createWriteStream(chunksFileNames);
+        upStream.write(reqs.videoImgZoom.split("base64,")[1], 'base64')
+        upStream.end()
+      }
+      const upStreamV = fs.createWriteStream(chunksFileName, {
+        flags: 'a' //如果要把内容追加到文件原有的内容的后面，则设置flags为'a',此时设置start无效
+      });
+      //写入数据到流
+      upStreamV.write(reqs.base64, 'base64')
+      upStreamV.end()
+      res.send({ code: 200, msg: "上传成功", apath, apathZoom, type: reqs.fileType, typeF: reqs.typeF })
+    }
+  })
+})
+
 // 上传图片
 let classIcon = ''
 app.post('/file_upload', function (req, res) {

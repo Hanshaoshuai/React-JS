@@ -41,3 +41,18 @@ export async function uploadFile(data: any) {
     return error;
   }
 }
+
+// 朋友圈上传
+
+export async function friendsCircleFileUpload(data: any) {
+  try {
+    const res: any = await request(
+      `${API_HOST}/friendsCircleFileUpload`,
+      'POST',
+      data
+    );
+    return res;
+  } catch (error) {
+    return error;
+  }
+}

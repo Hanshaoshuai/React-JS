@@ -5,6 +5,12 @@ import { CameraOutline } from 'antd-mobile-icons';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import CameraOutList from './cameraOutList';
+import {
+  PlayOutline,
+  CloseCircleOutline,
+  FileOutline,
+  SoundOutline,
+} from 'antd-mobile-icons';
 
 const Dynamic = ({ name, onBack, display, indexId }: any) => {
   const history = useHistory();
@@ -148,6 +154,8 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
             position: 'absolute',
             top: '0',
             left: '0',
+            overflowY: 'auto',
+            background: '#fff',
           }}
         >
           <CameraOutList />

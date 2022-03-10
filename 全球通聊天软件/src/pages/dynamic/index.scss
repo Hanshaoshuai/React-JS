@@ -80,7 +80,7 @@
           font-size: 1.9rem;
           border-radius: 0.09rem;
           color: rgb(218, 217, 217);
-          border: 1px solid rgb(218, 217, 217);
+          //   border: 1px solid rgb(218, 217, 217);
           margin-top: 0.1rem;
         }
       }
@@ -171,11 +171,70 @@
     padding-top: 0.3rem;
     .otherItemsList {
       color: #dad9d9;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.3rem;
+      .otherItemsListVideos {
+        position: relative;
+        .PlayOutline {
+          width: 0.45rem;
+          height: 0.45rem;
+          border: 1px solid #ff7a59;
+          border-radius: 0.35rem;
+          display: inline-block;
+          color: #ff7a59;
+          position: absolute;
+          right: 0;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          margin: auto;
+          z-index: 1900;
+          line-height: 0.45rem;
+          text-align: center;
+          font-size: 0.3rem;
+        }
+        .videoPlays {
+          display: inline-block;
+          font-size: 0.3rem;
+          color: #ff7a59;
+          position: absolute;
+          right: 0.03rem;
+          top: 0.05rem;
+          z-index: 1900;
+          line-height: 0.3rem;
+        }
+        .videos {
+          width: 100%;
+        }
+      }
       p {
         padding: 0;
         margin: 0;
         font-size: 1.9rem;
         line-height: 0;
+      }
+    }
+  }
+  .PlaysToSpeed {
+    padding-top: 0.5rem;
+  }
+  .PlaysTo {
+    padding: 0.5rem 0;
+    text-align: center;
+    span {
+      width: 100%;
+      display: inline-block;
+      padding: 0.2rem 0;
+      color: #fff;
+      background-color: #ff7a59;
+      border-radius: 0.1rem;
+      font-size: 0.31rem;
+      &:active {
+        opacity: 0.9;
+        box-shadow: 0 0 1px 1px #ff7a59;
       }
     }
   }
