@@ -1069,7 +1069,8 @@ app.post('/getCircleFriends', (req, res) => {
       res.send({ code: 200, data: newList })
     });
   } else {
-    fs.readFile(`./friendsCircleTxt/TotalCircleFriends.txt`, function (error, data) {
+    let textName = `./friendsCircleTxt`
+    fs.readFile(`${textName}/TotalCircleFriends.txt`, function (error, data) {
       if (error) {
         res.send({ code: 2001, msg: "读取文件error或文件不存在", data: [] })
         return false;
@@ -1089,7 +1090,7 @@ app.post('/getCircleFriends', (req, res) => {
 //朋友圈开始发布
 app.post('/startFriendsCircleFileUpload', (req, res) => {
   let reqs = req.body;
-  let fileName = reqs.name + `${parseInt(Math.random() * 3435) + parseInt(Math.random() * 6575)}`;
+  let fileName = reqs.name;
   // console.log(reqs)
   let filePath = path.join(__dirname, './friendsCircleTxt/')
   let textName = `./friendsCircleTxt/${fileName}.txt`
@@ -1206,7 +1207,7 @@ app.post('/friendsCircleFileUpload', function (req, res) {
       return;
     }
     let reqs = fields;
-    let fileName = reqs.name;
+    let fileName = reqs.name + `${parseInt(Math.random() * 3435) + parseInt(Math.random() * 6575)}`;
 
     let filePath = path.join(__dirname, '../friendsCircle/')
     let apath = `/friendsCircle/${fileName}.${reqs.type}`

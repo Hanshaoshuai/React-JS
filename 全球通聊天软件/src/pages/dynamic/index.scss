@@ -88,9 +88,13 @@
       .dynamic-const-box-text-img {
         width: 100%;
         padding: 0.13rem 0;
-        img {
+        .dynamic-const-box-text-img-list {
           width: 33.333%;
-          height: 1rem;
+          display: inline-block;
+          img {
+            width: 100%;
+            // height: 1rem;
+          }
         }
       }
       .dynamic-const-box-text-bottom {

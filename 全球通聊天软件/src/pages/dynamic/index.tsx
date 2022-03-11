@@ -14,7 +14,8 @@ import {
 } from 'antd-mobile-icons';
 import { moment } from '../../helpers';
 let imgIndex: any = [];
-let indexId: any = null;
+let toIndexId: any = null;
+let scrollIndex = 0;
 const Dynamic = ({ name, onBack, display, indexId }: any) => {
   const history = useHistory();
   const videosRef: any = useRef(null);
@@ -26,8 +27,6 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
     JSON.parse(window.localStorage.getItem('imgIdLoc') || '[]')
   );
   const [circleFriendList, setCircleFriendList] = useState<any>([]);
-  const [plays, setplays] = useState(false);
-  const [commentBlock, setCommentBlock] = useState<any>(null);
   const [visible, setVisible] = useState(false);
   const [defaultIndex, setDefaultIndex] = useState(1);
   const [demoImagesList, setDemoImagesList] = useState<any>([]);
@@ -55,17 +54,17 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
       name: myLocName,
       personal: name ? true : false,
     }).then((res: any) => {
-      console.log(res);
+      // console.log(res);
       let index = 0;
       if (res.code === 200) {
         setCircleFriendList(res.data);
         res.data.map((item: any) => {
           item?.imgList.map((item: any) => {
-            index += 1;
             imgIndex.push({
               url: item.apath,
               index: index,
             });
+            index += 1;
             demoImages.push(item.apath);
             return item;
           });
@@ -89,20 +88,6 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
     }
   };
 
-  const toChat = (classIcon: string, name: string, nickName: any) => {
-    // console.log(classIcon, name);
-    localStorage.setItem('headPortrait_groupChat', classIcon);
-    localStorage.setItem('headPortrait', classIcon);
-    localStorage.setItem('nickName', nickName);
-    localStorage.setItem('toNames', nickName);
-    localStorage.setItem('toChatName', name);
-    localStorage.setItem('fromName', name);
-    localStorage.setItem('personalInformation', '1');
-
-    localStorage.setItem('type', 'chat');
-
-    history.push('/personalInformation');
-  };
   const onCameraOutline = () => {
     setCameraOut(true);
   };
@@ -112,30 +97,39 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
   };
   const videoPlays = (videoPlays: any, index: number) => {
     // 视频开关
+    // console.log('9999');
     if (videosRef) {
       const videoList: any = videosRef.current.getElementsByClassName('videos');
+      const imgIndex: any =
+        videosRef.current.getElementsByClassName('imgIndex');
       const videoClose: any =
         videosRef.current.getElementsByClassName('videoPlays');
-      [...videoList].map((item: any, index: number) => {
-        item.style.display = 'none';
-        videoClose[index].style.display = 'none';
-        return item;
-      });
-      if (videoPlays === null) return;
+      const PlayOutline: any =
+        videosRef.current.getElementsByClassName('PlayOutline');
+      for (let i = 0; i < videoList.length; i++) {
+        videoList[i].style.display = 'none';
+        videoClose[i].style.display = 'none';
+        imgIndex[i].style.display = 'block';
+        PlayOutline[i].style.display = 'block';
+        videoList[index].pause(); //暂停控制
+      }
+      if (videoPlays === 'null') {
+        return;
+      }
       if (videoPlays === 'no') {
+        PlayOutline[index].style.display = 'block';
         videoClose[index].style.display = 'none';
         videoList[index].style.display = 'none';
-        // setplays(!plays);
+        imgIndex[index].style.display = 'block';
+        videoList[index].pause(); //暂停控制
       } else {
+        PlayOutline[index].style.display = 'none';
+        imgIndex[index].style.display = 'none';
         videoClose[index].style.display = 'block';
         videoList[index].style.display = 'block';
         videoList[index].play();
       }
     }
-
-    // if (videoPlays === 'no' || videoPlays === 'play') {
-    //   setplays(!plays);
-    // }
   };
   const onComment = (e: any) => {
     console.log(e);
@@ -161,23 +155,22 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
       const comment: any = videosRef.current.getElementsByClassName(
         'dynamic-const-box-text-bottom-comment'
       );
-      [...comment].map((item: any, index: number) => {
-        item.style.padding = '0';
-        item.style.width = '0';
-        giveThumbsButton[index].style.opacity = '0';
-        commentButton[index].style.opacity = '0';
-        return item;
-      });
-      // console.log(comment[index].style.width);
+      for (let i = 0; i < comment.length; i++) {
+        comment[i].style.padding = '0';
+        comment[i].style.width = '0';
+        giveThumbsButton[i].style.opacity = '0';
+        commentButton[i].style.opacity = '0';
+      }
+
       if (index === null) return;
-      if (indexId !== index) {
-        indexId = index;
+      if (toIndexId !== index) {
+        toIndexId = index;
         comment[index].style.padding = '0 0.4rem';
         comment[index].style.width = '2.3rem';
         giveThumbsButton[index].style.opacity = '1';
         commentButton[index].style.opacity = '1';
       } else {
-        indexId = null;
+        toIndexId = null;
         comment[index].style.padding = '0';
         comment[index].style.width = '0';
         giveThumbsButton[index].style.opacity = '0';
@@ -185,10 +178,22 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
       }
     }
   };
-  const onScroll = () => {
-    indexId = null;
-    onSetCommentBlock(null);
-    videoPlays(null, 0);
+  const onScroll = (e: any) => {
+    // console.log(
+    //   e.target.clientHeight,
+    //   e.target.scrollTop,
+    //   e.target.scrollHeight
+    // );
+    // console.log(e.target.scrollTop - scrollIndex);
+    if (
+      e.target.scrollTop - scrollIndex > 130 ||
+      e.target.scrollTop - scrollIndex < -130
+    ) {
+      onSetCommentBlock(null);
+      videoPlays('null', 0);
+      scrollIndex = e.target.scrollTop;
+    }
+    toIndexId = null;
   };
   return (
     <div
@@ -215,20 +220,6 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
       >
         <div className="dynamic-box">
           <div className="dynamic-img">
-            {/* {imgIdLoc.map((item: any, index: number) => {
-              return (
-                <div
-                  key={index}
-                  className="font_list"
-                  onClick={() =>
-                    toChat(item.classIcon, item.name, item.nickName)
-                  }
-                >
-                  <img className="border" src={item.classIcon} alt="" />
-                  <span className={'names'}>{item.nickName}</span>
-                </div>
-              );
-            })} */}
             <img className="dynamic-img-cont" src="" alt="" />
             <div className="dynamic-img-box">
               <img src={headPortrait} alt="" />
@@ -275,12 +266,14 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
                   <div className="dynamic-const-box-text-img">
                     {item?.imgList.map((item: any, id: number) => {
                       return (
-                        <img
-                          onClick={() => onSetVisible(item.apath)}
-                          key={`${item?.title}_${id + index}`}
-                          src={item.apathZoom}
-                          alt=""
-                        />
+                        <div className="dynamic-const-box-text-img-list">
+                          <img
+                            onClick={() => onSetVisible(item.apath)}
+                            key={`${item?.title}_${id + index}`}
+                            src={item.apathZoom}
+                            alt=""
+                          />
+                        </div>
                       );
                     })}
                   </div>
@@ -291,8 +284,7 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
                         style={{ display: 'block' }}
                       >
                         <PlayOutline
-                          onClick={(e: any) => {
-                            // console.log(e, e.target.id, );
+                          onClick={() => {
                             videoPlays('play', index);
                           }}
                         />
@@ -300,7 +292,7 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
                       <span
                         style={{ display: 'none' }}
                         className="videoPlays"
-                        onClick={(e: any) => videoPlays('no', index)}
+                        onClick={() => videoPlays('no', index)}
                       >
                         <CloseCircleOutline className="video-closure-icon" />
                       </span>
@@ -309,8 +301,7 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
                         style={{ display: 'block' }}
                         src={item.video.apathZoom}
                         alt=""
-                        onClick={(e: any) => {
-                          console.log(e.id);
+                        onClick={() => {
                           videoPlays('play', index);
                         }}
                       />
@@ -318,7 +309,7 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
                         style={{ display: 'none' }}
                         className="videos"
                         controls={true}
-                        autoPlay={true}
+                        // autoPlay={true}
                         // name="media"
                         // muted="muted"
                         // onClick={videoPlays}
