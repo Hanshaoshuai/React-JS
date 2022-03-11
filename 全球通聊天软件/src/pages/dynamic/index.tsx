@@ -1,6 +1,6 @@
 import '../personalInformation/index.scss';
 import './index.scss';
-import { ImageViewer } from 'antd-mobile';
+import { Divider, ImageViewer } from 'antd-mobile';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import CameraOutList from './cameraOutList';
@@ -19,6 +19,7 @@ let scrollIndex = 0;
 const Dynamic = ({ name, onBack, display, indexId }: any) => {
   const history = useHistory();
   const videosRef: any = useRef(null);
+  const [nickname] = useState<any>(localStorage.getItem('myName'));
   const [headPortrait] = useState<any>(localStorage.getItem('headPortrait'));
   const [myLocName] = useState<any>(localStorage.getItem('name'));
   const [displayBlock, setDisplayBlock] = useState(false);
@@ -221,11 +222,17 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
         className="contents contents_search_leng"
       >
         <div className="dynamic-box">
-          <div className="dynamic-img">
+          <div
+            style={{
+              background: 'url(/images/202203120130501.jpg)',
+              backgroundSize: '100%',
+            }}
+            className="dynamic-img"
+          >
             <img className="dynamic-img-cont" src="" alt="" />
             <div className="dynamic-img-box">
               <img src={headPortrait} alt="" />
-              <div className="dynamic-img-box-test">老大哥黑经典服饰</div>
+              <div className="dynamic-img-box-test">{nickname}</div>
             </div>
           </div>
 
@@ -246,7 +253,9 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
                   </span>
                 </div>
               </div>
-              <div className="border-bottom"></div>
+              {circleFriendList.length ? (
+                <div className="border-bottom"></div>
+              ) : null}
             </div>
           )}
           {circleFriendList.map((item: any, index: number) => {
@@ -400,6 +409,16 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
               </div>
             );
           })}
+          {!circleFriendList.length && (
+            <div
+              style={{
+                padding: `${name ? '0 0.9rem' : '2rem 0.9rem'}`,
+                color: '#eeeeee',
+              }}
+            >
+              <Divider>暂无</Divider>
+            </div>
+          )}
         </div>
       </div>
       {cameraOut && (

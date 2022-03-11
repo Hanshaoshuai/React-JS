@@ -21,8 +21,8 @@ import { startFriendsCircleFileUpload } from '../../api';
 
 const CameraOutList = ({ callback }: any) => {
   const [myLocName] = useState<any>(localStorage.getItem('name'));
-  const [headPortrait] = useState<any>(localStorage.getItem('headPortrait'));
-  const [nickname] = useState<any>(localStorage.getItem('nickName'));
+  const [headPortrait] = useState<any>(localStorage.getItem('myapathZoom'));
+  const [nickname] = useState<any>(localStorage.getItem('myName'));
   const fs1: any = useRef(null);
   const [percent, setpercent] = useState(0);
   const [cameraOut, setCameraOut] = useState(false);
