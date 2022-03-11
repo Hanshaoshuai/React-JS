@@ -20,7 +20,7 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
   const history = useHistory();
   const videosRef: any = useRef(null);
   const [nickname] = useState<any>(localStorage.getItem('myName'));
-  const [headPortrait] = useState<any>(localStorage.getItem('headPortrait'));
+  const [myapathZoom] = useState<any>(localStorage.getItem('myapathZoom'));
   const [myLocName] = useState<any>(localStorage.getItem('name'));
   const [displayBlock, setDisplayBlock] = useState(false);
   const [cameraOut, setCameraOut] = useState(false);
@@ -231,7 +231,7 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
           >
             <img className="dynamic-img-cont" src="" alt="" />
             <div className="dynamic-img-box">
-              <img src={headPortrait} alt="" />
+              <img src={myapathZoom} alt="" />
               <div className="dynamic-img-box-test">{nickname}</div>
             </div>
           </div>
