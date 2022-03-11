@@ -105,7 +105,7 @@ const SuperMap = () => {
           const scene = viewer.scene;
           scene.globe.enableLighting = true;
           scene.sun = new window.Cesium.Sun();
-          scene.sun.glowFactor = 5; // 太阳光大小
+          scene.sun.glowFactor = 20; // 太阳光大小
         }
       }
       //视角变更监控

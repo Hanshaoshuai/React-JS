@@ -43,11 +43,38 @@ export async function uploadFile(data: any) {
 }
 
 // 朋友圈上传
-
 export async function friendsCircleFileUpload(data: any) {
   try {
     const res: any = await request(
       `${API_HOST}/friendsCircleFileUpload`,
+      'POST',
+      data
+    );
+    return res;
+  } catch (error) {
+    return error;
+  }
+}
+
+// 朋友圈上传发布
+export async function startFriendsCircleFileUpload(data: any) {
+  try {
+    const res: any = await request(
+      `${API_HOST}/startFriendsCircleFileUpload`,
+      'POST',
+      data
+    );
+    return res;
+  } catch (error) {
+    return error;
+  }
+}
+
+// 获取朋友圈
+export async function getCircleFriends(data: any) {
+  try {
+    const res: any = await request(
+      `${API_HOST}/getCircleFriends`,
       'POST',
       data
     );

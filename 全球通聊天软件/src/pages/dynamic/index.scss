@@ -1,6 +1,7 @@
 .dynamic-box {
   width: 100%;
   background-color: #fff;
+  padding-bottom: 0.3rem;
   .dynamic-img {
     width: 100%;
     height: 4.1rem;
@@ -58,7 +59,7 @@
       }
       span {
         font-size: 0.35rem;
-        font-weight: 600;
+        font-weight: 1000;
       }
     }
     .dynamic-const-box-text {
@@ -86,18 +87,20 @@
       }
       .dynamic-const-box-text-img {
         width: 100%;
-        padding-top: 0.1rem;
+        padding: 0.13rem 0;
         img {
           width: 33.333%;
           height: 1rem;
         }
       }
       .dynamic-const-box-text-bottom {
+        position: relative;
         width: 100%;
-        // height: 0.25rem;
         line-height: 0.25rem;
-        overflow: hidden;
-        padding-top: 0.1rem;
+        margin-top: 0.19rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         .dynamic-const-box-text-bottom-left {
           font-size: 0.25rem;
           float: left;
@@ -106,7 +109,42 @@
         .dynamic-const-box-text-bottom-right {
           font-size: 0.25rem;
           float: right;
-          color: #bbb;
+          i {
+            // color: #ff7a59;
+            // margin-right: 0.05rem;
+            color: rgb(86, 136, 197);
+          }
+          span {
+            margin-left: 0.1rem;
+            // background-color: rgb(217, 233, 252);
+            color: #ff7a59;
+            border-radius: 0.1rem;
+            line-height: 0.3rem;
+            font-size: 0.3rem;
+            padding: 0 0.05rem;
+          }
+          .dynamic-const-box-text-bottom-comment {
+            position: absolute;
+            right: 0.61rem;
+            top: 0rem;
+            bottom: 0;
+            margin: auto;
+            border-radius: 0.06rem;
+            width: 0rem;
+            height: 0.6rem;
+            background-color: rgba($color: #000000, $alpha: 0.5);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #fff;
+            // padding: 0 0.4rem;
+            z-index: 1000;
+            overflow: hidden;
+            transition: width 0.3s;
+            div {
+              transition: opacity 0.3s;
+            }
+          }
         }
       }
     }
@@ -132,12 +170,21 @@
   height: calc(100% - 2.6rem);
   background-color: #fff;
   padding: 1.3rem 1rem;
+  .adm-list-body {
+    border: none !important;
+    .adm-form-item {
+      padding: 0;
+    }
+    .adm-form-item-label {
+      font-size: 0.36rem;
+    }
+  }
   .mint-field-core {
     resize: none;
     // width: 80%;
     min-height: 1.9rem;
     max-height: 2.2rem;
-    padding: 0.14rem 0.14rem;
+    // padding: 0.14rem 0.14rem;
     line-height: 0.38rem;
     text-align: justify;
     border-bottom: 1px solid #ff7a59;
@@ -176,40 +223,6 @@
       justify-content: space-between;
       align-items: center;
       margin-top: 0.3rem;
-      .otherItemsListVideos {
-        position: relative;
-        .PlayOutline {
-          width: 0.45rem;
-          height: 0.45rem;
-          border: 1px solid #ff7a59;
-          border-radius: 0.35rem;
-          display: inline-block;
-          color: #ff7a59;
-          position: absolute;
-          right: 0;
-          top: 0;
-          left: 0;
-          bottom: 0;
-          margin: auto;
-          z-index: 1900;
-          line-height: 0.45rem;
-          text-align: center;
-          font-size: 0.3rem;
-        }
-        .videoPlays {
-          display: inline-block;
-          font-size: 0.3rem;
-          color: #ff7a59;
-          position: absolute;
-          right: 0.03rem;
-          top: 0.05rem;
-          z-index: 1900;
-          line-height: 0.3rem;
-        }
-        .videos {
-          width: 100%;
-        }
-      }
       p {
         padding: 0;
         margin: 0;
@@ -237,5 +250,47 @@
         box-shadow: 0 0 1px 1px #ff7a59;
       }
     }
+  }
+}
+.otherItemsListVideos {
+  position: relative;
+  .PlayOutline {
+    width: 0.45rem;
+    height: 0.45rem;
+    border: 1px solid #ff7a59;
+    border-radius: 0.35rem;
+    display: inline-block;
+    color: #ff7a59;
+    position: absolute;
+    right: 0;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+    // z-index: 1900;
+    line-height: 0.45rem;
+    text-align: center;
+    font-size: 0.3rem;
+  }
+  .videoPlays {
+    display: inline-block;
+    font-size: 0.3rem;
+    color: #ff7a59;
+    position: absolute;
+    right: 0.03rem;
+    top: 0.05rem;
+    z-index: 1900;
+    line-height: 0.3rem;
+  }
+  .videos {
+    width: 100%;
+  }
+}
+.dynamic-const-box {
+  .otherItemsListVideos {
+    position: relative;
+    min-height: 1.3rem;
+    display: inline-block;
+    min-width: 2.3rem;
   }
 }

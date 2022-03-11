@@ -1,30 +1,47 @@
 import './index.scss';
 import React, { useEffect, useState, useRef } from 'react';
-import { ImageUploader, Toast, ProgressBar } from 'antd-mobile';
+import {
+  ImageUploader,
+  Toast,
+  ProgressBar,
+  Form,
+  Input,
+  TextArea,
+} from 'antd-mobile';
 import {
   MovieOutline,
   CloseCircleOutline,
   PlayOutline,
 } from 'antd-mobile-icons';
+import { ImageUploadItem } from 'antd-mobile/es/components/image-uploader';
 import { FriendsCircleUpload } from './friendsCircleUpload';
 import { SetVideoImg } from './friendsCircleUpload/fileUploadCircle';
 import { onUploadProgress } from '../../services/request';
+import { startFriendsCircleFileUpload } from '../../api';
 
-const CameraOutList = () => {
+const CameraOutList = ({ callback }: any) => {
+  const [myLocName] = useState<any>(localStorage.getItem('name'));
+  const [headPortrait] = useState<any>(localStorage.getItem('headPortrait'));
+  const [nickname] = useState<any>(localStorage.getItem('nickName'));
   const fs1: any = useRef(null);
-  const [percent, setpercent] = useState(90);
+  const [percent, setpercent] = useState(0);
   const [cameraOut, setCameraOut] = useState(false);
   const [inputContent, setInputContent] = useState('');
-  const [fileList, setFileList] = useState<any[]>([]);
+  const [fileList, setFileList] = useState<ImageUploadItem[]>([]);
   const [videoList, setVideoList] = useState<any>([]);
   const [videoImgUrl, setVideoImgUrl] = useState<any>('');
   const [imgFileList, setImgFileList] = useState<any>([]);
   const [plays, setplays] = useState(false);
   const [onPlayUrl, setOnPlayUrl] = useState<any>('');
+  const [value, setValue] = useState<any>('');
+  const [textValue, setTextValue] = useState<any>('');
   //   useEffect(() => {
   //     // console.log(fileList);
   //   }, [fileList]);
 
+  const onDelete = (item: ImageUploadItem) => {
+    console.log(item);
+  };
   const onchange = () => {};
   const contenteditable = (e: any) => {
     // console.log(e.target.innerText);
@@ -65,14 +82,14 @@ const CameraOutList = () => {
     //     Toast.show(`添加发布内容`)
     // }
     if (cameraOut) return;
-    // upload();
-    setCameraOut(true);
+    upload();
     let resultsImg = null;
     let resultsVideo = null;
     if (!inputContent && !videoImgUrl && !fileList.length) {
       Toast.show(`没有要发布的内容！`);
       return;
     }
+    setCameraOut(true);
     if (imgFileList.length > 0) {
       //   console.log(imgFileList);
       resultsImg = await FriendsCircleUpload({
@@ -86,34 +103,71 @@ const CameraOutList = () => {
       });
     }
     if (resultsImg || resultsVideo) {
-      setpercent(100);
-      fs1.current.value = null;
-      setFileList([]);
-      setVideoImgUrl('');
-      setCameraOut(false);
-      console.log(inputContent, resultsImg, resultsVideo);
+      // fs1.current.value = null;
+      // setFileList([]);
+      // setVideoImgUrl('');
+      // setCameraOut(false);
+      console.log(myLocName, inputContent, resultsImg, resultsVideo);
+      const data: any = {
+        headPortrait: headPortrait,
+        title: value,
+        content: textValue,
+        name: myLocName,
+        nickname: nickname,
+        inputContent,
+        imgList: JSON.stringify(resultsImg),
+        video: resultsVideo,
+        comment: null,
+      };
+      startFriendsCircleFileUpload(data).then((res: any) => {
+        if (res.code === 200) {
+          callback(false);
+          Toast.show(`发布成功`);
+        }
+      });
     }
   };
-  //   const upload = () => {
-  //     onUploadProgress.onUploadProgress = (progressEvent: any) => {
-  //       let complete = ((progressEvent.loaded / progressEvent.total) * 100) | 0;
-  //       console.log('上传=====>>>>', complete);
-  //       if (complete === 100) {
-  //         setpercent(0);
-  //       } else {
-  //         setpercent(complete);
-  //       }
-  //     };
-  //   };
+  const upload = () => {
+    onUploadProgress.onUploadProgress = (progressEvent: any) => {
+      let complete = ((progressEvent.loaded / progressEvent.total) * 100) | 0;
+      // console.log('上传=====>>>>', complete);
+      if (complete === 100) {
+        setpercent(0);
+      } else {
+        setpercent(complete);
+      }
+    };
+  };
   return (
     <div className="cameraOutList">
-      <p
+      <Form layout="vertical">
+        <Form.Item label="标题" name="username">
+          <Input
+            placeholder="请输入一个标题吧"
+            clearable
+            onChange={(val) => {
+              setValue(val);
+            }}
+          />
+        </Form.Item>
+        <Form.Item label="内容" name="userText">
+          <TextArea
+            placeholder="请详输入你此时此刻的心情..."
+            // value={value}
+            rows={3}
+            onChange={(val: any) => {
+              setTextValue(val);
+            }}
+          />
+        </Form.Item>
+      </Form>
+      {/* <p
         placeholder="请详输入此时此刻的心情..."
         id="texts"
         className="mint-field-core"
         onClick={onchange}
         onInput={contenteditable}
-      ></p>
+      ></p> */}
       <div className="cameraOutListFileList">
         <ImageUploader
           beforeUpload={beforeUploadImg}
@@ -121,6 +175,7 @@ const CameraOutList = () => {
           onChange={setFileList}
           upload={mockUpload}
           multiple
+          onDelete={onDelete}
           //   capture
           //   maxCount={3}
           //   showUpload={fileList.length < maxCount}

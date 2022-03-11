@@ -1046,9 +1046,143 @@ const addText = async (obj, apath, filePath, apathZoom, typeFileName) => {
   }
   return yes;
 }
+// 获取朋友圈 getCircleFriends
+app.post('/getCircleFriends', (req, res) => {
+  let reqs = req.body;
+  let fileName = reqs.name;
+  let personal = reqs.personal
+  // console.log(reqs)
+  let textName = `./friendsCircleTxt/${fileName}.txt`
+  if (personal) {
+    fs.readFile(textName, function (error, data) {
+      if (error) {
+        res.send({ code: 2001, msg: "读取文件error或文件不存在", data: [] })
+        return false;
+      }
+      //console.log(data);  //data是读取的十六进制的数据。  也可以在参数中加入编码格式"utf8"来解决十六进制的问题;
+      // console.log('读取出所有行的信息 ', data.toString());  //读取出所有行的信息
+      let newList = JSON.parse(data.toString());
+      newList.map((item) => {
+        item.imgList = JSON.parse(item.imgList)
+        return item;
+      })
+      res.send({ code: 200, data: newList })
+    });
+  } else {
+    fs.readFile(`./friendsCircleTxt/TotalCircleFriends.txt`, function (error, data) {
+      if (error) {
+        res.send({ code: 2001, msg: "读取文件error或文件不存在", data: [] })
+        return false;
+      }
+      //console.log(data);  //data是读取的十六进制的数据。  也可以在参数中加入编码格式"utf8"来解决十六进制的问题;
+      // console.log('读取出所有行的信息 ', data.toString());  //读取出所有行的信息
+      let newList = JSON.parse(data.toString());
+      newList.map((item) => {
+        item.imgList = JSON.parse(item.imgList)
+        return item;
+      })
+      res.send({ code: 200, data: newList })
+    });
+  }
+
+})
+//朋友圈开始发布
+app.post('/startFriendsCircleFileUpload', (req, res) => {
+  let reqs = req.body;
+  let fileName = reqs.name + `${parseInt(Math.random() * 3435) + parseInt(Math.random() * 6575)}`;
+  // console.log(reqs)
+  let filePath = path.join(__dirname, './friendsCircleTxt/')
+  let textName = `./friendsCircleTxt/${fileName}.txt`
+  let time = new Date().getTime();
+  reqs.time = time;
+  if (reqs.isDebug) {
+    filePath = path.join(__dirname, './public/friendsCircleTxt/')
+  }
+  if (!fs.existsSync(filePath)) {
+    fs.mkdirSync(filePath)
+    const list = [reqs]
+    fs.writeFile(`${filePath}/${fileName}.txt`, JSON.stringify(list), (err) => {
+      if (err) {
+        // console.log('2222', err)
+        res.send({ code: 2001, msg: "首次上传失败" })
+      } else {
+        // console.log('2222', err) 
+        fs.writeFile(`${filePath}/TotalCircleFriends.txt`, JSON.stringify(list), (err) => {
+          if (err) {
+            // console.log('2222', err)
+            res.send({ code: 2001, msg: "首次发布失败" })
+          } else {
+            // console.log('2222', err) 
+            res.send({ code: 200, msg: "首次发布成功" })
+          }
+        })
+      }
+    })
+  } else {
+    const writeriles = (data) => {
+      //console.log(data);  //data是读取的十六进制的数据。  也可以在参数中加入编码格式"utf8"来解决十六进制的问题;
+      // console.log('读取出所有行的信息 ', data.toString());  //读取出所有行的信息
+      let newList = []
+      if (data) {
+        newList = JSON.parse(data.toString());
+      }
+      newList.unshift(reqs)
+      const objs = JSON.stringify(newList);
+      // console.log(objs)
+      fs.writeFile(
+        `${filePath}/${fileName}.txt`,
+        objs,
+        'utf8',
+        function (error) {
+          if (error) {
+            res.send({ code: 2001, msg: "上传失败" })
+            return false;
+          } else {
+            fs.readFile(`./friendsCircleTxt/TotalCircleFriends.txt`, function (error, data) {
+              if (error) {
+                // console.log('读取文件error', error);
+                res.send({ code: 2001, msg: "读取文件error" })
+                return false;
+              }
+              //console.log(data);  //data是读取的十六进制的数据。  也可以在参数中加入编码格式"utf8"来解决十六进制的问题;
+              // console.log('读取出所有行的信息 ', data.toString());  //读取出所有行的信息
+              let newList = JSON.parse(data.toString());
+              newList.unshift(reqs)
+              const objs = JSON.stringify(newList);
+              // console.log(objs)
+              fs.writeFile(
+                `${filePath}/TotalCircleFriends.txt`,
+                objs,
+                'utf8',
+                function (error) {
+                  if (error) {
+                    res.send({ code: 2001, msg: "上传失败" })
+                    return false;
+                  } else {
+                    res.send({ code: 200, msg: "上传成功" })
+                  }
+                }
+              );
+            });
+          }
+        }
+      );
+    }
+    fs.readFile(textName, function (error, data) {
+      if (error) {
+        // console.log('读取文件error', error);
+        writeriles(data)
+        // res.send({ code: 2001, msg: "读取文件error" })
+        return false;
+      } else {
+        writeriles(data)
+      }
+
+    });
+  }
+})
 
 // 朋友圈上传图片和视频
-
 app.post('/friendsCircleFileUpload', function (req, res) {
   const forms = formidable({ multiples: false, maxFieldsSize: 10000000000 });
   forms.on('progress', function (bytesReceived, bytesExpected) {
@@ -1175,8 +1309,6 @@ app.post('/file_upload', function (req, res) {
       }
     }
 
-
-
     if (reqs.type === '分片上传' || reqs.length === '分片上传最后' || reqs.length === '不分片') {
       // classIcon += reqs.classIcon;
       // res.send({ code: 200, msg: "分片上传继续" })
@@ -1249,7 +1381,6 @@ app.post('/file_upload', function (req, res) {
       //   }
       // })
 
-
       // // 可读流通过管道写入可写流
       // reader.pipe(upStream);
       // reader.on('end', () => {
@@ -1276,8 +1407,6 @@ app.post('/file_upload', function (req, res) {
       }
       return;
     }
-
-
 
     let base64 = null
     let base64Zoom = null
