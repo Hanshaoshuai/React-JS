@@ -88,11 +88,20 @@
       .dynamic-const-box-text-img {
         width: 100%;
         padding: 0.13rem 0;
+        overflow: hidden;
         .dynamic-const-box-text-img-list {
-          width: 33.333%;
+          width: 1.9rem;
+          height: 1.9rem;
+          border-right: 0.1rem solid rgba($color: #000000, $alpha: 0);
+          border-bottom: 0.1rem solid rgba($color: #000000, $alpha: 0);
           display: inline-block;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          overflow: hidden;
+          float: left;
           img {
-            width: 100%;
+            // width: 100%;
             // height: 1rem;
           }
         }

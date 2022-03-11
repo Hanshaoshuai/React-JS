@@ -107,21 +107,22 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
       const PlayOutline: any =
         videosRef.current.getElementsByClassName('PlayOutline');
       for (let i = 0; i < videoList.length; i++) {
+        // videoList[i].currentTime = 0;
+        videoList[i].pause(); //暂停控制
         videoList[i].style.display = 'none';
         videoClose[i].style.display = 'none';
         imgIndex[i].style.display = 'block';
         PlayOutline[i].style.display = 'block';
-        videoList[index].pause(); //暂停控制
       }
       if (videoPlays === 'null') {
         return;
       }
       if (videoPlays === 'no') {
+        videoList[index].pause(); //暂停控制
         PlayOutline[index].style.display = 'block';
         videoClose[index].style.display = 'none';
         videoList[index].style.display = 'none';
         imgIndex[index].style.display = 'block';
-        videoList[index].pause(); //暂停控制
       } else {
         PlayOutline[index].style.display = 'none';
         imgIndex[index].style.display = 'none';
@@ -186,13 +187,14 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
     // );
     // console.log(e.target.scrollTop - scrollIndex);
     if (
-      e.target.scrollTop - scrollIndex > 130 ||
-      e.target.scrollTop - scrollIndex < -130
+      e.target.scrollTop - scrollIndex > 190 ||
+      e.target.scrollTop - scrollIndex < -190
     ) {
-      onSetCommentBlock(null);
+      // onSetCommentBlock(null);
       videoPlays('null', 0);
       scrollIndex = e.target.scrollTop;
     }
+    onSetCommentBlock(null);
     toIndexId = null;
   };
   return (
@@ -264,13 +266,40 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
                     {item?.content}
                   </div>
                   <div className="dynamic-const-box-text-img">
-                    {item?.imgList.map((item: any, id: number) => {
+                    {item?.imgList.map((items: any, id: number) => {
+                      let styles = null;
+                      const len = item?.imgList?.length;
+                      const type = items?.styleLength.split('_')[0];
+                      let styleObj: any = null;
+                      if (len === 2 || len === 4) {
+                        styleObj = {
+                          width: '2.9rem',
+                          height: '2.9rem',
+                        };
+                      }
+                      if (type === 'width') {
+                        styles = {
+                          height: '100%',
+                        };
+                      } else {
+                        styles = {
+                          width: '100%',
+                        };
+                      }
+                      if (id > 3) {
+                        return null;
+                      }
                       return (
-                        <div className="dynamic-const-box-text-img-list">
+                        <div
+                          style={styleObj}
+                          key={`${items?.title}_${id + index}`}
+                          className="dynamic-const-box-text-img-list"
+                        >
                           <img
-                            onClick={() => onSetVisible(item.apath)}
-                            key={`${item?.title}_${id + index}`}
-                            src={item.apathZoom}
+                            style={styles}
+                            onClick={() => onSetVisible(items.apath)}
+                            key={`${items?.title}_${id + index}`}
+                            src={items.apathZoom}
                             alt=""
                           />
                         </div>

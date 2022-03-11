@@ -17,8 +17,11 @@ export const FileUploadCircle = ({
     if (fileList) {
       const formDate = new FormData();
       let dataUrl: any = '';
+      let style = '';
       if (!videoImgZoom && index === 0) {
-        videoImgZoom = await UploadImg({ fileList });
+        const { Zoom, styleLength }: any = await UploadImg({ fileList });
+        videoImgZoom = Zoom;
+        style = styleLength;
       }
       // return;
       const reader = new FileReader();
@@ -33,6 +36,7 @@ export const FileUploadCircle = ({
         formDate.append('dateTime', dateTime);
         formDate.append('base64', dataUrl);
         formDate.append('typeF', typeF);
+        formDate.append('styleLength', style);
         if (index === 0 || typeF === 'no') {
           formDate.append('videoImgZoom', videoImgZoom);
         }
@@ -81,7 +85,13 @@ export const UploadImg = ({ fileList }: any) => {
         let dataurlZoom = '';
         // for (let i = 0; i < 10; i++) { // 开启循环压缩
         dataurlZoom = canvasZoom.toDataURL('image/jpeg', 1);
-        resolve(dataurlZoom);
+        let styleLength = '';
+        if (image.width > image.height || image.width === image.height) {
+          styleLength = `width_${image.width}_${image.height}`;
+        } else {
+          styleLength = `height_${image.width}_${image.height}`;
+        }
+        resolve({ Zoom: dataurlZoom, styleLength: styleLength });
       }
     };
   });

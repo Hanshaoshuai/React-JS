@@ -1072,7 +1072,7 @@ app.post('/getCircleFriends', (req, res) => {
     let textName = `./friendsCircleTxt`
     fs.readFile(`${textName}/TotalCircleFriends.txt`, function (error, data) {
       if (error) {
-        res.send({ code: 2001, msg: "读取文件error或文件不存在", data: [] })
+        res.send({ code: 200, msg: "读取文件error或文件不存在", data: [] })
         return false;
       }
       //console.log(data);  //data是读取的十六进制的数据。  也可以在参数中加入编码格式"utf8"来解决十六进制的问题;
@@ -1142,7 +1142,7 @@ app.post('/startFriendsCircleFileUpload', (req, res) => {
             fs.readFile(`./friendsCircleTxt/TotalCircleFriends.txt`, function (error, data) {
               if (error) {
                 // console.log('读取文件error', error);
-                res.send({ code: 2001, msg: "读取文件error" })
+                res.send({ code: 200, msg: "暂无文件" })
                 return false;
               }
               //console.log(data);  //data是读取的十六进制的数据。  也可以在参数中加入编码格式"utf8"来解决十六进制的问题;
@@ -1248,7 +1248,7 @@ app.post('/friendsCircleFileUpload', function (req, res) {
       //写入数据到流
       upStreamV.write(reqs.base64, 'base64')
       upStreamV.end()
-      res.send({ code: 200, msg: "上传成功", apath, apathZoom, type: reqs.fileType, typeF: reqs.typeF })
+      res.send({ code: 200, msg: "上传成功", apath, apathZoom, type: reqs.fileType, typeF: reqs.typeF, styleLength: reqs.styleLength })
     }
   })
 })
