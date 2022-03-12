@@ -276,45 +276,46 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
                     {item?.content}
                   </div>
                   <div className="dynamic-const-box-text-img">
-                    {item?.imgList.map((items: any, id: number) => {
-                      let styles = null;
-                      const len = item?.imgList?.length;
-                      const type = items?.styleLength.split('_')[0];
-                      let styleObj: any = null;
-                      if (len === 2 || len === 4) {
-                        styleObj = {
-                          width: '2.9rem',
-                          height: '2.9rem',
-                        };
-                      }
-                      if (type === 'width') {
-                        styles = {
-                          height: '100%',
-                        };
-                      } else {
-                        styles = {
-                          width: '100%',
-                        };
-                      }
-                      if (id > 3) {
-                        return null;
-                      }
-                      return (
-                        <div
-                          style={styleObj}
-                          key={`${items?.title}_${id + index}`}
-                          className="dynamic-const-box-text-img-list"
-                        >
-                          <img
-                            style={styles}
-                            onClick={() => onSetVisible(items.apath)}
+                    {item.imgList &&
+                      item.imgList.map((items: any, id: number) => {
+                        let styles = null;
+                        const len = item?.imgList?.length;
+                        const type = items?.styleLength.split('_')[0];
+                        let styleObj: any = null;
+                        if (len === 2 || len === 4) {
+                          styleObj = {
+                            width: '2.9rem',
+                            height: '2.9rem',
+                          };
+                        }
+                        if (type === 'width') {
+                          styles = {
+                            height: '100%',
+                          };
+                        } else {
+                          styles = {
+                            width: '100%',
+                          };
+                        }
+                        if (id > 3) {
+                          return null;
+                        }
+                        return (
+                          <div
+                            style={styleObj}
                             key={`${items?.title}_${id + index}`}
-                            src={items.apathZoom}
-                            alt=""
-                          />
-                        </div>
-                      );
-                    })}
+                            className="dynamic-const-box-text-img-list"
+                          >
+                            <img
+                              style={styles}
+                              onClick={() => onSetVisible(items.apath)}
+                              key={`${items?.title}_${id + index}`}
+                              src={items.apathZoom}
+                              alt=""
+                            />
+                          </div>
+                        );
+                      })}
                   </div>
                   {item.video && (
                     <div className="otherItemsListVideos">
@@ -382,8 +383,8 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
                         >
                           <HeartFill
                             style={{
-                              fontSize: '0.29rem',
-                              verticalAlign: 'top',
+                              fontSize: '0.305rem',
+                              verticalAlign: 'bottom',
                               marginRight: '0.04rem',
                             }}
                           />

@@ -110,7 +110,7 @@
       .dynamic-const-box-text-bottom {
         position: relative;
         width: 100%;
-        line-height: 0.25rem;
+        line-height: 0.35rem;
         margin-top: 0.19rem;
         display: flex;
         justify-content: space-between;
@@ -133,8 +133,8 @@
             // background-color: rgb(217, 233, 252);
             color: #ff7a59;
             border-radius: 0.1rem;
-            line-height: 0.3rem;
-            font-size: 0.3rem;
+            line-height: 0.4rem;
+            font-size: 0.4rem;
             padding: 0 0.05rem;
           }
           .dynamic-const-box-text-bottom-comment {
@@ -154,9 +154,9 @@
             // padding: 0 0.4rem;
             z-index: 1000;
             overflow: hidden;
-            transition: width 0.3s;
+            transition: width 0.2s;
             div {
-              transition: opacity 0.3s;
+              transition: opacity 0.2s;
             }
           }
         }
