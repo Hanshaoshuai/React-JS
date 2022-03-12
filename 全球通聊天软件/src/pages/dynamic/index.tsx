@@ -238,7 +238,7 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
           </div>
 
           {name && (
-            <div className="dynamic-const-box">
+            <div className="dynamic-const-box dynamic-const-box-first">
               <div className="dynamic-const-box-img">
                 <span>今天</span>
               </div>
@@ -384,7 +384,7 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
                           <HeartFill
                             style={{
                               fontSize: '0.305rem',
-                              verticalAlign: 'bottom',
+                              verticalAlign: 'top',
                               marginRight: '0.04rem',
                             }}
                           />

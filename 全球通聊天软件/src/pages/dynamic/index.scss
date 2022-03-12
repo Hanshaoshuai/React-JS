@@ -43,7 +43,7 @@
     // background-color: chartreuse;
     padding: 0.2rem 0;
     position: relative;
-    margin-top: 0.91rem;
+    margin-top: 0.25rem;
     .dynamic-const-box-img {
       width: 1.2rem;
       height: 1rem;
@@ -56,7 +56,7 @@
         border-radius: 0.07rem;
         float: right;
         margin-top: -0.1rem;
-        margin-right: 0.15rem;
+        margin-right: 0.19rem;
       }
       span {
         font-size: 0.35rem;
@@ -168,6 +168,9 @@
       bottom: 0;
       left: 0;
     }
+  }
+  .dynamic-const-box-first {
+    margin-top: 0.91rem;
   }
 }
 .personalInformationDynamic {
@@ -291,9 +294,9 @@
     font-size: 0.3rem;
     color: #ff7a59;
     position: absolute;
-    right: 0.03rem;
-    top: 0.05rem;
-    z-index: 1900;
+    right: 0.08rem;
+    top: 0.1rem;
+    z-index: 19000;
     line-height: 0.3rem;
   }
   .videos {
@@ -306,5 +309,6 @@
     min-height: 1.3rem;
     display: inline-block;
     min-width: 2.3rem;
+    width: 99%;
   }
 }
