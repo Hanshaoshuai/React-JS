@@ -386,7 +386,7 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
                           <HeartFill
                             style={{
                               fontSize: '0.3rem',
-                              verticalAlign: 'top',
+                              verticalAlign: 'bottom',
                               marginRight: '0.04rem',
                             }}
                           />
