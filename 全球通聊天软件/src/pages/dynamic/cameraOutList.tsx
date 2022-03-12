@@ -131,11 +131,11 @@ const CameraOutList = ({ callback }: any) => {
     onUploadProgress.onUploadProgress = (progressEvent: any) => {
       let complete = ((progressEvent.loaded / progressEvent.total) * 100) | 0;
       // console.log('上传=====>>>>', complete);
-      if (complete === 100) {
-        setpercent(0);
-      } else {
-        setpercent(complete);
-      }
+      // if (complete === 100) {
+      //   setpercent(100);
+      // } else {
+      setpercent(complete);
+      // }
     };
   };
   return (
