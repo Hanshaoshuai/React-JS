@@ -189,8 +189,8 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
     // );
     // console.log(e.target.scrollTop - scrollIndex);
     if (
-      e.target.scrollTop - scrollIndex > 190 ||
-      e.target.scrollTop - scrollIndex < -190
+      e.target.scrollTop - scrollIndex > 230 ||
+      e.target.scrollTop - scrollIndex < -230
     ) {
       // onSetCommentBlock(null);
       videoPlays('null', 0);
@@ -264,7 +264,7 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
               <div
                 key={`${item?.title}_${index}`}
                 className={`dynamic-const-box ${
-                  !name && 'dynamic-const-box-first'
+                  !name && index === 0 && 'dynamic-const-box-first'
                 }`}
               >
                 <div className="dynamic-const-box-img">
