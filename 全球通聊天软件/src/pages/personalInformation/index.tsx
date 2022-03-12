@@ -712,43 +712,41 @@ const ChatRecord = () => {
             <div className="xiangCe" onClick={onDynamic}>
               <span className="xiangCeTite">个人相册</span>
               <div className="xiangCeImg">
-                <div className="xiangCeImgItem">
-                  {circleFriendData.map((item: any, index: number) => {
-                    return (
-                      <>
-                        {item.imgList &&
-                          item.imgList.map((items: any, id: number) => {
-                            let styles = null;
-                            if (type === 'width') {
-                              styles = {
-                                height: '100%',
-                              };
-                            } else {
-                              styles = {
-                                width: '100%',
-                              };
-                            }
-                            if (id > 8) {
-                              return null;
-                            }
-                            return (
-                              <div
+                {circleFriendData.map((item: any, index: number) => {
+                  return (
+                    <>
+                      {item.imgList &&
+                        item.imgList.map((items: any, id: number) => {
+                          let styles = null;
+                          if (type === 'width') {
+                            styles = {
+                              height: '100%',
+                            };
+                          } else {
+                            styles = {
+                              width: '100%',
+                            };
+                          }
+                          if (id > 2) {
+                            return null;
+                          }
+                          return (
+                            <div
+                              key={`${items?.title}_${id + index}`}
+                              className="xiangCeImgItem"
+                            >
+                              <img
+                                style={styles}
                                 key={`${items?.title}_${id + index}`}
-                                className="dynamic-const-box-text-img-list"
-                              >
-                                <img
-                                  style={styles}
-                                  key={`${items?.title}_${id + index}`}
-                                  src={items.apathZoom}
-                                  alt=""
-                                />
-                              </div>
-                            );
-                          })}
-                      </>
-                    );
-                  })}
-                </div>
+                                src={items.apathZoom}
+                                alt=""
+                              />
+                            </div>
+                          );
+                        })}
+                    </>
+                  );
+                })}
                 <span style={{ flex: '1' }}>
                   <RightOutline />
                 </span>
