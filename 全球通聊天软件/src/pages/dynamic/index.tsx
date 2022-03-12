@@ -282,13 +282,30 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
                       item.imgList.map((items: any, id: number) => {
                         let styles = null;
                         const len = item?.imgList?.length;
-                        const type = items?.styleLength.split('_')[0];
+                        const list = items?.styleLength.split('_');
+                        const type = list[0];
                         let styleObj: any = null;
                         if (len === 2 || len === 4) {
                           styleObj = {
                             width: '2.9rem',
                             height: '2.9rem',
                           };
+                        } else if (len === 1) {
+                          if (type === 'width') {
+                            styleObj = {
+                              width: '5.2rem',
+                              height: `${((list[2] / list[1]) * 5.2).toFixed(
+                                2
+                              )}rem`,
+                            };
+                          } else {
+                            styleObj = {
+                              width: `${((list[1] / list[2]) * 5.2).toFixed(
+                                2
+                              )}rem`,
+                              height: '5.2rem',
+                            };
+                          }
                         }
                         if (type === 'width') {
                           styles = {
