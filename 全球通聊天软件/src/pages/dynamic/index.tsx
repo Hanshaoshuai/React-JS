@@ -59,9 +59,9 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
       let index = 0;
       if (res.code === 200) {
         setCircleFriendList(res?.data || []);
-        res?.data ||
-          [].map((item: any) => {
-            item?.imgList.map((item: any) => {
+        res.data.map((item: any) => {
+          item.imgList &&
+            item.imgList.map((item: any) => {
               imgIndex.push({
                 url: item.apath,
                 index: index,
@@ -71,8 +71,8 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
               return item;
             });
 
-            return item;
-          });
+          return item;
+        });
         setDemoImagesList(demoImages);
       }
     });
@@ -263,7 +263,9 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
             return (
               <div
                 key={`${item?.title}_${index}`}
-                className="dynamic-const-box"
+                className={`dynamic-const-box ${
+                  !name && 'dynamic-const-box-first'
+                }`}
               >
                 <div className="dynamic-const-box-img">
                   <img src={item?.headPortrait} alt="" />
@@ -383,7 +385,7 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
                         >
                           <HeartFill
                             style={{
-                              fontSize: '0.305rem',
+                              fontSize: '0.3rem',
                               verticalAlign: 'top',
                               marginRight: '0.04rem',
                             }}
