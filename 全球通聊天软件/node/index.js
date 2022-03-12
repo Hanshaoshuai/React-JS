@@ -1207,7 +1207,7 @@ app.post('/friendsCircleFileUpload', function (req, res) {
       return;
     }
     let reqs = fields;
-    let fileName = reqs.name + `${parseInt(Math.random() * 3435) + parseInt(Math.random() * 6575)}`;
+    let fileName = reqs.name;
 
     let filePath = path.join(__dirname, '../friendsCircle/')
     let apath = `/friendsCircle/${fileName}.${reqs.type}`
