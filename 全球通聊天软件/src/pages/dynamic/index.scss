@@ -1,7 +1,7 @@
 .dynamic-box {
   width: 100%;
   background-color: #fff;
-  padding-bottom: 0.3rem;
+  padding-bottom: 1.41rem;
   min-height: calc(100% - 0.3rem);
   .dynamic-img {
     width: 100%;
@@ -125,11 +125,11 @@
           float: right;
           i {
             // color: #ff7a59;
-            // margin-right: 0.05rem;
+            margin-right: 0.5rem;
             color: rgb(86, 136, 197);
           }
           span {
-            margin-left: 0.1rem;
+            vertical-align: sub;
             // background-color: rgb(217, 233, 252);
             color: #ff7a59;
             border-radius: 0.1rem;
@@ -146,7 +146,7 @@
             border-radius: 0.06rem;
             width: 0rem;
             height: 0.6rem;
-            background-color: rgba($color: #000000, $alpha: 0.5);
+            background-color: rgba($color: #000000, $alpha: 0.6);
             display: flex;
             justify-content: space-between;
             align-items: center;

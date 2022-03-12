@@ -83,3 +83,13 @@ export async function getCircleFriends(data: any) {
     return error;
   }
 }
+
+// 评论和点赞
+export async function addComments(data: any) {
+  try {
+    const res: any = await request(`${API_HOST}/addComments`, 'POST', data);
+    return res;
+  } catch (error) {
+    return error;
+  }
+}

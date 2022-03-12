@@ -1,10 +1,15 @@
 import '../personalInformation/index.scss';
 import './index.scss';
-import { Divider, ImageViewer } from 'antd-mobile';
+import { Divider, ImageViewer, Toast } from 'antd-mobile';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import CameraOutList from './cameraOutList';
-import { getCircleFriends } from '../../api';
+import HooksCropperModal from '../HooksCropperModal/HooksCropperModal';
+import {
+  getCircleFriends,
+  friendsCircleFileUpload,
+  addComments,
+} from '../../api';
 import {
   PlayOutline,
   CloseCircleOutline,
@@ -16,7 +21,14 @@ import { moment } from '../../helpers';
 let imgIndex: any = [];
 let toIndexId: any = null;
 let scrollIndex = 0;
-const Dynamic = ({ name, onBack, display, indexId }: any) => {
+const Dynamic = ({
+  name,
+  onBack,
+  display,
+  indexId,
+  circleFriendData,
+  callback,
+}: any) => {
   const history = useHistory();
   const videosRef: any = useRef(null);
   const [nickname] = useState<any>(localStorage.getItem('myName'));
@@ -31,6 +43,9 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
   const [visible, setVisible] = useState(false);
   const [defaultIndex, setDefaultIndex] = useState(1);
   const [demoImagesList, setDemoImagesList] = useState<any>([]);
+  const [circleFriendsBackground, setCircleFriendsBackground] = useState<any>(
+    localStorage.getItem('circleFriendsBackground')
+  );
 
   useEffect(() => {
     if (!display && indexId) {
@@ -45,8 +60,36 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
   }, [display]);
 
   useEffect(() => {
-    getCircleFriendList();
-  }, []);
+    if (!circleFriendData) {
+      const circle = localStorage.getItem('circleFriendsBackgroundLoc');
+      // console.log(circle);
+      if (circle) {
+        setCircleFriendList(JSON.parse(circle) || []);
+      }
+
+      getCircleFriendList();
+    } else {
+      imgIndex = [];
+      let demoImages: any = [];
+      let index = 0;
+      setCircleFriendList(circleFriendData || []);
+      circleFriendData.map((item: any) => {
+        item.imgList &&
+          item.imgList.map((item: any) => {
+            imgIndex.push({
+              url: item.apath,
+              index: index,
+            });
+            index += 1;
+            demoImages.push(item.apath);
+            return item;
+          });
+
+        return item;
+      });
+      setDemoImagesList(demoImages);
+    }
+  }, [circleFriendData]);
 
   const getCircleFriendList = () => {
     imgIndex = [];
@@ -58,6 +101,10 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
       // console.log(res);
       let index = 0;
       if (res.code === 200) {
+        localStorage.setItem(
+          'circleFriendsBackgroundLoc',
+          JSON.stringify(res.data || [])
+        );
         setCircleFriendList(res?.data || []);
         res.data.map((item: any) => {
           item.imgList &&
@@ -96,6 +143,7 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
   const onetCameraOut = () => {
     getCircleFriendList();
     setCameraOut(false);
+    callback();
   };
   const videoPlays = (videoPlays: any, index: number) => {
     // 视频开关
@@ -134,8 +182,34 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
       }
     }
   };
-  const onComment = (e: any) => {
-    console.log(e);
+  const onComment = ({ time, name, nickname }: any) => {
+    console.log(name, nickname, myLocName);
+    addComments({
+      time,
+      name, // 给谁评论的 对方的电话
+      friendName: nickname, // 评论者的中文名
+      friendNameId: myLocName, // 评论者的电话
+      comments: '测试内容123', // 评论内容
+    }).then((res: any) => {
+      if (res.code === 200) {
+        console.log(res);
+      }
+    });
+  };
+  const giveThumbs = ({ time, name, nickname }: any) => {
+    console.log(name, nickname, myLocName);
+    addComments({
+      time,
+      name, // 给谁点赞的 对方的电话
+      friendName: nickname, // 点赞者的中文名
+      friendNameId: myLocName, // 点赞者的电话
+      thumbsUp: true, // 设为true
+    }).then((res: any) => {
+      if (res.code === 200) {
+        console.log(res);
+      }
+    });
+    // comment
   };
   const onSetVisible = (url: number) => {
     imgIndex.map((item: any) => {
@@ -199,6 +273,76 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
     onSetCommentBlock(null);
     toIndexId = null;
   };
+  const [tabShow, setTabShow] = useState<any>(false);
+  const tabs = () => {
+    setTabShow(!tabShow);
+  };
+
+  const fs: any = useRef(null);
+  const [personalInformation] = useState<any>(
+    localStorage.getItem('personalInformation')
+  );
+  const [searchResults, setSearchResults] = useState(false);
+  const [type, setType] = useState<any>('');
+  const [hooksModalFile, setHooksModalFile] = useState<any>('');
+  const [hooksModalVisible, setHooksModalVisible] = useState<any>(false);
+
+  const mockUpload = async (file: any) => {
+    tabs();
+    const fileN = file.target.files[0];
+    let typeName = fileN.name.split('.');
+    setType(typeName[typeName.length - 1]);
+    // const datas = await Upload(file, imgId, myName);
+    // setMyHead(datas);
+    setHooksModalFile(fileN);
+    setHooksModalVisible(true);
+  };
+  const setHooksModalVisibles = () => {
+    setHooksModalVisible(false);
+    if (fs) {
+      fs.current.value = null;
+    }
+  };
+  const handleGetResultImgUrl = async (blob: any) => {
+    // const str = URL.createObjectURL(blob);
+    // console.log(blob);
+    const isDebug: any =
+      !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+    const formDate = new FormData();
+    formDate.append(
+      'name',
+      `${myLocName}_${(Math.random() * 3435).toFixed(0)}`
+    );
+    formDate.append('myLocName', myLocName);
+    formDate.append('type', 'jpg');
+    formDate.append('typeF', 'no');
+    formDate.append('Zoom', 'no');
+    formDate.append('base64', blob.split('base64,')[1]);
+    if (isDebug) {
+      formDate.append('isDebug', isDebug);
+    }
+    const { apath }: any = await friendsCircleFileUpload(formDate);
+    if (apath) {
+      localStorage.setItem('circleFriendsBackground', apath);
+      setCircleFriendsBackground(apath);
+      // setMyHead(icon);
+      // setMyHeadZoom(apathZoom);
+    }
+    // console.log(data);
+  };
+  const goFriends = (name: string) => {
+    if (name !== myLocName) {
+      localStorage.setItem('fromType', 'All');
+      localStorage.setItem('type', 'chat');
+      localStorage.setItem('toNames', name.toString());
+      localStorage.setItem('toChatName', name.toString());
+      localStorage.setItem('personalInformation', '1');
+    }
+    history.push('/personalInformation?personal=1');
+  };
+  const onCommentTo = () => {
+    console.log('123');
+  };
   return (
     <div
       style={{ display: `${displayBlock || !name ? 'block' : 'none'}` }}
@@ -215,6 +359,42 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
             onClick={goBackS}
           />
           <span>{name ? name : '朋友圈'}</span>
+          {name && (
+            <>
+              <img
+                src="/images/dashujukeshihuaico.png"
+                alt=""
+                className="xiangmu-rigth"
+                onClick={tabs}
+              ></img>
+              <ul className={`${tabShow ? 'show' : ''}`}>
+                {/* <li onClick={options}>更换背景</li> */}
+                <label>
+                  <li>
+                    <input
+                      onChange={(files: any) => mockUpload(files)}
+                      style={{ display: 'none' }}
+                      type={`${
+                        personalInformation || searchResults ? '' : 'file'
+                      }`}
+                      name=""
+                      accept="image/jpeg,image/jpg,image/png"
+                      ref={fs}
+                    />
+                    更换背景
+                  </li>
+                </label>
+              </ul>
+            </>
+          )}
+          {hooksModalVisible && (
+            <HooksCropperModal
+              uploadedImageFile={hooksModalFile}
+              onClose={setHooksModalVisibles}
+              onSubmit={handleGetResultImgUrl}
+              aspectRatio={1.5}
+            />
+          )}
         </div>
       </div>
       <div
@@ -225,7 +405,11 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
         <div className="dynamic-box">
           <div
             style={{
-              background: 'url(/images/202203120130501.jpg)',
+              background: `url(${
+                circleFriendsBackground
+                  ? circleFriendsBackground
+                  : '/images/202203120130501.jpg'
+              })`,
               backgroundSize: '100%',
             }}
             className="dynamic-img"
@@ -267,7 +451,10 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
                   !name && index === 0 && 'dynamic-const-box-first'
                 }`}
               >
-                <div className="dynamic-const-box-img">
+                <div
+                  className="dynamic-const-box-img"
+                  onClick={() => goFriends(item.name)}
+                >
                   <img src={item?.headPortrait} alt="" />
                 </div>
                 <div className="dynamic-const-box-text">
@@ -382,8 +569,10 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
                       {moment(parseInt(item.time))}
                     </div>
                     <div className="dynamic-const-box-text-bottom-right">
-                      <i>{item.comment?.quantity}</i>
-                      {item.comment?.quantity && '条'}
+                      <i onClick={onCommentTo}>
+                        <i>{item.thumbsUpLength} 个点赞 </i>
+                        {item.commentsLength} 条评论
+                      </i>
                       <span onClick={() => onSetCommentBlock(index)}>
                         <KoubeiOutline />
                       </span>
@@ -395,6 +584,13 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
                         }}
                       >
                         <div
+                          onClick={() =>
+                            giveThumbs({
+                              time: item.time,
+                              name: item.name,
+                              nickname: item.nickname,
+                            })
+                          }
                           className="give-thumbs-up-button"
                           style={{
                             lineHeight: '0.3rem',
@@ -416,7 +612,11 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
                             opacity: '0',
                           }}
                           onClick={() =>
-                            onComment({ item: item.time, name: item.name })
+                            onComment({
+                              time: item.time,
+                              name: item.name,
+                              nickname: item.nickname,
+                            })
                           }
                         >
                           评论
@@ -424,6 +624,7 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
                       </div>
                     </div>
                   </div>
+                  {/* <div>123</div> */}
                 </div>
                 {index !== circleFriendList.length - 1 && (
                   <div className="border-bottom"></div>

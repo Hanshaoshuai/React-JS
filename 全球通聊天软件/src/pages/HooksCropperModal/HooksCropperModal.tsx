@@ -6,7 +6,12 @@ import 'cropperjs/dist/cropper.css'; // 引入Cropper对应的css
 
 import './HooksCropperModal.scss';
 
-const HooksCropperModal = ({ uploadedImageFile, onClose, onSubmit }: any) => {
+const HooksCropperModal = ({
+  uploadedImageFile,
+  onClose,
+  onSubmit,
+  aspectRatio,
+}: any) => {
   const [src, setSrc] = useState<any>(null);
   const [cropperRef, setCropperRef] = useState<any>(null);
 
@@ -100,7 +105,7 @@ const HooksCropperModal = ({ uploadedImageFile, onClose, onSubmit }: any) => {
                 onInitialized={(e: any) => onCropperInit(e)}
                 // Cropper.js options
                 viewMode={1}
-                aspectRatio={1} // 固定为1:1  可以自己设置比例, 默认情况为自由比例
+                aspectRatio={aspectRatio || 1} // 固定为1:1  可以自己设置比例, 默认情况为自由比例
                 guides={false}
                 preview=".cropper-preview"
                 //裁剪变化时的回调函数

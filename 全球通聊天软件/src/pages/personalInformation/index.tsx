@@ -17,6 +17,7 @@ import {
   addFriend,
   removeFriend,
   logout,
+  getCircleFriends,
 } from '../../api';
 import { Upload } from '../A-components/upload';
 let indexId: any = false;
@@ -85,6 +86,8 @@ const ChatRecord = () => {
   const [name, setNames] = useState<any>('');
   const [labelData, setLabelData] = useState<any>({});
   const [labelOption, setLabelOption] = useState<any>({});
+  const [myLocName] = useState<any>(localStorage.getItem('name'));
+  const [circleFriendData, setCircleFriendData] = useState<any>([]);
 
   useEffect(() => {
     informationDetailsQ();
@@ -98,12 +101,20 @@ const ChatRecord = () => {
       setLabelData(information || {});
       setLabelOption(newOptions0 || []);
     }
+    getCircleFriendList();
   }, []);
-  // useEffect(() => {
-  //   if (messages.icon) {
-  //     setMyHead(messages.icon);
-  //   }
-  // }, [messages]);
+
+  const getCircleFriendList = () => {
+    getCircleFriends({
+      name: myLocName,
+      personal: true,
+    }).then((res: any) => {
+      if (res.code === 200) {
+        console.log(res?.data);
+        setCircleFriendData(res?.data || []);
+      }
+    });
+  };
 
   const informationDetailsQ = (text?: any) => {
     // 好友资料详情
@@ -507,6 +518,9 @@ const ChatRecord = () => {
     setToDynamic(true);
     history.push('/personalInformation?dynamic=1');
   };
+  const onCallback = () => {
+    getCircleFriendList();
+  };
   return (
     <div className="personalInformation" onClick={tabsHid}>
       <InformationSettings
@@ -695,13 +709,48 @@ const ChatRecord = () => {
               <span>地区：</span>
               <span>{myRegion ? myRegion : '未设置'}</span>
             </div>
-            <div className="xiangCe">
+            <div className="xiangCe" onClick={onDynamic}>
               <span className="xiangCeTite">个人相册</span>
-              <div className="xiangCeImg" onClick={onDynamic}>
-                <img src="" alt="" />
-                <img src="" alt="" />
-                <img src="" alt="" />
-                <span>
+              <div className="xiangCeImg">
+                {circleFriendData.map((item: any, index: number) => {
+                  return (
+                    <div
+                      key={`${item?.title}_${index}`}
+                      className="xiangCeImgItem"
+                    >
+                      {item.imgList &&
+                        item.imgList.map((items: any, id: number) => {
+                          let styles = null;
+                          if (type === 'width') {
+                            styles = {
+                              height: '100%',
+                            };
+                          } else {
+                            styles = {
+                              width: '100%',
+                            };
+                          }
+                          if (id > 8) {
+                            return null;
+                          }
+                          return (
+                            <div
+                              key={`${items?.title}_${id + index}`}
+                              className="dynamic-const-box-text-img-list"
+                            >
+                              <img
+                                style={styles}
+                                key={`${items?.title}_${id + index}`}
+                                src={items.apathZoom}
+                                alt=""
+                              />
+                            </div>
+                          );
+                        })}
+                    </div>
+                  );
+                })}
+                <span style={{ flex: '1' }}>
                   <RightOutline />
                 </span>
               </div>
@@ -782,6 +831,8 @@ const ChatRecord = () => {
         }}
         display={toDynamic}
         indexId={indexId}
+        circleFriendData={circleFriendData}
+        callback={onCallback}
       />
     </div>
   );

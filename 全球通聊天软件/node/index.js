@@ -1085,7 +1085,6 @@ app.post('/getCircleFriends', (req, res) => {
       res.send({ code: 200, data: newList })
     });
   }
-
 })
 //朋友圈开始发布
 app.post('/startFriendsCircleFileUpload', (req, res) => {
@@ -1213,7 +1212,7 @@ app.post('/friendsCircleFileUpload', function (req, res) {
     let apath = `/friendsCircle/${fileName}.${reqs.type}`
     let apathZoom = `/friendsCircle/${fileName}Zoom.jpg`
     if (reqs.isDebug) {
-      filePath = path.join(__dirname, '../public/friendsCircle/')
+      filePath = path.join(__dirname, '../public/friendsCircle/');
     }
     if (!fs.existsSync(filePath)) {
       fs.mkdirSync(filePath)
@@ -1236,7 +1235,7 @@ app.post('/friendsCircleFileUpload', function (req, res) {
       res.send({ code: 200, msg: "分片上传进行中" })
     } else if (reqs.typeF === 'no' || reqs.typeF === '分片上传最后') {
       // console.log(reqs.index)
-      if (reqs.typeF === 'no') {
+      if (reqs.typeF === 'no' && !reqs.Zoom) {
         let chunksFileNames = `${filePath}/${fileName}Zoom.jpg`
         const upStream = fs.createWriteStream(chunksFileNames);
         upStream.write(reqs.videoImgZoom.split("base64,")[1], 'base64')
@@ -1248,9 +1247,185 @@ app.post('/friendsCircleFileUpload', function (req, res) {
       //写入数据到流
       upStreamV.write(reqs.base64, 'base64')
       upStreamV.end()
+      if (reqs.myLocName) {
+        const data = await circleFriendsBackground(reqs.myLocName, apath)
+        if (data !== 'data') {
+          res.send({ code: 2001, msg: "上传失败" })
+          return;
+        }
+      }
       res.send({ code: 200, msg: "上传成功", apath, apathZoom, type: reqs.fileType, typeF: reqs.typeF, styleLength: reqs.styleLength })
     }
   })
+})
+//更改个人朋友圈背景
+const circleFriendsBackground = async (myName, apath) => {
+  return new Promise((resolve, reject) => {
+    MongoClient.connect(url, function (err, db) {
+      if (err) throw err;
+      var dbo = db.db('runoob');
+      var whereStr = { name: myName }; // 查询条件
+      var updateStr = {
+        $set: { circleFriendsBackground: apath },
+      }; //更换内容
+      // console.log('第-道', updateStr);
+      dbo.collection('site').updateOne(whereStr, updateStr, function (err, res) {
+        if (err) throw err;
+        // console.log('更改请求方数据成功');
+        if (res.acknowledged) {
+          resolve('data')
+        } else {
+          reject('errr')
+        }
+        db.close();
+      });
+    });
+  })
+}
+
+const onHandle = (newList, reqs) => {
+  let indexId = 0;
+  let commentsLength = 0;
+  newList.map((item) => {
+    // item.imgList = JSON.parse(item.imgList)
+    if (reqs.time === item.time) {
+      let commentsList = item.commentsList || [];
+      if (reqs.thumbsUp) {
+        commentsList.push({
+          friendName: reqs.friendName, // 点赞者的中文名
+          friendNameId: reqs.friendNameId, // 点赞者的电话
+          thumbsUp: reqs.thumbsUp, // 设为true
+        })
+      } else {
+        commentsList.push({
+          friendName: reqs.friendName, // 点赞者的中文名
+          friendNameId: reqs.friendNameId, // 点赞者的电话
+          comments: reqs.comments || '', // 评论内容
+        })
+      }
+      if (commentsList.length) {
+        commentsList.map(item => {
+          if (item.thumbsUp) {
+            indexId += 1;
+          }
+          if (item.comments) {
+            commentsLength += 1;
+          }
+          return item;
+        })
+      }
+      item.thumbsUpLength = indexId; // 点赞总数
+      item.commentsLength = commentsLength; // 评论总数
+      item.commentsList = commentsList;
+    }
+    return item;
+  })
+}
+// 评论和点赞 
+app.post('/addComments', async (req, res) => {
+  let reqs = req.body;
+  let fileName = reqs.name;
+  let resolve = res;
+  // console.log(reqs)
+  let textName = `./friendsCircleTxt/${fileName}.txt`
+  const data = await new Promise((resolve, reject) => {
+    fs.readFile(textName, function (error, data) {
+      if (error) {
+        res.send({ code: 2001, msg: "读取文件error或文件不存在", data: [] })
+        return false;
+      }
+      //console.log(data);  //data是读取的十六进制的数据。  也可以在参数中加入编码格式"utf8"来解决十六进制的问题;
+      // console.log('读取出所有行的信息 ', data.toString());  //读取出所有行的信息
+      let newList = JSON.parse(data.toString());
+      onHandle(newList, reqs) // 寻找要评论的
+      newList = JSON.stringify(newList);
+      // console.log(objs)
+      fs.writeFile(textName,
+        newList,
+        'utf8',
+        function (error) {
+          if (error) {
+            res.send({ code: 2001, msg: "失败" })
+            reject(false)
+          } else {
+            resolve(true)
+          }
+        }
+      );
+    });
+  })
+  if (!data) return
+
+  textName = `./friendsCircleTxt/TotalCircleFriends.txt`
+  fs.readFile(`${textName}`, function (error, data) {
+    if (error) {
+      res.send({ code: 200, msg: "读取文件error或文件不存在", data: [] })
+      return false;
+    }
+    //console.log(data);  //data是读取的十六进制的数据。  也可以在参数中加入编码格式"utf8"来解决十六进制的问题;
+    // console.log('读取出所有行的信息 ', data.toString());  //读取出所有行的信息
+    let newList = JSON.parse(data.toString());
+    onHandle(newList, reqs) // 寻找要评论的
+    newList = JSON.stringify(newList);
+    // console.log(objs)
+    fs.writeFile(textName,
+      newList,
+      'utf8',
+      function (error) {
+        if (error) {
+          // console.log(error);
+          return false;
+        } else {
+          res.send({ code: 200, data: `${(reqs.thumbsUp && '点赞') || (reqs.comments && "评论")}成功` })
+        }
+      }
+    );
+  });
+  // MongoClient.connect(url, function (err, db) {
+  //   if (err) throw err;
+  //   var dbo = db.db('runoob');
+  //   var whereStr = { name: fileName }; // 查询条件
+  //   dbo
+  //     .collection('site')
+  //     .find(whereStr)
+  //     .toArray(function (err, result) {
+  //       // 返回集合中所有数据
+  //       if (err) throw err;
+  //       // console.log(result);
+  //       if (result && result.length === 0) {
+  //         res.send({ code: 2001, msg: '网络忙请稍后....' });
+  //         db.close();
+  //       } else if (result && result.length === 1) {
+  //         console.log(result)
+  //         let commentsList = result[0].commentsList || [];
+  //         commentsList.push({
+  //           friendName: reqs.friendName, // 点赞者的中文名
+  //           friendNameId: reqs.friendNameId, // 点赞者的电话
+  //           thumbsUp: reqs.thumbsUp || false, // 设为true
+  //           comments: reqs.comments || '', // 评论内容
+  //         })
+  //         MongoClient.connect(url, function (err, db) {
+  //           if (err) throw err;
+  //           var dbo = db.db('runoob');
+  //           var whereStr = { name: fileName }; // 查询条件
+  //           var updateStr = {
+  //             $set: { commentsList: commentsList },
+  //           }; //更换内容
+  //           // console.log('第-道', updateStr);
+  //           dbo.collection('site').updateOne(whereStr, updateStr, function (err, res) {
+  //             if (err) throw err;
+  //             // console.log('更改请求方数据成功');
+  //             if (res.acknowledged) {
+  //               resolve.send({ code: 200, msg: `${reqs.thumbsUp || reqs.comments}成功` })
+  //             } else {
+  //               resolve.send({ code: 2001, msg: "失败" })
+  //             }
+  //             db.close();
+  //           });
+  //         });
+  //       }
+  //     })
+  // })
 })
 
 // 上传图片
@@ -1271,24 +1446,20 @@ app.post('/file_upload', function (req, res) {
       res.send({ code: 2001, msg: "上传失败" })
       return;
     }
-
     var resto = res,
       reqs = fields,
       result = { code: 1001, msg: '图片提交失败', icon: '' };
-
     let fileName = (new Date()).getTime() + parseInt(Math.random() * 3435) + parseInt(Math.random() * 6575);
     if (reqs.image) {
       fileName = reqs.imgId
       // reqs.body.imgId = fileName;
     }
-
     let filePath = path.join(__dirname, '../images/Avatars')
     let apath = `/images/Avatars/${fileName}.${reqs.type}`
     let apathZoom = `/images/Avatars/${fileName}Zoom.${reqs.type}`
     if (reqs.lengthId === '1' && reqs.styleLength) {
       apathZoom = `/images/file/${fileName}Zoom.jpg`
     }
-
     if (reqs.file) { // 文件或视频处理
       fileName = reqs.fileName
       filePath = path.join(__dirname, '../images/file')
@@ -1314,7 +1485,6 @@ app.post('/file_upload', function (req, res) {
       // classIcon += reqs.classIcon;
       // res.send({ code: 200, msg: "分片上传继续" })
       // filePath = path.join(__dirname, './fileList');
-
       let files = reqs.classIcon
       const { fileName, lengthId, shardCount, typeName, type } = reqs
       // 切片上传目录
@@ -1421,7 +1591,6 @@ app.post('/file_upload', function (req, res) {
         // dataBuffer = Buffer.from(base64, 'base64');
         dataBuffer = Buffer.from(reqs.classIcon, 'base64');
       }
-
       // dataBuffer = Buffer.from(classIcon + reqs.classIcon, 'binary');
       // 
       // console.log(reqs.classIcon)
