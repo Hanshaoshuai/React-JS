@@ -58,20 +58,21 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
       // console.log(res);
       let index = 0;
       if (res.code === 200) {
-        setCircleFriendList(res.data);
-        res.data.map((item: any) => {
-          item?.imgList.map((item: any) => {
-            imgIndex.push({
-              url: item.apath,
-              index: index,
+        setCircleFriendList(res?.data || []);
+        res?.data ||
+          [].map((item: any) => {
+            item?.imgList.map((item: any) => {
+              imgIndex.push({
+                url: item.apath,
+                index: index,
+              });
+              index += 1;
+              demoImages.push(item.apath);
+              return item;
             });
-            index += 1;
-            demoImages.push(item.apath);
+
             return item;
           });
-
-          return item;
-        });
         setDemoImagesList(demoImages);
       }
     });
