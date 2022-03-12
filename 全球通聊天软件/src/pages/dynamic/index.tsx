@@ -380,6 +380,7 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
                         <div
                           className="give-thumbs-up-button"
                           style={{
+                            lineHeight: '0.3rem',
                             opacity: '0',
                           }}
                         >
