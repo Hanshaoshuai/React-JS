@@ -316,7 +316,7 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
                             width: '100%',
                           };
                         }
-                        if (id > 3) {
+                        if (id > 8) {
                           return null;
                         }
                         return (
