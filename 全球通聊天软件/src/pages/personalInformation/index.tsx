@@ -521,6 +521,7 @@ const ChatRecord = () => {
   const onCallback = () => {
     getCircleFriendList();
   };
+  let listIndexId = 0;
   return (
     <div className="personalInformation" onClick={tabsHid}>
       <InformationSettings
@@ -717,6 +718,7 @@ const ChatRecord = () => {
                     <>
                       {item.imgList &&
                         item.imgList.map((items: any, id: number) => {
+                          listIndexId += 1;
                           let styles = null;
                           if (type === 'width') {
                             styles = {
@@ -727,7 +729,7 @@ const ChatRecord = () => {
                               width: '100%',
                             };
                           }
-                          if (id > 2) {
+                          if (listIndexId > 3) {
                             return null;
                           }
                           return (
