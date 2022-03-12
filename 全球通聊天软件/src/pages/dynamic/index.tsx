@@ -189,8 +189,8 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
     // );
     // console.log(e.target.scrollTop - scrollIndex);
     if (
-      e.target.scrollTop - scrollIndex > 230 ||
-      e.target.scrollTop - scrollIndex < -230
+      e.target.scrollTop - scrollIndex > 190 ||
+      e.target.scrollTop - scrollIndex < -190
     ) {
       // onSetCommentBlock(null);
       videoPlays('null', 0);
@@ -386,7 +386,7 @@ const Dynamic = ({ name, onBack, display, indexId }: any) => {
                         >
                           <HeartFill
                             style={{
-                              fontSize: '0.3rem',
+                              fontSize: '0.31rem',
                               verticalAlign: 'bottom',
                               marginRight: '0.04rem',
                             }}
