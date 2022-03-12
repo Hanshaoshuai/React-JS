@@ -294,7 +294,7 @@
     font-size: 0.3rem;
     color: #ff7a59;
     position: absolute;
-    right: 0.08rem;
+    right: 0.16rem;
     top: 0.1rem;
     z-index: 19000;
     line-height: 0.3rem;
@@ -309,6 +309,6 @@
     min-height: 1.3rem;
     display: inline-block;
     min-width: 2.3rem;
-    width: 99%;
+    padding-right: 1%;
   }
 }
