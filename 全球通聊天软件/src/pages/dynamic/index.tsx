@@ -519,7 +519,7 @@ const Dynamic = ({
           {circleFriendList.map((item: any, index: number) => {
             let likeIt = false;
             let thumbsTime = 0;
-            if (item.video) {
+            if (item.video.apath) {
               ThereVideos += 1;
             }
             item.commentsList &&
