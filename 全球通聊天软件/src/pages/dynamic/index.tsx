@@ -57,6 +57,7 @@ const Dynamic = ({
   useEffect(() => {
     if (!display && indexId) {
       setCommentParameterV(false);
+      videoPlays(null, 0);
       let timeout = setTimeout(() => {
         setDisplayBlock(false);
         // goBackS(false);
@@ -653,7 +654,7 @@ const Dynamic = ({
                           onComment({
                             time: item.time,
                             name: item.name,
-                            nickname: item.nickname,
+                            nickname: nickname,
                             commentsLength: item.commentsLength,
                             commentsList: item.commentsList,
                           })
@@ -677,7 +678,7 @@ const Dynamic = ({
                             giveThumbs({
                               time: item.time,
                               name: item.name,
-                              nickname: item.nickname,
+                              nickname: nickname,
                               likeIt,
                               thumbsTime: thumbsTime,
                             })
@@ -707,7 +708,7 @@ const Dynamic = ({
                             onComment({
                               time: item.time,
                               name: item.name,
-                              nickname: item.nickname,
+                              nickname: nickname,
                               commentsLength: item.commentsLength,
                               commentsList: item.commentsList,
                             })
