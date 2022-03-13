@@ -433,3 +433,51 @@ code {
     transform: translateX(100%);
   }
 }
+@keyframes generalPopup {
+  0% {
+    transform: scale(0.2, 0.2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+}
+.document-classification-box {
+  animation-name: generalPopup;
+  -webkit-animation-duration: 0.13s;
+  animation-duration: 0.13s;
+  -webkit-animation-play-state: running;
+  animation-play-state: running;
+  -webkit-animation-timing-function: ease-in;
+  animation-timing-function: ease-in;
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
+  // -webkit-animation-iteration-count: infinite;
+  // animation-iteration-count: infinite;
+  // -webkit-animation-direction: alternate;
+  // animation-direction: alternate;
+}
+@keyframes generalPopup1 {
+  0% {
+    margin-right: 0;
+  }
+  100% {
+    margin-right: 0.9rem;
+  }
+}
+.PopupBottomTextAreaRight {
+  animation-name: generalPopup1;
+  -webkit-animation-duration: 0.13s;
+  animation-duration: 0.13s;
+  -webkit-animation-play-state: running;
+  animation-play-state: running;
+  -webkit-animation-timing-function: ease-in;
+  animation-timing-function: ease-in;
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
+  // -webkit-animation-iteration-count: infinite;
+  // animation-iteration-count: infinite;
+  // -webkit-animation-direction: alternate;
+  // animation-direction: alternate;
+}

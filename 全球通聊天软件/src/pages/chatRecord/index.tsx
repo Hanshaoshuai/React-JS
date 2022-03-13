@@ -42,6 +42,9 @@ const ChatRecord = () => {
   const [myHeadPortrait] = useState<any>(
     localStorage.getItem('myHeadPortrait') || ''
   );
+  const [myapathZoom] = useState<any>(
+    localStorage.getItem('myapathZoom') || ''
+  );
   const [getBuddyListsL, setGetBuddyListsL] = useState<any>(
     JSON.parse(localStorage.getItem('getBuddyLists') || '[]')
   );
@@ -60,7 +63,7 @@ const ChatRecord = () => {
     localStorage.removeItem('groupName');
     localStorage.removeItem('fromType');
 
-    if (myHeadPortrait) {
+    if (myHeadPortrait && myapathZoom) {
       setImgeSrc(localStorage.getItem('myapathZoom'));
     } else if (localName && localName !== '') {
       // const list: any = { imgId: localStorage.getItem("imgId") };
@@ -77,7 +80,7 @@ const ChatRecord = () => {
         myName: myNameL,
         type: 'chat',
       }).then((data) => {
-        // console.log(data);
+        console.log(data);
         if (data.code && data.imges) {
           setImgeSrc(data.apathZoom);
           localStorage.setItem('myHeadPortrait', data.imges);

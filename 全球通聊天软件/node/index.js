@@ -1286,21 +1286,49 @@ const circleFriendsBackground = async (myName, apath) => {
 const onHandle = (newList, reqs) => {
   let indexId = 0;
   let commentsLength = 0;
+  let index = false;
   newList.map((item) => {
     // item.imgList = JSON.parse(item.imgList)
     if (reqs.time === item.time) {
       let commentsList = item.commentsList || [];
-      if (reqs.thumbsUp) {
-        commentsList.push({
-          friendName: reqs.friendName, // 点赞者的中文名
-          friendNameId: reqs.friendNameId, // 点赞者的电话
-          thumbsUp: reqs.thumbsUp, // 设为true
-        })
+      if (!reqs.comments) {
+        if (commentsList.length) {
+          for (let i = 0; i < commentsList.length; i++) {
+            if (commentsList[i].friendNameId === reqs.friendNameId && commentsList[i].thumbsTime === reqs.thumbsTime) {
+              commentsList[i].thumbsUp = reqs.thumbsUp
+              index = true;
+              break;
+            }
+          }
+          if (!index) {
+            index = true;
+            commentsList.push({
+              time: reqs.time,// 发布者发布时间
+              friendName: reqs.friendName, // 点赞者的中文名
+              friendNameId: reqs.friendNameId, // 点赞者的电话
+              friendHeadPortrait: reqs.friendHeadPortrait,  // 点赞者的头像
+              thumbsUp: reqs.thumbsUp, // 设为true
+              thumbsTime: reqs.thumbsTime // 点赞时间
+            })
+          }
+        } else {
+          commentsList.push({
+            time: reqs.time,// 发布者发布时间
+            friendName: reqs.friendName, // 点赞者的中文名
+            friendNameId: reqs.friendNameId, // 点赞者的电话
+            friendHeadPortrait: reqs.friendHeadPortrait,  // 点赞者的头像
+            thumbsUp: reqs.thumbsUp, // 设为true
+            thumbsTime: reqs.thumbsTime // 点赞时间
+          })
+        }
       } else {
         commentsList.push({
-          friendName: reqs.friendName, // 点赞者的中文名
-          friendNameId: reqs.friendNameId, // 点赞者的电话
+          time: reqs.time,// 评论时间
+          friendName: reqs.friendName, // 评论者的中文名
+          friendNameId: reqs.friendNameId, // 评论者的电话
+          friendHeadPortrait: reqs.friendHeadPortrait,  // 评论者的头像
           comments: reqs.comments || '', // 评论内容
+          commentTime: reqs.commentTime // 评论时间
         })
       }
       if (commentsList.length) {

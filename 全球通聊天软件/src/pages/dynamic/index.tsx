@@ -1,6 +1,6 @@
 import '../personalInformation/index.scss';
 import './index.scss';
-import { Divider, ImageViewer, Toast } from 'antd-mobile';
+import { Divider, ImageViewer, Toast, Popup, TextArea } from 'antd-mobile';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import CameraOutList from './cameraOutList';
@@ -16,6 +16,8 @@ import {
   KoubeiOutline,
   HeartFill,
   CameraOutline,
+  CloseOutline,
+  ArrowDownCircleOutline,
 } from 'antd-mobile-icons';
 import { moment } from '../../helpers';
 let imgIndex: any = [];
@@ -46,9 +48,15 @@ const Dynamic = ({
   const [circleFriendsBackground, setCircleFriendsBackground] = useState<any>(
     localStorage.getItem('circleFriendsBackground')
   );
+  const [commentParameter, setCommentParameter] = useState<any>({});
+  const [commentParameterV, setCommentParameterV] = useState<any>(false);
+  const [visible5, setVisible5] = useState(false);
+  const [textAreaValue, setTextAreaValue] = useState('');
+  const [ReplyMessage, setReplyMessage] = useState('');
 
   useEffect(() => {
     if (!display && indexId) {
+      setCommentParameterV(false);
       let timeout = setTimeout(() => {
         setDisplayBlock(false);
         // goBackS(false);
@@ -56,6 +64,9 @@ const Dynamic = ({
       }, 230);
     } else if (display) {
       setDisplayBlock(true);
+      if (commentParameter.time) {
+        setCommentParameterV(true);
+      }
     }
   }, [display]);
 
@@ -126,6 +137,7 @@ const Dynamic = ({
   };
 
   const goBackS = () => {
+    setTabShow(false);
     if (cameraOut) {
       setCameraOut(false);
       return;
@@ -148,8 +160,11 @@ const Dynamic = ({
   const videoPlays = (videoPlays: any, index: number) => {
     // 视频开关
     // console.log('9999');
+    onSetCommentBlock(null);
     if (videosRef) {
       const videoList: any = videosRef.current.getElementsByClassName('videos');
+      const videosBox: any =
+        videosRef.current.getElementsByClassName('videosBox');
       const imgIndex: any =
         videosRef.current.getElementsByClassName('imgIndex');
       const videoClose: any =
@@ -159,59 +174,74 @@ const Dynamic = ({
       for (let i = 0; i < videoList.length; i++) {
         // videoList[i].currentTime = 0;
         videoList[i].pause(); //暂停控制
-        videoList[i].style.display = 'none';
+        videosBox[i].style.display = 'none';
         videoClose[i].style.display = 'none';
-        imgIndex[i].style.display = 'block';
-        PlayOutline[i].style.display = 'block';
+        // imgIndex[i].style.display = 'block';
+        // PlayOutline[i].style.display = 'block';
       }
       if (videoPlays === 'null') {
         return;
       }
       if (videoPlays === 'no') {
         videoList[index].pause(); //暂停控制
-        PlayOutline[index].style.display = 'block';
+        // PlayOutline[index].style.display = 'block';
         videoClose[index].style.display = 'none';
-        videoList[index].style.display = 'none';
-        imgIndex[index].style.display = 'block';
+        videosBox[index].style.display = 'none';
+        // imgIndex[index].style.display = 'block';
       } else {
-        PlayOutline[index].style.display = 'none';
-        imgIndex[index].style.display = 'none';
+        // PlayOutline[index].style.display = 'none';
+        // imgIndex[index].style.display = 'none';
         videoClose[index].style.display = 'block';
-        videoList[index].style.display = 'block';
+        videosBox[index].style.display = 'block';
         videoList[index].play();
       }
     }
   };
-  const onComment = ({ time, name, nickname }: any) => {
+  const onComment = ({
+    time,
+    name,
+    nickname,
+    commentsLength,
+    commentsList,
+  }: any) => {
     console.log(name, nickname, myLocName);
-    addComments({
-      time,
-      name, // 给谁评论的 对方的电话
-      friendName: nickname, // 评论者的中文名
-      friendNameId: myLocName, // 评论者的电话
-      comments: '测试内容123', // 评论内容
-    }).then((res: any) => {
-      if (res.code === 200) {
-        console.log(res);
-      }
-    });
+    setCommentParameterV(true);
+    setCommentParameter({ time, name, nickname, commentsLength, commentsList });
+    // addComments({
+    //   time,
+    //   name, // 给谁评论的 对方的电话
+    //   friendName: nickname, // 评论者的中文名
+    //   friendNameId: myLocName, // 评论者的电话
+    //   friendHeadPortrait: myapathZoom, // 评论者的头像
+    //   comments: '测试内容123', // 评论内容
+    //   commentTime: new Date().getTime(), // 评论时间
+    // }).then((res: any) => {
+    //   if (res.code === 200) {
+    //     console.log(res);
+    //     getCircleFriendList();
+    //   }
+    // });
   };
-  const giveThumbs = ({ time, name, nickname }: any) => {
+  const giveThumbs = ({ time, name, nickname, likeIt, thumbsTime }: any) => {
     console.log(name, nickname, myLocName);
     addComments({
       time,
       name, // 给谁点赞的 对方的电话
       friendName: nickname, // 点赞者的中文名
       friendNameId: myLocName, // 点赞者的电话
-      thumbsUp: true, // 设为true
+      friendHeadPortrait: myapathZoom, // 点赞者的头像
+      thumbsUp: !likeIt ? true : false, // 设为true
+      thumbsTime: thumbsTime || new Date().getTime(), // 点赞时间
     }).then((res: any) => {
       if (res.code === 200) {
         console.log(res);
+        getCircleFriendList();
       }
     });
     // comment
   };
   const onSetVisible = (url: number) => {
+    onSetCommentBlock(null);
     imgIndex.map((item: any) => {
       if (item.url === url) {
         setDefaultIndex(item.index);
@@ -239,7 +269,10 @@ const Dynamic = ({
         commentButton[i].style.opacity = '0';
       }
 
-      if (index === null) return;
+      if (index === null) {
+        toIndexId = null;
+        return;
+      }
       if (toIndexId !== index) {
         toIndexId = index;
         comment[index].style.padding = '0 0.4rem';
@@ -256,6 +289,7 @@ const Dynamic = ({
     }
   };
   const onScroll = (e: any) => {
+    setTabShow(false);
     // console.log(
     //   e.target.clientHeight,
     //   e.target.scrollTop,
@@ -338,10 +372,31 @@ const Dynamic = ({
       localStorage.setItem('toChatName', name.toString());
       localStorage.setItem('personalInformation', '1');
     }
+    setCommentParameterV(false);
     history.push('/personalInformation?personal=1');
   };
-  const onCommentTo = () => {
-    console.log('123');
+  const onReply = ({ friendName }: any) => {
+    setReplyMessage(friendName);
+  };
+  const releaseSpeech = ({}: any) => {
+    const { time, name, nickname } = commentParameter;
+    addComments({
+      time,
+      name, // 给谁评论的 对方的电话
+      friendName: nickname, // 评论者的中文名
+      friendNameId: myLocName, // 评论者的电话
+      friendHeadPortrait: myapathZoom, // 评论者的头像
+      comments: textAreaValue, // 评论内容
+      commentTime: new Date().getTime(), // 评论时间
+    }).then((res: any) => {
+      if (res.code === 200) {
+        console.log(res);
+        setCommentParameterV(false);
+        onSetCommentBlock(null);
+        setTextAreaValue('');
+        getCircleFriendList();
+      }
+    });
   };
   return (
     <div
@@ -367,7 +422,10 @@ const Dynamic = ({
                 className="xiangmu-rigth"
                 onClick={tabs}
               ></img>
-              <ul className={`${tabShow ? 'show' : ''}`}>
+              <ul
+                className={`${tabShow ? 'show' : ''}`}
+                onChange={() => setTabShow(!tabShow)}
+              >
                 {/* <li onClick={options}>更换背景</li> */}
                 <label>
                   <li>
@@ -392,7 +450,7 @@ const Dynamic = ({
               uploadedImageFile={hooksModalFile}
               onClose={setHooksModalVisibles}
               onSubmit={handleGetResultImgUrl}
-              aspectRatio={1.5}
+              aspectRatio={1.6}
             />
           )}
         </div>
@@ -404,17 +462,30 @@ const Dynamic = ({
       >
         <div className="dynamic-box">
           <div
-            style={{
-              background: `url(${
-                circleFriendsBackground
-                  ? circleFriendsBackground
-                  : '/images/202203120130501.jpg'
-              })`,
-              backgroundSize: '100%',
-            }}
+            // style={{
+            //   background: `url(${
+            //     circleFriendsBackground
+            //       ? circleFriendsBackground
+            //       : '/images/202203120130501.jpg'
+            //   })`,
+            //   backgroundSize: '100%',
+            //   backgroundRepeat: 'no-repeat',
+            //   backgroundPosition: 'center center',
+            // }}
             className="dynamic-img"
           >
-            <img className="dynamic-img-cont" src="" alt="" />
+            <div className="dynamic-img-cont-box">
+              <img
+                className="dynamic-img-cont"
+                src={
+                  circleFriendsBackground
+                    ? circleFriendsBackground
+                    : '/images/202203120130501.jpg'
+                }
+                alt=""
+              />
+            </div>
+
             <div className="dynamic-img-box">
               <img src={myapathZoom} alt="" />
               <div className="dynamic-img-box-test">{nickname}</div>
@@ -444,6 +515,16 @@ const Dynamic = ({
             </div>
           )}
           {circleFriendList.map((item: any, index: number) => {
+            let likeIt = false;
+            let thumbsTime = 0;
+            item.commentsList &&
+              item.commentsList.map((term: any) => {
+                if (term.friendNameId === myLocName && term.thumbsUp) {
+                  likeIt = true;
+                  thumbsTime = term.thumbsTime;
+                }
+                return term;
+              });
             return (
               <div
                 key={`${item?.title}_${index}`}
@@ -515,7 +596,6 @@ const Dynamic = ({
                             <img
                               style={styles}
                               onClick={() => onSetVisible(items.apath)}
-                              key={`${items?.title}_${id + index}`}
                               src={items.apathZoom}
                               alt=""
                             />
@@ -525,43 +605,42 @@ const Dynamic = ({
                   </div>
                   {item.video && (
                     <div className="otherItemsListVideos">
-                      <span
-                        className="PlayOutline"
-                        style={{ display: 'block' }}
-                      >
+                      <span className="PlayOutline">
                         <PlayOutline
                           onClick={() => {
                             videoPlays('play', index);
                           }}
                         />
                       </span>
-                      <span
-                        style={{ display: 'none' }}
-                        className="videoPlays"
-                        onClick={() => videoPlays('no', index)}
-                      >
-                        <CloseCircleOutline className="video-closure-icon" />
-                      </span>
                       <img
                         className="imgIndex"
-                        style={{ display: 'block' }}
                         src={item.video.apathZoom}
                         alt=""
                         onClick={() => {
                           videoPlays('play', index);
                         }}
                       />
-                      <video
-                        style={{ display: 'none' }}
-                        className="videos"
-                        controls={true}
-                        // autoPlay={true}
-                        // name="media"
-                        // muted="muted"
-                        // onClick={videoPlays}
+                      <div
+                        className="videosBox document-classification-box"
+                        onClick={() => videoPlays('no', index)}
                       >
-                        <source src={`${item.video.apath}`} type="" />
-                      </video>
+                        <span
+                          className="videoPlays"
+                          onClick={() => videoPlays('no', index)}
+                        >
+                          <CloseCircleOutline className="video-closure-icon" />
+                        </span>
+                        <video
+                          className="videos"
+                          controls={true}
+                          // autoPlay={true}
+                          // name="media"
+                          // muted="muted"
+                          // onClick={videoPlays}
+                        >
+                          <source src={`${item.video.apath}`} type="" />
+                        </video>
+                      </div>
                     </div>
                   )}
                   <div className="dynamic-const-box-text-bottom">
@@ -569,9 +648,19 @@ const Dynamic = ({
                       {moment(parseInt(item.time))}
                     </div>
                     <div className="dynamic-const-box-text-bottom-right">
-                      <i onClick={onCommentTo}>
-                        <i>{item.thumbsUpLength} 个点赞 </i>
-                        {item.commentsLength} 条评论
+                      <i
+                        onClick={() =>
+                          onComment({
+                            time: item.time,
+                            name: item.name,
+                            nickname: item.nickname,
+                            commentsLength: item.commentsLength,
+                            commentsList: item.commentsList,
+                          })
+                        }
+                      >
+                        <i>{item.thumbsUpLength || 0} 赞 </i>
+                        {item.commentsLength || 0} 评论
                       </i>
                       <span onClick={() => onSetCommentBlock(index)}>
                         <KoubeiOutline />
@@ -589,6 +678,8 @@ const Dynamic = ({
                               time: item.time,
                               name: item.name,
                               nickname: item.nickname,
+                              likeIt,
+                              thumbsTime: thumbsTime,
                             })
                           }
                           className="give-thumbs-up-button"
@@ -599,6 +690,7 @@ const Dynamic = ({
                         >
                           <HeartFill
                             style={{
+                              color: likeIt ? '#ff0000' : '#fff',
                               fontSize: '0.31rem',
                               verticalAlign: 'bottom',
                               marginRight: '0.04rem',
@@ -616,6 +708,8 @@ const Dynamic = ({
                               time: item.time,
                               name: item.name,
                               nickname: item.nickname,
+                              commentsLength: item.commentsLength,
+                              commentsList: item.commentsList,
                             })
                           }
                         >
@@ -624,7 +718,6 @@ const Dynamic = ({
                       </div>
                     </div>
                   </div>
-                  {/* <div>123</div> */}
                 </div>
                 {index !== circleFriendList.length - 1 && (
                   <div className="border-bottom"></div>
@@ -669,6 +762,112 @@ const Dynamic = ({
           }}
         />
       )}
+      <Popup
+        className="PopupBox"
+        visible={commentParameterV}
+        onMaskClick={() => {
+          setCommentParameter({});
+          setCommentParameterV(false);
+        }}
+        bodyStyle={{
+          borderTopLeftRadius: '8px',
+          borderTopRightRadius: '8px',
+          height: '55vh',
+        }}
+      >
+        {/* {mockContent} */}
+        <div className="PopupTop">
+          <CloseOutline
+            onClick={() => {
+              setCommentParameter({});
+              setCommentParameterV(false);
+            }}
+            className="PopupTopOutline"
+          />
+          {commentParameter.commentsLength || 0} 条评论
+        </div>
+        <div className="PopupContent">
+          <div className="PopupContentList">
+            {commentParameter.commentsList &&
+              commentParameter.commentsList.map((term: any, index: number) => {
+                if (!term.comments) {
+                  return null;
+                }
+                return (
+                  <div key={`${index}`} className="PopupContentListTerm">
+                    <div className="PopupContentListTermImg">
+                      <img
+                        onClick={() => goFriends(term.friendNameId)}
+                        src={term.friendHeadPortrait}
+                        alt=""
+                      />
+                    </div>
+                    <div
+                      className="PopupContentListTermText"
+                      onClick={() => onReply({ friendName: term.friendName })}
+                    >
+                      <span>{term.friendName}</span>
+                      <div className="PopupContentListTermTextBottom">
+                        <div className="PopupContentListTermTextBottomTex">
+                          {term.comments}
+                        </div>
+                        <div className="PopupContentListTermTextBottomBottom">
+                          <span>{moment(parseInt(term.commentTime))}</span>
+                          <span>回复</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+        <div className="PopupBottom">
+          <div className="border-top"></div>
+          <div
+            className={`PopupBottomTextArea ${
+              textAreaValue && 'PopupBottomTextAreaRight'
+            }`}
+          >
+            <TextArea
+              placeholder={
+                ReplyMessage ? `回复 @${ReplyMessage}` : '留下你的评论吧'
+              }
+              value={textAreaValue}
+              rows={1}
+              autoSize={{ minRows: 1, maxRows: 3 }}
+              onChange={(val) => {
+                setTextAreaValue(val);
+              }}
+            />
+            {textAreaValue && (
+              <div
+                className="PopupBottomIconBox"
+                onClick={() => releaseSpeech({})}
+              >
+                <ArrowDownCircleOutline className="PopupBottomIcon" />
+              </div>
+            )}
+          </div>
+        </div>
+        {!commentParameter.commentsLength && (
+          <div
+            style={{
+              height: '1rem',
+              width: '70%',
+              position: 'absolute',
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              margin: 'auto',
+              color: '#eeeeee',
+            }}
+          >
+            <Divider>暂无</Divider>
+          </div>
+        )}
+      </Popup>
     </div>
   );
 };

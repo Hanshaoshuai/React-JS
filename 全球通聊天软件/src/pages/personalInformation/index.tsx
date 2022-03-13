@@ -516,6 +516,7 @@ const ChatRecord = () => {
   }, [settings]);
   const onDynamic = () => {
     setToDynamic(true);
+    getCircleFriendList();
     history.push('/personalInformation?dynamic=1');
   };
   const onCallback = () => {
@@ -720,6 +721,8 @@ const ChatRecord = () => {
                         item.imgList.map((items: any, id: number) => {
                           listIndexId += 1;
                           let styles = null;
+                          const list = items?.styleLength.split('_');
+                          const type = list[0];
                           if (type === 'width') {
                             styles = {
                               height: '100%',
@@ -739,7 +742,6 @@ const ChatRecord = () => {
                             >
                               <img
                                 style={styles}
-                                key={`${items?.title}_${id + index}`}
                                 src={items.apathZoom}
                                 alt=""
                               />
