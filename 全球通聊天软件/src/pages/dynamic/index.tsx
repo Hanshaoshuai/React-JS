@@ -57,7 +57,7 @@ const Dynamic = ({
   useEffect(() => {
     if (!display && indexId) {
       setCommentParameterV(false);
-      videoPlays(null, 0);
+      videoPlays('null', 0);
       let timeout = setTimeout(() => {
         setDisplayBlock(false);
         // goBackS(false);
