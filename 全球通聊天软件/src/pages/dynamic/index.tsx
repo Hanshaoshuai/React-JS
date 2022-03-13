@@ -23,6 +23,7 @@ import { moment } from '../../helpers';
 let imgIndex: any = [];
 let toIndexId: any = null;
 let scrollIndex = 0;
+let ThereVideos = 0;
 const Dynamic = ({
   name,
   onBack,
@@ -72,6 +73,7 @@ const Dynamic = ({
   }, [display]);
 
   useEffect(() => {
+    ThereVideos = 0;
     if (!circleFriendData) {
       const circle = localStorage.getItem('circleFriendsBackgroundLoc');
       // console.log(circle);
@@ -399,7 +401,7 @@ const Dynamic = ({
       }
     });
   };
-  let ThereVideos = 0;
+
   return (
     <div
       style={{ display: `${displayBlock || !name ? 'block' : 'none'}` }}
@@ -519,7 +521,7 @@ const Dynamic = ({
           {circleFriendList.map((item: any, index: number) => {
             let likeIt = false;
             let thumbsTime = 0;
-            if (item.video.apath) {
+            if (item.video && item.video.apath) {
               ThereVideos += 1;
             }
             item.commentsList &&
