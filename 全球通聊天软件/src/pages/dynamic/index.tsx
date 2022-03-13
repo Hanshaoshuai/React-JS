@@ -23,7 +23,6 @@ import { moment } from '../../helpers';
 let imgIndex: any = [];
 let toIndexId: any = null;
 let scrollIndex = 0;
-let ThereVideos = 0;
 const Dynamic = ({
   name,
   onBack,
@@ -54,11 +53,12 @@ const Dynamic = ({
   const [visible5, setVisible5] = useState(false);
   const [textAreaValue, setTextAreaValue] = useState('');
   const [ReplyMessage, setReplyMessage] = useState('');
+  const [playbackRecord, setPlaybackRecord] = useState<any>({});
 
   useEffect(() => {
     if (!display && indexId) {
       setCommentParameterV(false);
-      videoPlays('null', 0);
+      videoPlays('null', '');
       let timeout = setTimeout(() => {
         setDisplayBlock(false);
         // goBackS(false);
@@ -73,7 +73,6 @@ const Dynamic = ({
   }, [display]);
 
   useEffect(() => {
-    ThereVideos = 0;
     if (!circleFriendData) {
       const circle = localStorage.getItem('circleFriendsBackgroundLoc');
       // console.log(circle);
@@ -160,43 +159,29 @@ const Dynamic = ({
     setCameraOut(false);
     callback();
   };
-  const videoPlays = (videoPlays: any, index: number) => {
+  const videoPlays = (videoPlays: any, index: any) => {
     // 视频开关
-    // console.log('9999');
+    // console.log(index);
+    if (videoPlays === 'null') {
+      index = playbackRecord;
+      videoPlays = 'no';
+    }
+    if (!index.videos_s) return;
+    const { videos_s, videosBox_s, videoPlays_s }: any = index;
     onSetCommentBlock(null);
     if (videosRef) {
-      const videoList: any = videosRef.current.getElementsByClassName('videos');
-      const videosBox: any =
-        videosRef.current.getElementsByClassName('videosBox');
-      const imgIndex: any =
-        videosRef.current.getElementsByClassName('imgIndex');
-      const videoClose: any =
-        videosRef.current.getElementsByClassName('videoPlays');
-      const PlayOutline: any =
-        videosRef.current.getElementsByClassName('PlayOutline');
-      for (let i = 0; i < videoList.length; i++) {
-        // videoList[i].currentTime = 0;
-        videoList[i].pause(); //暂停控制
-        videosBox[i].style.display = 'none';
-        videoClose[i].style.display = 'none';
-        // imgIndex[i].style.display = 'block';
-        // PlayOutline[i].style.display = 'block';
-      }
-      if (videoPlays === 'null') {
-        return;
-      }
+      const videoList: any = document.getElementById(videos_s);
+      const videosBox: any = document.getElementById(videosBox_s);
+      const videoClose: any = document.getElementById(videoPlays_s);
+      setPlaybackRecord({ videos_s, videosBox_s, videoPlays_s });
       if (videoPlays === 'no') {
-        videoList[index].pause(); //暂停控制
-        // PlayOutline[index].style.display = 'block';
-        videoClose[index].style.display = 'none';
-        videosBox[index].style.display = 'none';
-        // imgIndex[index].style.display = 'block';
+        videoList.pause(); //暂停控制
+        videoClose.style.display = 'none';
+        videosBox.style.display = 'none';
       } else {
-        // PlayOutline[index].style.display = 'none';
-        // imgIndex[index].style.display = 'none';
-        videoClose[index].style.display = 'block';
-        videosBox[index].style.display = 'block';
-        videoList[index].play();
+        videoClose.style.display = 'block';
+        videosBox.style.display = 'block';
+        videoList.play();
       }
     }
   };
@@ -210,20 +195,6 @@ const Dynamic = ({
     console.log(name, nickname, myLocName);
     setCommentParameterV(true);
     setCommentParameter({ time, name, nickname, commentsLength, commentsList });
-    // addComments({
-    //   time,
-    //   name, // 给谁评论的 对方的电话
-    //   friendName: nickname, // 评论者的中文名
-    //   friendNameId: myLocName, // 评论者的电话
-    //   friendHeadPortrait: myapathZoom, // 评论者的头像
-    //   comments: '测试内容123', // 评论内容
-    //   commentTime: new Date().getTime(), // 评论时间
-    // }).then((res: any) => {
-    //   if (res.code === 200) {
-    //     console.log(res);
-    //     getCircleFriendList();
-    //   }
-    // });
   };
   const giveThumbs = ({ time, name, nickname, likeIt, thumbsTime }: any) => {
     console.log(name, nickname, myLocName);
@@ -304,7 +275,7 @@ const Dynamic = ({
       e.target.scrollTop - scrollIndex < -190
     ) {
       // onSetCommentBlock(null);
-      videoPlays('null', 0);
+      videoPlays('null', '');
       scrollIndex = e.target.scrollTop;
     }
     onSetCommentBlock(null);
@@ -401,7 +372,6 @@ const Dynamic = ({
       }
     });
   };
-
   return (
     <div
       style={{ display: `${displayBlock || !name ? 'block' : 'none'}` }}
@@ -521,9 +491,6 @@ const Dynamic = ({
           {circleFriendList.map((item: any, index: number) => {
             let likeIt = false;
             let thumbsTime = 0;
-            if (item.video && item.video.apath) {
-              ThereVideos += 1;
-            }
             item.commentsList &&
               item.commentsList.map((term: any) => {
                 if (term.friendNameId === myLocName && term.thumbsUp) {
@@ -610,12 +577,17 @@ const Dynamic = ({
                         );
                       })}
                   </div>
+                  {/* const {videos_s,videosBox_s, videoPlays_s}:any = index; */}
                   {item.video && (
                     <div className="otherItemsListVideos">
                       <span className="PlayOutline">
                         <PlayOutline
                           onClick={() => {
-                            videoPlays('play', ThereVideos - 1);
+                            videoPlays('play', {
+                              videos_s: `videos${index}`,
+                              videosBox_s: `videosBox${index}`,
+                              videoPlays_s: `videoPlays${index}`,
+                            });
                           }}
                         />
                       </span>
@@ -624,20 +596,39 @@ const Dynamic = ({
                         src={item.video.apathZoom}
                         alt=""
                         onClick={() => {
-                          videoPlays('play', ThereVideos - 1);
+                          videoPlays('play', {
+                            videos_s: `videos${index}`,
+                            videosBox_s: `videosBox${index}`,
+                            videoPlays_s: `videoPlays${index}`,
+                          });
                         }}
                       />
                       <div
+                        id={`videosBox${index}`}
                         className="videosBox document-classification-box"
-                        onClick={() => videoPlays('no', ThereVideos - 1)}
+                        onClick={() =>
+                          videoPlays('no', {
+                            videos_s: `videos${index}`,
+                            videosBox_s: `videosBox${index}`,
+                            videoPlays_s: `videoPlays${index}`,
+                          })
+                        }
                       >
                         <span
+                          id={`videoPlays${index}`}
                           className="videoPlays"
-                          onClick={() => videoPlays('no', ThereVideos - 1)}
+                          onClick={() =>
+                            videoPlays('no', {
+                              videos_s: `videos${index}`,
+                              videosBox_s: `videosBox${index}`,
+                              videoPlays_s: `videoPlays${index}`,
+                            })
+                          }
                         >
                           <CloseCircleOutline className="video-closure-icon" />
                         </span>
                         <video
+                          id={`videos${index}`}
                           className="videos"
                           controls={true}
                           // autoPlay={true}
