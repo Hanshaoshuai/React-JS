@@ -399,6 +399,7 @@ const Dynamic = ({
       }
     });
   };
+  let ThereVideos = 0;
   return (
     <div
       style={{ display: `${displayBlock || !name ? 'block' : 'none'}` }}
@@ -518,6 +519,9 @@ const Dynamic = ({
           {circleFriendList.map((item: any, index: number) => {
             let likeIt = false;
             let thumbsTime = 0;
+            if (item.video) {
+              ThereVideos += 1;
+            }
             item.commentsList &&
               item.commentsList.map((term: any) => {
                 if (term.friendNameId === myLocName && term.thumbsUp) {
@@ -609,7 +613,7 @@ const Dynamic = ({
                       <span className="PlayOutline">
                         <PlayOutline
                           onClick={() => {
-                            videoPlays('play', index);
+                            videoPlays('play', ThereVideos - 1);
                           }}
                         />
                       </span>
@@ -618,16 +622,16 @@ const Dynamic = ({
                         src={item.video.apathZoom}
                         alt=""
                         onClick={() => {
-                          videoPlays('play', index);
+                          videoPlays('play', ThereVideos - 1);
                         }}
                       />
                       <div
                         className="videosBox document-classification-box"
-                        onClick={() => videoPlays('no', index)}
+                        onClick={() => videoPlays('no', ThereVideos - 1)}
                       >
                         <span
                           className="videoPlays"
-                          onClick={() => videoPlays('no', index)}
+                          onClick={() => videoPlays('no', ThereVideos - 1)}
                         >
                           <CloseCircleOutline className="video-closure-icon" />
                         </span>
