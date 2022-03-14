@@ -102,7 +102,11 @@ const ChatRecord = () => {
       setLabelData(information || {});
       setLabelOption(newOptions0 || []);
     }
-    getCircleFriendList();
+    if (personalInformation) {
+      getCircleFriendList('Friend');
+    } else {
+      getCircleFriendList();
+    }
   }, []);
   useEffect(() => {
     if (urlPathname.dynamic === '2') {
@@ -130,7 +134,6 @@ const ChatRecord = () => {
     }
     if (personalInformation || fromType || text) {
       setTabTex('详细资料');
-      getCircleFriendList('Friend');
       informationDetails({
         toChatName:
           types === 'groupChat'
