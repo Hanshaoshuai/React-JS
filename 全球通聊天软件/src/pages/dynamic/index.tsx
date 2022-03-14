@@ -172,6 +172,7 @@ const Dynamic = ({
     setCameraOut(true);
   };
   const onetCameraOut = () => {
+    history.goBack();
     getCircleFriendList();
     setCameraOut(false);
     callback();
@@ -192,7 +193,9 @@ const Dynamic = ({
       const videoClose: any = document.getElementById(videoPlays_s);
       setPlaybackRecord({ videos_s, videosBox_s, videoPlays_s });
       if (videoPlays === 'no') {
-        history.push('/dynamic');
+        if (!name) {
+          history.push('/dynamic');
+        }
         videoList.pause(); //暂停控制
         videoClose.style.display = 'none';
         videosBox.style.display = 'none';
@@ -201,7 +204,7 @@ const Dynamic = ({
         videoClose.style.display = 'block';
         videosBox.style.display = 'block';
         videoList.play();
-        if (videoPlays !== 'null') {
+        if (videoPlays !== 'null' && !name) {
           history.push('/dynamic?videoPlay=1');
         }
       }
@@ -361,7 +364,7 @@ const Dynamic = ({
     // console.log(data);
   };
   const goFriends = (name: string) => {
-    if (personalInformation) {
+    if (personalInformation && history.location.search) {
       Toast.show({
         content: '不可进入',
       });

@@ -121,6 +121,10 @@ const CameraOutList = ({ callback }: any) => {
       };
       startFriendsCircleFileUpload(data).then((res: any) => {
         if (res.code === 200) {
+          fs1.current.value = null;
+          setFileList([]);
+          setVideoImgUrl('');
+          setCameraOut(false);
           callback(false);
           Toast.show(`发布成功`);
         }
