@@ -125,6 +125,32 @@ const ChatRecord = () => {
     }
   }, [pathname]);
 
+  useEffect(() => {
+    const list = JSON.parse(localStorage.getItem('getDataList') || '[]');
+    if (boxList) {
+      if (list.length) {
+        setDataList(list);
+        onGetList();
+      }
+    }
+  }, [boxList]);
+
+  const onGetList = () => {
+    getList({
+      type: 'chat',
+      page: 1,
+      pageSize: 1000,
+      buildingGroup: 'no',
+    }).then((data) => {
+      // console.log(data);
+      if (data.code === 200) {
+        localStorage.setItem('getDataList', JSON.stringify(data.body));
+        setDataList(data.body);
+        setDataListL(false);
+      }
+    });
+  };
+
   const videoCallCancel = () => {
     setVideoCalls(false);
     setOnFinish(false);
@@ -370,18 +396,19 @@ const ChatRecord = () => {
       if (dataList.length) {
         return;
       }
-      getList({
-        type: 'chat',
-        page: 1,
-        pageSize: 1000,
-        buildingGroup: 'no',
-      }).then((data) => {
-        // console.log(data);
-        if (data.code === 200) {
-          setDataList(data.body);
-          setDataListL(false);
-        }
-      });
+      onGetList();
+      // getList({
+      //   type: 'chat',
+      //   page: 1,
+      //   pageSize: 1000,
+      //   buildingGroup: 'no',
+      // }).then((data) => {
+      //   // console.log(data);
+      //   if (data.code === 200) {
+      //     setDataList(data.body);
+      //     setDataListL(false);
+      //   }
+      // });
       return;
     }
     if (type === 3) {
