@@ -3,6 +3,7 @@ const list: any = [];
 const badge: number = 0;
 const pathname: string = '/';
 const settings: string = '?personal=1';
+const urlPathname: any = {};
 
 export default function initStates() {
   return {
@@ -11,5 +12,6 @@ export default function initStates() {
     badge,
     pathname,
     settings,
+    urlPathname,
   };
 }

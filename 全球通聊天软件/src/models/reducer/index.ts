@@ -12,6 +12,8 @@ const reducer = (state: any, action: any) => {
       return Object.assign({}, state, { pathname: action.pathname });
     case 'settings':
       return Object.assign({}, state, { settings: action.settings });
+    case 'urlPathname':
+      return Object.assign({}, state, { urlPathname: action.urlPathname });
     default:
       return state;
   }

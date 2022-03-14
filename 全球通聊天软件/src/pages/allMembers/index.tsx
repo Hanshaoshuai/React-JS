@@ -1,38 +1,40 @@
-import "../personalInformation/index.scss";
+import '../personalInformation/index.scss';
 
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 const ChatList = () => {
   const history = useHistory();
   const [imgIdLoc] = useState<any>(
-    JSON.parse(window.localStorage.getItem("imgIdLoc") || "[]")
+    JSON.parse(window.localStorage.getItem('imgIdLoc') || '[]')
   );
 
   useEffect(() => {}, []);
 
   const goBackS = () => {
-    if (!localStorage.getItem("type")) {
-      history.push("/");
+    if (!localStorage.getItem('type')) {
+      history.push('/');
     } else {
       history.goBack();
     }
-    localStorage.removeItem("personalInformation");
+    localStorage.removeItem('personalInformation');
   };
 
   const toChat = (classIcon: string, name: string, nickName: any) => {
     // console.log(classIcon, name);
-    localStorage.setItem("headPortrait_groupChat", classIcon);
-    localStorage.setItem("headPortrait", classIcon);
-    localStorage.setItem("nickName", nickName);
-    localStorage.setItem("toNames", nickName);
-    localStorage.setItem("toChatName", name);
-    localStorage.setItem("fromName", name);
-    localStorage.setItem("personalInformation", "1");
+    const { pathname, search } = history.location;
+    localStorage.setItem('comeFrom', `${pathname}${search}`);
+    localStorage.setItem('headPortrait_groupChat', classIcon);
+    localStorage.setItem('headPortrait', classIcon);
+    localStorage.setItem('nickName', nickName);
+    localStorage.setItem('toNames', nickName);
+    localStorage.setItem('toChatName', name);
+    localStorage.setItem('fromName', name);
+    localStorage.setItem('personalInformation', '1');
 
-    localStorage.setItem("type", "chat");
+    localStorage.setItem('type', 'chat');
 
-    history.push("/personalInformation");
+    history.push('/personalInformation');
   };
 
   return (
@@ -61,7 +63,7 @@ const ChatList = () => {
                   }
                 >
                   <img className="border" src={item.classIcon} alt="" />
-                  <span className={"names"}>{item.nickName}</span>
+                  <span className={'names'}>{item.nickName}</span>
                 </div>
               );
             })}

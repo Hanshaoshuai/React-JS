@@ -24,7 +24,7 @@ let indexId: any = false;
 const localNames = window.localStorage.getItem('name');
 const ChatRecord = () => {
   const { state } = useContext(MyContext);
-  const { settings } = state;
+  const { settings, urlPathname } = state;
   const history = useHistory();
   const fs: any = useRef(null);
   const [localName, setLocalName] = useState<any>('');
@@ -88,6 +88,7 @@ const ChatRecord = () => {
   const [labelOption, setLabelOption] = useState<any>({});
   const [myLocName] = useState<any>(localStorage.getItem('name'));
   const [circleFriendData, setCircleFriendData] = useState<any>([]);
+  const [toDynamic, setToDynamic] = useState(false);
 
   useEffect(() => {
     informationDetailsQ();
@@ -103,10 +104,15 @@ const ChatRecord = () => {
     }
     getCircleFriendList();
   }, []);
-
-  const getCircleFriendList = () => {
+  useEffect(() => {
+    if (urlPathname.dynamic === '2') {
+      console.log(urlPathname);
+      setToDynamic(true);
+    }
+  }, [urlPathname]);
+  const getCircleFriendList = (Friend?: string) => {
     getCircleFriends({
-      name: myLocName,
+      name: Friend ? toChatName : myLocName,
       personal: true,
     }).then((res: any) => {
       if (res.code === 200) {
@@ -124,6 +130,7 @@ const ChatRecord = () => {
     }
     if (personalInformation || fromType || text) {
       setTabTex('详细资料');
+      getCircleFriendList('Friend');
       informationDetails({
         toChatName:
           types === 'groupChat'
@@ -237,7 +244,10 @@ const ChatRecord = () => {
     localStorage.removeItem('type');
     setAddSearchFriends('');
     localStorage.removeItem('addSearchFriends');
-    history.goBack();
+    // history.goBack();
+    const comeFrom = localStorage.getItem('comeFrom');
+    history.push(comeFrom || '/');
+    // window.history.forward();
   };
   const save = () => {
     if (personalInformation || searchResults) {
@@ -499,7 +509,6 @@ const ChatRecord = () => {
     setSettingsName(true);
     history.push('/personalInformation?personal=1&setSettings=1');
   };
-  const [toDynamic, setToDynamic] = useState(false);
   useEffect(() => {
     // console.log(settings);
     if (window.location.search === '?personal=1') {

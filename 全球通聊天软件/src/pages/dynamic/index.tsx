@@ -1,7 +1,7 @@
 import '../personalInformation/index.scss';
 import './index.scss';
 import { Divider, ImageViewer, Toast, Popup, TextArea } from 'antd-mobile';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import CameraOutList from './cameraOutList';
 import HooksCropperModal from '../HooksCropperModal/HooksCropperModal';
@@ -19,6 +19,7 @@ import {
   CloseOutline,
   ArrowDownCircleOutline,
 } from 'antd-mobile-icons';
+import { MyContext } from '../../models/context';
 import { moment } from '../../helpers';
 let imgIndex: any = [];
 let toIndexId: any = null;
@@ -33,6 +34,8 @@ const Dynamic = ({
 }: any) => {
   const history = useHistory();
   const videosRef: any = useRef(null);
+  const { state } = useContext(MyContext);
+  const { urlPathname } = state;
   const [nickname] = useState<any>(localStorage.getItem('myName'));
   const [myapathZoom] = useState<any>(localStorage.getItem('myapathZoom'));
   const [myLocName] = useState<any>(localStorage.getItem('name'));
@@ -71,6 +74,16 @@ const Dynamic = ({
       }
     }
   }, [display]);
+  useEffect(() => {
+    if (urlPathname.dynamic === '2') {
+      setCameraOut(true);
+    } else {
+      setCameraOut(false);
+    }
+    if (!urlPathname.videoPlay) {
+      videoPlays('null', 'no');
+    }
+  }, [urlPathname]);
 
   useEffect(() => {
     if (!circleFriendData) {
@@ -141,17 +154,21 @@ const Dynamic = ({
   const goBackS = () => {
     setTabShow(false);
     if (cameraOut) {
+      // history.push('/');
+      history.goBack();
       setCameraOut(false);
       return;
     }
     if (name) {
       onBack(false);
     } else {
-      history.goBack();
+      history.push('/');
+      // history.goBack();
     }
   };
 
   const onCameraOutline = () => {
+    history.push('/personalInformation?dynamic=2');
     setCameraOut(true);
   };
   const onetCameraOut = () => {
@@ -175,13 +192,18 @@ const Dynamic = ({
       const videoClose: any = document.getElementById(videoPlays_s);
       setPlaybackRecord({ videos_s, videosBox_s, videoPlays_s });
       if (videoPlays === 'no') {
+        history.push('/dynamic');
         videoList.pause(); //暂停控制
         videoClose.style.display = 'none';
         videosBox.style.display = 'none';
+        setPlaybackRecord({});
       } else {
         videoClose.style.display = 'block';
         videosBox.style.display = 'block';
         videoList.play();
+        if (videoPlays !== 'null') {
+          history.push('/dynamic?videoPlay=1');
+        }
       }
     }
   };
@@ -339,6 +361,12 @@ const Dynamic = ({
     // console.log(data);
   };
   const goFriends = (name: string) => {
+    if (personalInformation) {
+      Toast.show({
+        content: '不可进入',
+      });
+      return;
+    }
     if (name !== myLocName) {
       localStorage.setItem('fromType', 'All');
       localStorage.setItem('type', 'chat');
@@ -346,6 +374,8 @@ const Dynamic = ({
       localStorage.setItem('toChatName', name.toString());
       localStorage.setItem('personalInformation', '1');
     }
+    const { pathname, search } = history.location;
+    localStorage.setItem('comeFrom', `${pathname}${search}`);
     setCommentParameterV(false);
     history.push('/personalInformation?personal=1');
   };
@@ -387,7 +417,9 @@ const Dynamic = ({
             alt=""
             onClick={goBackS}
           />
-          <span>{name ? name : '朋友圈'}</span>
+          <span>
+            {personalInformation ? '朋友相册' : name ? name : '朋友圈'}
+          </span>
           {name && (
             <>
               <img
@@ -466,7 +498,7 @@ const Dynamic = ({
             </div>
           </div>
 
-          {name && (
+          {name && !personalInformation && (
             <div className="dynamic-const-box dynamic-const-box-first">
               <div className="dynamic-const-box-img">
                 <span>今天</span>
@@ -735,21 +767,23 @@ const Dynamic = ({
           )}
         </div>
       </div>
-      {cameraOut && (
-        <div
-          style={{
-            width: '100%',
-            height: '100%',
-            position: 'absolute',
-            top: '0',
-            left: '0',
-            overflowY: 'auto',
-            background: '#fff',
-          }}
-        >
-          <CameraOutList callback={onetCameraOut} />
-        </div>
-      )}
+      {/* {cameraOut && ( */}
+      <div
+        className={`${cameraOut && 'document-classification-box'}`}
+        style={{
+          display: `${cameraOut ? 'block' : 'none'}`,
+          width: '100%',
+          height: '100%',
+          position: 'absolute',
+          top: '0',
+          left: '0',
+          overflowY: 'auto',
+          background: '#fff',
+        }}
+      >
+        <CameraOutList callback={onetCameraOut} />
+      </div>
+      {/* )} */}
       {visible && (
         <ImageViewer.Multi
           images={demoImagesList}

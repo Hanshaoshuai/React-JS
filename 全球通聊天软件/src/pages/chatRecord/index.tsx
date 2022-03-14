@@ -167,6 +167,9 @@ const ChatRecord = () => {
     headPortrait: string
   ) => {
     // console.log("添加好友验证消息", nickName, name);
+    // console.log(history);
+    const { pathname, search } = history.location;
+    localStorage.setItem('comeFrom', `${pathname}${search}`);
     if (name !== localName) {
       localStorage.setItem('fromType', 'All');
       localStorage.setItem('type', 'chat');

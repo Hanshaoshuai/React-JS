@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect, useState, useContext } from 'react';
 import { SwitchProps, Route, Redirect, useHistory } from 'react-router-dom';
-import { getToken } from '../helpers';
+import { getToken, urlParse } from '../helpers';
 
 import { TabBar, Badge } from 'antd-mobile';
 import {
@@ -30,6 +30,10 @@ export default function Routers({ location }: SwitchProps): ReactElement {
     }
     history.listen((route) => {
       // console.log(route); // 这个route里面有当前路由的各个参数信息
+      dispatch({
+        type: 'urlPathname',
+        urlPathname: urlParse(),
+      });
       if (route.search) {
         dispatch({
           type: 'pathname',
@@ -65,6 +69,10 @@ export default function Routers({ location }: SwitchProps): ReactElement {
           settings: '?dynamic=1',
         });
       }
+    });
+    dispatch({
+      type: 'urlPathname',
+      urlPathname: urlParse(),
     });
     if (window.location.search) {
       dispatch({
