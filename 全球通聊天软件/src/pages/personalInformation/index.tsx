@@ -102,11 +102,7 @@ const ChatRecord = () => {
       setLabelData(information || {});
       setLabelOption(newOptions0 || []);
     }
-    if (personalInformation) {
-      getCircleFriendList('Friend');
-    } else {
-      getCircleFriendList();
-    }
+    getList();
   }, []);
   useEffect(() => {
     if (urlPathname.dynamic === '2') {
@@ -125,7 +121,13 @@ const ChatRecord = () => {
       }
     });
   };
-
+  const getList = () => {
+    if (personalInformation) {
+      getCircleFriendList('Friend');
+    } else {
+      getCircleFriendList();
+    }
+  };
   const informationDetailsQ = (text?: any) => {
     // 好友资料详情
     const types = localStorage.getItem('type');
@@ -528,11 +530,11 @@ const ChatRecord = () => {
   }, [settings]);
   const onDynamic = () => {
     setToDynamic(true);
-    getCircleFriendList();
+    getList();
     history.push('/personalInformation?dynamic=1');
   };
   const onCallback = () => {
-    getCircleFriendList();
+    getList();
   };
   let listIndexId = 0;
   return (
