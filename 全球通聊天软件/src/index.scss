@@ -481,3 +481,64 @@ code {
   // -webkit-animation-direction: alternate;
   // animation-direction: alternate;
 }
+
+// 报警动画
+.GreyBlue {
+  animation: GreyBlue 1.5s ease-out 0s infinite;
+  background: #7982ad !important;
+  position: relative;
+  color: #fff;
+}
+.ApricotYellow {
+  animation: ApricotYellow 1.5s ease-out 0s infinite;
+  background: #f7650e !important;
+  position: relative;
+}
+.oxbloodRed {
+  animation: oxbloodRed 1.5s ease-out 0s infinite;
+  background: #ff0000 !important;
+  position: relative;
+  color: #fff;
+}
+@keyframes GreyBlue {
+  0% {
+    box-shadow: 0 0 10px 5px rgba(121, 130, 173, 0.8);
+    opacity: 1;
+  }
+  30% {
+    box-shadow: 0 0 10px 5px rgba(121, 130, 173, 0.3);
+    opacity: 0.8;
+  }
+  100% {
+    box-shadow: 0 0 10px 5px rgba(121, 130, 173, 0.8);
+    opacity: 1;
+  }
+}
+@keyframes ApricotYellow {
+  0% {
+    box-shadow: 0 0 10px 5px rgba(247, 101, 14, 0.8);
+    opacity: 1;
+  }
+  30% {
+    box-shadow: 0 0 10px 5px rgba(247, 101, 14, 0.3);
+    opacity: 0.8;
+  }
+  100% {
+    box-shadow: 0 0 10px 5px rgba(247, 101, 14, 0.8);
+    opacity: 1;
+  }
+}
+@keyframes oxbloodRed {
+  0% {
+    box-shadow: 0 0 10px 5px rgba(255, 0, 0, 0.8);
+    opacity: 1;
+  }
+  30% {
+    box-shadow: 0 0 10px 5px rgba(255, 0, 0, 0.3);
+    opacity: 0.8;
+  }
+  100% {
+    box-shadow: 0 0 10px 5px rgba(255, 0, 0, 0.8);
+    opacity: 1;
+  }
+}

@@ -2854,6 +2854,7 @@ app.post('/remarks1', function (req, res) {
                 }
                 result.LLNumber = result_1[0].LLNumber;
                 result.name = result_1[0].name;
+                result.circleFriendsBackground = result_1[0].circleFriendsBackground
                 result.msg = '成功';
                 arrayOne = 1;
                 resto.send(result);

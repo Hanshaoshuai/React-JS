@@ -31,6 +31,8 @@ const Dynamic = ({
   indexId,
   circleFriendData,
   callback,
+  toCircleFriendsBackground,
+  headPortraitB,
 }: any) => {
   const history = useHistory();
   const videosRef: any = useRef(null);
@@ -38,6 +40,9 @@ const Dynamic = ({
   const { urlPathname } = state;
   const [nickname] = useState<any>(localStorage.getItem('myName'));
   const [myapathZoom] = useState<any>(localStorage.getItem('myapathZoom'));
+  const [headPortrait, setHeadPortrait] = useState<any>(
+    localStorage.getItem('headPortrait') || ''
+  );
   const [myLocName] = useState<any>(localStorage.getItem('name'));
   const [displayBlock, setDisplayBlock] = useState(false);
   const [cameraOut, setCameraOut] = useState(false);
@@ -57,6 +62,13 @@ const Dynamic = ({
   const [textAreaValue, setTextAreaValue] = useState('');
   const [ReplyMessage, setReplyMessage] = useState('');
   const [playbackRecord, setPlaybackRecord] = useState<any>({});
+  const [toNames, setToNames] = useState<any>(
+    localStorage.getItem('nickName') || ''
+  );
+  const [personalInformation] = useState<any>(
+    localStorage.getItem('personalInformation')
+  );
+  const [toChatName] = useState<any>(localStorage.getItem('toChatName'));
 
   useEffect(() => {
     if (!display && indexId) {
@@ -75,12 +87,20 @@ const Dynamic = ({
     }
   }, [display]);
   useEffect(() => {
+    if (toCircleFriendsBackground) {
+      setCircleFriendsBackground(toCircleFriendsBackground);
+    }
+  }, [toCircleFriendsBackground]);
+  useEffect(() => {
     if (urlPathname.dynamic === '2') {
       setCameraOut(true);
     } else {
       setCameraOut(false);
     }
-    if (!urlPathname.videoPlay) {
+    if (
+      (!urlPathname.videoPlay && !urlPathname.personalVideo) ||
+      urlPathname.personalVideo === '0'
+    ) {
       videoPlays('null', 'no');
     }
   }, [urlPathname]);
@@ -121,7 +141,7 @@ const Dynamic = ({
     imgIndex = [];
     let demoImages: any = [];
     getCircleFriends({
-      name: myLocName,
+      name: personalInformation ? toChatName : myLocName,
       personal: name ? true : false,
     }).then((res: any) => {
       // console.log(res);
@@ -195,6 +215,8 @@ const Dynamic = ({
       if (videoPlays === 'no') {
         if (!name) {
           history.push('/dynamic');
+        } else if (videoPlays !== 'null') {
+          history.push('/personalInformation?personalVideo=0');
         }
         videoList.pause(); //暂停控制
         videoClose.style.display = 'none';
@@ -206,6 +228,8 @@ const Dynamic = ({
         videoList.play();
         if (videoPlays !== 'null' && !name) {
           history.push('/dynamic?videoPlay=1');
+        } else if (videoPlays !== 'null') {
+          history.push('/personalInformation?personalVideo=1');
         }
       }
     }
@@ -312,9 +336,6 @@ const Dynamic = ({
   };
 
   const fs: any = useRef(null);
-  const [personalInformation] = useState<any>(
-    localStorage.getItem('personalInformation')
-  );
   const [searchResults, setSearchResults] = useState(false);
   const [type, setType] = useState<any>('');
   const [hooksModalFile, setHooksModalFile] = useState<any>('');
@@ -421,9 +442,9 @@ const Dynamic = ({
             onClick={goBackS}
           />
           <span>
-            {personalInformation ? '朋友相册' : name ? name : '朋友圈'}
+            {personalInformation ? `${toNames}的相册` : name ? name : '朋友圈'}
           </span>
-          {name && (
+          {name && !personalInformation && (
             <>
               <img
                 src="/images/dashujukeshihuaico.png"
@@ -496,8 +517,13 @@ const Dynamic = ({
             </div>
 
             <div className="dynamic-img-box">
-              <img src={myapathZoom} alt="" />
-              <div className="dynamic-img-box-test">{nickname}</div>
+              <img
+                src={personalInformation ? headPortraitB : myapathZoom}
+                alt=""
+              />
+              <div className="dynamic-img-box-test">
+                {personalInformation ? toNames : nickname}
+              </div>
             </div>
           </div>
 

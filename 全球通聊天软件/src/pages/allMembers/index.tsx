@@ -38,7 +38,7 @@ const ChatList = () => {
   };
 
   return (
-    <div className="personalInformation">
+    <div className="personalInformation personalInformationBox">
       <div className="searchBox">
         <div className="home-search">
           <img

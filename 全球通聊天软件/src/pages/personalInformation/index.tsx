@@ -89,6 +89,7 @@ const ChatRecord = () => {
   const [myLocName] = useState<any>(localStorage.getItem('name'));
   const [circleFriendData, setCircleFriendData] = useState<any>([]);
   const [toDynamic, setToDynamic] = useState(false);
+  const [circleFriendsBackground, setCircleFriendsBackground] = useState('');
 
   useEffect(() => {
     informationDetailsQ();
@@ -158,6 +159,7 @@ const ChatRecord = () => {
           setMyHeadZoom(data.apathZoom);
           localStorage.setItem('toChatName', data.name);
           localStorage.setItem('headPortrait', data.apathZoom);
+          setCircleFriendsBackground(data.setCircleFriendsBackground);
           // localStorage.setItem("myHeadPortrait", data.imges);
           setToChatName(data.name);
           if (data.remarksNameNo === 'no') {
@@ -531,7 +533,11 @@ const ChatRecord = () => {
   const onDynamic = () => {
     setToDynamic(true);
     getList();
-    history.push('/personalInformation?dynamic=1');
+    if (personalInformation) {
+      history.push('/personalInformation?dynamic=1');
+    } else {
+      history.push('/personalInformation?personalVideo=0');
+    }
   };
   const onCallback = () => {
     getList();
@@ -848,6 +854,8 @@ const ChatRecord = () => {
         indexId={indexId}
         circleFriendData={circleFriendData}
         callback={onCallback}
+        toCircleFriendsBackground={circleFriendsBackground}
+        headPortraitB={headPortraitB}
       />
     </div>
   );
