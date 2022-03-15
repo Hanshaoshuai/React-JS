@@ -89,6 +89,8 @@ const Dynamic = ({
   useEffect(() => {
     if (toCircleFriendsBackground) {
       setCircleFriendsBackground(toCircleFriendsBackground);
+    } else {
+      setCircleFriendsBackground('/images/202203120130501.jpg');
     }
   }, [toCircleFriendsBackground]);
   useEffect(() => {
@@ -507,11 +509,7 @@ const Dynamic = ({
             <div className="dynamic-img-cont-box">
               <img
                 className="dynamic-img-cont"
-                src={
-                  circleFriendsBackground
-                    ? circleFriendsBackground
-                    : '/images/202203120130501.jpg'
-                }
+                src={circleFriendsBackground}
                 alt=""
               />
             </div>
