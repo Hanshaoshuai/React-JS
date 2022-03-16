@@ -816,7 +816,9 @@ const Dynamic = ({
           {!circleFriendList.length && (
             <div
               style={{
-                padding: `${name ? '0 0.9rem' : '2rem 0.9rem'}`,
+                padding: `${
+                  name && !personalInformation ? '0 0.9rem' : '2rem 0.9rem'
+                }`,
                 color: '#eeeeee',
               }}
             >
