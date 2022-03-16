@@ -472,7 +472,7 @@ const Dynamic = ({
           {transparency > 0 && (
             <span>
               {personalInformation
-                ? `${toNames}的相册`
+                ? `${toNames || nickname}的相册`
                 : name
                 ? name
                 : '朋友圈'}
@@ -548,11 +548,15 @@ const Dynamic = ({
 
             <div className="dynamic-img-box">
               <img
-                src={personalInformation ? headPortraitB : myapathZoom}
+                src={
+                  personalInformation
+                    ? headPortraitB || myapathZoom
+                    : myapathZoom
+                }
                 alt=""
               />
               <div className="dynamic-img-box-test">
-                {personalInformation ? toNames : nickname}
+                {personalInformation ? toNames || nickname : nickname}
               </div>
             </div>
           </div>
