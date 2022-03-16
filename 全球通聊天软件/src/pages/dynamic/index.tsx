@@ -91,9 +91,13 @@ const Dynamic = ({
   }, [display]);
   useEffect(() => {
     if (personalInformation) {
-      setCircleFriendsBackground(
-        toCircleFriendsBackground || '/images/202203120130501.jpg'
-      );
+      if (!toNames) {
+        setCircleFriendsBackground(circleFriendsBackground);
+      } else {
+        setCircleFriendsBackground(
+          toCircleFriendsBackground || '/images/202203120130501.jpg'
+        );
+      }
     } else {
       setCircleFriendsBackground(
         circleFriendsBackground || '/images/202203120130501.jpg'
