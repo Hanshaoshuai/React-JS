@@ -472,7 +472,7 @@ const Dynamic = ({
           {transparency > 0 && (
             <span>
               {personalInformation
-                ? `${toNames || nickname}的相册`
+                ? `${toNames + '的相册' || '朋友圈'}`
                 : name
                 ? name
                 : '朋友圈'}
