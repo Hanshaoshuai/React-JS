@@ -729,6 +729,7 @@ app.post('/post', function (req, res, next) {
               msg: '您已登录成功',
               imgId: result[0].imgId,
               nickName: result[0].nickName,
+              circleFriendsBackground: result[0].circleFriendsBackground,
             });
           } else {
             resto.send({ code: 1001, msg: '用户名或密码错误' });
