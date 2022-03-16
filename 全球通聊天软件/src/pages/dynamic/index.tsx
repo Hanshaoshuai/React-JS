@@ -92,7 +92,7 @@ const Dynamic = ({
   useEffect(() => {
     if (toCircleFriendsBackground) {
       setCircleFriendsBackground(toCircleFriendsBackground);
-    } else {
+    } else if (!circleFriendsBackground) {
       setCircleFriendsBackground('/images/202203120130501.jpg');
     }
   }, [toCircleFriendsBackground]);
