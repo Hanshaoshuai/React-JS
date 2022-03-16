@@ -159,7 +159,7 @@ const ChatRecord = () => {
           setMyHeadZoom(data.apathZoom);
           localStorage.setItem('toChatName', data.name);
           localStorage.setItem('headPortrait', data.apathZoom);
-          setCircleFriendsBackground(data.circleFriendsBackground);
+          setCircleFriendsBackground(data.circleFriendsBackground || '');
           // localStorage.setItem("myHeadPortrait", data.imges);
           setToChatName(data.name);
           if (data.remarksNameNo === 'no') {
