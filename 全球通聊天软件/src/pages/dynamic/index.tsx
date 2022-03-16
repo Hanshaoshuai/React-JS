@@ -107,7 +107,7 @@ const Dynamic = ({
         circleFriendsBackground || '/images/202203120130501.jpg'
       );
     }
-  }, [toCircleFriendsBackground]);
+  }, [toCircleFriendsBackground, display]);
   useEffect(() => {
     if (urlPathname.dynamic === '2') {
       setCameraOut(true);
