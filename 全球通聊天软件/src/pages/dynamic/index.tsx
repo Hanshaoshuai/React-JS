@@ -34,6 +34,7 @@ const Dynamic = ({
   callback,
   toCircleFriendsBackground,
   headPortraitB,
+  toNames,
 }: any) => {
   const history = useHistory();
   const videosRef: any = useRef(null);
@@ -63,9 +64,9 @@ const Dynamic = ({
   const [textAreaValue, setTextAreaValue] = useState('');
   const [ReplyMessage, setReplyMessage] = useState('');
   const [playbackRecord, setPlaybackRecord] = useState<any>({});
-  const [toNames, setToNames] = useState<any>(
-    localStorage.getItem('nickName') || ''
-  );
+  // const [toNames, setToNames] = useState<any>(
+  //   localStorage.getItem('nickName') || ''
+  // );
   const [personalInformation] = useState<any>(
     localStorage.getItem('personalInformation')
   );

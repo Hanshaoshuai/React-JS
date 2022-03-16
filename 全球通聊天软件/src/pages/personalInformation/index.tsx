@@ -856,6 +856,7 @@ const ChatRecord = () => {
         callback={onCallback}
         toCircleFriendsBackground={circleFriendsBackground}
         headPortraitB={headPortraitB}
+        toNames={toNames}
       />
     </div>
   );
