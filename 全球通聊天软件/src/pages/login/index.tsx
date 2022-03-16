@@ -79,6 +79,10 @@ const ChatList = () => {
           localStorage.setItem('myName', data.nickName);
           localStorage.setItem('name', telephone);
           localStorage.setItem('imgId', data.imgId);
+          localStorage.setItem(
+            'circleFriendsBackground',
+            data.circleFriendsBackground
+          );
           Toast.show({
             icon: 'success',
             content: data.msg,
@@ -92,10 +96,6 @@ const ChatList = () => {
             if (data.code && data.imges) {
               localStorage.setItem('myHeadPortrait', data.imges);
               localStorage.setItem('myapathZoom', data.apathZoom);
-              localStorage.setItem(
-                'circleFriendsBackground',
-                data.circleFriendsBackground
-              );
               if (data.information) {
                 localStorage.setItem(
                   'myInformation',
