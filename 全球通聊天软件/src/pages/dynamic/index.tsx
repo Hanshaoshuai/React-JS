@@ -108,7 +108,7 @@ const Dynamic = ({
     }
   }, [urlPathname]);
   useEffect(() => {
-    localStorage.removeItem('personalInformation');
+    // localStorage.removeItem('personalInformation');
   }, []);
   useEffect(() => {
     // console.log(history, '=======');
