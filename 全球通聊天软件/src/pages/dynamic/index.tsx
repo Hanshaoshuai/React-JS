@@ -107,7 +107,9 @@ const Dynamic = ({
       setCameraOut(false);
     }
   }, [urlPathname]);
-
+  useEffect(() => {
+    localStorage.removeItem('personalInformation');
+  }, []);
   useEffect(() => {
     // console.log(history, '=======');
     if (!videoPlaysBlock) {
