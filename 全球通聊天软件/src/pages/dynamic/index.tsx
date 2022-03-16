@@ -92,10 +92,14 @@ const Dynamic = ({
   useEffect(() => {
     if (personalInformation) {
       if (!toNames) {
-        setCircleFriendsBackground(circleFriendsBackground);
+        setCircleFriendsBackground(
+          circleFriendsBackground || '/images/202203120130501.jpg'
+        );
       } else {
         setCircleFriendsBackground(
-          toCircleFriendsBackground || '/images/202203120130501.jpg'
+          toCircleFriendsBackground ||
+            localStorage.getItem('circleFriendsBackgroundFriend') ||
+            '/images/202203120130501.jpg'
         );
       }
     } else {
