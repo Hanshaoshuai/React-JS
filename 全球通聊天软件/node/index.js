@@ -2868,6 +2868,7 @@ app.post('/remarks1', function (req, res) {
               result.LLNumber = result_1[0].LLNumber;
               result.name = result_1[0].name;
               result.remarksName = result_1[0].nickName;
+              result.circleFriendsBackground = result_1[0].circleFriendsBackground
               result.friend = 'no';
               result.msg = '成功';
               resto.send(result);
