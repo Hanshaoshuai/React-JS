@@ -90,12 +90,14 @@ const Dynamic = ({
     }
   }, [display]);
   useEffect(() => {
-    if (toCircleFriendsBackground) {
-      setCircleFriendsBackground(toCircleFriendsBackground);
-    } else if (!toCircleFriendsBackground) {
-      setCircleFriendsBackground('/images/202203120130501.jpg');
-    } else if (!circleFriendsBackground) {
-      setCircleFriendsBackground('/images/202203120130501.jpg');
+    if (personalInformation) {
+      setCircleFriendsBackground(
+        toCircleFriendsBackground || '/images/202203120130501.jpg'
+      );
+    } else {
+      setCircleFriendsBackground(
+        circleFriendsBackground || '/images/202203120130501.jpg'
+      );
     }
   }, [toCircleFriendsBackground]);
   useEffect(() => {
