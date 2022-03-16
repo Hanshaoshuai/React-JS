@@ -40,7 +40,7 @@ const CameraOutList = ({ callback }: any) => {
   //   }, [fileList]);
 
   const onDelete = (item: ImageUploadItem) => {
-    console.log(item);
+    // console.log(item);
   };
   const onchange = () => {};
   const contenteditable = (e: any) => {
@@ -107,7 +107,7 @@ const CameraOutList = ({ callback }: any) => {
       // setFileList([]);
       // setVideoImgUrl('');
       // setCameraOut(false);
-      console.log(myLocName, inputContent, resultsImg, resultsVideo);
+      // console.log(myLocName, inputContent, resultsImg, resultsVideo);
       const data: any = {
         headPortrait: headPortrait,
         title: value,
@@ -187,7 +187,7 @@ const CameraOutList = ({ callback }: any) => {
           //     Toast.show(`最多选择 ${maxCount} 张图片，你多选了 ${exceed} 张`)
           //   }}
         />
-        <div className="otherItemsList">
+        <div className="otherItemsList otherItemsListVideosCamera">
           {videoImgUrl && (
             <div className="otherItemsListVideos">
               {!plays && (

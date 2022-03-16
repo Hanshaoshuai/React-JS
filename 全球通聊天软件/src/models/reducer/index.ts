@@ -14,6 +14,12 @@ const reducer = (state: any, action: any) => {
       return Object.assign({}, state, { settings: action.settings });
     case 'urlPathname':
       return Object.assign({}, state, { urlPathname: action.urlPathname });
+    case 'recordUrl':
+      return Object.assign({}, state, { recordUrl: action.recordUrl });
+    case 'videoPlaysBlock':
+      return Object.assign({}, state, {
+        videoPlaysBlock: action.videoPlaysBlock,
+      });
     default:
       return state;
   }

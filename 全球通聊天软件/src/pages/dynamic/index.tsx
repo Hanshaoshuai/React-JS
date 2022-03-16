@@ -2,7 +2,7 @@ import '../personalInformation/index.scss';
 import './index.scss';
 import { Divider, ImageViewer, Toast, Popup, TextArea } from 'antd-mobile';
 import React, { useEffect, useRef, useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Route } from 'react-router-dom';
 import CameraOutList from './cameraOutList';
 import HooksCropperModal from '../HooksCropperModal/HooksCropperModal';
 import {
@@ -24,6 +24,7 @@ import { moment } from '../../helpers';
 let imgIndex: any = [];
 let toIndexId: any = null;
 let scrollIndex = 0;
+let videoPlaysBlock = false;
 const Dynamic = ({
   name,
   onBack,
@@ -36,8 +37,8 @@ const Dynamic = ({
 }: any) => {
   const history = useHistory();
   const videosRef: any = useRef(null);
-  const { state } = useContext(MyContext);
-  const { urlPathname } = state;
+  const { state, dispatch } = useContext(MyContext);
+  const { urlPathname, recordUrl } = state;
   const [nickname] = useState<any>(localStorage.getItem('myName'));
   const [myapathZoom] = useState<any>(localStorage.getItem('myapathZoom'));
   const [headPortrait, setHeadPortrait] = useState<any>(
@@ -70,10 +71,11 @@ const Dynamic = ({
   );
   const [toChatName] = useState<any>(localStorage.getItem('toChatName'));
 
+  // console.log(state, recordUrl);
   useEffect(() => {
     if (!display && indexId) {
       setCommentParameterV(false);
-      videoPlays('null', '');
+      videoPlays('null', '', 'no');
       let timeout = setTimeout(() => {
         setDisplayBlock(false);
         // goBackS(false);
@@ -99,13 +101,14 @@ const Dynamic = ({
     } else {
       setCameraOut(false);
     }
-    if (
-      (!urlPathname.videoPlay && !urlPathname.personalVideo) ||
-      urlPathname.personalVideo === '0'
-    ) {
-      videoPlays('null', 'no');
-    }
   }, [urlPathname]);
+
+  useEffect(() => {
+    // console.log(history, '=======');
+    if (!videoPlaysBlock) {
+      videoPlays('null', 'no', 'no');
+    }
+  }, [recordUrl]);
 
   useEffect(() => {
     if (!circleFriendData) {
@@ -177,16 +180,14 @@ const Dynamic = ({
     setTabShow(false);
     if (cameraOut) {
       // history.push('/');
-      history.goBack();
+      // history.goBack();
       setCameraOut(false);
       return;
     }
     if (name) {
       onBack(false);
-    } else {
-      history.push('/');
-      // history.goBack();
     }
+    history.push(recordUrl.returnTarget);
   };
 
   const onCameraOutline = () => {
@@ -199,9 +200,14 @@ const Dynamic = ({
     setCameraOut(false);
     callback();
   };
-  const videoPlays = (videoPlays: any, index: any) => {
+  const videoPlays = (videoPlays: any, index: any, id?: any) => {
     // 视频开关
-    // console.log(index);
+    // console.log(index);]
+    let timeout = setTimeout(() => {
+      videoPlaysBlock = false;
+      clearTimeout(timeout);
+    }, 100);
+    videoPlaysBlock = true;
     if (videoPlays === 'null') {
       index = playbackRecord;
       videoPlays = 'no';
@@ -213,18 +219,28 @@ const Dynamic = ({
       const videoList: any = document.getElementById(videos_s);
       const videosBox: any = document.getElementById(videosBox_s);
       const videoClose: any = document.getElementById(videoPlays_s);
+      // console.log(videoList.index);
+      if (id && (videoList.index === 'false' || !videoList.index)) return;
       setPlaybackRecord({ videos_s, videosBox_s, videoPlays_s });
       if (videoPlays === 'no') {
-        if (!name) {
-          history.push('/dynamic');
-        } else if (videoPlays !== 'null') {
-          history.push('/personalInformation?personalVideo=0');
+        // if (!name) {
+        //   history.push('/dynamic');
+        // } else if (videoPlays !== 'null') {
+        //   history.push('/personalInformation?personalVideo=0');
+        // }
+        // history.goBack();
+        // console.log('===>>>');
+        if (!id) {
+          history.push(recordUrl.returnTarget);
         }
+
+        videoList.index = 'false';
         videoList.pause(); //暂停控制
         videoClose.style.display = 'none';
         videosBox.style.display = 'none';
         setPlaybackRecord({});
       } else {
+        videoList.index = 'true';
         videoClose.style.display = 'block';
         videosBox.style.display = 'block';
         videoList.play();
@@ -243,12 +259,12 @@ const Dynamic = ({
     commentsLength,
     commentsList,
   }: any) => {
-    console.log(name, nickname, myLocName);
+    // console.log(name, nickname, myLocName);
     setCommentParameterV(true);
     setCommentParameter({ time, name, nickname, commentsLength, commentsList });
   };
   const giveThumbs = ({ time, name, nickname, likeIt, thumbsTime }: any) => {
-    console.log(name, nickname, myLocName);
+    // console.log(name, nickname, myLocName);
     addComments({
       time,
       name, // 给谁点赞的 对方的电话
@@ -259,7 +275,7 @@ const Dynamic = ({
       thumbsTime: thumbsTime || new Date().getTime(), // 点赞时间
     }).then((res: any) => {
       if (res.code === 200) {
-        console.log(res);
+        // console.log(res);
         getCircleFriendList();
       }
     });
@@ -313,6 +329,7 @@ const Dynamic = ({
       }
     }
   };
+  const [transparency, setTransparency] = useState(0);
   const onScroll = (e: any) => {
     setTabShow(false);
     // console.log(
@@ -331,6 +348,11 @@ const Dynamic = ({
     }
     onSetCommentBlock(null);
     toIndexId = null;
+    if (e.target.scrollTop / 100 - 1 >= 1) {
+      setTransparency(1);
+    } else {
+      setTransparency(e.target.scrollTop / 100 - 1);
+    }
   };
   const [tabShow, setTabShow] = useState<any>(false);
   const tabs = () => {
@@ -420,7 +442,7 @@ const Dynamic = ({
       commentTime: new Date().getTime(), // 评论时间
     }).then((res: any) => {
       if (res.code === 200) {
-        console.log(res);
+        // console.log(res);
         setCommentParameterV(false);
         onSetCommentBlock(null);
         setTextAreaValue('');
@@ -435,7 +457,10 @@ const Dynamic = ({
         display ? 'right-in-enter' : name ? 'right-in-leave' : ''
       } personalInformationDynamic`}
     >
-      <div className="searchBox">
+      <div
+        className="searchBox"
+        style={{ backgroundColor: `rgba(255, 122, 89, ${transparency})` }}
+      >
         <div className="home-search">
           <img
             src="/images/fanhui.png"
@@ -443,10 +468,16 @@ const Dynamic = ({
             alt=""
             onClick={goBackS}
           />
-          <span>
-            {personalInformation ? `${toNames}的相册` : name ? name : '朋友圈'}
-          </span>
-          {name && !personalInformation && (
+          {transparency > 0 && (
+            <span>
+              {personalInformation
+                ? `${toNames}的相册`
+                : name
+                ? name
+                : '朋友圈'}
+            </span>
+          )}
+          {name && !personalInformation && !cameraOut && (
             <>
               <img
                 src="/images/dashujukeshihuaico.png"
@@ -482,7 +513,7 @@ const Dynamic = ({
               uploadedImageFile={hooksModalFile}
               onClose={setHooksModalVisibles}
               onSubmit={handleGetResultImgUrl}
-              aspectRatio={1.6}
+              aspectRatio={1.3}
             />
           )}
         </div>
@@ -490,7 +521,7 @@ const Dynamic = ({
       <div
         onScroll={onScroll}
         ref={videosRef}
-        className="contents contents_search_leng"
+        className="contents contents_search_leng contentsTransparency"
       >
         <div className="dynamic-box">
           <div
@@ -665,13 +696,13 @@ const Dynamic = ({
                       <div
                         id={`videosBox${index}`}
                         className="videosBox document-classification-box"
-                        onClick={() =>
-                          videoPlays('no', {
-                            videos_s: `videos${index}`,
-                            videosBox_s: `videosBox${index}`,
-                            videoPlays_s: `videoPlays${index}`,
-                          })
-                        }
+                        // onClick={() =>
+                        //   videoPlays('no', {
+                        //     videos_s: `videos${index}`,
+                        //     videosBox_s: `videosBox${index}`,
+                        //     videoPlays_s: `videoPlays${index}`,
+                        //   })
+                        // }
                       >
                         <span
                           id={`videoPlays${index}`}

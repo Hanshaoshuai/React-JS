@@ -4,6 +4,8 @@ const badge: number = 0;
 const pathname: string = '/';
 const settings: string = '?personal=1';
 const urlPathname: any = {};
+const recordUrl: any = { list: [], returnTarget: '' };
+const videoPlaysBlock: any = false;
 
 export default function initStates() {
   return {
@@ -13,5 +15,7 @@ export default function initStates() {
     pathname,
     settings,
     urlPathname,
+    recordUrl,
+    videoPlaysBlock,
   };
 }

@@ -107,7 +107,7 @@ const ChatRecord = () => {
   }, []);
   useEffect(() => {
     if (urlPathname.dynamic === '2') {
-      console.log(urlPathname);
+      // console.log(urlPathname);
       setToDynamic(true);
     }
   }, [urlPathname]);
@@ -117,7 +117,7 @@ const ChatRecord = () => {
       personal: true,
     }).then((res: any) => {
       if (res.code === 200) {
-        console.log(res?.data);
+        // console.log(res?.data);
         setCircleFriendData(res?.data || []);
       }
     });

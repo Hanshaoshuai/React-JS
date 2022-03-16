@@ -16,20 +16,56 @@ import Spins from '../pages/A-Spin';
 import ReactTransitionGroup from './reactTransitionGroup';
 const { ReactRouterTransitionPage } = require('react-router-transition-page');
 
+let urlIndex = 0;
+let recordUrlList: any = [];
 export default function Routers({ location }: SwitchProps): ReactElement {
   const history = useHistory();
   const route = Router.find((r) => r.path === location?.pathname);
   const [myLocName] = useState<any>(localStorage.getItem('name'));
   const { state, dispatch } = useContext(MyContext);
-  const { pathname } = state;
-  const { badge }: any = state;
+  const { pathname, badge } = state;
   useEffect(() => {
     // console.log(getToken());
     if (!getToken() || !myLocName) {
       history.push('/login');
     }
+    const url = `${window.location.pathname}${window.location.search}`;
     history.listen((route) => {
-      // console.log(route); // 这个route里面有当前路由的各个参数信息
+      if (urlIndex === 0) {
+        let time = setTimeout(() => {
+          urlIndex = 0;
+          clearTimeout(time);
+        }, 100);
+        // console.log(recordUrl); // 这个route里面有当前路由的各个参数信息
+        const listenUrl = `${route.pathname}${route.search}`;
+        let index = false;
+        let list = recordUrlList.filter((term: any) => {
+          if (term === listenUrl) {
+            index = true;
+            // return false;
+          } else {
+            return true;
+          }
+          return true;
+        });
+        // if (!index) {
+        //   list.push(listenUrl);
+        // }
+        if (index) {
+          list.splice(list.length - 1, 1);
+        } else {
+          list.push(listenUrl);
+        }
+        recordUrlList = list;
+        dispatch({
+          type: 'recordUrl',
+          recordUrl: {
+            list: list,
+            returnTarget: list.length >= 2 ? list[list.length - 2] : '/',
+          },
+        });
+      }
+      urlIndex += 1;
       dispatch({
         type: 'urlPathname',
         urlPathname: urlParse(),
@@ -70,6 +106,19 @@ export default function Routers({ location }: SwitchProps): ReactElement {
         });
       }
     });
+    let listName = recordUrlList.filter((term: any) => {
+      if (term !== url) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    listName.push(url);
+    recordUrlList = listName;
+    dispatch({
+      type: 'recordUrl',
+      recordUrl: { list: listName, returnTarget: '/' },
+    });
     dispatch({
       type: 'urlPathname',
       urlPathname: urlParse(),
@@ -77,7 +126,7 @@ export default function Routers({ location }: SwitchProps): ReactElement {
     if (window.location.search) {
       dispatch({
         type: 'pathname',
-        pathname: `${window.location.pathname}${window.location.search}`,
+        pathname: url,
       });
       dispatch({
         type: 'settings',

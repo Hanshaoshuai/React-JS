@@ -75,14 +75,14 @@ export const FriendsCircleUpload = async ({ list, videoImgZoom }: any) => {
               if (id < shardCount - 1) {
                 toFileUpload();
               }
-              console.log(id);
+              // console.log(id);
               if (id === shardCount - 1) {
                 // console.log('分片上传最后');
                 typeF = '分片上传最后';
                 start = id * shardSize;
                 end = start + shardSize;
                 id += 1;
-                console.log('分片上传最后', id);
+                // console.log('分片上传最后', id);
                 let packet = newList.slice(start, end); //将文件进行切片
                 const datas: any = await FileUploadCircle({
                   fileList: packet,
