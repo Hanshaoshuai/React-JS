@@ -81,7 +81,7 @@ const ChatList = () => {
           localStorage.setItem('imgId', data.imgId);
           localStorage.setItem(
             'circleFriendsBackground',
-            data.circleFriendsBackground
+            data.circleFriendsBackground || ''
           );
           Toast.show({
             icon: 'success',
