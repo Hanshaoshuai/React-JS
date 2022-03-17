@@ -106,6 +106,14 @@ const Dynamic = ({
         setCommentParameterV(true);
       }
     }
+    if (!labelData) {
+      if (localStorage.getItem('myInformation')) {
+        const { information } = JSON.parse(
+          localStorage.getItem('myInformation') || '{}'
+        );
+        labelData = information || {};
+      }
+    }
     if (labelData) {
       // console.log(labelData);
       let nameString = '';
@@ -691,7 +699,10 @@ const Dynamic = ({
               <div
                 key={`${item?.title}_${index}`}
                 className={`dynamic-const-box ${
-                  !name && index === 0 && 'dynamic-const-box-first'
+                  !name &&
+                  !personalInformation &&
+                  index === 0 &&
+                  'dynamic-const-box-first'
                 }`}
               >
                 <div
