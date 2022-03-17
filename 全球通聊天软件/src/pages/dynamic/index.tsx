@@ -142,7 +142,6 @@ const Dynamic = ({
 
       getCircleFriendList();
     } else {
-      imgIndex = [];
       let demoImages: any = [];
       let index = 0;
       setCircleFriendList(circleFriendData || []);
