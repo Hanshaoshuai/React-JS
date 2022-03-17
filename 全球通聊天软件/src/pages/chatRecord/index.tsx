@@ -127,21 +127,10 @@ const ChatRecord = () => {
     } else {
       options(1);
     }
-  }, [pathname]);
-
-  useEffect(() => {
-    // const list = JSON.parse(localStorage.getItem('getDataList') || '[]');
-    // if (boxList) {
-    //   pageS = 1;
-    //   if (list.length) {
-    //     setDataList(list);
-    //     onGetList();
-    //   }
-    // }
     setDataList([]);
     setHasMore(true);
     pageS = 1;
-  }, [boxList]);
+  }, [pathname]);
 
   const onGetList = () => {
     if (pageS > 1) {
