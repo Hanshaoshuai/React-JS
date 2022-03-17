@@ -22,6 +22,7 @@ import {
 import { MyContext } from '../../models/context';
 import { moment } from '../../helpers';
 let imgIndex: any = [];
+let demoImages: any = [];
 let toIndexId: any = null;
 let scrollIndex = 0;
 let videoPlaysBlock = false;
@@ -123,6 +124,7 @@ const Dynamic = ({
   }, [urlPathname]);
   useEffect(() => {
     imgIndex = [];
+    demoImages = [];
     // localStorage.removeItem('personalInformation');
   }, []);
   useEffect(() => {
@@ -142,7 +144,6 @@ const Dynamic = ({
 
       getCircleFriendList();
     } else {
-      let demoImages: any = [];
       let index = 0;
       setCircleFriendList(circleFriendData || []);
       circleFriendData.map((item: any) => {
@@ -164,7 +165,6 @@ const Dynamic = ({
   }, [circleFriendData]);
 
   const getCircleFriendList = async () => {
-    let demoImages: any = [];
     await getCircleFriends({
       page: pageS,
       pageSize: 13,
