@@ -122,6 +122,7 @@ const Dynamic = ({
     }
   }, [urlPathname]);
   useEffect(() => {
+    imgIndex = [];
     // localStorage.removeItem('personalInformation');
   }, []);
   useEffect(() => {
@@ -164,7 +165,6 @@ const Dynamic = ({
   }, [circleFriendData]);
 
   const getCircleFriendList = async () => {
-    imgIndex = [];
     let demoImages: any = [];
     await getCircleFriends({
       page: pageS,
