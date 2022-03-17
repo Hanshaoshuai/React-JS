@@ -8,7 +8,7 @@ import React, {
   useState,
 } from 'react';
 import { useHistory, Link } from 'react-router-dom';
-import { InfiniteScroll, List } from 'antd-mobile';
+import { InfiniteScroll, List, Divider } from 'antd-mobile';
 
 import {
   getList,
@@ -26,10 +26,8 @@ import { setBadge } from '../../actions';
 import { MyContext } from '../../models/context';
 
 let badge: number = 0;
-// let imgIdLoc: any = "";
-// let groupNameLoc: any = "";
 let pageS = 1;
-let pageSId = false;
+// let pageSId = false;
 const ChatRecord = () => {
   const history = useHistory();
   const { state, messages, dispatch } = useContext(MyContext);
@@ -84,7 +82,7 @@ const ChatRecord = () => {
         myName: myNameL,
         type: 'chat',
       }).then((data) => {
-        console.log(data);
+        // console.log(data);
         if (data.code && data.imges) {
           setImgeSrc(data.apathZoom);
           localStorage.setItem('myHeadPortrait', data.imges);
@@ -127,35 +125,39 @@ const ChatRecord = () => {
     } else {
       options(1);
     }
+  }, [pathname]);
+
+  useEffect(() => {
     setDataList([]);
     setHasMore(true);
     pageS = 1;
-  }, [pathname]);
+    loadMore();
+    // console.log('00000');
+  }, [history.location.search]);
 
-  const onGetList = () => {
-    if (pageS > 1) {
-      pageSId = false;
-    }
-    if (pageSId) return;
-    if (pageS === 1) {
-      pageSId = true;
-    }
-    return getList({
+  const onGetList = async () => {
+    // if (pageS > 1) {
+    //   pageSId = false;
+    // }
+    // if (pageSId) return;
+    // if (pageS === 1) {
+    //   pageSId = true;
+    // }
+    const data_1 = await getList({
       type: 'chat',
       page: pageS,
       pageSize: 13,
       buildingGroup: 'no',
-    }).then((data) => {
-      pageS += 1;
-      // console.log(data);
-      if (data.code === 200) {
-        localStorage.setItem('getDataList', JSON.stringify(data.body));
-        // setDataList(data.body);
-        setDataListL(false);
-        setDataList((val: any) => [...val, ...data.body]);
-        setHasMore(data.body.length > 0);
-      }
     });
+    // console.log(data);
+    if (data_1.code === 200) {
+      pageS += 1;
+      localStorage.setItem('getDataList', JSON.stringify(data_1.body));
+      // setDataList(data.body);
+      setDataListL(false);
+      setDataList((val: any) => [...val, ...data_1.body]);
+      setHasMore(data_1.body.length > 0);
+    }
   };
 
   const loadMore: any = async () => {
@@ -407,7 +409,7 @@ const ChatRecord = () => {
       if (dataList.length) {
         return;
       }
-      onGetList();
+      // onGetList();
       // getList({
       //   type: 'chat',
       //   page: 1,
@@ -691,6 +693,24 @@ const ChatRecord = () => {
     dispatch({ type: 'badge', badge: badge });
   }, [friendList]);
 
+  const onScroll = (e: any) => {
+    setTabShow(false);
+    // console.log(
+    //   e.target.clientHeight,
+    //   e.target.scrollTop,
+    //   e.target.scrollHeight
+    // );
+    // console.log(e.target.scrollTop - scrollIndex);
+    let height = e.target.scrollHeight - e.target.scrollTop;
+    if (
+      Math.ceil(height) === e.target.clientHeight ||
+      Math.floor(height) === e.target.clientHeight
+    ) {
+      if (!hasMore) return;
+      // console.log(1);
+      loadMore();
+    }
+  };
   return (
     <>
       <div className="yijian">
@@ -748,40 +768,50 @@ const ChatRecord = () => {
             </li>
           </ul>
         </div>
-        <div className={`box ${!boxList ? 'box_list' : ''}`}>
+        {/* {boxList && ( */}
+        <div
+          className={`box ${!boxList ? 'box_list' : ''}`}
+          onScroll={onScroll}
+        >
           <div className="fankiu" ref={boxRef}>
             <div
-              style={{ width: '100%', height: '0.9rem', background: '#f5f4f9' }}
+              style={{
+                width: '100%',
+                height: '0.9rem',
+                background: '#f5f4f9',
+              }}
             ></div>
-            <List>
-              {dataList.map((item: any) => {
-                return (
-                  <div
-                    key={`${item.name}`}
-                    className="content-food "
-                    onClick={() =>
-                      linkFriends(item.nickName, item.name, item.apathZoom)
-                    }
-                  >
-                    <div className="imgas">
-                      <p>
-                        <img className="border" src={item.apathZoom} alt="" />
-                      </p>
-                      <span style={{ display: 'none' }}></span>
-                    </div>
-                    <span className="texts">
-                      {item.nickName}
-                      <div className="texts-bottom border-bottom"></div>
-                    </span>
+            {/* <List> */}
+            {dataList.map((item: any) => {
+              return (
+                <div
+                  key={`${item.name}`}
+                  className="content-food "
+                  onClick={() =>
+                    linkFriends(item.nickName, item.name, item.apathZoom)
+                  }
+                >
+                  <div className="imgas">
+                    <p>
+                      <img className="border" src={item.apathZoom} alt="" />
+                    </p>
+                    <span style={{ display: 'none' }}></span>
                   </div>
-                );
-              })}
-            </List>
-            <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
+                  <span className="texts">
+                    {item.nickName}
+                    <div className="texts-bottom border-bottom"></div>
+                  </span>
+                </div>
+              );
+            })}
+            {/* </List>
+              <InfiniteScroll loadMore={loadMore} hasMore={hasMore} /> */}
+            <div className="box_Divider">
+              <Divider>{!hasMore ? '没有更多了' : '加载更多'}</Divider>
+            </div>
           </div>
-          {/* {dataList.length === 0 ? <div className="bottom">暂无人员</div> : ''}
-          <div id="gengduo">获取更多数据</div> */}
         </div>
+        {/* )} */}
         <div className="box box_friend">
           <div
             className="fankiu"

@@ -1,6 +1,13 @@
 import '../personalInformation/index.scss';
 import './index.scss';
-import { Divider, ImageViewer, Toast, Popup, TextArea } from 'antd-mobile';
+import {
+  Divider,
+  ImageViewer,
+  Toast,
+  Popup,
+  TextArea,
+  NoticeBar,
+} from 'antd-mobile';
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import { useHistory, Route } from 'react-router-dom';
 import CameraOutList from './cameraOutList';
@@ -36,6 +43,7 @@ const Dynamic = ({
   toCircleFriendsBackground,
   headPortraitB,
   toNames,
+  labelData,
 }: any) => {
   const history = useHistory();
   const videosRef: any = useRef(null);
@@ -74,6 +82,7 @@ const Dynamic = ({
   const [toChatName] = useState<any>(localStorage.getItem('toChatName'));
   const [pageS, setPageS] = useState(1);
   const [dataTips, setDataTips] = useState(false);
+  const [nameString, setNameString] = useState('');
   // let pageSId = false;
 
   // console.log(state, recordUrl);
@@ -96,6 +105,40 @@ const Dynamic = ({
       if (commentParameter.time) {
         setCommentParameterV(true);
       }
+    }
+    if (labelData) {
+      // console.log(labelData);
+      let nameString = '';
+      for (let key in labelData) {
+        if (key === 'ZHUANG_TAI') {
+          nameString += ` 状态:【${labelData[key]?.join('、') || ''}】`;
+        }
+        if (key === 'XING_GE') {
+          nameString += ` 性格:【${labelData[key]?.join('、') || ''}】`;
+        }
+        if (key === 'JIA_ZHI_GUAN') {
+          nameString += ` 价值观:【${labelData[key]?.join('、') || ''}】`;
+        }
+        if (key === 'AI_HAO') {
+          nameString += ` 爱好:【${labelData[key]?.join('、') || ''}】`;
+        }
+        if (key === 'SHU_JI') {
+          nameString += ` 书籍:【${labelData[key]?.join('、') || ''}】`;
+        }
+        if (key === 'MEI_SHI') {
+          nameString += ` 美食:【${labelData[key]?.join('、') || ''}】`;
+        }
+        if (key === 'YUN_DONG') {
+          nameString += ` 运动:【${labelData[key]?.join('、') || ''}】`;
+        }
+        if (key === 'DIAN_YING') {
+          nameString += ` 电影:【${labelData[key]?.join('、') || ''}】`;
+        }
+        if (key === 'YOU_XI') {
+          nameString += ` 游戏:【${labelData[key]?.join('、') || ''}】`;
+        }
+      }
+      setNameString(nameString);
     }
   }, [display]);
   useEffect(() => {
@@ -392,7 +435,7 @@ const Dynamic = ({
       Math.floor(height) === e.target.clientHeight
     ) {
       if (dataTips) return;
-      console.log(1);
+      // console.log(1);
       getCircleFriendList();
     }
   };
@@ -601,6 +644,13 @@ const Dynamic = ({
               <div className="dynamic-img-box-test">
                 {personalInformation ? toNames || nickname : nickname}
               </div>
+            </div>
+            <div
+              className={`NoticeBarName ${
+                nameString.length < 15 && 'flex-end'
+              }`}
+            >
+              <NoticeBar content={nameString} color="alert" />
             </div>
           </div>
 

@@ -90,18 +90,21 @@ const ChatRecord = () => {
   const [circleFriendData, setCircleFriendData] = useState<any>([]);
   const [toDynamic, setToDynamic] = useState(false);
   const [circleFriendsBackground, setCircleFriendsBackground] = useState('');
+  const [determineWait, setDetermineWait] = useState(false);
 
   useEffect(() => {
     informationDetailsQ();
     if (window.location.search === '?personal=1&setSettings=1') {
       indexId = true;
     }
-    if (localStorage.getItem('myInformation')) {
+    if (localStorage.getItem('myInformation') && !personalInformation) {
       const { information, newOptions0 } = JSON.parse(
         localStorage.getItem('myInformation') || '{}'
       );
       setLabelData(information || {});
       setLabelOption(newOptions0 || []);
+      setMyRegion(newOptions0[3].value || '');
+      setToNames(newOptions0[0].value || '');
     }
     getList();
   }, []);
@@ -165,6 +168,10 @@ const ChatRecord = () => {
             'circleFriendsBackgroundFriend',
             data.circleFriendsBackground || ''
           );
+          const { information, newOptions0 } = data.information || {};
+          setLabelData(information || {});
+          setLabelOption(newOptions0 || []);
+          setMyRegion(newOptions0 ? newOptions0[3].value : '');
           setCircleFriendsBackground(data.circleFriendsBackground || '');
           // localStorage.setItem("myHeadPortrait", data.imges);
           setToChatName(data.name);
@@ -185,11 +192,11 @@ const ChatRecord = () => {
           } else {
             localStorage.setItem('remarksNuber', '');
           }
-          if (data.myRegion) {
-            setMyRegion(data.myRegion);
-          } else {
-            setMyRegion('');
-          }
+          // if (data.myRegion) {
+          //   setMyRegion(data.myRegion);
+          // } else {
+          //   setMyRegion('');
+          // }
           if (data.friend === 'no' && data.name !== localNames) {
             setFriend(false);
           }
@@ -245,6 +252,11 @@ const ChatRecord = () => {
     setSetUp(!setUps);
   };
   const goBackS = () => {
+    if (setUps) {
+      setTabTex('详细资料');
+      setSetUp(!setUps);
+      return;
+    }
     if (localStorage.getItem('type') === 'groupChat') {
       localStorage.removeItem('addSearchFriends');
       localStorage.removeItem('type');
@@ -508,7 +520,36 @@ const ChatRecord = () => {
   };
   const callback = (e: any) => {
     // console.log(e);
-    setSettingsName(false);
+    setDetermineWait(true);
+    myRemarks({
+      myName: myName,
+      information: e,
+    }).then((res: any) => {
+      console.log(res);
+      setDetermineWait(false);
+      if (res.code === 200) {
+        Toast.show({
+          icon: 'success',
+          content: '修改成功',
+        });
+        const { information, newOptions0 } = res.information;
+        localStorage.setItem(
+          'myInformation',
+          JSON.stringify(res.information || '{}')
+        );
+        setNickName(newOptions0[0].value || nickName);
+        setToNames(newOptions0[0].value || nickName);
+        setMyRegion(newOptions0[3].value || '');
+        setLabelData(information || {});
+        setLabelOption(newOptions0 || []);
+        goBackSettings();
+      } else {
+        Toast.show({
+          content: res.msg,
+          position: 'top',
+        });
+      }
+    });
   };
   const goBackSettings = () => {
     indexId = true;
@@ -560,6 +601,7 @@ const ChatRecord = () => {
         labelData={labelData}
         indexId={indexId}
         labelOption={labelOption}
+        determineWait={determineWait}
       />
       {addSearchFriends ? (
         <>
@@ -713,7 +755,7 @@ const ChatRecord = () => {
                 // onClick={setUp}
                 onClick={dataSetting}
               >
-                资料设置
+                资料查看
               </div>
             ) : friend &&
               (searchResults || !personalInformation || !fromType) ? (
@@ -863,6 +905,7 @@ const ChatRecord = () => {
         toCircleFriendsBackground={circleFriendsBackground}
         headPortraitB={headPortraitB}
         toNames={toNames}
+        labelData={labelData}
       />
     </div>
   );

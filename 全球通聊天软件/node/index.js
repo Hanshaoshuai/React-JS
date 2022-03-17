@@ -2915,13 +2915,20 @@ app.post('/myRemarks', function (req, res) {
   // console.log(req.body); // 上传的文件信息
   var resto = res,
     result = { code: 1001, msg: '网络错误！', icon: '' };
-
+  let obj = { nickName: req.body.nickName, myRegion: req.body.myRegion }
+  if (req.body.information) {
+    const { newOptions0 } = req.body.information;
+    obj = { information: req.body.information }
+    if (newOptions0[0]?.value) {
+      obj.nickName = newOptions0[0]?.value
+    }
+  }
   MongoClient.connect(url, function (err, db) {
     if (err) throw err;
     var dbo = db.db('runoob');
     var whereStr = { name: req.body.myName }; // 查询条件
     var updateStr = {
-      $set: { nickName: req.body.nickName, myRegion: req.body.myRegion },
+      $set: obj,
     }; //更换内容
     // console.log('第-道', updateStr);
     dbo.collection('site').updateOne(whereStr, updateStr, function (err, res) {
@@ -2934,6 +2941,7 @@ app.post('/myRemarks', function (req, res) {
         result.msg = '保存成功';
         result.nickName = req.body.nickName;
         result.myRegion = req.body.myRegion;
+        result.information = req.body.information
         resto.send(result);
       } else {
         resto.send(result);

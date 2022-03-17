@@ -464,3 +464,24 @@
     height: 100% !important;
   }
 }
+.NoticeBarName {
+  padding: 0.4rem 0.3rem 0 3rem;
+  .adm-notice-bar {
+    padding: 0;
+    background: none;
+    border: none;
+  }
+  .adm-notice-bar-left {
+    display: none;
+  }
+  .adm-notice-bar-content,
+  .adm-notice-bar-content-inner,
+  .adm-notice-bar-alert {
+    color: #ff7a59 !important;
+  }
+}
+.flex-end {
+  .adm-notice-bar-content {
+    justify-content: flex-end;
+  }
+}

@@ -39,6 +39,7 @@ const InformationSettings = ({
   labelData,
   indexId,
   labelOption,
+  determineWait,
 }: any) => {
   const [newOptions0, setNewOptions0] = useState<any>([...options0]);
   let valueInputText = '';
@@ -59,7 +60,13 @@ const InformationSettings = ({
   const [visibleModal, setVisibleModal] = useState(false);
   const [valueInput, setValueInput] = useState<any>(name);
   const [changes, setChanges] = useState(false);
+  const [changeName, setChangeName] = useState(true);
 
+  useEffect(() => {
+    if (!determineWait) {
+      setChangeName(true);
+    }
+  }, [determineWait]);
   useEffect(() => {
     if (!display && indexId) {
       let timeout = setTimeout(() => {
@@ -111,37 +118,41 @@ const InformationSettings = ({
     }
   };
   useEffect(() => {
-    if (labelData.ZHUANG_TAI) {
+    if (labelData?.ZHUANG_TAI) {
       newList(options, labelData.ZHUANG_TAI);
     }
-    if (labelData.XING_GE) {
+    if (labelData?.XING_GE) {
       newList(options1, labelData.XING_GE);
     }
-    if (labelData.JIA_ZHI_GUAN) {
+    if (labelData?.JIA_ZHI_GUAN) {
       newList(options3, labelData.JIA_ZHI_GUAN);
     }
-    if (labelData.AI_HAO) {
+    if (labelData?.AI_HAO) {
       newList(options4, labelData.AI_HAO);
     }
-    if (labelData.SHU_JI) {
+    if (labelData?.SHU_JI) {
       newList(options5, labelData.SHU_JI);
     }
-    if (labelData.MEI_SHI) {
+    if (labelData?.MEI_SHI) {
       newList(options6, labelData.MEI_SHI);
     }
-    if (labelData.YUN_DONG) {
+    if (labelData?.YUN_DONG) {
       newList(options7, labelData.YUN_DONG);
     }
-    if (labelData.DIAN_YING) {
+    if (labelData?.DIAN_YING) {
       newList(options8, labelData.DIAN_YING);
     }
-    if (labelData.YOU_XI) {
+    if (labelData?.YOU_XI) {
       newList(options9, labelData.YOU_XI);
     }
     setInformation(labelData);
   }, [labelData]);
 
   const determine = () => {
+    if (changeName) {
+      setChangeName(!changeName);
+      return;
+    }
     // let res = false;
     // newOptions0.map((item:any)=>{
     //   if(item.value){
@@ -312,6 +323,10 @@ const InformationSettings = ({
       return item;
     });
   };
+  const onGoBackS = () => {
+    setChangeName(!changeName);
+    goBackS(false);
+  };
   return (
     <div
       style={{ display: `${displayBlock ? 'block' : 'none'}` }}
@@ -325,7 +340,7 @@ const InformationSettings = ({
             src="/images/fanhui.png"
             className="xiangmu-left"
             alt=""
-            onClick={() => goBackS(false)}
+            onClick={onGoBackS}
           />
           <span>资料设置</span>
         </div>
@@ -364,6 +379,7 @@ const InformationSettings = ({
                         </Tag>
                       </div>
                     ))}
+                    {changeName && <div className={'mainMasking'}></div>}
                   </div>
                 </div>
                 <div
@@ -389,16 +405,19 @@ const InformationSettings = ({
                             selectorKey(arr, 'ZHUANG_TAI');
                           }}
                         />
-                        <div className="adm-space-item1">
-                          <div
-                            className="adm-selector-item1"
-                            onClick={() =>
-                              custom('ZHUANG_TAI', options, '状态')
-                            }
-                          >
-                            添加自定义
+                        {!changeName && (
+                          <div className="adm-space-item1">
+                            <div
+                              className="adm-selector-item1"
+                              onClick={() =>
+                                custom('ZHUANG_TAI', options, '状态')
+                              }
+                            >
+                              添加自定义
+                            </div>
                           </div>
-                        </div>
+                        )}
+                        {changeName && <div className={'mainMasking'}></div>}
                       </div>
                       <Divider contentPosition="left">性格</Divider>
                       <div className={'main-Selector'}>
@@ -411,14 +430,19 @@ const InformationSettings = ({
                             selectorKey(arr, 'XING_GE');
                           }}
                         />
-                        <div className="adm-space-item1">
-                          <div
-                            className="adm-selector-item1"
-                            onClick={() => custom('XING_GE', options1, '性格')}
-                          >
-                            添加自定义
+                        {!changeName && (
+                          <div className="adm-space-item1">
+                            <div
+                              className="adm-selector-item1"
+                              onClick={() =>
+                                custom('XING_GE', options1, '性格')
+                              }
+                            >
+                              添加自定义
+                            </div>
                           </div>
-                        </div>
+                        )}
+                        {changeName && <div className={'mainMasking'}></div>}
                       </div>
                       <Divider contentPosition="left">价值观</Divider>
                       <div className={'main-Selector'}>
@@ -431,16 +455,19 @@ const InformationSettings = ({
                             selectorKey(arr, 'JIA_ZHI_GUAN');
                           }}
                         />
-                        <div className="adm-space-item1">
-                          <div
-                            className="adm-selector-item1"
-                            onClick={() =>
-                              custom('JIA_ZHI_GUAN', options3, '价值观')
-                            }
-                          >
-                            添加自定义
+                        {!changeName && (
+                          <div className="adm-space-item1">
+                            <div
+                              className="adm-selector-item1"
+                              onClick={() =>
+                                custom('JIA_ZHI_GUAN', options3, '价值观')
+                              }
+                            >
+                              添加自定义
+                            </div>
                           </div>
-                        </div>
+                        )}
+                        {changeName && <div className={'mainMasking'}></div>}
                       </div>
                       <Divider contentPosition="left">爱好</Divider>
                       <div className={'main-Selector'}>
@@ -453,14 +480,17 @@ const InformationSettings = ({
                             selectorKey(arr, 'AI_HAO');
                           }}
                         />
-                        <div className="adm-space-item1">
-                          <div
-                            className="adm-selector-item1"
-                            onClick={() => custom('AI_HAO', options4, '爱好')}
-                          >
-                            添加自定义
+                        {!changeName && (
+                          <div className="adm-space-item1">
+                            <div
+                              className="adm-selector-item1"
+                              onClick={() => custom('AI_HAO', options4, '爱好')}
+                            >
+                              添加自定义
+                            </div>
                           </div>
-                        </div>
+                        )}
+                        {changeName && <div className={'mainMasking'}></div>}
                       </div>
                       <Divider contentPosition="left">书籍</Divider>
                       <div className={'main-Selector'}>
@@ -473,14 +503,17 @@ const InformationSettings = ({
                             selectorKey(arr, 'SHU_JI');
                           }}
                         />
-                        <div className="adm-space-item1">
-                          <div
-                            className="adm-selector-item1"
-                            onClick={() => custom('SHU_JI', options5, '书籍')}
-                          >
-                            添加自定义
+                        {!changeName && (
+                          <div className="adm-space-item1">
+                            <div
+                              className="adm-selector-item1"
+                              onClick={() => custom('SHU_JI', options5, '书籍')}
+                            >
+                              添加自定义
+                            </div>
                           </div>
-                        </div>
+                        )}
+                        {changeName && <div className={'mainMasking'}></div>}
                       </div>
                       <Divider contentPosition="left">美食</Divider>
                       <div className={'main-Selector'}>
@@ -493,14 +526,19 @@ const InformationSettings = ({
                             selectorKey(arr, 'MEI_SHI');
                           }}
                         />
-                        <div className="adm-space-item1">
-                          <div
-                            className="adm-selector-item1"
-                            onClick={() => custom('MEI_SHI', options6, '美食')}
-                          >
-                            添加自定义
+                        {!changeName && (
+                          <div className="adm-space-item1">
+                            <div
+                              className="adm-selector-item1"
+                              onClick={() =>
+                                custom('MEI_SHI', options6, '美食')
+                              }
+                            >
+                              添加自定义
+                            </div>
                           </div>
-                        </div>
+                        )}
+                        {changeName && <div className={'mainMasking'}></div>}
                       </div>
                       <Divider contentPosition="left">运动</Divider>
                       <div className={'main-Selector'}>
@@ -513,14 +551,19 @@ const InformationSettings = ({
                             selectorKey(arr, 'YUN_DONG');
                           }}
                         />
-                        <div className="adm-space-item1">
-                          <div
-                            className="adm-selector-item1"
-                            onClick={() => custom('YUN_DONG', options7, '运动')}
-                          >
-                            添加自定义
+                        {!changeName && (
+                          <div className="adm-space-item1">
+                            <div
+                              className="adm-selector-item1"
+                              onClick={() =>
+                                custom('YUN_DONG', options7, '运动')
+                              }
+                            >
+                              添加自定义
+                            </div>
                           </div>
-                        </div>
+                        )}
+                        {changeName && <div className={'mainMasking'}></div>}
                       </div>
                       <Divider contentPosition="left">电影</Divider>
                       <div className={'main-Selector'}>
@@ -533,16 +576,19 @@ const InformationSettings = ({
                             selectorKey(arr, 'DIAN_YING');
                           }}
                         />
-                        <div className="adm-space-item1">
-                          <div
-                            className="adm-selector-item1"
-                            onClick={() =>
-                              custom('DIAN_YING', options8, '电影')
-                            }
-                          >
-                            添加自定义
+                        {!changeName && (
+                          <div className="adm-space-item1">
+                            <div
+                              className="adm-selector-item1"
+                              onClick={() =>
+                                custom('DIAN_YING', options8, '电影')
+                              }
+                            >
+                              添加自定义
+                            </div>
                           </div>
-                        </div>
+                        )}
+                        {changeName && <div className={'mainMasking'}></div>}
                       </div>
                       <Divider contentPosition="left">游戏</Divider>
                       <div className={'main-Selector'}>
@@ -555,14 +601,17 @@ const InformationSettings = ({
                             selectorKey(arr, 'YOU_XI');
                           }}
                         />
-                        <div className="adm-space-item1">
-                          <div
-                            className="adm-selector-item1"
-                            onClick={() => custom('YOU_XI', options9, '游戏')}
-                          >
-                            添加自定义
+                        {!changeName && (
+                          <div className="adm-space-item1">
+                            <div
+                              className="adm-selector-item1"
+                              onClick={() => custom('YOU_XI', options9, '游戏')}
+                            >
+                              添加自定义
+                            </div>
                           </div>
-                        </div>
+                        )}
+                        {changeName && <div className={'mainMasking'}></div>}
                       </div>
                     </div>
                   )}
@@ -571,8 +620,12 @@ const InformationSettings = ({
             </div>
           </div>
           <div className="border-top"></div>
-          <div className="denglu-food" onClick={determine}>
-            <span>确定</span>
+          <div
+            className="denglu-food"
+            style={{ opacity: `${determineWait ? 0.8 : 1}` }}
+            onClick={determine}
+          >
+            <span>{changeName ? '设置' : '确定'}</span>
           </div>
         </div>
       </div>
