@@ -1960,7 +1960,7 @@ app.get('/get2', function (req, res) {
     var dbo = db.db('runoob');
     // var whereStr = {'type':req.query.type};  // 查询条件
     var page = (req.query.page * 1 - 1) * (req.query.pageSize * 1);
-    var pageSize = req.query.pageSize * 1;
+    var pageSize = (req.query.pageSize * 1);
     var mysort = { imgId: -1 };
     var list = {};
     dbo

@@ -8,6 +8,7 @@ import React, {
   useState,
 } from 'react';
 import { useHistory, Link } from 'react-router-dom';
+import { InfiniteScroll, List } from 'antd-mobile';
 
 import {
   getList,
@@ -27,6 +28,8 @@ import { MyContext } from '../../models/context';
 let badge: number = 0;
 // let imgIdLoc: any = "";
 // let groupNameLoc: any = "";
+let pageS = 1;
+let pageSId = false;
 const ChatRecord = () => {
   const history = useHistory();
   const { state, messages, dispatch } = useContext(MyContext);
@@ -36,6 +39,7 @@ const ChatRecord = () => {
   const [tabShow, setTabShow] = useState<any>(false);
   const [dataList, setDataList] = useState<any>([]);
   const [dataListL, setDataListL] = useState<any>(true);
+  const [hasMore, setHasMore] = useState(true);
 
   const [friendList, setFriendList] = useState<any>([]);
   const [imgeSrc, setImgeSrc] = useState<any>();
@@ -126,29 +130,47 @@ const ChatRecord = () => {
   }, [pathname]);
 
   useEffect(() => {
-    const list = JSON.parse(localStorage.getItem('getDataList') || '[]');
-    if (boxList) {
-      if (list.length) {
-        setDataList(list);
-        onGetList();
-      }
-    }
+    // const list = JSON.parse(localStorage.getItem('getDataList') || '[]');
+    // if (boxList) {
+    //   pageS = 1;
+    //   if (list.length) {
+    //     setDataList(list);
+    //     onGetList();
+    //   }
+    // }
+    setDataList([]);
+    setHasMore(true);
+    pageS = 1;
   }, [boxList]);
 
   const onGetList = () => {
-    getList({
+    if (pageS > 1) {
+      pageSId = false;
+    }
+    if (pageSId) return;
+    if (pageS === 1) {
+      pageSId = true;
+    }
+    return getList({
       type: 'chat',
-      page: 1,
-      pageSize: 1000,
+      page: pageS,
+      pageSize: 13,
       buildingGroup: 'no',
     }).then((data) => {
+      pageS += 1;
       // console.log(data);
       if (data.code === 200) {
         localStorage.setItem('getDataList', JSON.stringify(data.body));
-        setDataList(data.body);
+        // setDataList(data.body);
         setDataListL(false);
+        setDataList((val: any) => [...val, ...data.body]);
+        setHasMore(data.body.length > 0);
       }
     });
+  };
+
+  const loadMore: any = async () => {
+    await onGetList();
   };
 
   const videoCallCancel = () => {
@@ -742,31 +764,34 @@ const ChatRecord = () => {
             <div
               style={{ width: '100%', height: '0.9rem', background: '#f5f4f9' }}
             ></div>
-            {dataList.map((item: any) => {
-              return (
-                <div
-                  key={`${item.name}`}
-                  className="content-food "
-                  onClick={() =>
-                    linkFriends(item.nickName, item.name, item.apathZoom)
-                  }
-                >
-                  <div className="imgas">
-                    <p>
-                      <img className="border" src={item.apathZoom} alt="" />
-                    </p>
-                    <span style={{ display: 'none' }}></span>
+            <List>
+              {dataList.map((item: any) => {
+                return (
+                  <div
+                    key={`${item.name}`}
+                    className="content-food "
+                    onClick={() =>
+                      linkFriends(item.nickName, item.name, item.apathZoom)
+                    }
+                  >
+                    <div className="imgas">
+                      <p>
+                        <img className="border" src={item.apathZoom} alt="" />
+                      </p>
+                      <span style={{ display: 'none' }}></span>
+                    </div>
+                    <span className="texts">
+                      {item.nickName}
+                      <div className="texts-bottom border-bottom"></div>
+                    </span>
                   </div>
-                  <span className="texts">
-                    {item.nickName}
-                    <div className="texts-bottom border-bottom"></div>
-                  </span>
-                </div>
-              );
-            })}
+                );
+              })}
+            </List>
+            <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
           </div>
-          {dataList.length === 0 ? <div className="bottom">暂无人员</div> : ''}
-          <div id="gengduo">获取更多数据</div>
+          {/* {dataList.length === 0 ? <div className="bottom">暂无人员</div> : ''}
+          <div id="gengduo">获取更多数据</div> */}
         </div>
         <div className="box box_friend">
           <div
