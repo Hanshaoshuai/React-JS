@@ -20,6 +20,7 @@ import { onUploadProgress } from '../../services/request';
 import { startFriendsCircleFileUpload } from '../../api';
 
 const CameraOutList = ({ callback }: any) => {
+  const formDate: any = useRef(null);
   const [myLocName] = useState<any>(localStorage.getItem('name'));
   const [headPortrait] = useState<any>(localStorage.getItem('myapathZoom'));
   const [nickname] = useState<any>(localStorage.getItem('myName'));
@@ -85,7 +86,7 @@ const CameraOutList = ({ callback }: any) => {
     upload();
     let resultsImg = null;
     let resultsVideo = null;
-    if (!inputContent && !videoImgUrl && !fileList.length) {
+    if (!textValue && !videoImgUrl && !fileList.length) {
       Toast.show(`没有要发布的内容！`);
       return;
     }
@@ -102,7 +103,7 @@ const CameraOutList = ({ callback }: any) => {
         videoImgZoom: videoImgUrl,
       });
     }
-    if (resultsImg || resultsVideo) {
+    if (textValue || resultsImg || resultsVideo) {
       // fs1.current.value = null;
       // setFileList([]);
       // setVideoImgUrl('');
@@ -126,6 +127,11 @@ const CameraOutList = ({ callback }: any) => {
           setVideoImgUrl('');
           setCameraOut(false);
           callback(false);
+          setTextValue('');
+          setValue('');
+          if (formDate) {
+            formDate.current.resetFields();
+          }
           Toast.show(`发布成功`);
         }
       });
@@ -144,7 +150,7 @@ const CameraOutList = ({ callback }: any) => {
   };
   return (
     <div className="cameraOutList">
-      <Form layout="vertical">
+      <Form layout="vertical" ref={formDate}>
         <Form.Item label="标题" name="username">
           <Input
             placeholder="请输入一个标题吧"
@@ -245,7 +251,11 @@ const CameraOutList = ({ callback }: any) => {
           <ProgressBar percent={percent} />
         </div>
       )}
-      <div className="PlaysTo" onClick={release}>
+      <div
+        className="PlaysTo"
+        style={{ opacity: `${cameraOut ? 0.8 : 1}` }}
+        onClick={release}
+      >
         <span>确定发布</span>
       </div>
     </div>

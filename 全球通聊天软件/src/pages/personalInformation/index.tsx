@@ -113,6 +113,8 @@ const ChatRecord = () => {
   }, [urlPathname]);
   const getCircleFriendList = (Friend?: string) => {
     getCircleFriends({
+      page: 1,
+      pageSize: 13,
       name: Friend ? toChatName : myLocName,
       personal: true,
     }).then((res: any) => {

@@ -1047,6 +1047,25 @@ const addText = async (obj, apath, filePath, apathZoom, typeFileName) => {
   }
   return yes;
 }
+
+// 获取朋友圈数据整理
+const onFriendList = (list, req) => {
+  let newList = []
+  if (list.length > 0) {
+    let size = (req.page * 1) * (req.pageSize * 1)
+    // list.reverse()
+    if (size < list.length) {
+      newList = list.slice(size - req.pageSize * 1, size)
+    } else {
+      newList = list.slice(size - (req.pageSize * 1), list.length)
+      list.total = true;
+    }
+    // newList.reverse()
+    return newList
+  } else {
+    return []
+  }
+}
 // 获取朋友圈 getCircleFriends
 app.post('/getCircleFriends', (req, res) => {
   let reqs = req.body;
@@ -1063,6 +1082,7 @@ app.post('/getCircleFriends', (req, res) => {
       //console.log(data);  //data是读取的十六进制的数据。  也可以在参数中加入编码格式"utf8"来解决十六进制的问题;
       // console.log('读取出所有行的信息 ', data.toString());  //读取出所有行的信息
       let newList = JSON.parse(data.toString());
+      newList = onFriendList(newList, reqs)
       newList.map((item) => {
         item.imgList = JSON.parse(item.imgList)
         return item;
@@ -1079,6 +1099,7 @@ app.post('/getCircleFriends', (req, res) => {
       //console.log(data);  //data是读取的十六进制的数据。  也可以在参数中加入编码格式"utf8"来解决十六进制的问题;
       // console.log('读取出所有行的信息 ', data.toString());  //读取出所有行的信息
       let newList = JSON.parse(data.toString());
+      newList = onFriendList(newList, reqs)
       newList.map((item) => {
         item.imgList = JSON.parse(item.imgList)
         return item;

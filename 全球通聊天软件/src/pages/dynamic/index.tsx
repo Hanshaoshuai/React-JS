@@ -71,6 +71,9 @@ const Dynamic = ({
     localStorage.getItem('personalInformation')
   );
   const [toChatName] = useState<any>(localStorage.getItem('toChatName'));
+  const [pageS, setPageS] = useState(1);
+  const [dataTips, setDataTips] = useState(false);
+  // let pageSId = false;
 
   // console.log(state, recordUrl);
   useEffect(() => {
@@ -83,6 +86,9 @@ const Dynamic = ({
         clearTimeout(timeout);
       }, 230);
     } else if (display) {
+      if (name) {
+        setPageS(2);
+      }
       setDisplayBlock(true);
       if (commentParameter.time) {
         setCommentParameterV(true);
@@ -157,21 +163,28 @@ const Dynamic = ({
     }
   }, [circleFriendData]);
 
-  const getCircleFriendList = () => {
+  const getCircleFriendList = async () => {
     imgIndex = [];
     let demoImages: any = [];
-    getCircleFriends({
+    await getCircleFriends({
+      page: pageS,
+      pageSize: 13,
       name: personalInformation ? toChatName : myLocName,
       personal: name ? true : false,
     }).then((res: any) => {
       // console.log(res);
       let index = 0;
       if (res.code === 200) {
+        setPageS(pageS + 1);
+        if (!res.data.length) {
+          setDataTips(true);
+        }
         localStorage.setItem(
           'circleFriendsBackgroundLoc',
           JSON.stringify(res.data || [])
         );
-        setCircleFriendList(res?.data || []);
+        // setCircleFriendList(res?.data || []);
+        setCircleFriendList((val: any) => [...val, ...(res.data || [])]);
         res.data.map((item: any) => {
           item.imgList &&
             item.imgList.map((item: any) => {
@@ -211,6 +224,8 @@ const Dynamic = ({
   };
   const onetCameraOut = () => {
     history.goBack();
+    setPageS(1);
+    setDataTips(false);
     getCircleFriendList();
     setCameraOut(false);
     callback();
@@ -291,6 +306,8 @@ const Dynamic = ({
     }).then((res: any) => {
       if (res.code === 200) {
         // console.log(res);
+        setPageS(1);
+        setDataTips(false);
         getCircleFriendList();
       }
     });
@@ -367,6 +384,15 @@ const Dynamic = ({
       setTransparency(1);
     } else {
       setTransparency(e.target.scrollTop / 100 - 1);
+    }
+    let height = e.target.scrollHeight - e.target.scrollTop;
+    if (
+      Math.ceil(height) === e.target.clientHeight ||
+      Math.floor(height) === e.target.clientHeight
+    ) {
+      if (dataTips) return;
+      console.log(1);
+      getCircleFriendList();
     }
   };
   const [tabShow, setTabShow] = useState<any>(false);
@@ -461,6 +487,8 @@ const Dynamic = ({
         setCommentParameterV(false);
         onSetCommentBlock(null);
         setTextAreaValue('');
+        setPageS(1);
+        setDataTips(false);
         getCircleFriendList();
       }
     });
@@ -842,6 +870,16 @@ const Dynamic = ({
               }}
             >
               <Divider>暂无</Divider>
+            </div>
+          )}
+          {circleFriendList.length > 0 && (
+            <div
+              style={{
+                padding: '0 0.9rem',
+                color: '#eeeeee',
+              }}
+            >
+              <Divider>{dataTips ? '没有更多了' : '加载更多'}</Divider>
             </div>
           )}
         </div>
