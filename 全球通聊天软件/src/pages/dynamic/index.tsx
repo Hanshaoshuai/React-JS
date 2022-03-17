@@ -89,6 +89,8 @@ const Dynamic = ({
     } else if (display) {
       if (name) {
         setPageS(2);
+        imgIndex = [];
+        demoImages = [];
       }
       setDisplayBlock(true);
       if (commentParameter.time) {
@@ -139,8 +141,6 @@ const Dynamic = ({
       const circle = localStorage.getItem('circleFriendsBackgroundLoc');
       // console.log(circle);
       if (circle) {
-        imgIndex = [];
-        demoImages = [];
         setCircleFriendList(JSON.parse(circle) || []);
       }
 
