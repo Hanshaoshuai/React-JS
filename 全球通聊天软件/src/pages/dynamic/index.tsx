@@ -139,6 +139,8 @@ const Dynamic = ({
       const circle = localStorage.getItem('circleFriendsBackgroundLoc');
       // console.log(circle);
       if (circle) {
+        imgIndex = [];
+        demoImages = [];
         setCircleFriendList(JSON.parse(circle) || []);
       }
 
