@@ -699,9 +699,8 @@ const Dynamic = ({
               <div
                 key={`${item?.title}_${index}`}
                 className={`dynamic-const-box ${
-                  !name &&
-                  !personalInformation &&
-                  index === 0 &&
+                  ((!name && index === 0) ||
+                    (personalInformation && index === 0)) &&
                   'dynamic-const-box-first'
                 }`}
               >
