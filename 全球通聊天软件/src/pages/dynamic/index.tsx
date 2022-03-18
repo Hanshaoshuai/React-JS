@@ -623,7 +623,7 @@ const Dynamic = ({
     const { pathname, search } = history.location;
     localStorage.setItem('comeFrom', `${pathname}${search}`);
     setCommentParameterV(false);
-    history.replace('/personalInformation?personal=1');
+    history.push('/personalInformation?personal=1');
   };
   const onReply = ({ friendName }: any) => {
     setReplyMessage(friendName);

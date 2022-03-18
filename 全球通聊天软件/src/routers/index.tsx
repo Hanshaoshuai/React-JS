@@ -24,6 +24,7 @@ export default function Routers({ location }: SwitchProps): ReactElement {
   const [myLocName] = useState<any>(localStorage.getItem('name'));
   const { state, dispatch } = useContext(MyContext);
   const { pathname, badge } = state;
+  // console.log('222', state);
   useEffect(() => {
     // console.log(getToken());
     if (!getToken() || !myLocName) {
