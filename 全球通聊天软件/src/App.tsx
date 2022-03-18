@@ -94,7 +94,6 @@ export default function App() {
       spinner.parentNode.removeChild(spinner);
     }
   };
-
   // const pipeline = function(...funcs:any) {
   //   return function(val:any){
   //    return funcs.reduce(function(a: any, b: any){
@@ -102,11 +101,9 @@ export default function App() {
   //    }, val);
   //   }
   //  }
-
   //  const plus1 = (a: number) => a + 1;
   //  const mult2 = (a: number) => a * 2;
   //  const addThenMult = pipeline(plus1, mult2);
-
   //  console.log(addThenMult(5))
   return (
     <>

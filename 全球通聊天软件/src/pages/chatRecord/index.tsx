@@ -38,7 +38,6 @@ const ChatRecord = () => {
   const [dataList, setDataList] = useState<any>([]);
   const [dataListL, setDataListL] = useState<any>(true);
   const [hasMore, setHasMore] = useState(true);
-
   const [friendList, setFriendList] = useState<any>([]);
   const [imgeSrc, setImgeSrc] = useState<any>();
   const [myHeadPortrait] = useState<any>(
@@ -50,14 +49,13 @@ const ChatRecord = () => {
   const [getBuddyListsL, setGetBuddyListsL] = useState<any>(
     JSON.parse(localStorage.getItem('getBuddyLists') || '[]')
   );
-
   const [boxList, setBoxList] = useState<any>(false);
-
   const [videoCalls, setVideoCalls] = useState(false);
   const [actionName, setActionName] = useState('切换语音');
   const [onFinish, setOnFinish] = useState(false);
   const [toChatName, settoChatName] = useState('');
   const [introduce, setIntroduce] = useState(false);
+  const [dividerBlock, setDividerBlock] = useState(false);
 
   useEffect(() => {
     localStorage.removeItem('addSearchFriends');
@@ -708,6 +706,7 @@ const ChatRecord = () => {
     ) {
       if (!hasMore) return;
       // console.log(1);
+      setDividerBlock(true);
       loadMore();
     }
   };
@@ -716,21 +715,11 @@ const ChatRecord = () => {
       <div className="yijian">
         {tabShow && <div className="auxiliary-box" onClick={tabsHid}></div>}
         <div className="xiangmu-header">
-          {
-            !boxList && (
-              <span onClick={goBackS} className="xiangmu-left">
-                <img src={imgeSrc} alt="" id="img" />
-              </span>
-            )
-            // : (
-            // <img
-            //   className="img-left"
-            //   src="/images/fanhui.png"
-            //   alt=""
-            //   onClick={tabHind}
-            // />
-            // )
-          }
+          {!boxList && (
+            <span onClick={goBackS} className="xiangmu-left">
+              <img src={imgeSrc} alt="" id="img" />
+            </span>
+          )}
           <span className="xiangmu-left-go"></span>
           <span>{boxList ? '人员列表' : '聊聊'}</span>
           <img
@@ -806,9 +795,11 @@ const ChatRecord = () => {
             })}
             {/* </List>
               <InfiniteScroll loadMore={loadMore} hasMore={hasMore} /> */}
-            <div className="box_Divider">
-              <Divider>{!hasMore ? '没有更多了' : '加载更多'}</Divider>
-            </div>
+            {dividerBlock && (
+              <div className="box_Divider">
+                <Divider>{!hasMore ? '没有更多了' : '加载更多'}</Divider>
+              </div>
+            )}
           </div>
         </div>
         {/* )} */}
