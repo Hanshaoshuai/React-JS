@@ -1,12 +1,13 @@
 import './index.scss';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Toast } from 'antd-mobile';
 
 import { getToken, setToken } from '../../helpers';
 
 import { login, informationDetails } from '../../api';
+import { setInterval } from 'timers';
 // import TabSwitch, { TabSwitchPage } from './tabSwitch';
 // import { SwitchTs } from 'rollup-react-ts';
 // const { SwitchTs } = require('rollup-react-ts');
@@ -23,6 +24,7 @@ const {
 } = require('gettimesjs');
 
 let times: any = null;
+let degsIndex = 0;
 const ChatList = () => {
   const history = useHistory();
   const [telephone, setTelephone] = useState<any>();
@@ -355,8 +357,282 @@ const ChatList = () => {
     clearInterval(times);
   };
 
+  const denglu: any = useRef(null);
+  const onFocus = () => {
+    const time = setTimeout(() => {
+      clearTimeout(time);
+      if (denglu) {
+        denglu.current.scrollTop = denglu.current.clientHeight;
+      }
+    }, 210);
+  };
+  const [degs, setDegs] = useState(0);
+  const [clockShow, setClockShow] = useState(true);
+  const second: any = [
+    { key: '零' },
+    { key: '一' },
+    { key: '二' },
+    { key: '三' },
+    { key: '四' },
+    { key: '五' },
+    { key: '六' },
+    { key: '七' },
+    { key: '八' },
+    { key: '九' },
+    { key: '十' },
+    { key: '十一' },
+    { key: '十二' },
+    { key: '十三' },
+    { key: '十四' },
+    { key: '十五' },
+    { key: '十六' },
+    { key: '十七' },
+    { key: '十八' },
+    { key: '十九' },
+    { key: '二十' },
+    { key: '二十一' },
+    { key: '二十二' },
+    { key: '二十三' },
+    { key: '二十四' },
+    { key: '二十五' },
+    { key: '二十六' },
+    { key: '二十七' },
+    { key: '二十八' },
+    { key: '二十九' },
+    { key: '三十' },
+    { key: '三十一' },
+    { key: '三十二' },
+    { key: '三十三' },
+    { key: '三十四' },
+    { key: '三十五' },
+    { key: '三十六' },
+    { key: '三十七' },
+    { key: '三十八' },
+    { key: '三十九' },
+    { key: '四十' },
+    { key: '四十一' },
+    { key: '四十二' },
+    { key: '四十三' },
+    { key: '四十四' },
+    { key: '四十五' },
+    { key: '四十六' },
+    { key: '四十七' },
+    { key: '四十八' },
+    { key: '四十九' },
+    { key: '五十' },
+    { key: '五十一' },
+    { key: '五十二' },
+    { key: '五十三' },
+    { key: '五十四' },
+    { key: '五十五' },
+    { key: '五十六' },
+    { key: '五十七' },
+    { key: '五十八' },
+    { key: '五十九' },
+  ];
+  const time: any = [
+    { key: '一' },
+    { key: '二' },
+    { key: '三' },
+    { key: '四' },
+    { key: '五' },
+    { key: '六' },
+    { key: '七' },
+    { key: '八' },
+    { key: '九' },
+    { key: '十' },
+    { key: '十一' },
+    { key: '十二' },
+  ];
+  const season: any = [
+    { key: '春分' },
+    { key: '清明' },
+    { key: '谷雨' },
+    { key: '立夏' },
+    { key: '小满' },
+    { key: '芒种' },
+    { key: '夏至' },
+    { key: '小暑' },
+    { key: '大暑' },
+    { key: '立秋' },
+    { key: '处暑' },
+    { key: '白露' },
+    { key: '秋分' },
+    { key: '寒露' },
+    { key: '霜降' },
+    { key: '立冬' },
+    { key: '小雪' },
+    { key: '大雪' },
+    { key: '冬至' },
+    { key: '小寒' },
+    { key: '大寒' },
+    { key: '立春' },
+    { key: '雨水' },
+    { key: '惊蛰' },
+  ];
+  const numberS = [
+    { key: '一' },
+    { key: '二' },
+    { key: '三' },
+    { key: '四' },
+    { key: '五' },
+    { key: '六' },
+    { key: '七' },
+    { key: '八' },
+    { key: '九' },
+    { key: '十' },
+    { key: '十一' },
+    { key: '十二' },
+    { key: '十三' },
+    { key: '十四' },
+    { key: '十五' },
+    { key: '十六' },
+    { key: '十七' },
+    { key: '十八' },
+    { key: '十九' },
+    { key: '二十' },
+    { key: '二十一' },
+    { key: '二十二' },
+    { key: '二十三' },
+    { key: '二十四' },
+    { key: '二十五' },
+    { key: '二十六' },
+    { key: '二十七' },
+    { key: '二十八' },
+    { key: '二十九' },
+    { key: '三十' },
+    { key: '三十一' },
+  ];
+  useEffect(() => {
+    degsIndex = 0;
+    setInterval(() => {
+      degsIndex += -6;
+      setDegs(degsIndex);
+    }, 1000);
+  }, []);
+  const onClockButton = () => {
+    setClockShow(false);
+  };
+  const useMemoS = useMemo(() => {
+    return (
+      <div className="clock">
+        <div className="clock-box">
+          {second.map((term: any, index: number) => {
+            return (
+              <div
+                key={`${index}`}
+                className="clock-box-term second"
+                style={{ transform: `rotate(${degs - 6 * index}deg)` }}
+              >
+                <div className="clock-box-term-text">
+                  <span className="clock-second">{`${term.key}秒`}</span>
+                </div>
+              </div>
+            );
+          })}
+          {second.map((term: any, index: number) => {
+            return (
+              <div
+                key={`${index}`}
+                className="clock-box-term branch"
+                style={{ transform: `rotate(${degs + 6 * index}deg)` }}
+              >
+                <div className="clock-box-term-text">
+                  <span className="clock-branch">{`${term.key}分`}</span>
+                  <span className="clock-second"></span>
+                </div>
+              </div>
+            );
+          })}
+          {time.map((term: any, index: number) => {
+            return (
+              <div
+                key={`${index}`}
+                className="clock-box-term time"
+                style={{
+                  transform: `rotate(${degs + -60 + 30 * index}deg)`,
+                }}
+              >
+                <div className="clock-box-term-text">
+                  <span className="clock-time">{`${term.key}时`}</span>
+                  <span className="clock-branch"></span>
+                  <span className="clock-second"></span>
+                </div>
+              </div>
+            );
+          })}
+          {season.map((term: any, index: number) => {
+            return (
+              <div
+                key={`${index}`}
+                className="clock-box-term time"
+                style={{
+                  transform: `rotate(${degs + 15 * index}deg)`,
+                }}
+              >
+                <div className="clock-box-term-text">
+                  <span className="clock-season">{`${term.key}`}</span>
+                  <span className="clock-time"></span>
+                  <span className="clock-branch"></span>
+                  <span className="clock-second"></span>
+                </div>
+              </div>
+            );
+          })}
+          {numberS.map((term: any, index: number) => {
+            return (
+              <div
+                key={`${index}`}
+                className="clock-box-term time"
+                style={{
+                  transform: `rotate(${degs + 11.629 * index}deg)`,
+                }}
+              >
+                <div className="clock-box-term-text">
+                  <span className="clock-numberS">{`${term.key}号`}</span>
+                  <span className="clock-season"></span>
+                  <span className="clock-time"></span>
+                  <span className="clock-branch"></span>
+                  <span className="clock-second"></span>
+                </div>
+              </div>
+            );
+          })}
+          {time.map((term: any, index: number) => {
+            return (
+              <div
+                key={`${index}`}
+                className="clock-box-term time"
+                style={{
+                  transform: `rotate(${degs + -60 + 30 * index}deg)`,
+                }}
+              >
+                <div className="clock-box-term-text">
+                  <span className="clock-month">{`${term.key}月`}</span>
+                  <span className="clock-numberS"></span>
+                  <span className="clock-season"></span>
+                  <span className="clock-time"></span>
+                  <span className="clock-branch"></span>
+                  <span className="clock-second"></span>
+                </div>
+              </div>
+            );
+          })}
+          <div className="clock-year">
+            2022年
+            <br />
+            上午/下午
+          </div>
+          <div className="clock-button" onClick={onClockButton}>
+            关闭
+          </div>
+        </div>
+      </div>
+    );
+  }, [degs]);
   return (
-    <div className="denglu">
+    <div className="denglu" ref={denglu}>
+      {clockShow && useMemoS}
       <div className="searchBox">
         <div className="home-search">
           <span>登录</span>
@@ -400,6 +676,7 @@ const ChatList = () => {
                 <img src="/images/mima.png" alt="" />
               </span>
               <input
+                onFocus={onFocus}
                 onChange={(e) => onChange(e, '2')}
                 placeholder="请输入密码"
                 type="password"

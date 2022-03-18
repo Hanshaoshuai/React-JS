@@ -165,8 +165,17 @@ const Register = () => {
   const setName = (e: string) => {
     setNames(e);
   };
+  const denglu: any = useRef(null);
+  const onFocus = () => {
+    const time = setTimeout(() => {
+      clearTimeout(time);
+      if (denglu) {
+        denglu.current.scrollTop = denglu.current.clientHeight;
+      }
+    }, 210);
+  };
   return (
-    <div className="denglu">
+    <div className="denglu" ref={denglu}>
       <InformationSettings
         display={settings}
         goBackS={goBackS}
@@ -231,6 +240,7 @@ const Register = () => {
                 <img src="/images/yonghu.png" alt="" />
               </span>
               <input
+                onFocus={onFocus}
                 placeholder="请输入手机号"
                 type="number"
                 onChange={(e) => onChange(e, '1')}
@@ -243,6 +253,7 @@ const Register = () => {
                 <img src="/images/yanzhengma2.png" alt="" />
               </span>
               <input
+                onFocus={onFocus}
                 placeholder="请输验证码（暂不需要）"
                 onChange={(e) => onChange(e, '2')}
                 className="last mint-field-core"
@@ -256,6 +267,7 @@ const Register = () => {
                 <img src="/images/mima.png" alt="" />
               </span>
               <input
+                onFocus={onFocus}
                 placeholder="请输入密码"
                 type="password"
                 onChange={(e) => onChange(e, '3')}
