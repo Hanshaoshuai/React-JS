@@ -71,10 +71,11 @@ const InformationSettings = ({
   useEffect(() => {
     if (!display && indexId) {
       let timeout = setTimeout(() => {
+        setChangeName(true);
         setDisplayBlock(false);
         // goBackS(false);
         clearTimeout(timeout);
-      }, 230);
+      }, 210);
     } else if (display) {
       setDisplayBlock(true);
     }
