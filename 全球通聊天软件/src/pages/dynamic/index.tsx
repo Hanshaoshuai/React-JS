@@ -356,9 +356,10 @@ const Dynamic = ({
             history.replace('/dynamic');
           }
           if (
-            // 个人相册情况时
+            // 个人相册情况时 和朋友个人相册情况时
             history.location.pathname === '/personalInformation' &&
-            history.location.search === '?personalVideo=1'
+            (history.location.search === '?personalVideo=1' ||
+              history.location.search === '?dynamic=1')
           ) {
             history.replace('/personalInformation?personalVideo=2');
           }
@@ -393,19 +394,28 @@ const Dynamic = ({
             history.replace('/dynamic?videoPlay=1');
           }
           if (
-            // 个人相册情况时
+            // 个人相册情况时 和朋友个人相册情况时
             history.location.pathname === '/personalInformation' &&
-            history.location.search === '?personalVideo=0'
+            (history.location.search === '?personalVideo=0' ||
+              history.location.search === '?dynamic=1')
           ) {
             history.push('/personalInformation?personalVideo=1');
           }
           if (
-            // 个人相册情况时
+            // 个人相册情况时 和朋友个人相册情况时
             history.location.pathname === '/personalInformation' &&
-            history.location.search === '?personalVideo=2'
+            (history.location.search === '?personalVideo=2' ||
+              history.location.search === '?dynamic=1')
           ) {
             history.replace('/personalInformation?personalVideo=1');
           }
+          // if (
+          //   // 朋友个人相册情况时
+          //   history.location.pathname === '/personalInformation' &&
+          //   history.location.search === '?dynamic=1'
+          // ) {
+          //   history.push('/personalInformation?personalVideo=1');
+          // }
         }
       }
     }
