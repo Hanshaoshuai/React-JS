@@ -31,7 +31,15 @@ export default function Routers({ location }: SwitchProps): ReactElement {
     }
     const url = `${window.location.pathname}${window.location.search}`;
     history.listen((route) => {
-      if (route.search !== '?videoPlay=0' && route.search !== '?videoPlay=1') {
+      if (
+        route.search !== '?videoPlay=0' &&
+        route.search !== '?videoPlay=1' &&
+        route.search !== '?dynamic=1' &&
+        route.search !== '?dynamic=0' &&
+        route.search !== '?dynamic=8' &&
+        route.search !== '?personalVideo=1' &&
+        route.search !== '?personalVideo=2'
+      ) {
         if (urlIndex === 0) {
           let time = setTimeout(() => {
             urlIndex = 0;
@@ -110,7 +118,12 @@ export default function Routers({ location }: SwitchProps): ReactElement {
     });
     if (
       window.location.search !== '?videoPlay=0' &&
-      window.location.search !== '?videoPlay=1'
+      window.location.search !== '?videoPlay=1' &&
+      window.location.search !== '?dynamic=1' &&
+      window.location.search !== '?dynamic=0' &&
+      window.location.search !== '?dynamic=8' &&
+      window.location.search !== '?personalVideo=1' &&
+      window.location.search !== '?personalVideo=2'
     ) {
       let listName = recordUrlList.filter((term: any) => {
         if (term !== url) {

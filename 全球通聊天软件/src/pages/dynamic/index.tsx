@@ -397,7 +397,8 @@ const Dynamic = ({
             // 个人相册情况时 和朋友个人相册情况时
             history.location.pathname === '/personalInformation' &&
             (history.location.search === '?personalVideo=0' ||
-              history.location.search === '?dynamic=1')
+              history.location.search === '?dynamic=1' ||
+              history.location.search === '?dynamic=0')
           ) {
             history.push('/personalInformation?personalVideo=1');
           }
