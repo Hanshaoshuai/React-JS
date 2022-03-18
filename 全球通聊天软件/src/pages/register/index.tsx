@@ -93,7 +93,7 @@ const Register = () => {
       return;
     } else {
       if (
-        !/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/.test(
+        !/^(0|86|17951)?(16[0-9]|17[0-9]|18[0-9]|15[0-9]|13[0-9]|14[0-9]|19[0-9])[0-9]{8}$/.test(
           telephone
         )
       ) {
@@ -175,6 +175,7 @@ const Register = () => {
         name={name}
         labelData={{}}
         indexId={true}
+        register={true}
       />
       <div className="xiangmu-header" onClick={yijianHind}>
         <span className="xiangmu-left"></span>

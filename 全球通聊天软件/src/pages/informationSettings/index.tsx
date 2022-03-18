@@ -40,6 +40,7 @@ const InformationSettings = ({
   indexId,
   labelOption,
   determineWait,
+  register,
 }: any) => {
   const [newOptions0, setNewOptions0] = useState<any>([...options0]);
   let valueInputText = '';
@@ -76,6 +77,9 @@ const InformationSettings = ({
       }, 230);
     } else if (display) {
       setDisplayBlock(true);
+    }
+    if (register) {
+      setChangeName(false);
     }
   }, [display]);
 
@@ -265,21 +269,6 @@ const InformationSettings = ({
       });
       setInformation(Object.assign({}, information, { [name]: list }));
     }
-  };
-
-  const toChat = (classIcon: string, name: string, nickName: any) => {
-    // console.log(classIcon, name);
-    localStorage.setItem('headPortrait_groupChat', classIcon);
-    localStorage.setItem('headPortrait', classIcon);
-    localStorage.setItem('nickName', nickName);
-    localStorage.setItem('toNames', nickName);
-    localStorage.setItem('toChatName', name);
-    localStorage.setItem('fromName', name);
-    localStorage.setItem('personalInformation', '1');
-
-    localStorage.setItem('type', 'chat');
-
-    history.push('/personalInformation');
   };
 
   const tabs = [

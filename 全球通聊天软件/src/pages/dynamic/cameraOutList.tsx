@@ -36,17 +36,9 @@ const CameraOutList = ({ callback }: any) => {
   const [onPlayUrl, setOnPlayUrl] = useState<any>('');
   const [value, setValue] = useState<any>('');
   const [textValue, setTextValue] = useState<any>('');
-  //   useEffect(() => {
-  //     // console.log(fileList);
-  //   }, [fileList]);
 
   const onDelete = (item: ImageUploadItem) => {
     // console.log(item);
-  };
-  const onchange = () => {};
-  const contenteditable = (e: any) => {
-    // console.log(e.target.innerText);
-    setInputContent(e.target.innerText);
   };
   const mockUpload: any = (file: File) => {
     // console.log(file);
@@ -79,9 +71,6 @@ const CameraOutList = ({ callback }: any) => {
     }
   };
   const release = async () => {
-    // if(!inputContent){
-    //     Toast.show(`添加发布内容`)
-    // }
     if (cameraOut) return;
     upload();
     let resultsImg = null;

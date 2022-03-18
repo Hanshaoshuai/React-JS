@@ -530,7 +530,7 @@ const ChatRecord = () => {
       myName: myName,
       information: e,
     }).then((res: any) => {
-      console.log(res);
+      // console.log(res);
       setDetermineWait(false);
       if (res.code === 200) {
         Toast.show({
@@ -588,7 +588,7 @@ const ChatRecord = () => {
     if (personalInformation) {
       history.push('/personalInformation?dynamic=1');
     } else {
-      console.log(history);
+      // console.log(history);
       history.push('/personalInformation?personalVideo=0');
     }
   };

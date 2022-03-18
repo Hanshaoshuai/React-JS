@@ -1,4 +1,3 @@
-import { onUploadProgress } from '../../../services/request';
 import { Toast } from 'antd-mobile';
 import { FileUploadCircle } from './fileUploadCircle';
 export const FriendsCircleUpload = async ({ list, videoImgZoom }: any) => {
