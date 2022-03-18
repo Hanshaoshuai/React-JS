@@ -4,7 +4,7 @@ const badge: number = 0;
 const pathname: string = '/';
 const settings: string = '?personal=1';
 const urlPathname: any = {};
-const recordUrl: any = { list: [], returnTarget: '' };
+const recordUrl: any = { list: ['/'], returnTarget: '/' };
 const videoPlaysBlock: any = false;
 
 export default function initStates() {

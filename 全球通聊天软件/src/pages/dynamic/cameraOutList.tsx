@@ -138,14 +138,17 @@ const CameraOutList = ({ callback }: any) => {
     }
   };
   const upload = () => {
+    let index = 0;
     onUploadProgress.onUploadProgress = (progressEvent: any) => {
       let complete = ((progressEvent.loaded / progressEvent.total) * 100) | 0;
       // console.log('上传=====>>>>', complete);
-      // if (complete === 100) {
-      //   setpercent(100);
-      // } else {
+      if (complete === 100) {
+        index += 1;
+      }
+      if (index % 3) {
+        Toast.show(`发布中请不要退出...`);
+      }
       setpercent(complete);
-      // }
     };
   };
   return (
@@ -171,13 +174,6 @@ const CameraOutList = ({ callback }: any) => {
           />
         </Form.Item>
       </Form>
-      {/* <p
-        placeholder="请详输入此时此刻的心情..."
-        id="texts"
-        className="mint-field-core"
-        onClick={onchange}
-        onInput={contenteditable}
-      ></p> */}
       <div className="cameraOutListFileList">
         <ImageUploader
           beforeUpload={beforeUploadImg}

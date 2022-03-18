@@ -33,6 +33,8 @@ let demoImages: any = [];
 let toIndexId: any = null;
 let scrollIndex = 0;
 let videoPlaysBlock = false;
+let firstEntry = false;
+let firstComment = false;
 const Dynamic = ({
   name,
   onBack,
@@ -73,9 +75,6 @@ const Dynamic = ({
   const [textAreaValue, setTextAreaValue] = useState('');
   const [ReplyMessage, setReplyMessage] = useState('');
   const [playbackRecord, setPlaybackRecord] = useState<any>({});
-  // const [toNames, setToNames] = useState<any>(
-  //   localStorage.getItem('nickName') || ''
-  // );
   const [personalInformation] = useState<any>(
     localStorage.getItem('personalInformation')
   );
@@ -83,9 +82,10 @@ const Dynamic = ({
   const [pageS, setPageS] = useState(1);
   const [dataTips, setDataTips] = useState(false);
   const [nameString, setNameString] = useState('');
-  // let pageSId = false;
+  const [dividerBottom, setDividerBottom] = useState(false);
+  const [switchName, setSwitchName] = useState(false);
 
-  // console.log(state, recordUrl);
+  // console.log(recordUrl);
   useEffect(() => {
     if (!display && indexId) {
       setCommentParameterV(false);
@@ -178,23 +178,39 @@ const Dynamic = ({
   useEffect(() => {
     imgIndex = [];
     demoImages = [];
+    setCircleFriendList([]);
     // localStorage.removeItem('personalInformation');
+    return componentWillUnmount;
   }, []);
+  const componentWillUnmount = () => {
+    firstEntry = false;
+    setPageS(1);
+    imgIndex = [];
+    demoImages = [];
+    setCircleFriendList([]);
+    firstComment = false;
+  };
   useEffect(() => {
-    // console.log(history, '=======');
-    if (!videoPlaysBlock) {
+    if (!videoPlaysBlock && history.location.search !== '?comment=1') {
       videoPlays('null', 'no', 'no');
     }
-  }, [recordUrl]);
+    if (!history.location.search) {
+      // history.push('/dynamic');
+      if (commentParameterV) {
+        history.replace('/dynamic');
+      }
+      setCommentParameterV(false);
+      firstComment = false;
+    }
+  }, [history.location]);
 
   useEffect(() => {
     if (!circleFriendData) {
       const circle = localStorage.getItem('circleFriendsBackgroundLoc');
       // console.log(circle);
       if (circle) {
-        setCircleFriendList(JSON.parse(circle) || []);
+        // setCircleFriendList(JSON.parse(circle) || []);
       }
-
       getCircleFriendList();
     } else {
       let index = 0;
@@ -217,14 +233,23 @@ const Dynamic = ({
     }
   }, [circleFriendData]);
 
-  const getCircleFriendList = async () => {
+  const getCircleFriendList = async (key?: string) => {
+    if (key) {
+      setSwitchName(true);
+      setDividerBottom(false);
+      firstEntry = false;
+      imgIndex = [];
+      demoImages = [];
+      firstComment = false;
+    }
     await getCircleFriends({
-      page: pageS,
+      page: key ? key : pageS,
       pageSize: 13,
       name: personalInformation ? toChatName : myLocName,
       personal: name ? true : false,
     }).then((res: any) => {
       // console.log(res);
+      setSwitchName(false);
       let index = 0;
       if (res.code === 200) {
         setPageS(pageS + 1);
@@ -236,7 +261,12 @@ const Dynamic = ({
           JSON.stringify(res.data || [])
         );
         // setCircleFriendList(res?.data || []);
-        setCircleFriendList((val: any) => [...val, ...(res.data || [])]);
+        if (key) {
+          setCircleFriendList(res.data || []);
+        } else {
+          setCircleFriendList((val: any) => [...val, ...(res.data || [])]);
+        }
+
         res.data.map((item: any) => {
           item.imgList &&
             item.imgList.map((item: any) => {
@@ -267,7 +297,9 @@ const Dynamic = ({
     if (name) {
       onBack(false);
     }
-    history.push(recordUrl.returnTarget);
+    if (history.location.pathname === '/dynamic') {
+      history.push(recordUrl.returnTarget);
+    }
   };
 
   const onCameraOutline = () => {
@@ -284,52 +316,96 @@ const Dynamic = ({
   };
   const videoPlays = (videoPlays: any, index: any, id?: any) => {
     // 视频开关
-    // console.log(index);]
     let timeout = setTimeout(() => {
       videoPlaysBlock = false;
       clearTimeout(timeout);
     }, 100);
     videoPlaysBlock = true;
+    // console.log('====', videoPlays, index, id);
     if (videoPlays === 'null') {
       index = playbackRecord;
       videoPlays = 'no';
     }
-    if (!index.videos_s) return;
+    if (!index.videos_s) {
+      // console.log('====', videoPlays, index, id);
+      if (history.location.pathname !== '/personalInformation') {
+        !firstComment &&
+          firstEntry &&
+          id &&
+          history.replace(recordUrl.returnTarget);
+      }
+      if (history.location.search !== '?dynamic=8') {
+        setCommentParameterV(false);
+      }
+      return;
+    }
     const { videos_s, videosBox_s, videoPlays_s }: any = index;
     onSetCommentBlock(null);
     if (videosRef) {
       const videoList: any = document.getElementById(videos_s);
       const videosBox: any = document.getElementById(videosBox_s);
       const videoClose: any = document.getElementById(videoPlays_s);
-      // console.log(videoList.index);
-      if (id && (videoList.index === 'false' || !videoList.index)) return;
       setPlaybackRecord({ videos_s, videosBox_s, videoPlays_s });
       if (videoPlays === 'no') {
-        // if (!name) {
-        //   history.push('/dynamic');
-        // } else if (videoPlays !== 'null') {
-        //   history.push('/personalInformation?personalVideo=0');
-        // }
-        // history.goBack();
-        // console.log('===>>>');
         if (!id) {
-          history.push(recordUrl.returnTarget);
+          if (
+            history.location.pathname === '/dynamic' &&
+            history.location.search === '?videoPlay=1'
+          ) {
+            console.log(history);
+            history.replace('/dynamic');
+          }
+          if (
+            // 个人相册情况时
+            history.location.pathname === '/personalInformation' &&
+            history.location.search === '?personalVideo=1'
+          ) {
+            history.replace('/personalInformation?personalVideo=2');
+          }
+        } else {
+          if (
+            history.location.pathname === '/dynamic' &&
+            history.location.search === '?videoPlay=1'
+          ) {
+            // console.log(history);
+            history.replace('/dynamic');
+          }
         }
-
+        // console.log('====>>>>>', history.location.search);
         videoList.index = 'false';
         videoList.pause(); //暂停控制
         videoClose.style.display = 'none';
         videosBox.style.display = 'none';
         setPlaybackRecord({});
       } else {
+        firstEntry = true;
+        firstComment = false;
         videoList.index = 'true';
         videoClose.style.display = 'block';
         videosBox.style.display = 'block';
         videoList.play();
-        if (videoPlays !== 'null' && !name) {
-          history.push('/dynamic?videoPlay=1');
-        } else if (videoPlays !== 'null') {
-          history.push('/personalInformation?personalVideo=1');
+        if (!id) {
+          if (history.location.pathname === '/dynamic') {
+            history.push('/dynamic?videoPlay=1');
+          }
+          if (history.location.search === '?videoPlay=0') {
+            // console.log(history);
+            history.replace('/dynamic?videoPlay=1');
+          }
+          if (
+            // 个人相册情况时
+            history.location.pathname === '/personalInformation' &&
+            history.location.search === '?personalVideo=0'
+          ) {
+            history.push('/personalInformation?personalVideo=1');
+          }
+          if (
+            // 个人相册情况时
+            history.location.pathname === '/personalInformation' &&
+            history.location.search === '?personalVideo=2'
+          ) {
+            history.replace('/personalInformation?personalVideo=1');
+          }
         }
       }
     }
@@ -343,6 +419,24 @@ const Dynamic = ({
   }: any) => {
     // console.log(name, nickname, myLocName);
     setCommentParameterV(true);
+    firstComment = true;
+    if (history.location.pathname === '/personalInformation') {
+      if (history.location.search === '?dynamic=1') {
+        // 进入朋友朋友圈时
+        history.push('/personalInformation?dynamic=8');
+      } else if (history.location.search === '?dynamic=0') {
+        history.replace('/personalInformation?dynamic=8');
+      } else {
+        if (history.location.search === '?personalVideo=0') {
+          history.push('/personalInformation?comment=1');
+        } else {
+          history.replace('/personalInformation?comment=1');
+        }
+      }
+    } else {
+      history.push('/dynamic?comment=1');
+    }
+
     setCommentParameter({ time, name, nickname, commentsLength, commentsList });
   };
   const giveThumbs = ({ time, name, nickname, likeIt, thumbsTime }: any) => {
@@ -360,10 +454,9 @@ const Dynamic = ({
         // console.log(res);
         setPageS(1);
         setDataTips(false);
-        getCircleFriendList();
+        getCircleFriendList('true');
       }
     });
-    // comment
   };
   const onSetVisible = (url: number) => {
     onSetCommentBlock(null);
@@ -416,6 +509,7 @@ const Dynamic = ({
   const [transparency, setTransparency] = useState(0);
   const onScroll = (e: any) => {
     setTabShow(false);
+    setDividerBottom(true);
     // console.log(
     //   e.target.clientHeight,
     //   e.target.scrollTop,
@@ -442,7 +536,7 @@ const Dynamic = ({
       Math.ceil(height) === e.target.clientHeight ||
       Math.floor(height) === e.target.clientHeight
     ) {
-      if (dataTips) return;
+      if (dataTips || switchName) return;
       // console.log(1);
       getCircleFriendList();
     }
@@ -518,7 +612,7 @@ const Dynamic = ({
     const { pathname, search } = history.location;
     localStorage.setItem('comeFrom', `${pathname}${search}`);
     setCommentParameterV(false);
-    history.push('/personalInformation?personal=1');
+    history.replace('/personalInformation?personal=1');
   };
   const onReply = ({ friendName }: any) => {
     setReplyMessage(friendName);
@@ -537,11 +631,24 @@ const Dynamic = ({
       if (res.code === 200) {
         // console.log(res);
         setCommentParameterV(false);
+        if (history.location.pathname === '/personalInformation') {
+          if (history.location.search === '?dynamic=2') {
+            // 进入朋友朋友圈时
+            history.replace('/personalInformation?dynamic=0');
+          } else {
+            if (history.location.search === '?comment=1') {
+              history.replace('/personalInformation?comment=0');
+            }
+          }
+          // history.replace('/personalInformation?personalVideo=0');
+        } else {
+          history.replace('/dynamic');
+        }
         onSetCommentBlock(null);
         setTextAreaValue('');
         setPageS(1);
         setDataTips(false);
-        getCircleFriendList();
+        getCircleFriendList('true');
       }
     });
   };
@@ -619,19 +726,7 @@ const Dynamic = ({
         className="contents contents_search_leng contentsTransparency"
       >
         <div className="dynamic-box">
-          <div
-            // style={{
-            //   background: `url(${
-            //     circleFriendsBackground
-            //       ? circleFriendsBackground
-            //       : '/images/202203120130501.jpg'
-            //   })`,
-            //   backgroundSize: '100%',
-            //   backgroundRepeat: 'no-repeat',
-            //   backgroundPosition: 'center center',
-            // }}
-            className="dynamic-img"
-          >
+          <div className="dynamic-img">
             <div className="dynamic-img-cont-box">
               <img
                 className="dynamic-img-cont"
@@ -775,7 +870,6 @@ const Dynamic = ({
                         );
                       })}
                   </div>
-                  {/* const {videos_s,videosBox_s, videoPlays_s}:any = index; */}
                   {item.video && (
                     <div className="otherItemsListVideos">
                       <span className="PlayOutline">
@@ -804,13 +898,6 @@ const Dynamic = ({
                       <div
                         id={`videosBox${index}`}
                         className="videosBox document-classification-box"
-                        // onClick={() =>
-                        //   videoPlays('no', {
-                        //     videos_s: `videos${index}`,
-                        //     videosBox_s: `videosBox${index}`,
-                        //     videoPlays_s: `videoPlays${index}`,
-                        //   })
-                        // }
                       >
                         <span
                           id={`videoPlays${index}`}
@@ -940,12 +1027,13 @@ const Dynamic = ({
                 color: '#eeeeee',
               }}
             >
-              <Divider>{dataTips ? '没有更多了' : '加载更多'}</Divider>
+              {dividerBottom && (
+                <Divider>{dataTips ? '没有更多了' : '加载更多'}</Divider>
+              )}
             </div>
           )}
         </div>
       </div>
-      {/* {cameraOut && ( */}
       <div
         className={`${cameraOut && 'document-classification-box'}`}
         style={{
@@ -961,7 +1049,6 @@ const Dynamic = ({
       >
         <CameraOutList callback={onetCameraOut} />
       </div>
-      {/* )} */}
       {visible && (
         <ImageViewer.Multi
           images={demoImagesList}
@@ -977,6 +1064,17 @@ const Dynamic = ({
         visible={commentParameterV}
         onMaskClick={() => {
           setCommentParameter({});
+
+          if (history.location.pathname === '/personalInformation') {
+            if (history.location.search === '?dynamic=8') {
+              // 进入朋友朋友圈时
+              history.replace('/personalInformation?dynamic=0');
+            } else {
+              history.push('/personalInformation?personalVideo=0');
+            }
+          } else {
+            history.replace('/dynamic');
+          }
           setCommentParameterV(false);
         }}
         bodyStyle={{
@@ -985,12 +1083,22 @@ const Dynamic = ({
           height: '55vh',
         }}
       >
-        {/* {mockContent} */}
         <div className="PopupTop">
           <CloseOutline
             onClick={() => {
               setCommentParameter({});
               setCommentParameterV(false);
+              if (history.location.pathname === '/personalInformation') {
+                // history.replace('/personalInformation?personalVideo=0');
+                if (history.location.search === '?dynamic=8') {
+                  // 进入朋友朋友圈时
+                  history.replace('/personalInformation?dynamic=0');
+                } else if (history.location.search === '?comment=1') {
+                  history.replace('/personalInformation?comment=0');
+                }
+              } else {
+                history.replace('/dynamic');
+              }
             }}
             className="PopupTopOutline"
           />

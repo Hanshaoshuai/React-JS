@@ -109,9 +109,14 @@ const ChatRecord = () => {
     getList();
   }, []);
   useEffect(() => {
-    if (urlPathname.dynamic === '2') {
+    if (
+      urlPathname.dynamic === '2' ||
+      window.location.search === '?personalVideo=0'
+    ) {
       // console.log(urlPathname);
       setToDynamic(true);
+    } else if (window.location.search === '?personal=1') {
+      setToDynamic(false);
     }
   }, [urlPathname]);
   const getCircleFriendList = (Friend?: string) => {
@@ -583,6 +588,7 @@ const ChatRecord = () => {
     if (personalInformation) {
       history.push('/personalInformation?dynamic=1');
     } else {
+      console.log(history);
       history.push('/personalInformation?personalVideo=0');
     }
   };
