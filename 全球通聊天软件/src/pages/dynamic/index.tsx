@@ -352,7 +352,7 @@ const Dynamic = ({
             history.location.pathname === '/dynamic' &&
             history.location.search === '?videoPlay=1'
           ) {
-            console.log(history);
+            // console.log(history);
             history.replace('/dynamic');
           }
           if (
