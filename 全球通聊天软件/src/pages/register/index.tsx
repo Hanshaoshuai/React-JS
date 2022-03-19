@@ -172,7 +172,7 @@ const Register = () => {
       if (denglu) {
         denglu.current.scrollTop = denglu.current.clientHeight;
       }
-    }, 210);
+    }, 230);
   };
   return (
     <div className="denglu" ref={denglu}>
@@ -248,7 +248,7 @@ const Register = () => {
               />
               <a onClick={quxiao}></a>
             </li>
-            <li>
+            <li onClick={onFocus}>
               <span>
                 <img src="/images/yanzhengma2.png" alt="" />
               </span>
@@ -262,7 +262,7 @@ const Register = () => {
                 获取验证码
               </a>
             </li>
-            <li>
+            <li onClick={onFocus}>
               <span>
                 <img src="/images/mima.png" alt="" />
               </span>

@@ -364,7 +364,7 @@ const ChatList = () => {
       if (denglu) {
         denglu.current.scrollTop = denglu.current.clientHeight;
       }
-    }, 210);
+    }, 230);
   };
 
   const second: any = [
@@ -998,7 +998,7 @@ const ChatList = () => {
                 className="ferst mint-field-core"
               />
             </li>
-            <li>
+            <li onClick={onFocus}>
               <span>
                 <img src="/images/mima.png" alt="" />
               </span>
