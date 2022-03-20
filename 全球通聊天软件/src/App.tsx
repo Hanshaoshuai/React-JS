@@ -8,6 +8,7 @@ import { state, reducers } from './models';
 import { MyContext } from './models/context';
 import { APIS } from './api/ip';
 import SuperMap from './pages/superMap';
+import CompassClock from './pages/compassClock';
 
 // const io = require("socket.io");
 import io from 'socket.io-client';
@@ -107,6 +108,9 @@ export default function App() {
   //  console.log(addThenMult(5))
   return (
     <>
+      <div className="Clock">
+        <CompassClock />
+      </div>
       {superMaps && <SuperMap />}
       <audio id="play" src="/mp3/1.mp3"></audio>
       <Router>
