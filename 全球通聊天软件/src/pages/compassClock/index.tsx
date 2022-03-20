@@ -305,7 +305,7 @@ const CompassClock = ({ callback }: any) => {
               string = 'mymove 1s infinite';
             }
             if (ssOldNum === index + 1) {
-              string = 'mymove1 1s infinite';
+              string = 'mymove1 2s infinite';
             }
             if (ssOldNum !== index && ssOldNum !== index + 1) {
               string = `mymove0  1s infinite`;
