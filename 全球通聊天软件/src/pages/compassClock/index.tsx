@@ -380,7 +380,9 @@ const CompassClock = ({ callback }: any) => {
                   <span
                     style={{
                       transform: `${
-                        Highlighthh === index + 1 ? 'scale(1.2)' : 'scale(1)'
+                        Highlighthh === index + 1 || Highlighthh === index + 13
+                          ? 'scale(1.2)'
+                          : 'scale(1)'
                       }`,
                     }}
                     className="clock-time"
