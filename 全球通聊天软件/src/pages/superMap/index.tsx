@@ -17,13 +17,12 @@ declare global {
 }
 let cameraChangedListener: any = null;
 let viewer: any = null;
-const SuperMap = () => {
+const SuperMap = ({ callback }: any) => {
   var ua: any = navigator.userAgent.toLowerCase();
   let urls = '';
   let destination = null;
   const history = useHistory();
   const infoBoxContainer = useRef<HTMLDivElement>(null);
-  const [visibility, setVisibility] = useState(true);
   const [switchsVisibility, setSwitchsVisibility] = useState(false);
   const [switchsX, setSwitchsX] = useState(0);
   const [switchsY, setSwitchsY] = useState(0);
@@ -186,7 +185,7 @@ const SuperMap = () => {
     if (renderer) {
       renderer.ondblclick = (e: any) => {
         if (e && !history?.location) {
-          setVisibility(false);
+          callback(false);
         }
       };
     }
@@ -414,7 +413,7 @@ const SuperMap = () => {
     }
   };
   const cesiumContainerNone = () => {
-    setVisibility(false);
+    callback(false);
   };
   const viewItems = (id: any) => {
     // id = id.tostring();
@@ -434,67 +433,60 @@ const SuperMap = () => {
   };
   return (
     <>
-      {visibility && (
+      <div className="cesiumContainer-box">
+        <div className="switch switch-box" onClick={cesiumContainerNone}>
+          <CloseCircleOutline className="video-closure-icon" />
+        </div>
+        <div id="cesiumContainer" className="cesiumContainer"></div>
+        <div className="cesiumContainer-button">
+          <Button className="button" color="primary" onClick={realspace}>
+            添加S3M图层
+          </Button>
+          <Button className="button" color="primary" onClick={reset}>
+            重置
+          </Button>
+          <Button className="button" color="primary" onClick={onFullScreen}>
+            {fullScreen ? '全屏' : '小屏'}
+          </Button>
+        </div>
         <div
-          className="cesiumContainer-box"
-          style={{ display: `${visibility ? 'block' : 'none'}` }}
+          ref={infoBoxContainer}
+          className="pop-ups"
+          style={{
+            display: `${switchsVisibility ? 'block' : 'none'}`,
+            width: '41%',
+            height: 'auto',
+            top: `${switchsY + 19}px`,
+            left: `${switchsX + 19}px`,
+          }}
         >
-          <div className="switch switch-box" onClick={cesiumContainerNone}>
-            <CloseCircleOutline className="video-closure-icon" />
-          </div>
-          <div id="cesiumContainer" className="cesiumContainer"></div>
-          <div className="cesiumContainer-button">
-            <Button className="button" color="primary" onClick={realspace}>
-              添加S3M图层
-            </Button>
-            <Button className="button" color="primary" onClick={reset}>
-              重置
-            </Button>
-            <Button className="button" color="primary" onClick={onFullScreen}>
-              {fullScreen ? '全屏' : '小屏'}
-            </Button>
-          </div>
-          <div
-            ref={infoBoxContainer}
-            className="pop-ups"
-            style={{
-              display: `${switchsVisibility ? 'block' : 'none'}`,
-              width: '41%',
-              height: 'auto',
-              top: `${switchsY + 19}px`,
-              left: `${switchsX + 19}px`,
-            }}
-          >
-            <div className="pop-ups-title">
-              {`_id:${titles.id?.name || titles?.id}`}
-              <div className="switch" onClick={switchs}>
-                <CloseCircleOutline className="video-closure-icon" />
-              </div>
+          <div className="pop-ups-title">
+            {`_id:${titles.id?.name || titles?.id}`}
+            <div className="switch" onClick={switchs}>
+              <CloseCircleOutline className="video-closure-icon" />
             </div>
-            {titles.position && (
-              <div>
-                {`x：${titles.position?.x}`}
-                <br />
-                {`y：${titles.position?.y}`}
-                <br />
-                {`z：${titles.position?.y}`}
-              </div>
-            )}
+          </div>
+          {titles.position && (
+            <div>
+              {`x：${titles.position?.x}`}
+              <br />
+              {`y：${titles.position?.y}`}
+              <br />
+              {`z：${titles.position?.y}`}
+            </div>
+          )}
 
-            <div className="button-box">
-              <Button
-                className="button"
-                color="primary"
-                onClick={
-                  titles.id?.name ? realspace : () => viewItems(titles.id)
-                }
-              >
-                {titles.id?.name ? '进入设备' : ' 查看项目'}
-              </Button>
-            </div>
+          <div className="button-box">
+            <Button
+              className="button"
+              color="primary"
+              onClick={titles.id?.name ? realspace : () => viewItems(titles.id)}
+            >
+              {titles.id?.name ? '进入设备' : ' 查看项目'}
+            </Button>
           </div>
         </div>
-      )}
+      </div>
     </>
   );
 };

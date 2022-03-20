@@ -4,7 +4,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { setInterval } from 'timers';
 import { CloseCircleOutline } from 'antd-mobile-icons';
 const { formatDate } = require('gettimesjs');
-const CompassClock = () => {
+const CompassClock = ({ callback }: any) => {
   const second: any = [
     { key: '零' },
     { key: '一' },
@@ -225,7 +225,6 @@ const CompassClock = () => {
     return solarTerms;
   };
   const [seasonS, setSeasonS] = useState(season);
-  const [clockShow, setClockShow] = useState(true);
   const [degs, setDegs] = useState(0); // 秒
   const [branchDegs, setBranchDegs] = useState(0); // 分
   const [timeDegs, setTimeDegs] = useState(0); // 时
@@ -291,7 +290,7 @@ const CompassClock = () => {
     }, 1000);
   }, []);
   const onClockButton = () => {
-    setClockShow(false);
+    callback();
   };
   const useMemoS = useMemo(() => {
     return (
@@ -510,7 +509,7 @@ const CompassClock = () => {
       </div>
     );
   }, [degs]);
-  return <div className="denglu">{clockShow && useMemoS}</div>;
+  return <div className="denglu">{useMemoS}</div>;
 };
 
 export default CompassClock;

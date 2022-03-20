@@ -40,7 +40,9 @@ export default function App() {
   // console.log(schedule);
   const [state, dispatch] = useReducer(reducer, states);
   const [messages, setMessages] = useState<any>({});
-  const [superMaps, setSuperMaps] = useState(false);
+  const [superMaps, setSuperMaps] = useState(true);
+  const [Clock, setClock] = useState(true);
+
   useEffect(() => {
     window.socket.on('message', function (data: any) {
       setMessages(data);
@@ -57,7 +59,6 @@ export default function App() {
         list: [1, 2, 3],
       })
     );
-    setSuperMaps(true);
   }, []);
   useEffect(() => {
     // console.log('message====>>>>>', messages);
@@ -106,12 +107,20 @@ export default function App() {
   //  const mult2 = (a: number) => a * 2;
   //  const addThenMult = pipeline(plus1, mult2);
   //  console.log(addThenMult(5))
+  const callback = () => {
+    setClock(false);
+  };
+  const callbackMap = () => {
+    setSuperMaps(false);
+  };
   return (
     <>
-      <div className="Clock">
-        <CompassClock />
-      </div>
-      {superMaps && <SuperMap />}
+      {Clock && (
+        <div className="Clock">
+          <CompassClock callback={callback} />
+        </div>
+      )}
+      {superMaps && <SuperMap callback={callbackMap} />}
       <audio id="play" src="/mp3/1.mp3"></audio>
       <Router>
         <MyContext.Provider value={{ state, dispatch, messages }}>
