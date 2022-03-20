@@ -286,7 +286,7 @@
         transform: scale(0.65);
         margin-right: -0.62rem;
         span {
-          line-height: 0rem;
+          line-height: 0.25rem;
           font-size: 0.2rem;
           display: inline-block;
           transition: transform 6s cubic-bezier(0.7, 0.3, 0.1, 1),
@@ -322,10 +322,10 @@
   }
   @keyframes mymove0 {
     0% {
-      text-shadow: 18px 2px 12px rgba(255, 0, 255, 0);
+      text-shadow: 13px 3px 12px rgba(255, 0, 255, 0);
     }
     100% {
-      text-shadow: 18px 2px 12px rgba(255, 0, 255, 1);
+      text-shadow: 13px 3px 12px rgba(255, 0, 255, 1);
     }
   }
 
