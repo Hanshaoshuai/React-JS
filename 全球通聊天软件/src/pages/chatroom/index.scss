@@ -192,6 +192,7 @@
   bottom: 0;
   width: 100%;
   z-index: 1300;
+  user-select: none;
   // display: flex;
   // align-content: center;
   // align-items: center;
@@ -285,6 +286,7 @@
   height: 0.68rem;
   text-align: justify;
   margin-left: 0.88rem;
+  user-select: none;
 }
 .yijian .shuru ul li .voice_botten .voice_botten_text {
   width: 90%;
@@ -294,12 +296,13 @@
   font-size: 0.32rem;
   box-sizing: border-box;
   text-align: center;
-  border: 1px solid #bfbfbf;
-  color: #bfbfbf;
+  // border: 1px solid #bfbfbf;
+  // color: #bfbfbf;
 }
 .yijian .shuru ul li .voice_botten .voice_botten_text:active {
-  border: 1px solid #ff7a59;
-  color: #ff7a59;
+  // border: 1px solid #ff7a59;
+  // color: #ff7a59;
+  user-select: none;
 }
 .yijian .shuru ul li .voice_botten .voice_botten_text,
 .yijian .shuru ul {

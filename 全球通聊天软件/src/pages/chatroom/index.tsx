@@ -2244,6 +2244,7 @@ const ChatList = () => {
               const mediaRecorder: any = new MediaRecorder(MediaStream); //构造函数会创建一个对指定的 MediaStream 进行录制的 MediaRecorder 对象
               if (window.modelName === 'pc') {
                 node.onmousedown = (e: any) => {
+                  node.style.backgroundImage = 'url(/images/voice-1.png)';
                   timeouts = false;
                   startTime = new Date().getTime();
                   CTimeout = setTimeout(() => {
@@ -2253,6 +2254,7 @@ const ChatList = () => {
                   mediaRecorder?.state === 'inactive' && mediaRecorder.start(); //当鼠标按下的时候进行录制
                 };
                 node.onmouseup = (e: any) => {
+                  node.style.backgroundImage = 'url(/images/voice.png)';
                   stopTime = new Date().getTime();
                   if (!timeouts) {
                     clearTimeout(CTimeout);
@@ -2265,6 +2267,7 @@ const ChatList = () => {
                 };
               } else {
                 node.ontouchstart = (e: any) => {
+                  node.style.backgroundImage = 'url(/images/voice-1.png)';
                   timeouts = false;
                   startTime = new Date().getTime();
                   CTimeout = setTimeout(() => {
@@ -2275,6 +2278,7 @@ const ChatList = () => {
                   mediaRecorder?.state === 'inactive' && mediaRecorder.start(); //当鼠标按下的时候进行录制
                 };
                 node.ontouchend = (e: any) => {
+                  node.style.backgroundImage = 'url(/images/voice.png)';
                   stopTime = new Date().getTime();
                   if (!timeouts) {
                     clearTimeout(CTimeout);
@@ -2414,9 +2418,11 @@ const ChatList = () => {
                 />
                 {voiceSotten ? (
                   <div className="voice_botten">
-                    <div className="voice_botten_text" ref={voiceBotten}>
-                      按住&nbsp;说话
-                    </div>
+                    <div
+                      className="voice_botten_text"
+                      ref={voiceBotten}
+                      style={{ backgroundImage: 'url(/images/voice.png)' }}
+                    ></div>
                   </div>
                 ) : (
                   <p
