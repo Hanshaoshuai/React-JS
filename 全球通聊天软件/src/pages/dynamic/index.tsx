@@ -244,7 +244,7 @@ const Dynamic = ({
       firstComment = false;
     }
     await getCircleFriends({
-      page: key ? key : pageS,
+      page: key ? 1 : pageS,
       pageSize: 13,
       name:
         personalInformation || localStorage.getItem('secondary')
