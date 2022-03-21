@@ -247,7 +247,7 @@ const Dynamic = ({
       page: key ? 1 : pageS,
       pageSize: 13,
       name: nameId ? nameId : personalInformation ? toChatName : myLocName,
-      personal: name && !localStorage.getItem('secondary') ? true : false,
+      personal: name || nameId ? true : false,
     }).then((res: any) => {
       // console.log(res);
       setSwitchName(false);
