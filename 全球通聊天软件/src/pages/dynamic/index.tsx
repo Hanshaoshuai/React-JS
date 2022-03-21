@@ -234,7 +234,7 @@ const Dynamic = ({
     }
   }, [circleFriendData]);
 
-  const getCircleFriendList = async (key?: string) => {
+  const getCircleFriendList = async (key?: string, nameId?: any) => {
     if (key) {
       setSwitchName(true);
       setDividerBottom(false);
@@ -246,10 +246,7 @@ const Dynamic = ({
     await getCircleFriends({
       page: key ? 1 : pageS,
       pageSize: 13,
-      name:
-        personalInformation || localStorage.getItem('secondary')
-          ? toChatName
-          : myLocName,
+      name: nameId ? nameId : personalInformation ? toChatName : myLocName,
       personal: name && !localStorage.getItem('secondary') ? true : false,
     }).then((res: any) => {
       // console.log(res);
@@ -479,7 +476,7 @@ const Dynamic = ({
         // console.log(res);
         setPageS(1);
         setDataTips(false);
-        getCircleFriendList('true');
+        getCircleFriendList('true', name);
       }
     });
   };
@@ -688,7 +685,7 @@ const Dynamic = ({
         setTextAreaValue('');
         setPageS(1);
         setDataTips(false);
-        getCircleFriendList('true');
+        getCircleFriendList('true', name);
       }
     });
   };
