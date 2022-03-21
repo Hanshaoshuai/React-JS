@@ -131,7 +131,7 @@ const CameraOutList = ({ callback }: any) => {
     onUploadProgress.onUploadProgress = (progressEvent: any) => {
       let complete = ((progressEvent.loaded / progressEvent.total) * 100) | 0;
       // console.log('上传=====>>>>', complete);
-      if (complete === 100) {
+      if (complete === 100 && cameraOut) {
         index += 1;
       }
       if (index % 3) {

@@ -607,9 +607,14 @@ const Dynamic = ({
     // console.log(data);
   };
   const goFriends = (name: string, key?: boolean) => {
-    if (personalInformation && history.location.search && key) {
+    if (
+      personalInformation &&
+      history.location.search &&
+      history.location.pathname === '/personalInformation'
+    ) {
       Toast.show({
         content: '不可进入',
+        position: 'top',
       });
       return;
     }
