@@ -272,6 +272,11 @@
   padding: 0.2rem 0;
   border-bottom: 1px solid #d0d0d0;
   /*display:none;*/
+  span {
+    &:last-child {
+      width: auto;
+    }
+  }
 }
 .personalInformation .contents .denglu-text .xiangCe {
   width: 90.8%;

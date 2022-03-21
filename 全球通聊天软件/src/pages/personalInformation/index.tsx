@@ -97,6 +97,10 @@ const ChatRecord = () => {
     if (window.location.search === '?personal=1&setSettings=1') {
       indexId = true;
     }
+    informations();
+    getList();
+  }, []);
+  const informations = () => {
     if (localStorage.getItem('myInformation') && !personalInformation) {
       const { information, newOptions0 } = JSON.parse(
         localStorage.getItem('myInformation') || '{}'
@@ -106,8 +110,7 @@ const ChatRecord = () => {
       setMyRegion(newOptions0[3].value || '');
       setToNames(newOptions0[0].value || '');
     }
-    getList();
-  }, []);
+  };
   useEffect(() => {
     if (
       urlPathname.dynamic === '2' ||
@@ -557,6 +560,8 @@ const ChatRecord = () => {
     });
   };
   const goBackSettings = () => {
+    informations();
+    informationDetailsQ();
     indexId = true;
     history.push('/personalInformation?personal=1');
     setSettingsName(false);

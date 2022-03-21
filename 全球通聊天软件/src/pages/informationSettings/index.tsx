@@ -56,11 +56,10 @@ const InformationSettings = ({
 
   const [visible, setVisible] = useState(false);
   const [visibleCascade, setVisibleCascade] = useState(false);
-  const [value, setValue] = useState<(string | null)[]>(['50kg']);
+  const [value, setValue] = useState<(string | null)[]>([]);
   const [basicColumns, setBasicColumns] = useState<any>([]);
   const [visibleModal, setVisibleModal] = useState(false);
   const [valueInput, setValueInput] = useState<any>(name);
-  const [changes, setChanges] = useState(false);
   const [changeName, setChangeName] = useState(true);
 
   useEffect(() => {
@@ -93,12 +92,12 @@ const InformationSettings = ({
         }
         return item;
       });
-      setNewOptions0(newList);
+      setNewOptions0([...newList]);
     }
   }, [name]);
   useEffect(() => {
     if (labelOption?.length) {
-      setNewOptions0(labelOption);
+      setNewOptions0([...labelOption]);
     }
   }, [labelOption]);
   const newList = (Z: any, B: any) => {
@@ -184,15 +183,16 @@ const InformationSettings = ({
         setVisible(true);
       }
     }
-  }, [changes]);
-  const onSetBasicInformation = async (value: any) => {
-    // console.log(value);
+  }, [value]);
+
+  const onSetBasicInformation = async (value: any, valueName: any) => {
+    // console.log(value, valueName.split('-'));
     if (value === '昵称') {
       const result = await Dialog.confirm({
         content: (
           <Input
             className="adm-dialog-wrap-input"
-            placeholder="请输入昵称"
+            placeholder={`${valueName ? valueName : '请输入昵称'}`}
             // value={valueInput}
             onChange={(val) => {
               valueInputText = val;
@@ -219,8 +219,9 @@ const InformationSettings = ({
         setNewOptions0(newList);
       }
       return;
+    } else {
+      setValue(valueName.split('-'));
     }
-    setChanges(!changes);
     setBasicList(value);
     setBasicColumns(basicColumnsObj[value]);
   };
@@ -237,7 +238,6 @@ const InformationSettings = ({
     });
     // console.log(e, basicList, newList);
     setNewOptions0(newList);
-    setValue(e);
   };
   const onAction = (e: any) => {
     // console.log(e);
@@ -362,7 +362,9 @@ const InformationSettings = ({
                         <Tag
                           round
                           color="#ff7a59"
-                          onClick={() => onSetBasicInformation(item.label)}
+                          onClick={() =>
+                            onSetBasicInformation(item.label, item.value)
+                          }
                           key={`${item.label}_${index}`}
                         >
                           {item.label}：{item.value}
@@ -626,7 +628,7 @@ const InformationSettings = ({
           onClose={() => {
             setVisible(false);
           }}
-          value={value}
+          defaultValue={value}
           onConfirm={onConfirm}
           // onSelect={(val, extend) => {
           //   console.log('onSelect', val, extend.items);
@@ -640,7 +642,7 @@ const InformationSettings = ({
           onClose={() => {
             setVisibleCascade(false);
           }}
-          value={value}
+          defaultValue={value}
           onConfirm={onConfirm}
           // onSelect={(val, extend) => {
           //   console.log('onSelect', val, extend.items);

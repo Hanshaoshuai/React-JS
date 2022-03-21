@@ -606,8 +606,8 @@ const Dynamic = ({
     }
     // console.log(data);
   };
-  const goFriends = (name: string) => {
-    if (personalInformation && history.location.search) {
+  const goFriends = (name: string, key?: boolean) => {
+    if (personalInformation && history.location.search && key) {
       Toast.show({
         content: '不可进入',
       });
@@ -812,7 +812,7 @@ const Dynamic = ({
               >
                 <div
                   className="dynamic-const-box-img"
-                  onClick={() => goFriends(item.name)}
+                  onClick={() => goFriends(item.name, true)}
                 >
                   <img src={item?.headPortrait} alt="" />
                 </div>

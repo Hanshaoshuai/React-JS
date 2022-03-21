@@ -240,6 +240,7 @@ const CompassClock = ({ callback }: any) => {
   const [Highlighthh, setHighlighthh] = useState(0);
   const [DD] = useState(parseInt(formatDate('dd')));
   const [MM] = useState(parseInt(formatDate('MM')));
+
   useEffect(() => {
     // formatDate('yyyy-MM-dd EE AM hh:mm:ss S q');
     let mymoveYearLod = false;
@@ -264,7 +265,7 @@ const CompassClock = ({ callback }: any) => {
         return term;
       })
     );
-    setInterval(() => {
+    let interVal = window.setInterval(() => {
       ss -= -6;
       ssOld += 1;
       if (ssOld % 6 === 0) {
@@ -288,8 +289,13 @@ const CompassClock = ({ callback }: any) => {
       setBranchDegs(mm); // 分
       setTimeDegs(hh); // 时
     }, 1000);
+    console.log(interVal);
+    return () => {
+      window.clearInterval(interVal);
+    };
   }, []);
   const onClockButton = () => {
+    // clearInterval();
     callback();
   };
   const useMemoS = useMemo(() => {
@@ -307,9 +313,9 @@ const CompassClock = ({ callback }: any) => {
             if (ssOldNum === index + 1) {
               string = 'mymove1 2s infinite';
             }
-            if (ssOldNum !== index && ssOldNum !== index + 1) {
-              string = `mymove0  1s infinite`;
-            }
+            // if (ssOldNum !== index && ssOldNum !== index + 1) {
+            //   string = `mymove0  1s infinite`;
+            // }
             return (
               <div
                 key={`${index}`}
