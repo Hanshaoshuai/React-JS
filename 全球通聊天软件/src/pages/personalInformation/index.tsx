@@ -21,6 +21,7 @@ import {
 } from '../../api';
 import { Upload } from '../A-components/upload';
 let indexId: any = false;
+let adds = 0;
 const localNames = window.localStorage.getItem('name');
 const ChatRecord = () => {
   const { state } = useContext(MyContext);
@@ -60,9 +61,9 @@ const ChatRecord = () => {
   const [setUps, setSetUp] = useState(false);
   const [nickName, setNickName] = useState<any>('');
   const [setRegion, setSetRegion] = useState<any>('');
-  const [personalInformation] = useState<any>(
-    localStorage.getItem('personalInformation')
-  );
+  // const [personalInformation] = useState<any>(
+  //   localStorage.getItem('personalInformation')
+  // );
   const [remarksNuber, setRemarksNuber] = useState<any>('');
   const [fromType] = useState<any>(localStorage.getItem('fromType'));
   const [addSearchFriends, setAddSearchFriends] = useState<any>(
@@ -91,17 +92,72 @@ const ChatRecord = () => {
   const [toDynamic, setToDynamic] = useState(false);
   const [circleFriendsBackground, setCircleFriendsBackground] = useState('');
   const [determineWait, setDetermineWait] = useState(false);
-
+  // console.log(state);
   useEffect(() => {
-    informationDetailsQ();
     if (window.location.search === '?personal=1&setSettings=1') {
       indexId = true;
     }
     informations();
     getList();
   }, []);
+  useEffect(() => {
+    if (urlPathname.WoDe) {
+      if (!urlPathname.secondary && localStorage.getItem('secondary')) {
+        localStorage.removeItem('secondary');
+        indexId = true;
+        setToDynamic(false);
+        informationDetailsQ(urlPathname.WoDe);
+        // history.replace('/personalInformation?personal=1');
+        // Reset();
+        setTabTex('详细资料');
+        return;
+      }
+      informationDetailsQ(urlPathname.WoDe);
+    } else {
+      if (localStorage.getItem('getInto') !== '/dynamic') {
+        if (!urlPathname.WoDe) {
+          window.location.search === '?personal=1' &&
+            localStorage.removeItem('secondary');
+          Reset();
+        }
+      } else {
+        !localStorage.getItem('secondary') &&
+          localStorage.getItem('getInto') !==
+            '/personalInformation?personal=1' &&
+          informationDetailsQ();
+      }
+    }
+    // !localStorage.getItem('secondary') &&
+    //   window.location.search !== '?personalVideo=0' &&
+    //   Reset();
+    if (
+      window.location.search === '?personalVideo=0' &&
+      window.location.pathname === '/personalInformation' &&
+      !localStorage.getItem('secondary')
+    ) {
+      informationDetailsQ(myName);
+      getList();
+    }
+  }, [window.location.search, urlPathname]);
+  const Reset = () => {
+    if (
+      window.location.search === '?comment=0' ||
+      window.location.search === '?comment=1'
+    )
+      return;
+    setSearchResults(false);
+    setRemarksNuber('');
+    setTabTex('我的');
+    localStorage.removeItem('personalInformation');
+    window.location.search !== '?personalVideo=0' &&
+      localStorage.getItem('secondary') &&
+      informationDetailsQ(myName);
+  };
   const informations = () => {
-    if (localStorage.getItem('myInformation') && !personalInformation) {
+    if (
+      localStorage.getItem('myInformation') &&
+      !localStorage.getItem('personalInformation')
+    ) {
       const { information, newOptions0 } = JSON.parse(
         localStorage.getItem('myInformation') || '{}'
       );
@@ -136,7 +192,7 @@ const ChatRecord = () => {
     });
   };
   const getList = () => {
-    if (personalInformation) {
+    if (localStorage.getItem('personalInformation')) {
       getCircleFriendList('Friend');
     } else {
       getCircleFriendList();
@@ -148,8 +204,11 @@ const ChatRecord = () => {
     if (types === 'groupChat') {
       setHeadPortrait(localStorage.getItem('headPortrait_groupChat'));
     }
-    if (personalInformation || fromType || text) {
-      setTabTex('详细资料');
+    if (localStorage.getItem('personalInformation') || fromType || text) {
+      if (localStorage.getItem('personalInformation')) {
+        setTabTex('详细资料');
+      }
+
       informationDetails({
         toChatName:
           types === 'groupChat'
@@ -162,7 +221,9 @@ const ChatRecord = () => {
       }).then((data) => {
         // console.log(data);
         if (data.code === 200) {
-          setSearchResults(true);
+          if (text !== myName) {
+            setSearchResults(true);
+          }
           setLLNumber(data.LLNumber);
           setsexImage(data.sex);
           setLocalName(data.name);
@@ -232,7 +293,7 @@ const ChatRecord = () => {
 
   const setUp = () => {
     if (!setUps) {
-      if (personalInformation) {
+      if (localStorage.getItem('personalInformation')) {
         setTabTex('添加备注');
       } else {
         setTabTex('资料设置');
@@ -247,7 +308,7 @@ const ChatRecord = () => {
         setSetUp(!setUps);
         return;
       }
-      if (personalInformation) {
+      if (localStorage.getItem('personalInformation')) {
         setTabTex('详细资料');
         setToNames(localStorage.getItem('toNames'));
         setRemarksNuber(localStorage.getItem('remarksNuber'));
@@ -260,6 +321,10 @@ const ChatRecord = () => {
     setSetUp(!setUps);
   };
   const goBackS = () => {
+    if (urlPathname.WoDe) {
+      history.goBack();
+      return;
+    }
     if (setUps) {
       setTabTex('详细资料');
       setSetUp(!setUps);
@@ -278,12 +343,17 @@ const ChatRecord = () => {
     setAddSearchFriends('');
     localStorage.removeItem('addSearchFriends');
     // history.goBack();
-    const comeFrom = localStorage.getItem('comeFrom');
-    history.push(comeFrom || '/');
+    if (localStorage.getItem('getInto') === '/dynamic') {
+      const comeFrom = localStorage.getItem('comeFrom');
+      localStorage.removeItem('getInto');
+      history.push(comeFrom || '/');
+    } else {
+      history.goBack();
+    }
     // window.history.forward();
   };
   const save = () => {
-    if (personalInformation || searchResults) {
+    if (localStorage.getItem('personalInformation') || searchResults) {
       if (!toNames && !remarksNuber) {
         Toast.show({
           content: '没有要保存的信息！请填写...',
@@ -373,14 +443,14 @@ const ChatRecord = () => {
   const onChange = (e: any, type: any) => {
     if (e) {
       if (type === 1) {
-        if (personalInformation || searchResults) {
+        if (localStorage.getItem('personalInformation') || searchResults) {
           setToNames(e.target.value);
         } else {
           setNickName(e.target.value);
         }
       }
       if (type === 2) {
-        if (personalInformation || searchResults) {
+        if (localStorage.getItem('personalInformation') || searchResults) {
           setRemarksNuber(e.target.value);
         } else {
           setSetRegion(e.target.value);
@@ -419,7 +489,7 @@ const ChatRecord = () => {
 
   const chatroom = () => {
     localStorage.setItem('nickName', toNames);
-    if (personalInformation || searchResults) {
+    if (localStorage.getItem('personalInformation') || searchResults) {
       localStorage.setItem('toChatName', localName);
       localStorage.setItem('headPortrait', headPortrait);
     } else {
@@ -590,7 +660,12 @@ const ChatRecord = () => {
   const onDynamic = () => {
     setToDynamic(true);
     getList();
-    if (personalInformation) {
+    if (urlPathname.WoDe) {
+      localStorage.setItem('secondary', '1');
+      history.push(`/personalInformation${window.location.search}&secondary=1`);
+      return;
+    }
+    if (localStorage.getItem('personalInformation')) {
       history.push('/personalInformation?dynamic=1');
     } else {
       // console.log(history);
@@ -599,9 +674,6 @@ const ChatRecord = () => {
   };
   const onCallback = (comment?: string) => {
     getList();
-    if (comment) {
-      informationDetailsQ();
-    }
   };
   let listIndexId = 0;
   return (
@@ -658,7 +730,9 @@ const ChatRecord = () => {
             <span>{tabTex}</span>
             {friend &&
             !remove &&
-            (searchResults || !personalInformation || !fromType) ? (
+            (searchResults ||
+              !localStorage.getItem('personalInformation') ||
+              !fromType) ? (
               <>
                 <img
                   src="/images/dashujukeshihuaico.png"
@@ -687,7 +761,10 @@ const ChatRecord = () => {
                         onChange={(files: any) => mockUpload(files)}
                         style={{ display: 'none' }}
                         type={`${
-                          personalInformation || searchResults ? '' : 'file'
+                          localStorage.getItem('personalInformation') ||
+                          searchResults
+                            ? ''
+                            : 'file'
                         }`}
                         name=""
                         accept="image/jpeg,image/jpg,image/png"
@@ -714,7 +791,11 @@ const ChatRecord = () => {
                     <p onClick={viewAvatar}>
                       <img
                         className="border"
-                        src={personalInformation ? headPortrait : myHeadZoom}
+                        src={
+                          localStorage.getItem('personalInformation')
+                            ? headPortrait
+                            : myHeadZoom
+                        }
                         alt=""
                         id="imges"
                       />
@@ -744,7 +825,8 @@ const ChatRecord = () => {
                   <span className="lalst">
                     聊聊号：<a>{LLNumber}</a>
                   </span>
-                  {personalInformation || searchResults ? (
+                  {localStorage.getItem('personalInformation') ||
+                  searchResults ? (
                     <span className="lalst lalst_name">
                       昵称：<a>{nickName}</a>
                     </span>
@@ -755,7 +837,11 @@ const ChatRecord = () => {
               </div>
             </div>
             <ImageViewer
-              image={personalInformation ? headPortraitB : myHead}
+              image={
+                localStorage.getItem('personalInformation')
+                  ? headPortraitB
+                  : myHead
+              }
               visible={visible}
               onClose={() => {
                 setVisible(false);
@@ -763,7 +849,7 @@ const ChatRecord = () => {
             />
           </div>
           <div className="denglu-text">
-            {!personalInformation && !searchResults ? (
+            {!localStorage.getItem('personalInformation') && !searchResults ? (
               <div
                 className="sheZhi denglu_sheZhi"
                 // onClick={setUp}
@@ -772,7 +858,9 @@ const ChatRecord = () => {
                 资料查看
               </div>
             ) : friend &&
-              (searchResults || !personalInformation || !fromType) ? (
+              (searchResults ||
+                !localStorage.getItem('personalInformation') ||
+                !fromType) ? (
               <div className="sheZhi denglu_sheZhi" onClick={setUp}>
                 设置备注
               </div>
@@ -839,7 +927,10 @@ const ChatRecord = () => {
               </div>
             </div>
           </div>
-          {friend && (searchResults || !personalInformation || !fromType) ? (
+          {friend &&
+          (searchResults ||
+            !localStorage.getItem('personalInformation') ||
+            !fromType) ? (
             <div className="denglu-food" onClick={chatroom}>
               <span>发送消息</span>
             </div>
@@ -856,17 +947,22 @@ const ChatRecord = () => {
             <div id="tanChuang_top"></div>
             <div className="tanChuang_cont">
               <div className="sheZhi sheZhiFirst">
-                {personalInformation || searchResults ? (
+                {localStorage.getItem('personalInformation') ||
+                searchResults ? (
                   <span>备注名：</span>
                 ) : (
                   <span>昵称：</span>
                 )}
                 <input
                   value={
-                    personalInformation || searchResults ? toNames : nickName
+                    localStorage.getItem('personalInformation') || searchResults
+                      ? toNames
+                      : nickName
                   }
                   placeholder={`${
-                    personalInformation ? '请输入备注' : '请输入昵称'
+                    localStorage.getItem('personalInformation')
+                      ? '请输入备注'
+                      : '请输入昵称'
                   }`}
                   type="text"
                   className="ferst mint-field-core"
@@ -874,19 +970,22 @@ const ChatRecord = () => {
                 />
               </div>
               <div className="sheZhi sheZhiLste">
-                {personalInformation || searchResults ? (
+                {localStorage.getItem('personalInformation') ||
+                searchResults ? (
                   <span>电话号码：</span>
                 ) : (
                   <span>地区：</span>
                 )}
                 <input
                   value={
-                    personalInformation || searchResults
+                    localStorage.getItem('personalInformation') || searchResults
                       ? remarksNuber
                       : setRegion
                   }
                   placeholder={`${
-                    personalInformation ? '请输入电话' : '请输入地区'
+                    localStorage.getItem('personalInformation')
+                      ? '请输入电话'
+                      : '请输入地区'
                   }`}
                   type="text"
                   className="last mint-field-core"
@@ -909,6 +1008,14 @@ const ChatRecord = () => {
         name={'个人相册'}
         onBack={() => {
           indexId = true;
+          if (urlPathname.secondary) {
+            localStorage.removeItem('secondary');
+            history.goBack();
+            setToDynamic(false);
+            return;
+          }
+          localStorage.getItem('getInto') !== '/dynamic' &&
+            informationDetailsQ(myName);
           history.push('/personalInformation?personal=1');
           setToDynamic(false);
         }}

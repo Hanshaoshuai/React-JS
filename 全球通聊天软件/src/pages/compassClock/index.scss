@@ -1,0 +1,242 @@
+.Clock {
+  .denglu {
+    z-index: 1010;
+    background: none;
+  }
+}
+.clock {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100000;
+  background-color: rgba(0, 0, 0, 0.9);
+  overflow: hidden;
+  color: #ffffff;
+  .clock-box {
+    border-radius: 7.1rem;
+    position: relative;
+    width: 7.2rem;
+    height: 7.2rem;
+    // background-color: rgba(0, 0, 0, 0.8);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    transition: transform 6s cubic-bezier(0.7, 0.3, 0.1, 1),
+      box-shadow 0.6s cubic-bezier(0.7, 0.3, 0.1, 1);
+    transition-delay: 0s, 0s;
+    transition-timing-function: cubic-bezier(0.7, 0.3, 0.1, 1),
+      cubic-bezier(0.7, 0.3, 0.1, 1);
+    transition-duration: 0.6s, 0.6s;
+    transition-property: transform, box-shadow;
+    .clock-box-term {
+      width: 100%;
+      height: 0.3rem;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      left: 0;
+      display: flex;
+      justify-content: flex-end;
+      z-index: 100;
+      .clock-box-term-text {
+        width: 50%;
+        text-align: right;
+        line-height: 0.3rem;
+        transform: scale(0.65);
+        margin-right: -0.62rem;
+        span {
+          border-radius: 0.3rem;
+          line-height: 0.25rem;
+          font-size: 0.2rem;
+          display: inline-block;
+          transition: transform 6s cubic-bezier(0.7, 0.3, 0.1, 1),
+            box-shadow 0.6s cubic-bezier(0.7, 0.3, 0.1, 1);
+          transition-delay: 0s, 0s;
+          transition-timing-function: cubic-bezier(0.7, 0.3, 0.1, 1),
+            cubic-bezier(0.7, 0.3, 0.1, 1);
+          transition-duration: 0.6s, 0.6s;
+          transition-property: transform, box-shadow;
+        }
+      }
+    }
+  }
+  @keyframes mymove {
+    0% {
+      box-shadow: 0px 0px 28px rgba(255, 0, 255, 0);
+      background-color: rgba(255, 0, 255, 0);
+    }
+    100% {
+      box-shadow: 0px 0px 28px rgba(255, 0, 255, 1);
+      background-color: rgba(255, 0, 255, 0.3);
+    }
+  }
+  @keyframes mymove1 {
+    0% {
+      box-shadow: 0px 0px 28px rgba(255, 0, 255, 1);
+      background-color: rgba(255, 0, 255, 0.3);
+    }
+    100% {
+      box-shadow: 0px 0px 28px rgba(255, 0, 255, 0);
+      background-color: rgba(255, 0, 255, 0);
+    }
+  }
+  @keyframes mymove0 {
+    0% {
+      text-shadow: 2px 2px 1px rgba(255, 0, 255, 0);
+    }
+    100% {
+      text-shadow: 2px 2px 1px rgba(255, 0, 255, 1);
+    }
+  }
+
+  @keyframes mymove-year {
+    0% {
+      background-color: blue;
+    }
+    100% {
+      background-color: #ff7a59;
+    }
+  }
+  @keyframes mymove-year-no {
+    0% {
+      background-color: #ff7a59;
+    }
+    100% {
+      background-color: blue;
+    }
+  }
+  .mymove-year {
+    animation: mymove-year 1s;
+  }
+  .mymove-year-no {
+    animation: mymove-year-no 1s;
+  }
+  .clock-Pointer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin: auto;
+    height: 0.25rem;
+    width: 3.67rem;
+    border-radius: 0.05rem;
+  }
+
+  @keyframes clock-Pointer-change {
+    0% {
+      background-image: linear-gradient(90deg, blue, #ff7a59);
+    }
+    100% {
+      background-image: linear-gradient(90deg, #ff7a59, blue);
+    }
+  }
+  @keyframes clock-Pointer-change1 {
+    0% {
+      background-image: linear-gradient(90deg, #ff7a59, blue);
+    }
+    100% {
+      background-image: linear-gradient(90deg, blue, #ff7a59);
+    }
+  }
+  .clock-Pointer-change {
+    background-size: 200% 200%;
+    animation: clock-Pointer-change 1s;
+  }
+  .clock-Pointer-change1 {
+    background-size: 200% 200%;
+    animation: clock-Pointer-change1 1s;
+  }
+  .mymove-year1 {
+    background-color: #ff7a59;
+  }
+  .mymove-year-no1 {
+    background-color: blue;
+  }
+  .clock-Pointer-change3 {
+    background-image: linear-gradient(90deg, #ff7a59, blue);
+  }
+  .clock-Pointer-change4 {
+    background-image: linear-gradient(90deg, blue, #ff7a59);
+  }
+  .clock-year {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 1rem;
+    height: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.2rem;
+    text-align: center;
+    transform: scale(0.8);
+    border-radius: 1rem;
+    padding: 0.07rem;
+    z-index: 100;
+  }
+  .clock-button {
+    position: absolute;
+    cursor: pointer;
+    width: 0.5rem;
+    height: 0.5rem;
+    right: 0.25rem;
+    bottom: 0.25rem;
+    font-size: 0.1rem;
+    .video-closure-icon {
+      width: 100%;
+      height: 100%;
+      color: #ff7a59;
+    }
+  }
+  .clock-button-pc {
+    bottom: 20px;
+  }
+  .branch {
+    width: 5.92rem;
+    height: 5.92rem;
+    .clock-box-term .clock-box-term-text {
+      margin-right: -0.51rem;
+    }
+  }
+  .time {
+    width: 4.66rem;
+    height: 4.66rem;
+    .clock-box-term .clock-box-term-text {
+      margin-right: -0.41rem;
+    }
+  }
+  .season {
+    width: 3.65rem;
+    height: 3.65rem;
+    .clock-box-term .clock-box-term-text {
+      margin-right: -0.33rem;
+    }
+  }
+  .numberS {
+    width: 2.95rem;
+    height: 2.95rem;
+    .clock-box-term .clock-box-term-text {
+      margin-right: -0.28rem;
+    }
+  }
+  .month {
+    width: 1.83rem;
+    height: 1.83rem;
+    .clock-box-term .clock-box-term-text {
+      margin-right: -0.14rem;
+    }
+  }
+}

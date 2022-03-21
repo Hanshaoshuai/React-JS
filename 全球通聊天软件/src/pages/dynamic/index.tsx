@@ -47,6 +47,7 @@ const Dynamic = ({
   toNames,
   labelData,
 }: any) => {
+  // console.log(toNames);
   const history = useHistory();
   const videosRef: any = useRef(null);
   const { state, dispatch } = useContext(MyContext);
@@ -288,6 +289,16 @@ const Dynamic = ({
 
   const goBackS = () => {
     setTabShow(false);
+    // if (localStorage.getItem('我的进入的')) {
+    //   history.replace('/personalInformation?personal=1');
+    //   localStorage.setItem('最后一次', '我的');
+    //   return;
+    // }
+    if (urlPathname.WoDe || urlPathname.secondary) {
+      onBack(false);
+      // history.goBack();
+      return;
+    }
     if (cameraOut) {
       // history.push('/');
       // history.goBack();
@@ -608,9 +619,10 @@ const Dynamic = ({
   };
   const goFriends = (name: string, key?: boolean) => {
     if (
-      personalInformation &&
-      history.location.search &&
-      history.location.pathname === '/personalInformation'
+      (personalInformation &&
+        history.location.search &&
+        history.location.pathname === '/personalInformation') ||
+      localStorage.getItem('secondary')
     ) {
       Toast.show({
         content: '不可进入',
@@ -628,10 +640,13 @@ const Dynamic = ({
     const { pathname, search } = history.location;
     localStorage.setItem('comeFrom', `${pathname}${search}`);
     setCommentParameterV(false);
-    if (search.split('=')[0] === '?comment') {
-      callback('comment');
+    if (localStorage.getItem('getInto') === '/personalInformation?personal=1') {
+      // localStorage.setItem('我的进入的', `${name}`);
+      onBack(false);
+      history.replace(`/personalInformation?personal=1&WoDe=${name}`);
+    } else {
+      history.push('/personalInformation?personal=1');
     }
-    history.push('/personalInformation?personal=1');
   };
   const onReply = ({ friendName }: any) => {
     setReplyMessage(friendName);
@@ -691,7 +706,7 @@ const Dynamic = ({
           />
           {transparency > 0 && (
             <span>
-              {personalInformation
+              {personalInformation || localStorage.getItem('secondary')
                 ? `${toNames ? toNames + '的相册' : '朋友圈'}`
                 : name
                 ? name
@@ -717,7 +732,11 @@ const Dynamic = ({
                       onChange={(files: any) => mockUpload(files)}
                       style={{ display: 'none' }}
                       type={`${
-                        personalInformation || searchResults ? '' : 'file'
+                        personalInformation ||
+                        localStorage.getItem('secondary') ||
+                        searchResults
+                          ? ''
+                          : 'file'
                       }`}
                       name=""
                       accept="image/jpeg,image/jpg,image/png"
@@ -757,14 +776,16 @@ const Dynamic = ({
             <div className="dynamic-img-box">
               <img
                 src={
-                  personalInformation
+                  personalInformation || localStorage.getItem('secondary')
                     ? headPortraitB || myapathZoom
                     : myapathZoom
                 }
                 alt=""
               />
               <div className="dynamic-img-box-test">
-                {personalInformation ? toNames || nickname : nickname}
+                {personalInformation || localStorage.getItem('secondary')
+                  ? toNames || nickname
+                  : nickname}
               </div>
             </div>
             <div

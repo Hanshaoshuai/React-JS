@@ -1,7 +1,6 @@
-import '../login/index.scss';
+import './index.scss';
 
 import React, { useEffect, useState, useMemo } from 'react';
-import { setInterval } from 'timers';
 import { CloseCircleOutline } from 'antd-mobile-icons';
 const { formatDate } = require('gettimesjs');
 const CompassClock = ({ callback }: any) => {

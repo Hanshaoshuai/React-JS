@@ -184,6 +184,7 @@ export default function Routers({ location }: SwitchProps): ReactElement {
     },
   ];
   const setActive = (e: string) => {
+    localStorage.setItem('getInto', e);
     if (window.location.search === e) return;
     dispatch({ type: 'pathname', pathname: e });
     history.push(`${e}`);
