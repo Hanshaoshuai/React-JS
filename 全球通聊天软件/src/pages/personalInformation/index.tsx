@@ -110,7 +110,7 @@ const ChatRecord = () => {
         // history.replace('/personalInformation?personal=1');
         // Reset();
         setTabTex('详细资料');
-        getList();
+        getCircleFriendList('Friend');
         return;
       }
       informationDetailsQ(urlPathname.WoDe);
