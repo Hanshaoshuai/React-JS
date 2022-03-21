@@ -597,8 +597,11 @@ const ChatRecord = () => {
       history.push('/personalInformation?personalVideo=0');
     }
   };
-  const onCallback = () => {
+  const onCallback = (comment?: string) => {
     getList();
+    if (comment) {
+      informationDetailsQ();
+    }
   };
   let listIndexId = 0;
   return (

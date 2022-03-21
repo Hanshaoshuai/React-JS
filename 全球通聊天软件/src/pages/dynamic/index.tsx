@@ -628,6 +628,9 @@ const Dynamic = ({
     const { pathname, search } = history.location;
     localStorage.setItem('comeFrom', `${pathname}${search}`);
     setCommentParameterV(false);
+    if (search.split('=')[0] === '?comment') {
+      callback('comment');
+    }
     history.push('/personalInformation?personal=1');
   };
   const onReply = ({ friendName }: any) => {
