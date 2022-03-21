@@ -618,6 +618,9 @@ const Dynamic = ({
     // console.log(data);
   };
   const goFriends = (name: string, key?: boolean) => {
+    if (name === myLocName) {
+      return;
+    }
     if (
       (personalInformation &&
         history.location.search &&
