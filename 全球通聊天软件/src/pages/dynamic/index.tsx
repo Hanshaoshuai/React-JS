@@ -247,7 +247,10 @@ const Dynamic = ({
       page: key ? 1 : pageS,
       pageSize: 13,
       name: nameId ? nameId : personalInformation ? toChatName : myLocName,
-      personal: name || nameId ? true : false,
+      personal:
+        name || (nameId && history.location.pathname !== '/dynamic')
+          ? true
+          : false,
     }).then((res: any) => {
       // console.log(res);
       setSwitchName(false);
