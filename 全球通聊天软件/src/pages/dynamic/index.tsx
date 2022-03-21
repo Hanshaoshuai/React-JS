@@ -246,7 +246,10 @@ const Dynamic = ({
     await getCircleFriends({
       page: key ? key : pageS,
       pageSize: 13,
-      name: personalInformation ? toChatName : myLocName,
+      name:
+        personalInformation || localStorage.getItem('secondary')
+          ? toChatName
+          : myLocName,
       personal: name ? true : false,
     }).then((res: any) => {
       // console.log(res);
