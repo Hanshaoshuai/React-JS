@@ -250,7 +250,7 @@ const Dynamic = ({
         personalInformation || localStorage.getItem('secondary')
           ? toChatName
           : myLocName,
-      personal: name ? true : false,
+      personal: name && !localStorage.getItem('secondary') ? true : false,
     }).then((res: any) => {
       // console.log(res);
       setSwitchName(false);
