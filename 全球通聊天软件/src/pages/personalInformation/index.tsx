@@ -110,7 +110,6 @@ const ChatRecord = () => {
         // history.replace('/personalInformation?personal=1');
         // Reset();
         setTabTex('详细资料');
-        getCircleFriendList('Friend');
         return;
       }
       informationDetailsQ(urlPathname.WoDe);
@@ -179,11 +178,11 @@ const ChatRecord = () => {
       setToDynamic(false);
     }
   }, [urlPathname]);
-  const getCircleFriendList = (Friend?: string) => {
+  const getCircleFriendList = (Friend?: string, name?: string) => {
     getCircleFriends({
       page: 1,
       pageSize: 13,
-      name: Friend ? toChatName : myLocName,
+      name: name ? name : Friend ? toChatName : myLocName,
       personal: true,
     }).then((res: any) => {
       if (res.code === 200) {
@@ -222,6 +221,9 @@ const ChatRecord = () => {
       }).then((data) => {
         // console.log(data);
         if (data.code === 200) {
+          if (urlPathname.WoDe) {
+            getCircleFriendList('Friend', text);
+          }
           if (text !== myName) {
             setSearchResults(true);
           }
