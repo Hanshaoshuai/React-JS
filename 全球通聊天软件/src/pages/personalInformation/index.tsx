@@ -140,11 +140,11 @@ const ChatRecord = () => {
       setToNames(newOptions0[0].value || '');
     }
   };
-  const getCircleFriendList = () => {
+  const getCircleFriendList = (name?: string) => {
     getCircleFriends({
       page: 1,
       pageSize: 13,
-      name: urlValue,
+      name: name ? name : urlValue,
       personal: true,
     }).then((res: any) => {
       if (res.code === 200) {
@@ -153,100 +153,98 @@ const ChatRecord = () => {
       }
     });
   };
-  const informationDetailsQ = (text?: any) => {
+  const informationDetailsQ = (text?: any, key?: any) => {
     // 好友资料详情
     const types = localStorage.getItem('type');
     if (types === 'groupChat') {
       setHeadPortrait(localStorage.getItem('headPortrait_groupChat'));
     }
-    if (localStorage.getItem('personalInformation') || fromType || text) {
-      if (localStorage.getItem('personalInformation')) {
-        setTabTex('详细资料');
-      }
-
-      informationDetails({
-        toChatName:
-          types === 'groupChat'
-            ? localStorage.getItem('toChatName_groupChat')
-            : text
-            ? text
-            : toChatName,
-        myName: myName,
-        type: text ? '' : 'chat',
-      }).then((data) => {
-        // console.log(data);
-        if (data.code === 200) {
-          if (urlPathname.WoDe) {
-            getCircleFriendList();
-          }
-          if (text !== myName) {
-            setSearchResults(true);
-          }
-          setLLNumber(data.LLNumber);
-          setsexImage(data.sex);
-          setLocalName(data.name);
-          setHeadPortrait(data.apathZoom);
-          setHeadPortraitB(data.imges);
-          setMyHead(data.imges);
-          setMyHeadZoom(data.apathZoom);
-          localStorage.setItem('toChatName', data.name);
-          localStorage.setItem('headPortrait', data.apathZoom);
-          localStorage.setItem(
-            'circleFriendsBackgroundFriend',
-            data.circleFriendsBackground || ''
-          );
-          const { information, newOptions0 } = data.information || {};
-          setLabelData(information || {});
-          setLabelOption(newOptions0 || []);
-          setMyRegion(newOptions0 ? newOptions0[3].value : '');
-          setCircleFriendsBackground(data.circleFriendsBackground || '');
-          // localStorage.setItem("myHeadPortrait", data.imges);
-          setToChatName(data.name);
-          if (data.remarksNameNo === 'no') {
-            setToNames(data.remarksName);
-            setNickName(data.remarksName);
-            localStorage.setItem('nickName', data.remarksName);
-            localStorage.setItem('toNames', data.remarksName);
-          } else {
-            setToNames(data.remarksName);
-            setNickName(data.remarksNameNick);
-            localStorage.setItem('nickName', data.remarksName);
-            localStorage.setItem('toNames', data.remarksNameNick);
-          }
-          if (data.remarksNuber) {
-            setRemarksNuber(data.remarksNuber);
-            localStorage.setItem('remarksNuber', data.remarksNuber);
-          } else {
-            localStorage.setItem('remarksNuber', '');
-          }
-          // if (data.myRegion) {
-          //   setMyRegion(data.myRegion);
-          // } else {
-          //   setMyRegion('');
-          // }
-          if (data.friend === 'no' && data.name !== localNames) {
-            setFriend(false);
-          }
-          if (data.name === localNames) {
-            setRemove(true);
-          }
-        } else if (data.code === 2001) {
-          //用户不存在请先注册
-          Toast.show({
-            content: data.msg,
-            position: 'top',
-          });
-        } else if (data.code === 1001) {
-          setSearchResults(false);
-          Toast.show({
-            content: data.msg,
-            position: 'top',
-          });
-        }
-      });
+    if (urlValue !== myLocName) {
+      setTabTex('详细资料');
+      setSearchResults(true);
     } else {
+      setSearchResults(false);
+      setTabTex('我的');
       setRemove(true);
     }
+    informationDetails({
+      toChatName:
+        types === 'groupChat'
+          ? localStorage.getItem('toChatName_groupChat')
+          : text
+          ? text
+          : toChatName,
+      myName: myName,
+      type: text ? '' : 'chat',
+    }).then((data) => {
+      // console.log(data);
+      if (data.code === 200) {
+        if (key) {
+          getCircleFriendList(data.name);
+        }
+        setLLNumber(data.LLNumber);
+        setsexImage(data.sex);
+        setLocalName(data.name);
+        setHeadPortrait(data.apathZoom);
+        setHeadPortraitB(data.imges);
+        setMyHead(data.imges);
+        setMyHeadZoom(data.apathZoom);
+        localStorage.setItem('toChatName', data.name);
+        localStorage.setItem('headPortrait', data.apathZoom);
+        localStorage.setItem(
+          'circleFriendsBackgroundFriend',
+          data.circleFriendsBackground || ''
+        );
+        const { information, newOptions0 } = data.information || {};
+        setLabelData(information || {});
+        setLabelOption(newOptions0 || []);
+        setMyRegion(newOptions0 ? newOptions0[3].value : '');
+        setCircleFriendsBackground(data.circleFriendsBackground || '');
+        // localStorage.setItem("myHeadPortrait", data.imges);
+        setToChatName(data.name);
+        if (data.remarksNameNo === 'no' || data.friend === 'no') {
+          setToNames(data.remarksName);
+          setNickName(data.remarksName);
+          localStorage.setItem('nickName', data.remarksName);
+          localStorage.setItem('toNames', data.remarksName);
+        } else {
+          setToNames(data.remarksName);
+          setNickName(data.remarksNameNick);
+          localStorage.setItem('nickName', data.remarksName);
+          localStorage.setItem('toNames', data.remarksNameNick);
+        }
+        if (data.remarksNuber && urlValue !== myLocName) {
+          setRemarksNuber(data.remarksNuber);
+          localStorage.setItem('remarksNuber', data.remarksNuber);
+        } else {
+          setRemarksNuber('');
+          localStorage.setItem('remarksNuber', '');
+        }
+        // if (data.myRegion) {
+        //   setMyRegion(data.myRegion);
+        // } else {
+        //   setMyRegion('');
+        // }
+        if (data.friend === 'no' && data.name !== localNames) {
+          setFriend(false);
+        }
+        if (data.name === localNames) {
+          setRemove(true);
+        }
+      } else if (data.code === 2001) {
+        //用户不存在请先注册
+        Toast.show({
+          content: data.msg,
+          position: 'top',
+        });
+      } else if (data.code === 1001) {
+        setSearchResults(false);
+        Toast.show({
+          content: data.msg,
+          position: 'top',
+        });
+      }
+    });
   };
 
   const setUp = () => {
@@ -279,10 +277,6 @@ const ChatRecord = () => {
     setSetUp(!setUps);
   };
   const goBackS = () => {
-    if (urlPathname.WoDe) {
-      history.goBack();
-      return;
-    }
     if (setUps) {
       setTabTex('详细资料');
       setSetUp(!setUps);
@@ -300,15 +294,7 @@ const ChatRecord = () => {
     localStorage.removeItem('type');
     setAddSearchFriends('');
     localStorage.removeItem('addSearchFriends');
-    // history.goBack();
-    if (localStorage.getItem('getInto') === '/dynamic') {
-      const comeFrom = localStorage.getItem('comeFrom');
-      localStorage.removeItem('getInto');
-      history.push(comeFrom || '/');
-    } else {
-      history.goBack();
-    }
-    // window.history.forward();
+    history.goBack();
   };
   const save = () => {
     if (localStorage.getItem('personalInformation') || searchResults) {
@@ -552,7 +538,7 @@ const ChatRecord = () => {
   };
   const onSearch = () => {
     // console.log(onInputText);
-    informationDetailsQ(onInputText);
+    informationDetailsQ(onInputText, 'yes');
   };
   const callback = (e: any) => {
     // console.log(e);
@@ -690,11 +676,7 @@ const ChatRecord = () => {
               />
             )}
             <span>{tabTex}</span>
-            {friend &&
-            !remove &&
-            (searchResults ||
-              !localStorage.getItem('personalInformation') ||
-              !fromType) ? (
+            {friend && !remove && urlName !== 'my' ? (
               <>
                 <img
                   src="/images/dashujukeshihuaico.png"
@@ -890,6 +872,7 @@ const ChatRecord = () => {
             </div>
           </div>
           {friend &&
+          urlValue !== myLocName &&
           (searchResults ||
             !localStorage.getItem('personalInformation') ||
             !fromType) ? (

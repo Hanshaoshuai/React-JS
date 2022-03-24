@@ -14,6 +14,7 @@ import Router from './routers';
 import { MyContext } from '../models/context';
 import Spins from '../pages/A-Spin';
 import ReactTransitionGroup from './reactTransitionGroup';
+import { urlObj } from '../pages/personalInformation/urlObj';
 const { ReactRouterTransitionPage } = require('react-router-transition-page');
 
 let urlIndex = 0;
@@ -23,8 +24,8 @@ export default function Routers({ location }: SwitchProps): ReactElement {
   const route = Router.find((r) => r.path === location?.pathname);
   const [myLocName] = useState<any>(localStorage.getItem('name'));
   const { state, dispatch } = useContext(MyContext);
-  const { pathname, badge } = state;
-  // console.log('222', state);
+  const { urlPathname, badge, pathname } = state;
+  const { _value } = urlObj(urlPathname);
   useEffect(() => {
     // console.log(getToken());
     if (!getToken() || !myLocName) {
@@ -32,64 +33,62 @@ export default function Routers({ location }: SwitchProps): ReactElement {
     }
     const url = `${window.location.pathname}${window.location.search}`;
     history.listen((route) => {
-      if (
-        route.search !== '?videoPlay=0' &&
-        route.search !== '?videoPlay=1' &&
-        route.search !== '?dynamic=1' &&
-        route.search !== '?dynamic=0' &&
-        route.search !== '?dynamic=8' &&
-        route.search !== '?personalVideo=1' &&
-        route.search !== '?personalVideo=2'
-      ) {
-        if (urlIndex === 0) {
-          let time = setTimeout(() => {
-            urlIndex = 0;
-            clearTimeout(time);
-          }, 100);
-          // console.log(recordUrl); // 这个route里面有当前路由的各个参数信息
-          const listenUrl = `${route.pathname}${route.search}`;
-          let index = false;
-          let list = recordUrlList.filter((term: any) => {
-            if (term === listenUrl) {
-              index = true;
-              // return false;
-            } else {
-              return true;
-            }
-            return true;
-          });
-          // if (!index) {
-          //   list.push(listenUrl);
-          // }
-          if (index) {
-            list.splice(list.length - 1, 1);
-          } else {
-            list.push(listenUrl);
-          }
-          recordUrlList = list;
-          dispatch({
-            type: 'recordUrl',
-            recordUrl: {
-              list: list,
-              returnTarget: list.length >= 2 ? list[list.length - 2] : '/',
-            },
-          });
-        }
-        urlIndex += 1;
-        dispatch({
-          type: 'urlPathname',
-          urlPathname: urlParse(),
-        });
-      }
-      if (route.search) {
-        dispatch({
-          type: 'pathname',
-          pathname: `${route.pathname}${route.search}`,
-        });
-      } else {
-        dispatch({ type: 'pathname', pathname: route.pathname });
-      }
-
+      dispatch({
+        type: 'pathname',
+        pathname:
+          window.location.search === '?list'
+            ? `/${window.location.search}`
+            : route.pathname,
+      });
+      // if (
+      //   route.search !== '?videoPlay=0' &&
+      //   route.search !== '?videoPlay=1' &&
+      //   route.search !== '?dynamic=1' &&
+      //   route.search !== '?dynamic=0' &&
+      //   route.search !== '?dynamic=8' &&
+      //   route.search !== '?personalVideo=1' &&
+      //   route.search !== '?personalVideo=2'
+      // ) {
+      //   if (urlIndex === 0) {
+      //     let time = setTimeout(() => {
+      //       urlIndex = 0;
+      //       clearTimeout(time);
+      //     }, 100);
+      //     // console.log(recordUrl); // 这个route里面有当前路由的各个参数信息
+      //     const listenUrl = `${route.pathname}${route.search}`;
+      //     let index = false;
+      //     let list = recordUrlList.filter((term: any) => {
+      //       if (term === listenUrl) {
+      //         index = true;
+      //         // return false;
+      //       } else {
+      //         return true;
+      //       }
+      //       return true;
+      //     });
+      //     // if (!index) {
+      //     //   list.push(listenUrl);
+      //     // }
+      //     if (index) {
+      //       list.splice(list.length - 1, 1);
+      //     } else {
+      //       list.push(listenUrl);
+      //     }
+      //     recordUrlList = list;
+      //     dispatch({
+      //       type: 'recordUrl',
+      //       recordUrl: {
+      //         list: list,
+      //         returnTarget: list.length >= 2 ? list[list.length - 2] : '/',
+      //       },
+      //     });
+      //   }
+      //   urlIndex += 1;
+      dispatch({
+        type: 'urlPathname',
+        urlPathname: urlParse(),
+      });
+      // }
       if (
         !getToken() &&
         route.pathname !== '/register' &&
@@ -146,16 +145,17 @@ export default function Routers({ location }: SwitchProps): ReactElement {
     });
     if (window.location.search) {
       dispatch({
-        type: 'pathname',
-        pathname: url,
-      });
-      dispatch({
         type: 'settings',
         settings: `${window.location.search}`,
       });
-    } else {
-      dispatch({ type: 'pathname', pathname: window.location.pathname });
     }
+    dispatch({
+      type: 'pathname',
+      pathname:
+        window.location.search === '?list'
+          ? `/${window.location.search}`
+          : window.location.pathname,
+    });
   }, []);
   const tabsList: any = [
     {
@@ -166,36 +166,44 @@ export default function Routers({ location }: SwitchProps): ReactElement {
       badge: badge,
     },
     {
-      key: '/?list=1',
+      key: '/?list',
       title: '推荐',
       icon: <UnorderedListOutline />,
       badge: '',
     },
     {
-      key: `/dynamic?dynamic-${new Date().getTime()}=${JSON.stringify({
-        name: localStorage.getItem('name') || '',
-      })}`,
+      key: `/dynamic`,
       title: '动态',
       icon: <AppOutline />,
       badge: Badge.dot,
     },
     {
-      key: `/personalInformation?personal=1&my-${new Date().getTime()}=${JSON.stringify(
-        {
-          name: localStorage.getItem('name') || '',
-        }
-      )}`,
+      key: `/personalInformation`,
       title: '我的',
       icon: <UserOutline />,
     },
   ];
   const setActive = (e: string) => {
-    localStorage.setItem('getInto', e);
     if (window.location.search === e) return;
-    dispatch({ type: 'pathname', pathname: e });
-    history.push(`${e}`);
+    if (e === '/personalInformation') {
+      history.push(
+        `/personalInformation?personal=1&my-${new Date().getTime()}=${JSON.stringify(
+          {
+            name: localStorage.getItem('name') || '',
+          }
+        )}`
+      );
+    } else if (e === '/dynamic') {
+      history.push(
+        `/dynamic?dynamic-${new Date().getTime()}=${JSON.stringify({
+          name: localStorage.getItem('name') || '',
+        })}`
+      );
+    } else {
+      history.push(e);
+    }
   };
-
+  // console.log(pathname, window.location.search);
   if (route && route.path) {
     return (
       // <Suspense
@@ -206,9 +214,9 @@ export default function Routers({ location }: SwitchProps): ReactElement {
       <>
         <Route path={route.path} exact={true} component={route.component} />
         {(pathname === '/' ||
-          pathname === '/?list=1' ||
-          urlParse()?.personal === '1') &&
-          !localStorage.getItem('personalInformation') && (
+          pathname === '/?list' ||
+          pathname === '/personalInformation') &&
+          (_value ? _value === myLocName : true) && (
             <div className="TabBar-list">
               <div className="border-top"></div>
               <TabBar activeKey={pathname} onChange={setActive}>
@@ -225,7 +233,6 @@ export default function Routers({ location }: SwitchProps): ReactElement {
           )}
       </>
       // </Suspense>
-
       // <ReactRouterTransitionPage
       //   path={route.path}
       //   component={route.component}

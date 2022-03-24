@@ -118,7 +118,7 @@ const ChatRecord = () => {
     }
   }, [messages]);
   useEffect(() => {
-    if (window.location.search === '?list=1') {
+    if (window.location.search === '?list') {
       options(2);
     } else {
       options(1);
@@ -134,13 +134,6 @@ const ChatRecord = () => {
   }, [history.location.search]);
 
   const onGetList = async () => {
-    // if (pageS > 1) {
-    //   pageSId = false;
-    // }
-    // if (pageSId) return;
-    // if (pageS === 1) {
-    //   pageSId = true;
-    // }
     const data_1 = await getList({
       type: 'chat',
       page: pageS,
@@ -195,7 +188,14 @@ const ChatRecord = () => {
   };
 
   const goBackS = () => {
-    history.push('/personalInformation?personal=1');
+    // history.push('/personalInformation?personal=1');
+    history.push(
+      `/personalInformation?personal=1&my-${new Date().getTime()}=${JSON.stringify(
+        {
+          name: localName || '',
+        }
+      )}`
+    );
   };
 
   const linkFriends = (
@@ -394,10 +394,6 @@ const ChatRecord = () => {
       setIntroduce(false);
     }
   };
-  const tabHind = () => {
-    setBoxList(false);
-    history.push('/');
-  };
 
   const options = (type: number) => {
     if (type !== 6) {
@@ -410,7 +406,6 @@ const ChatRecord = () => {
     }
     if (type === 2) {
       setBoxList(true);
-      history.push('/?list=1');
       if (dataList.length) {
         return;
       }

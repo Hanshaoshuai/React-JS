@@ -90,6 +90,7 @@ const Dynamic = ({
   const [dividerBottom, setDividerBottom] = useState(false);
   const [switchName, setSwitchName] = useState(false);
   const [indexKey, setIndexKey] = useState(0);
+  const { _name, _value, _valueObj } = urlObj(urlPathname);
 
   useEffect(() => {
     if (!display && indexId) {
@@ -126,7 +127,6 @@ const Dynamic = ({
     }
   }, [toCircleFriendsBackground, display]);
   useEffect(() => {
-    const { _name, _value, _valueObj } = urlObj(urlPathname);
     urlName = _name;
     urlValue = _value;
     urlValueObj = _valueObj;
@@ -240,7 +240,11 @@ const Dynamic = ({
       page: key ? 1 : pageS,
       pageSize: 13,
       name: urlValue,
-      personal: urlName === 'my' || urlValueObj.dynamicInside ? true : false,
+      personal:
+        (urlName === 'my' || urlValueObj.dynamicInside) &&
+        history.location.pathname === '/personalInformation'
+          ? true
+          : false,
     }).then((res: any) => {
       // console.log(res);
       setSwitchName(false);
@@ -592,15 +596,15 @@ const Dynamic = ({
     localStorage.setItem('comeFrom', `${pathname}${search}`);
     setCommentParameterV(false);
 
-    if (urlName === 'dynamic') {
-      history.push(
-        `/personalInformation${
-          window.location.search
-        }&${urlName}-${new Date().getTime()}=${JSON.stringify({
-          name: name || '',
-        })}`
-      );
-    }
+    // if (urlName === 'dynamic') {
+    history.push(
+      `/personalInformation${
+        window.location.search
+      }&${urlName}-${new Date().getTime()}=${JSON.stringify({
+        name: name || '',
+      })}`
+    );
+    // }
   };
   const onReply = ({ friendName }: any) => {
     setReplyMessage(friendName);
@@ -656,14 +660,16 @@ const Dynamic = ({
           />
           {transparency > 0 && (
             <span>
-              {personalInformation || localStorage.getItem('secondary')
+              {personalInformation ||
+              localStorage.getItem('secondary') ||
+              name !== myLocName
                 ? `${toNames ? toNames + '的相册' : '朋友圈'}`
                 : name
                 ? name
                 : '朋友圈'}
             </span>
           )}
-          {name && !personalInformation && !cameraOut && (
+          {name && name === myLocName && !personalInformation && !cameraOut && (
             <>
               <img
                 src="/images/dashujukeshihuaico.png"
@@ -733,7 +739,9 @@ const Dynamic = ({
                 alt=""
               />
               <div className="dynamic-img-box-test">
-                {personalInformation || localStorage.getItem('secondary')
+                {personalInformation ||
+                localStorage.getItem('secondary') ||
+                name !== myLocName
                   ? toNames || nickname
                   : nickname}
               </div>
@@ -747,7 +755,7 @@ const Dynamic = ({
             </div>
           </div>
 
-          {name && !personalInformation && (
+          {name && name === myLocName && !personalInformation && (
             <div className="dynamic-const-box dynamic-const-box-first">
               <div className="dynamic-const-box-img">
                 <span>今天</span>
@@ -785,7 +793,8 @@ const Dynamic = ({
                 key={`${item?.title}_${index}`}
                 className={`dynamic-const-box ${
                   ((!name && index === 0) ||
-                    (personalInformation && index === 0)) &&
+                    (personalInformation && index === 0) ||
+                    name !== myLocName) &&
                   'dynamic-const-box-first'
                 }`}
               >
