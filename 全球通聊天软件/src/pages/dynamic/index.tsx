@@ -101,6 +101,45 @@ const Dynamic = ({
         demoImages = [];
       }
     }
+    let timeout = setTimeout(() => {
+      setIndexKey(indexKey + 1);
+      clearTimeout(timeout);
+    }, 310);
+  }, [display]);
+  useEffect(() => {
+    if (urlName === 'my') {
+      if (!toNames) {
+        setCircleFriendsBackground(
+          circleFriendsBackground || '/images/202203120130501.jpg'
+        );
+      } else {
+        setCircleFriendsBackground(
+          toCircleFriendsBackground ||
+            localStorage.getItem('circleFriendsBackgroundFriend') ||
+            '/images/202203120130501.jpg'
+        );
+      }
+    } else {
+      setCircleFriendsBackground(
+        circleFriendsBackground || '/images/202203120130501.jpg'
+      );
+    }
+  }, [toCircleFriendsBackground, display]);
+  useEffect(() => {
+    const { _name, _value, _valueObj } = urlObj(urlPathname);
+    urlName = _name;
+    urlValue = _value;
+    urlValueObj = _valueObj;
+    if (!videoPlaysBlock && history.location.search !== '?comment=1') {
+      videoPlays('null', 'no', 'no');
+    }
+    if (!_valueObj.comment && !_valueObj.dynamic && !_valueObj.dynamicDynamic) {
+      setCommentParameterV(false);
+    }
+    if (!_valueObj.cameraOutline) {
+      setCameraOut(false);
+    }
+    // console.log(_name, _value, _valueObj);
     if (!labelData) {
       if (localStorage.getItem('myInformation')) {
         const { information } = JSON.parse(
@@ -142,45 +181,6 @@ const Dynamic = ({
       }
       setNameString(nameString);
     }
-    let timeout = setTimeout(() => {
-      setIndexKey(indexKey + 1);
-      clearTimeout(timeout);
-    }, 310);
-  }, [display]);
-  useEffect(() => {
-    if (urlName === 'my') {
-      if (!toNames) {
-        setCircleFriendsBackground(
-          circleFriendsBackground || '/images/202203120130501.jpg'
-        );
-      } else {
-        setCircleFriendsBackground(
-          toCircleFriendsBackground ||
-            localStorage.getItem('circleFriendsBackgroundFriend') ||
-            '/images/202203120130501.jpg'
-        );
-      }
-    } else {
-      setCircleFriendsBackground(
-        circleFriendsBackground || '/images/202203120130501.jpg'
-      );
-    }
-  }, [toCircleFriendsBackground, display]);
-  useEffect(() => {
-    const { _name, _value, _valueObj } = urlObj(urlPathname);
-    urlName = _name;
-    urlValue = _value;
-    urlValueObj = _valueObj;
-    if (!videoPlaysBlock && history.location.search !== '?comment=1') {
-      videoPlays('null', 'no', 'no');
-    }
-    if (!_valueObj.comment && !_valueObj.dynamic && !_valueObj.dynamicDynamic) {
-      setCommentParameterV(false);
-    }
-    if (!_valueObj.cameraOutline) {
-      setCameraOut(false);
-    }
-    // console.log(_name, _value, _valueObj);
   }, [urlPathname]);
   useEffect(() => {
     imgIndex = [];
