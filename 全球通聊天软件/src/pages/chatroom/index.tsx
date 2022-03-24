@@ -1188,7 +1188,14 @@ const ChatList = () => {
         }
       }
       localStorage.setItem('personalInformation', '1');
-      history.push('/personalInformation?personal=1');
+      // history.push('/personalInformation?personal=1');
+      history.push(
+        `/personalInformation?personal=1&my-${new Date().getTime()}=${JSON.stringify(
+          {
+            name: toChatName || '',
+          }
+        )}`
+      );
       // }
       // history.push('/personalInformation');
     };

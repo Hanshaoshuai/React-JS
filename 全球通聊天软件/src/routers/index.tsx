@@ -172,13 +172,19 @@ export default function Routers({ location }: SwitchProps): ReactElement {
       badge: '',
     },
     {
-      key: '/dynamic',
+      key: `/dynamic?dynamic-${new Date().getTime()}=${JSON.stringify({
+        name: localStorage.getItem('name') || '',
+      })}`,
       title: '动态',
       icon: <AppOutline />,
       badge: Badge.dot,
     },
     {
-      key: '/personalInformation?personal=1',
+      key: `/personalInformation?personal=1&my-${new Date().getTime()}=${JSON.stringify(
+        {
+          name: localStorage.getItem('name') || '',
+        }
+      )}`,
       title: '我的',
       icon: <UserOutline />,
     },
@@ -201,7 +207,7 @@ export default function Routers({ location }: SwitchProps): ReactElement {
         <Route path={route.path} exact={true} component={route.component} />
         {(pathname === '/' ||
           pathname === '/?list=1' ||
-          pathname === '/personalInformation?personal=1') &&
+          urlParse()?.personal === '1') &&
           !localStorage.getItem('personalInformation') && (
             <div className="TabBar-list">
               <div className="border-top"></div>

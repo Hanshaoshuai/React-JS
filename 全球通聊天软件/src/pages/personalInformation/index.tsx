@@ -20,9 +20,13 @@ import {
   getCircleFriends,
 } from '../../api';
 import { Upload } from '../A-components/upload';
+import { urlObj } from './urlObj';
 let indexId: any = false;
 let adds = 0;
 const localNames = window.localStorage.getItem('name');
+let urlName = '';
+let urlValue = '';
+let urlAlbum = '';
 const ChatRecord = () => {
   const { state } = useContext(MyContext);
   const { settings, urlPathname } = state;
@@ -92,53 +96,74 @@ const ChatRecord = () => {
   const [toDynamic, setToDynamic] = useState(false);
   const [circleFriendsBackground, setCircleFriendsBackground] = useState('');
   const [determineWait, setDetermineWait] = useState(false);
-  // console.log(state);
+  // console.log(state); dynamic
   useEffect(() => {
+    const { _name, _value, _valueObj } = urlObj(urlPathname);
+    urlName = _name;
+    urlValue = _value;
+    urlAlbum = _valueObj?.album || '';
+    // console.log(urlName, urlValue);
     if (window.location.search === '?personal=1&setSettings=1') {
       indexId = true;
     }
-    informations();
-    getList();
-  }, []);
-  useEffect(() => {
-    if (urlPathname.WoDe) {
-      if (!urlPathname.secondary && localStorage.getItem('secondary')) {
-        localStorage.removeItem('secondary');
-        indexId = true;
-        setToDynamic(false);
-        informationDetailsQ(urlPathname.WoDe);
-        // history.replace('/personalInformation?personal=1');
-        // Reset();
-        setTabTex('详细资料');
-        return;
-      }
-      informationDetailsQ(urlPathname.WoDe);
-    } else {
-      if (localStorage.getItem('getInto') !== '/dynamic') {
-        if (!urlPathname.WoDe) {
-          window.location.search === '?personal=1' &&
-            localStorage.removeItem('secondary');
-          Reset();
-        }
-      } else {
-        !localStorage.getItem('secondary') &&
-          localStorage.getItem('getInto') !==
-            '/personalInformation?personal=1' &&
-          informationDetailsQ();
-      }
+    if (urlValue) {
+      informations();
+      getCircleFriendList();
+      informationDetailsQ(urlValue);
     }
-    // !localStorage.getItem('secondary') &&
-    //   window.location.search !== '?personalVideo=0' &&
-    //   Reset();
     if (
-      window.location.search === '?personalVideo=0' &&
-      window.location.pathname === '/personalInformation' &&
-      !localStorage.getItem('secondary')
+      urlAlbum ||
+      _valueObj.comment ||
+      _valueObj.videoPlay ||
+      _valueObj.cameraOutline ||
+      _valueObj.dynamicInside ||
+      _valueObj.dynamicVideoPlay ||
+      _valueObj.dynamicDynamic
     ) {
-      informationDetailsQ(myName);
-      getList();
+      setToDynamic(true);
+    } else {
+      setToDynamic(false);
     }
-  }, [window.location.search, urlPathname]);
+  }, [urlPathname]);
+  // useEffect(() => {
+  //   if (urlPathname.WoDe) {
+  //     if (!urlPathname.secondary && localStorage.getItem('secondary')) {
+  //       localStorage.removeItem('secondary');
+  //       indexId = true;
+  //       setToDynamic(false);
+  //       informationDetailsQ(urlPathname.WoDe);
+  //       // history.replace('/personalInformation?personal=1');
+  //       // Reset();
+  //       setTabTex('详细资料');
+  //       return;
+  //     }
+  //     informationDetailsQ(urlPathname.WoDe);
+  //   } else {
+  //     if (localStorage.getItem('getInto') !== '/dynamic') {
+  //       if (!urlPathname.WoDe) {
+  //         window.location.search === '?personal=1' &&
+  //           localStorage.removeItem('secondary');
+  //         Reset();
+  //       }
+  //     } else {
+  //       !localStorage.getItem('secondary') &&
+  //         localStorage.getItem('getInto') !==
+  //           '/personalInformation?personal=1' &&
+  //         informationDetailsQ();
+  //     }
+  //   }
+  //   // !localStorage.getItem('secondary') &&
+  //   //   window.location.search !== '?personalVideo=0' &&
+  //   //   Reset();
+  //   if (
+  //     window.location.search === '?personalVideo=0' &&
+  //     window.location.pathname === '/personalInformation' &&
+  //     !localStorage.getItem('secondary')
+  //   ) {
+  //     informationDetailsQ(myName);
+  //     getList();
+  //   }
+  // }, [window.location.search, urlPathname]);
   const Reset = () => {
     if (
       window.location.search === '?comment=0' ||
@@ -167,22 +192,11 @@ const ChatRecord = () => {
       setToNames(newOptions0[0].value || '');
     }
   };
-  useEffect(() => {
-    if (
-      urlPathname.dynamic === '2' ||
-      window.location.search === '?personalVideo=0'
-    ) {
-      // console.log(urlPathname);
-      setToDynamic(true);
-    } else if (window.location.search === '?personal=1') {
-      setToDynamic(false);
-    }
-  }, [urlPathname]);
-  const getCircleFriendList = (Friend?: string, name?: string) => {
+  const getCircleFriendList = () => {
     getCircleFriends({
       page: 1,
       pageSize: 13,
-      name: name ? name : Friend ? toChatName : myLocName,
+      name: urlValue,
       personal: true,
     }).then((res: any) => {
       if (res.code === 200) {
@@ -190,13 +204,6 @@ const ChatRecord = () => {
         setCircleFriendData(res?.data || []);
       }
     });
-  };
-  const getList = () => {
-    if (localStorage.getItem('personalInformation')) {
-      getCircleFriendList('Friend');
-    } else {
-      getCircleFriendList();
-    }
   };
   const informationDetailsQ = (text?: any) => {
     // 好友资料详情
@@ -222,7 +229,7 @@ const ChatRecord = () => {
         // console.log(data);
         if (data.code === 200) {
           if (urlPathname.WoDe) {
-            getCircleFriendList('Friend', text);
+            getCircleFriendList();
           }
           if (text !== myName) {
             setSearchResults(true);
@@ -661,22 +668,26 @@ const ChatRecord = () => {
     }
   }, [settings]);
   const onDynamic = () => {
-    setToDynamic(true);
-    getList();
-    if (urlPathname.WoDe) {
-      localStorage.setItem('secondary', '1');
-      history.push(`/personalInformation${window.location.search}&secondary=1`);
-      return;
+    // setToDynamic(true);
+    // getCircleFriendList();
+    let obj: any = {
+      name: urlValue || '',
+      album: 'yes',
+    };
+    if (urlName === 'dynamic') {
+      obj = {
+        name: urlValue || '',
+        dynamicInside: 'yes',
+      };
     }
-    if (localStorage.getItem('personalInformation')) {
-      history.push('/personalInformation?dynamic=1');
-    } else {
-      // console.log(history);
-      history.push('/personalInformation?personalVideo=0');
-    }
+    history.push(
+      `/personalInformation${
+        window.location.search
+      }&${urlName}-${new Date().getTime()}=${JSON.stringify(obj)}`
+    );
   };
   const onCallback = (comment?: string) => {
-    getList();
+    getCircleFriendList();
   };
   let listIndexId = 0;
   return (
@@ -1011,15 +1022,15 @@ const ChatRecord = () => {
         name={'个人相册'}
         onBack={() => {
           indexId = true;
-          if (urlPathname.secondary) {
-            localStorage.removeItem('secondary');
-            history.goBack();
-            setToDynamic(false);
-            return;
-          }
-          localStorage.getItem('getInto') !== '/dynamic' &&
-            informationDetailsQ(myName);
-          history.push('/personalInformation?personal=1');
+          // if (urlPathname.secondary) {
+          //   localStorage.removeItem('secondary');
+          //   history.goBack();
+          //   setToDynamic(false);
+          //   return;
+          // }
+          // localStorage.getItem('getInto') !== '/dynamic' &&
+          // informationDetailsQ(myName);
+          // history.push('/personalInformation?personal=1');
           setToDynamic(false);
         }}
         display={toDynamic}

@@ -216,7 +216,14 @@ const ChatRecord = () => {
       localStorage.setItem('toChatName', name.toString());
       localStorage.setItem('personalInformation', '1');
     }
-    history.push('/personalInformation?personal=1');
+    // history.push('/personalInformation?personal=1');
+    history.push(
+      `/personalInformation?personal=1&my-${new Date().getTime()}=${JSON.stringify(
+        {
+          name: name || '',
+        }
+      )}`
+    );
   };
 
   const claerNumeber = (

@@ -408,6 +408,16 @@ code {
     // transform: translate3D(0, 0, 0);
   }
 }
+.right-in-enter-enter {
+  left: 0;
+  transform: translateX(0);
+}
+.right-in-leave-leave {
+  transform: translateX(100%);
+}
+.personalInformationLeft {
+  left: 100%;
+}
 @keyframes right-in-enter {
   from {
     transform: translateX(100%);

@@ -34,7 +34,14 @@ const ChatList = () => {
 
     localStorage.setItem('type', 'chat');
 
-    history.push('/personalInformation');
+    // history.push('/personalInformation');
+    history.push(
+      `/personalInformation?personal=1&my-${new Date().getTime()}=${JSON.stringify(
+        {
+          name: name || '',
+        }
+      )}`
+    );
   };
 
   return (

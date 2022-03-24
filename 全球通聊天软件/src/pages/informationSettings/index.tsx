@@ -61,6 +61,7 @@ const InformationSettings = ({
   const [visibleModal, setVisibleModal] = useState(false);
   const [valueInput, setValueInput] = useState<any>(name);
   const [changeName, setChangeName] = useState(true);
+  const [indexKey, setIndexKey] = useState(0);
 
   useEffect(() => {
     if (!determineWait) {
@@ -69,18 +70,22 @@ const InformationSettings = ({
   }, [determineWait]);
   useEffect(() => {
     if (!display && indexId) {
-      let timeout = setTimeout(() => {
-        setChangeName(true);
-        setDisplayBlock(false);
-        // goBackS(false);
-        clearTimeout(timeout);
-      }, 210);
+      // let timeout = setTimeout(() => {
+      //   setChangeName(true);
+      //   setDisplayBlock(false);
+      //   // goBackS(false);
+      //   clearTimeout(timeout);
+      // }, 210);
     } else if (display) {
       setDisplayBlock(true);
     }
     if (register) {
       setChangeName(false);
     }
+    let timeout = setTimeout(() => {
+      setIndexKey(indexKey + 1);
+      clearTimeout(timeout);
+    }, 310);
   }, [display]);
 
   useEffect(() => {
@@ -157,17 +162,6 @@ const InformationSettings = ({
       setChangeName(!changeName);
       return;
     }
-    // let res = false;
-    // newOptions0.map((item:any)=>{
-    //   if(item.value){
-    //     res = true
-    //   }
-    //   return item;
-    // })
-    // if(res){
-    //   Toast.show('基本资料填写完整');
-    //   return;
-    // }
     callback({ newOptions0, information });
   };
 
@@ -319,10 +313,11 @@ const InformationSettings = ({
   };
   return (
     <div
-      style={{ display: `${displayBlock ? 'block' : 'none'}` }}
       className={`personalInformation ${
-        display ? 'right-in-enter' : 'right-in-leave'
-      } InformationSettings`}
+        display
+          ? 'right-in-enter right-in-enter-enter'
+          : 'right-in-leave right-in-leave-leave'
+      } InformationSettings ${indexKey === 0 && 'personalInformationLeft'}`}
     >
       <div className="searchBox">
         <div className="home-search">
