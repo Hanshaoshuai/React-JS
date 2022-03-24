@@ -125,59 +125,7 @@ const ChatRecord = () => {
       setToDynamic(false);
     }
   }, [urlPathname]);
-  // useEffect(() => {
-  //   if (urlPathname.WoDe) {
-  //     if (!urlPathname.secondary && localStorage.getItem('secondary')) {
-  //       localStorage.removeItem('secondary');
-  //       indexId = true;
-  //       setToDynamic(false);
-  //       informationDetailsQ(urlPathname.WoDe);
-  //       // history.replace('/personalInformation?personal=1');
-  //       // Reset();
-  //       setTabTex('详细资料');
-  //       return;
-  //     }
-  //     informationDetailsQ(urlPathname.WoDe);
-  //   } else {
-  //     if (localStorage.getItem('getInto') !== '/dynamic') {
-  //       if (!urlPathname.WoDe) {
-  //         window.location.search === '?personal=1' &&
-  //           localStorage.removeItem('secondary');
-  //         Reset();
-  //       }
-  //     } else {
-  //       !localStorage.getItem('secondary') &&
-  //         localStorage.getItem('getInto') !==
-  //           '/personalInformation?personal=1' &&
-  //         informationDetailsQ();
-  //     }
-  //   }
-  //   // !localStorage.getItem('secondary') &&
-  //   //   window.location.search !== '?personalVideo=0' &&
-  //   //   Reset();
-  //   if (
-  //     window.location.search === '?personalVideo=0' &&
-  //     window.location.pathname === '/personalInformation' &&
-  //     !localStorage.getItem('secondary')
-  //   ) {
-  //     informationDetailsQ(myName);
-  //     getList();
-  //   }
-  // }, [window.location.search, urlPathname]);
-  const Reset = () => {
-    if (
-      window.location.search === '?comment=0' ||
-      window.location.search === '?comment=1'
-    )
-      return;
-    setSearchResults(false);
-    setRemarksNuber('');
-    setTabTex('我的');
-    localStorage.removeItem('personalInformation');
-    window.location.search !== '?personalVideo=0' &&
-      localStorage.getItem('secondary') &&
-      informationDetailsQ(myName);
-  };
+
   const informations = () => {
     if (
       localStorage.getItem('myInformation') &&
