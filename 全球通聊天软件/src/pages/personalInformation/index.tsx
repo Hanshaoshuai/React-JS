@@ -92,7 +92,7 @@ const ChatRecord = () => {
     urlName = _name;
     urlValue = _value;
     urlAlbum = _valueObj?.album || '';
-    console.log(window.location.search.split('&')[0]);
+    // console.log(window.location.search.split('&')[0]);
     if (window.location.search === '?personal=1&setSettings=1') {
       indexId = true;
     }
