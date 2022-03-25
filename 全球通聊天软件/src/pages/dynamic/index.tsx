@@ -105,7 +105,11 @@ const Dynamic = ({
     if (!videoPlaysBlock && history.location.search !== '?comment=1') {
       videoPlays('null', 'no', 'no');
     }
-    if (!_valueObj.comment && !_valueObj.dynamic && !_valueObj.dynamicDynamic) {
+    if (
+      !_valueObj.comment &&
+      !_valueObj.dynamic &&
+      (!_valueObj.dynamicDynamic || !_valueObj.dynamicDynamicComment)
+    ) {
       setCommentParameterV(false);
     }
     if (!_valueObj.cameraOutline) {
@@ -317,24 +321,36 @@ const Dynamic = ({
         videosBox.style.display = 'block';
         videoList.play();
         if (urlName === 'dynamic') {
-          if (urlValueObj.dynamicInside) {
+          if (urlValueObj.dynamicDynamic) {
             history.push(
               `/personalInformation${
                 window.location.search
               }&${urlName}-${new Date().getTime()}=${JSON.stringify({
                 name: urlValue || '',
-                dynamicVideoPlay: 'yes',
+                dynamicDynamic: 'yes',
+                dynamicDynamicVideoPlay: 'yes',
               })}`
             );
           } else {
-            history.push(
-              `/dynamic${
-                window.location.search
-              }&${urlName}-${new Date().getTime()}=${JSON.stringify({
-                name: urlValue || '',
-                videoPlay: 'yes',
-              })}`
-            );
+            if (urlValueObj.dynamicInside) {
+              history.push(
+                `/personalInformation${
+                  window.location.search
+                }&${urlName}-${new Date().getTime()}=${JSON.stringify({
+                  name: urlValue || '',
+                  dynamicVideoPlay: 'yes',
+                })}`
+              );
+            } else {
+              history.push(
+                `/dynamic${
+                  window.location.search
+                }&${urlName}-${new Date().getTime()}=${JSON.stringify({
+                  name: urlValue || '',
+                  videoPlay: 'yes',
+                })}`
+              );
+            }
           }
         } else {
           history.push(
@@ -359,24 +375,36 @@ const Dynamic = ({
     // console.log(name, nickname, myLocName);
     setCommentParameterV(true);
     if (urlName === 'dynamic') {
-      if (urlValueObj.dynamicInside) {
+      if (urlValueObj.dynamicDynamic) {
         history.push(
           `/personalInformation${
             window.location.search
           }&${urlName}-${new Date().getTime()}=${JSON.stringify({
             name: urlValue || '',
             dynamicDynamic: 'yes',
+            dynamicDynamicComment: 'yes',
           })}`
         );
       } else {
-        history.push(
-          `/dynamic${
-            window.location.search
-          }&${urlName}-${new Date().getTime()}=${JSON.stringify({
-            name: urlValue || '',
-            dynamic: 'yes',
-          })}`
-        );
+        if (urlValueObj.dynamicInside) {
+          history.push(
+            `/personalInformation${
+              window.location.search
+            }&${urlName}-${new Date().getTime()}=${JSON.stringify({
+              name: urlValue || '',
+              dynamicDynamic: 'yes',
+            })}`
+          );
+        } else {
+          history.push(
+            `/dynamic${
+              window.location.search
+            }&${urlName}-${new Date().getTime()}=${JSON.stringify({
+              name: urlValue || '',
+              dynamic: 'yes',
+            })}`
+          );
+        }
       }
     } else {
       history.push(
