@@ -278,13 +278,17 @@ const ChatRecord = () => {
       setSetUp(!setUps);
       return;
     }
-    history.goBack();
     localStorage.removeItem('personalInformation');
     localStorage.removeItem('remarksNuber');
     localStorage.removeItem('fromType');
     localStorage.removeItem('type');
     setAddSearchFriends('');
     localStorage.removeItem('addSearchFriends');
+    if (localStorage.getItem('fromChatRoom')) {
+      history.replace('/');
+    } else {
+      history.goBack();
+    }
   };
   const save = () => {
     if (localStorage.getItem('personalInformation') || searchResults) {

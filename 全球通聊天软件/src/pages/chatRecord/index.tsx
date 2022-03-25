@@ -63,6 +63,7 @@ const ChatRecord = () => {
     localStorage.removeItem('groupName');
     localStorage.removeItem('fromType');
     localStorage.removeItem('type');
+    localStorage.removeItem('fromChatRoom');
 
     if (myHeadPortrait && myapathZoom) {
       setImgeSrc(localStorage.getItem('myapathZoom'));

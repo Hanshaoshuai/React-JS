@@ -1188,11 +1188,12 @@ const ChatList = () => {
         }
       }
       localStorage.setItem('personalInformation', '1');
+      localStorage.setItem('fromChatRoom', '1');
       // history.push('/personalInformation?personal=1');
       history.push(
         `/personalInformation?personal=1&my-${new Date().getTime()}=${JSON.stringify(
           {
-            name: DianJi || '',
+            name: DianJi || myLocName,
           }
         )}`
       );
