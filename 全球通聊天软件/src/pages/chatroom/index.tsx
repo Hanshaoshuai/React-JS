@@ -1192,7 +1192,7 @@ const ChatList = () => {
       history.push(
         `/personalInformation?personal=1&my-${new Date().getTime()}=${JSON.stringify(
           {
-            name: toChatName || '',
+            name: DianJi || '',
           }
         )}`
       );
