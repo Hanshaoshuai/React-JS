@@ -92,7 +92,7 @@ const ChatRecord = () => {
     urlName = _name;
     urlValue = _value;
     urlAlbum = _valueObj?.album || '';
-    // console.log(urlName, urlValue);
+    console.log(window.location.search.split('&')[0]);
     if (window.location.search === '?personal=1&setSettings=1') {
       indexId = true;
     }
@@ -114,6 +114,14 @@ const ChatRecord = () => {
       setToDynamic(true);
     } else {
       setToDynamic(false);
+    }
+    if (
+      window.location.search.split('&')[0] &&
+      window.location.search.split('&')[0] === '?addSearchFriends=1'
+    ) {
+      setAddSearchFriends('1');
+    } else {
+      // setAddSearchFriends('');
     }
   }, [urlPathname]);
 
@@ -171,6 +179,7 @@ const ChatRecord = () => {
       // console.log(data);
       if (data.code === 200) {
         if (key) {
+          setSearchResults(true);
           getCircleFriendList(data.name);
         }
         setLLNumber(data.LLNumber);
@@ -519,6 +528,20 @@ const ChatRecord = () => {
   };
   const onSearch = () => {
     // console.log(onInputText);
+    if (!onInputText) {
+      Toast.show({
+        position: 'top',
+        content: '没有搜索内容！',
+      });
+      return;
+    }
+    history.replace(
+      `/personalInformation?addSearchFriends=1&my-${new Date().getTime()}=${JSON.stringify(
+        {
+          name: onInputText,
+        }
+      )}`
+    );
     informationDetailsQ(onInputText, 'yes');
   };
   const callback = (e: any) => {

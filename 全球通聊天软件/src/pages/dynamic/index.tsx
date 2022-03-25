@@ -1009,7 +1009,11 @@ const Dynamic = ({
             <div
               style={{
                 padding: `${
-                  name && !personalInformation ? '0 0.9rem' : '2rem 0.9rem'
+                  name &&
+                  !personalInformation &&
+                  !localStorage.getItem('addSearchFriends')
+                    ? '0 0.9rem'
+                    : '2rem 0.9rem'
                 }`,
                 color: '#eeeeee',
               }}
