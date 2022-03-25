@@ -730,7 +730,9 @@ const Dynamic = ({
             <div className="dynamic-img-box">
               <img
                 src={
-                  personalInformation || localStorage.getItem('secondary')
+                  personalInformation ||
+                  localStorage.getItem('secondary') ||
+                  localStorage.getItem('addSearchFriends')
                     ? headPortraitB || myapathZoom
                     : myapathZoom
                 }
