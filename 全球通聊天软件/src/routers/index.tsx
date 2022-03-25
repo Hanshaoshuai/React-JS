@@ -25,7 +25,7 @@ export default function Routers({ location }: SwitchProps): ReactElement {
   const [myLocName] = useState<any>(localStorage.getItem('name'));
   const { state, dispatch } = useContext(MyContext);
   const { urlPathname, badge, pathname } = state;
-  const { _value } = urlObj(urlPathname);
+  const { _name, _value } = urlObj(urlPathname);
   useEffect(() => {
     // console.log(getToken());
     if (!getToken() || !myLocName) {
@@ -215,8 +215,12 @@ export default function Routers({ location }: SwitchProps): ReactElement {
         <Route path={route.path} exact={true} component={route.component} />
         {(pathname === '/' ||
           pathname === '/?list' ||
-          pathname === '/personalInformation') &&
-          (_value ? _value === myLocName : true) && (
+          pathname === '/personalInformation' ||
+          _value === myLocName) &&
+          _name !== 'dynamic' &&
+          !localStorage.getItem('groupName') &&
+          !localStorage.getItem('type') &&
+          !localStorage.getItem('addSearchFriends') && (
             <div className="TabBar-list">
               <div className="border-top"></div>
               <TabBar activeKey={pathname} onChange={setActive}>

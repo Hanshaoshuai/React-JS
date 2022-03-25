@@ -1,5 +1,5 @@
 import './index.scss';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   ImageUploader,
   Toast,
@@ -27,7 +27,7 @@ const CameraOutList = ({ callback }: any) => {
   const fs1: any = useRef(null);
   const [percent, setpercent] = useState(0);
   const [cameraOut, setCameraOut] = useState(false);
-  const [inputContent, setInputContent] = useState('');
+  const [inputContent] = useState('');
   const [fileList, setFileList] = useState<ImageUploadItem[]>([]);
   const [videoList, setVideoList] = useState<any>([]);
   const [videoImgUrl, setVideoImgUrl] = useState<any>('');
@@ -93,10 +93,6 @@ const CameraOutList = ({ callback }: any) => {
       });
     }
     if (textValue || resultsImg || resultsVideo) {
-      // fs1.current.value = null;
-      // setFileList([]);
-      // setVideoImgUrl('');
-      // setCameraOut(false);
       // console.log(myLocName, inputContent, resultsImg, resultsVideo);
       const data: any = {
         headPortrait: headPortrait,

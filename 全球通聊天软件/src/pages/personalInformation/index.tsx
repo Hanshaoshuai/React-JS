@@ -22,7 +22,6 @@ import {
 import { Upload } from '../A-components/upload';
 import { urlObj } from './urlObj';
 let indexId: any = false;
-let adds = 0;
 const localNames = window.localStorage.getItem('name');
 let urlName = '';
 let urlValue = '';
@@ -61,32 +60,23 @@ const ChatRecord = () => {
     localStorage.getItem('myRegion') || ''
   );
   const [imgId] = useState<any>(localStorage.getItem('imgId') || '');
-
   const [setUps, setSetUp] = useState(false);
   const [nickName, setNickName] = useState<any>('');
   const [setRegion, setSetRegion] = useState<any>('');
-  // const [personalInformation] = useState<any>(
-  //   localStorage.getItem('personalInformation')
-  // );
   const [remarksNuber, setRemarksNuber] = useState<any>('');
   const [fromType] = useState<any>(localStorage.getItem('fromType'));
   const [addSearchFriends, setAddSearchFriends] = useState<any>(
     localStorage.getItem('addSearchFriends')
   );
-
   const [friend, setFriend] = useState(true);
   const [remove, setRemove] = useState(false);
-
   const [tabShow, setTabShow] = useState<any>(false);
   const [onInputText, setInputText] = useState<any>('');
   const [searchResults, setSearchResults] = useState(false);
-
   const [hooksModalFile, setHooksModalFile] = useState<any>('');
   const [hooksModalVisible, setHooksModalVisible] = useState<any>(false);
-  const [FileVl, setFileVl] = useState<any>('');
   const [type, setType] = useState<any>('');
   const [visible, setVisible] = useState(false);
-
   const [settingsName, setSettingsName] = useState<any>(false);
   const [name, setNames] = useState<any>('');
   const [labelData, setLabelData] = useState<any>({});
@@ -96,7 +86,7 @@ const ChatRecord = () => {
   const [toDynamic, setToDynamic] = useState(false);
   const [circleFriendsBackground, setCircleFriendsBackground] = useState('');
   const [determineWait, setDetermineWait] = useState(false);
-  // console.log(state); dynamic
+
   useEffect(() => {
     const { _name, _value, _valueObj } = urlObj(urlPathname);
     urlName = _name;
@@ -199,8 +189,9 @@ const ChatRecord = () => {
         setLabelData(information || {});
         setLabelOption(newOptions0 || []);
         setMyRegion(newOptions0 ? newOptions0[3].value : '');
-        setCircleFriendsBackground(data.circleFriendsBackground || '');
-        // localStorage.setItem("myHeadPortrait", data.imges);
+        setCircleFriendsBackground(
+          data.circleFriendsBackground || '/images/202203120130501.jpg'
+        );
         setToChatName(data.name);
         if (data.remarksNameNo === 'no' || data.friend === 'no') {
           setToNames(data.remarksName);
@@ -220,11 +211,6 @@ const ChatRecord = () => {
           setRemarksNuber('');
           localStorage.setItem('remarksNuber', '');
         }
-        // if (data.myRegion) {
-        //   setMyRegion(data.myRegion);
-        // } else {
-        //   setMyRegion('');
-        // }
         if (data.friend === 'no' && data.name !== localNames) {
           setFriend(false);
         }
@@ -282,19 +268,13 @@ const ChatRecord = () => {
       setSetUp(!setUps);
       return;
     }
-    if (localStorage.getItem('type') === 'groupChat') {
-      localStorage.removeItem('addSearchFriends');
-      localStorage.removeItem('type');
-      history.push('/');
-      return;
-    }
+    history.goBack();
     localStorage.removeItem('personalInformation');
     localStorage.removeItem('remarksNuber');
     localStorage.removeItem('fromType');
     localStorage.removeItem('type');
     setAddSearchFriends('');
     localStorage.removeItem('addSearchFriends');
-    history.goBack();
   };
   const save = () => {
     if (localStorage.getItem('personalInformation') || searchResults) {

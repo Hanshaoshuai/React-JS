@@ -1,15 +1,8 @@
 import '../personalInformation/index.scss';
 import './index.scss';
-import {
-  Divider,
-  ImageViewer,
-  Toast,
-  Popup,
-  TextArea,
-  NoticeBar,
-} from 'antd-mobile';
+import { Divider, ImageViewer, Popup, TextArea, NoticeBar } from 'antd-mobile';
 import React, { useEffect, useRef, useState, useContext } from 'react';
-import { useHistory, Route } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import CameraOutList from './cameraOutList';
 import HooksCropperModal from '../HooksCropperModal/HooksCropperModal';
 import {
@@ -25,6 +18,7 @@ import {
   CameraOutline,
   CloseOutline,
   ArrowDownCircleOutline,
+  LeftOutline,
 } from 'antd-mobile-icons';
 import { MyContext } from '../../models/context';
 import { moment } from '../../helpers';
@@ -35,9 +29,6 @@ let demoImages: any = [];
 let toIndexId: any = null;
 let scrollIndex = 0;
 let videoPlaysBlock = false;
-let firstEntry = false;
-let firstComment = false;
-
 let urlName = '';
 let urlValue = '';
 let urlValueObj: any = {};
@@ -55,18 +46,12 @@ const Dynamic = ({
 }: any) => {
   const history = useHistory();
   const videosRef: any = useRef(null);
-  const { state, dispatch } = useContext(MyContext);
-  const { urlPathname, recordUrl } = state;
+  const { state } = useContext(MyContext);
+  const { urlPathname } = state;
   const [nickname] = useState<any>(localStorage.getItem('myName'));
   const [myapathZoom] = useState<any>(localStorage.getItem('myapathZoom'));
-  const [headPortrait, setHeadPortrait] = useState<any>(
-    localStorage.getItem('headPortrait') || ''
-  );
   const [myLocName] = useState<any>(localStorage.getItem('name'));
   const [cameraOut, setCameraOut] = useState(false);
-  const [imgIdLoc] = useState<any>(
-    JSON.parse(window.localStorage.getItem('imgIdLoc') || '[]')
-  );
   const [circleFriendList, setCircleFriendList] = useState<any>([]);
   const [visible, setVisible] = useState(false);
   const [defaultIndex, setDefaultIndex] = useState(1);
@@ -108,22 +93,8 @@ const Dynamic = ({
     }, 310);
   }, [display]);
   useEffect(() => {
-    if (urlName === 'my') {
-      if (!toNames) {
-        setCircleFriendsBackground(
-          circleFriendsBackground || '/images/202203120130501.jpg'
-        );
-      } else {
-        setCircleFriendsBackground(
-          toCircleFriendsBackground ||
-            localStorage.getItem('circleFriendsBackgroundFriend') ||
-            '/images/202203120130501.jpg'
-        );
-      }
-    } else {
-      setCircleFriendsBackground(
-        circleFriendsBackground || '/images/202203120130501.jpg'
-      );
+    if (toCircleFriendsBackground) {
+      setCircleFriendsBackground(toCircleFriendsBackground);
     }
   }, [toCircleFriendsBackground, display]);
   useEffect(() => {
@@ -189,12 +160,10 @@ const Dynamic = ({
     return componentWillUnmount;
   }, []);
   const componentWillUnmount = () => {
-    firstEntry = false;
     setPageS(1);
     imgIndex = [];
     demoImages = [];
     setCircleFriendList([]);
-    firstComment = false;
   };
 
   useEffect(() => {
@@ -231,10 +200,8 @@ const Dynamic = ({
     if (key) {
       setSwitchName(true);
       setDividerBottom(false);
-      firstEntry = false;
       imgIndex = [];
       demoImages = [];
-      firstComment = false;
     }
     await getCircleFriends({
       page: key ? 1 : pageS,
@@ -287,7 +254,7 @@ const Dynamic = ({
   const goBackS = () => {
     setTabShow(false);
     setCameraOut(false);
-    if (name) {
+    if (name && !cameraOut) {
       onBack(false);
     }
     history.goBack();
@@ -344,8 +311,6 @@ const Dynamic = ({
           history.goBack();
         }
       } else {
-        firstEntry = true;
-        firstComment = false;
         videoList.index = 'true';
         videoClose.style.display = 'block';
         videosBox.style.display = 'block';
@@ -392,7 +357,6 @@ const Dynamic = ({
   }: any) => {
     // console.log(name, nickname, myLocName);
     setCommentParameterV(true);
-    firstComment = true;
     if (urlName === 'dynamic') {
       if (urlValueObj.dynamicInside) {
         history.push(
@@ -649,27 +613,35 @@ const Dynamic = ({
     >
       <div
         className="searchBox"
-        style={{ backgroundColor: `rgba(255, 122, 89, ${transparency})` }}
+        style={{
+          backgroundColor: `rgba(255, 122, 89, ${transparency})`,
+        }}
       >
         <div className="home-search">
-          <img
-            src="/images/fanhui.png"
-            className="xiangmu-left"
-            alt=""
-            onClick={goBackS}
-          />
+          {cameraOut ? (
+            <span onClick={goBackS} className="home-search-img">
+              <LeftOutline />
+            </span>
+          ) : (
+            <img
+              src="/images/fanhui.png"
+              className="xiangmu-left"
+              alt=""
+              onClick={goBackS}
+            />
+          )}
           {transparency > 0 && (
             <span>
               {personalInformation ||
               localStorage.getItem('secondary') ||
-              name !== myLocName
+              urlValue !== myLocName
                 ? `${toNames ? toNames + '的相册' : '朋友圈'}`
                 : name
                 ? name
                 : '朋友圈'}
             </span>
           )}
-          {name && name === myLocName && !personalInformation && !cameraOut && (
+          {name && urlValue === myLocName && !cameraOut && (
             <>
               <img
                 src="/images/dashujukeshihuaico.png"
@@ -741,7 +713,7 @@ const Dynamic = ({
               <div className="dynamic-img-box-test">
                 {personalInformation ||
                 localStorage.getItem('secondary') ||
-                name !== myLocName
+                urlValue !== myLocName
                   ? toNames || nickname
                   : nickname}
               </div>
@@ -755,7 +727,7 @@ const Dynamic = ({
             </div>
           </div>
 
-          {name && name === myLocName && !personalInformation && (
+          {name && _value === myLocName && (
             <div className="dynamic-const-box dynamic-const-box-first">
               <div className="dynamic-const-box-img">
                 <span>今天</span>
@@ -1064,16 +1036,6 @@ const Dynamic = ({
         onMaskClick={() => {
           setCommentParameter({});
           history.goBack();
-          // if (history.location.pathname === '/personalInformation') {
-          //   if (history.location.search === '?dynamic=8') {
-          //     // 进入朋友朋友圈时
-          //     history.replace('/personalInformation?dynamic=0');
-          //   } else {
-          //     history.push('/personalInformation?personalVideo=0');
-          //   }
-          // } else {
-          //   history.replace('/dynamic');
-          // }
           setCommentParameterV(false);
         }}
         bodyStyle={{
@@ -1088,17 +1050,6 @@ const Dynamic = ({
               setCommentParameter({});
               setCommentParameterV(false);
               history.goBack();
-              // if (history.location.pathname === '/personalInformation') {
-              //   // history.replace('/personalInformation?personalVideo=0');
-              //   if (history.location.search === '?dynamic=8') {
-              //     // 进入朋友朋友圈时
-              //     history.replace('/personalInformation?dynamic=0');
-              //   } else if (history.location.search === '?comment=1') {
-              //     history.replace('/personalInformation?comment=0');
-              //   }
-              // } else {
-              //   history.replace('/dynamic');
-              // }
             }}
             className="PopupTopOutline"
           />
