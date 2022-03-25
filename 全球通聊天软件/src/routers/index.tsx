@@ -203,7 +203,7 @@ export default function Routers({ location }: SwitchProps): ReactElement {
       history.push(e);
     }
   };
-  // console.log(pathname, window.location.search);
+  // console.log(_value, myLocName);
   if (route && route.path) {
     return (
       // <Suspense
