@@ -215,9 +215,9 @@ export default function Routers({ location }: SwitchProps): ReactElement {
         <Route path={route.path} exact={true} component={route.component} />
         {(pathname === '/' ||
           pathname === '/?list' ||
-          pathname === '/personalInformation' ||
-          _value === myLocName) &&
+          pathname === '/personalInformation') &&
           _name !== 'dynamic' &&
+          (_value ? _value === myLocName : true) &&
           !localStorage.getItem('groupName') &&
           !localStorage.getItem('type') &&
           !localStorage.getItem('addSearchFriends') && (

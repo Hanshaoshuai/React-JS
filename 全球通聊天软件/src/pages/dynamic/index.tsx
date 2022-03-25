@@ -61,14 +61,12 @@ const Dynamic = ({
   );
   const [commentParameter, setCommentParameter] = useState<any>({});
   const [commentParameterV, setCommentParameterV] = useState<any>(false);
-  const [visible5, setVisible5] = useState(false);
   const [textAreaValue, setTextAreaValue] = useState('');
   const [ReplyMessage, setReplyMessage] = useState('');
   const [playbackRecord, setPlaybackRecord] = useState<any>({});
   const [personalInformation] = useState<any>(
     localStorage.getItem('personalInformation')
   );
-  const [toChatName] = useState<any>(localStorage.getItem('toChatName'));
   const [pageS, setPageS] = useState(1);
   const [dataTips, setDataTips] = useState(false);
   const [nameString, setNameString] = useState('');
@@ -76,9 +74,10 @@ const Dynamic = ({
   const [switchName, setSwitchName] = useState(false);
   const [indexKey, setIndexKey] = useState(0);
   const { _name, _value, _valueObj } = urlObj(urlPathname);
+  const [displayBlock] = useState(true);
 
   useEffect(() => {
-    if (!display && indexId) {
+    if (!display) {
       videoPlays('null', '', 'no');
     } else if (display) {
       if (name) {
@@ -95,6 +94,8 @@ const Dynamic = ({
   useEffect(() => {
     if (toCircleFriendsBackground) {
       setCircleFriendsBackground(toCircleFriendsBackground);
+    } else if (!circleFriendsBackground) {
+      setCircleFriendsBackground('/images/202203120130501.jpg');
     }
   }, [toCircleFriendsBackground, display]);
   useEffect(() => {
@@ -497,8 +498,6 @@ const Dynamic = ({
   };
 
   const fs: any = useRef(null);
-  const [searchResults, setSearchResults] = useState(false);
-  const [type, setType] = useState<any>('');
   const [hooksModalFile, setHooksModalFile] = useState<any>('');
   const [hooksModalVisible, setHooksModalVisible] = useState<any>(false);
 
@@ -506,7 +505,6 @@ const Dynamic = ({
     tabs();
     const fileN = file.target.files[0];
     let typeName = fileN.name.split('.');
-    setType(typeName[typeName.length - 1]);
     // const datas = await Upload(file, imgId, myName);
     // setMyHead(datas);
     setHooksModalFile(fileN);
@@ -599,6 +597,7 @@ const Dynamic = ({
   };
   return (
     <div
+      style={{ display: `${displayBlock ? 'block' : 'none'}` }}
       className={`personalInformation ${
         display
           ? 'right-in-enter right-in-enter-enter'
@@ -660,9 +659,7 @@ const Dynamic = ({
                       onChange={(files: any) => mockUpload(files)}
                       style={{ display: 'none' }}
                       type={`${
-                        personalInformation ||
-                        localStorage.getItem('secondary') ||
-                        searchResults
+                        personalInformation || localStorage.getItem('secondary')
                           ? ''
                           : 'file'
                       }`}

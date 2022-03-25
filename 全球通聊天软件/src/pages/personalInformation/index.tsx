@@ -100,6 +100,7 @@ const ChatRecord = () => {
       informations();
       getCircleFriendList();
       informationDetailsQ(urlValue);
+      setSettingsName(false);
     }
     if (
       urlAlbum ||
@@ -556,9 +557,9 @@ const ChatRecord = () => {
   const goBackSettings = () => {
     informations();
     informationDetailsQ();
-    indexId = true;
-    history.push('/personalInformation?personal=1');
-    setSettingsName(false);
+    history.goBack();
+    // history.push('/personalInformation?personal=1');
+    // setSettingsName(false);
   };
   const setName = (e: string) => {
     setNames(e);

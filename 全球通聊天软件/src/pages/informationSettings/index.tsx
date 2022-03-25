@@ -69,13 +69,11 @@ const InformationSettings = ({
     }
   }, [determineWait]);
   useEffect(() => {
-    if (!display && indexId) {
-      // let timeout = setTimeout(() => {
-      //   setChangeName(true);
-      //   setDisplayBlock(false);
-      //   // goBackS(false);
-      //   clearTimeout(timeout);
-      // }, 210);
+    if (!display) {
+      let timeout = setTimeout(() => {
+        setDisplayBlock(false);
+        clearTimeout(timeout);
+      }, 310);
     } else if (display) {
       setDisplayBlock(true);
     }
@@ -313,11 +311,12 @@ const InformationSettings = ({
   };
   return (
     <div
+      style={{ display: `${displayBlock ? 'block' : 'none'}` }}
       className={`personalInformation ${
         display
           ? 'right-in-enter right-in-enter-enter'
           : 'right-in-leave right-in-leave-leave'
-      } InformationSettings ${indexKey === 0 && 'personalInformationLeft'}`}
+      } InformationSettings`}
     >
       <div className="searchBox">
         <div className="home-search">
