@@ -108,7 +108,8 @@ const Dynamic = ({
     if (
       !_valueObj.comment &&
       !_valueObj.dynamic &&
-      (!_valueObj.dynamicDynamic || !_valueObj.dynamicDynamicComment)
+      !_valueObj.dynamicDynamic &&
+      !_valueObj.dynamicDynamicComment
     ) {
       setCommentParameterV(false);
     }
