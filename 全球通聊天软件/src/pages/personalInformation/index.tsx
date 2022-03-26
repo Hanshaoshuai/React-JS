@@ -96,7 +96,7 @@ const ChatRecord = () => {
     if (window.location.search === '?personal=1&setSettings=1') {
       indexId = true;
     }
-    if (urlValue) {
+    if (urlValue && !_valueObj.remarksName) {
       informations();
       getCircleFriendList();
       informationDetailsQ(urlValue);
@@ -122,6 +122,9 @@ const ChatRecord = () => {
       setAddSearchFriends('1');
     } else {
       // setAddSearchFriends('');
+    }
+    if (!_valueObj.remarksName && tabTex === '添加备注') {
+      setSetUp(false);
     }
   }, [urlPathname]);
 
@@ -244,9 +247,22 @@ const ChatRecord = () => {
   };
 
   const setUp = () => {
+    if (tabTex === '添加备注') {
+      history.goBack();
+      setSetUp(!setUps);
+      return;
+    }
     if (!setUps) {
       if (localStorage.getItem('personalInformation')) {
         setTabTex('添加备注');
+        history.push(
+          `/personalInformation${
+            window.location.search
+          }&${urlName}-${new Date().getTime()}=${JSON.stringify({
+            name: urlValue || '',
+            remarksName: 'yes',
+          })}`
+        );
       } else {
         setTabTex('资料设置');
         setNickName(localStorage.getItem('myName') || '');

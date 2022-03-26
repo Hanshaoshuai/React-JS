@@ -203,7 +203,7 @@ const ChatRecord = () => {
 
   const linkFriends = (
     nickName: string,
-    name: { toString: () => string },
+    name: string,
     headPortrait: string
   ) => {
     // console.log("添加好友验证消息", nickName, name);
@@ -214,10 +214,10 @@ const ChatRecord = () => {
       localStorage.setItem('fromType', 'All');
       localStorage.setItem('type', 'chat');
       localStorage.setItem('headPortrait', headPortrait);
-      localStorage.setItem('toNames', name.toString());
+      localStorage.setItem('toNames', name);
       localStorage.setItem('nickName', nickName);
       localStorage.setItem('nickNameSpare', nickName);
-      localStorage.setItem('toChatName', name.toString());
+      localStorage.setItem('toChatName', name);
       localStorage.setItem('personalInformation', '1');
     }
     // history.push('/personalInformation?personal=1');

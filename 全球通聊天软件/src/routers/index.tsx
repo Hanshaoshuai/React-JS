@@ -22,7 +22,7 @@ let recordUrlList: any = [];
 export default function Routers({ location }: SwitchProps): ReactElement {
   const history = useHistory();
   const route = Router.find((r) => r.path === location?.pathname);
-  const [myLocName] = useState<any>(localStorage.getItem('name'));
+  const myLocName = localStorage.getItem('name');
   const { state, dispatch } = useContext(MyContext);
   const { urlPathname, badge, pathname } = state;
   const { _name, _value } = urlObj(urlPathname);
