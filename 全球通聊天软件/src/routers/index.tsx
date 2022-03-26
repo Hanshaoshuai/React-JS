@@ -163,7 +163,7 @@ export default function Routers({ location }: SwitchProps): ReactElement {
       title: '聊聊',
       icon: (active: boolean) =>
         active ? <MessageFill /> : <MessageOutline />,
-      badge: badge,
+      badge: badge > 99 ? '99+' : badge,
     },
     {
       key: '/?list',
