@@ -761,6 +761,8 @@ const Dynamic = ({
                 nameString.length < 15 && 'flex-end'
               }`}
             >
+              <div className="NoticeBarNameLeft"></div>
+              <div className="NoticeBarNameRight"></div>
               <NoticeBar content={nameString} color="alert" />
             </div>
           </div>
