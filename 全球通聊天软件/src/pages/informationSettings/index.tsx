@@ -125,34 +125,34 @@ const InformationSettings = ({
     }
   };
   useEffect(() => {
-    if (labelData?.ZHUANG_TAI) {
-      newList(options, labelData.ZHUANG_TAI);
-    }
-    if (labelData?.XING_GE) {
-      newList(options1, labelData.XING_GE);
-    }
-    if (labelData?.JIA_ZHI_GUAN) {
-      newList(options3, labelData.JIA_ZHI_GUAN);
-    }
-    if (labelData?.AI_HAO) {
-      newList(options4, labelData.AI_HAO);
-    }
-    if (labelData?.SHU_JI) {
-      newList(options5, labelData.SHU_JI);
-    }
-    if (labelData?.MEI_SHI) {
-      newList(options6, labelData.MEI_SHI);
-    }
-    if (labelData?.YUN_DONG) {
-      newList(options7, labelData.YUN_DONG);
-    }
-    if (labelData?.DIAN_YING) {
-      newList(options8, labelData.DIAN_YING);
-    }
-    if (labelData?.YOU_XI) {
-      newList(options9, labelData.YOU_XI);
-    }
     if (labelData) {
+      if (labelData?.ZHUANG_TAI) {
+        newList(options, labelData.ZHUANG_TAI);
+      }
+      if (labelData?.XING_GE) {
+        newList(options1, labelData.XING_GE);
+      }
+      if (labelData?.JIA_ZHI_GUAN) {
+        newList(options3, labelData.JIA_ZHI_GUAN);
+      }
+      if (labelData?.AI_HAO) {
+        newList(options4, labelData.AI_HAO);
+      }
+      if (labelData?.SHU_JI) {
+        newList(options5, labelData.SHU_JI);
+      }
+      if (labelData?.MEI_SHI) {
+        newList(options6, labelData.MEI_SHI);
+      }
+      if (labelData?.YUN_DONG) {
+        newList(options7, labelData.YUN_DONG);
+      }
+      if (labelData?.DIAN_YING) {
+        newList(options8, labelData.DIAN_YING);
+      }
+      if (labelData?.YOU_XI) {
+        newList(options9, labelData.YOU_XI);
+      }
       setInformation(labelData);
     }
   }, [labelData]);

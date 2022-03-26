@@ -80,7 +80,7 @@ const ChatRecord = () => {
   const [settingsName, setSettingsName] = useState<any>(false);
   const [name, setNames] = useState<any>('');
   const [labelData, setLabelData] = useState<any>({});
-  const [labelOption, setLabelOption] = useState<any>({});
+  const [labelOption, setLabelOption] = useState<any>([]);
   const [myLocName] = useState<any>(localStorage.getItem('name'));
   const [circleFriendData, setCircleFriendData] = useState<any>([]);
   const [toDynamic, setToDynamic] = useState(false);
@@ -196,7 +196,7 @@ const ChatRecord = () => {
           data.circleFriendsBackground || ''
         );
         const { information, newOptions0 } = data?.information || {};
-        setLabelData(information || {});
+        setLabelData(information || false);
         setLabelOption(newOptions0 || []);
         setMyRegion(newOptions0 ? newOptions0[3].value : '');
         setCircleFriendsBackground(
