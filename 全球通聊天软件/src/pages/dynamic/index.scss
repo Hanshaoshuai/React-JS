@@ -466,12 +466,12 @@
   }
 }
 .NoticeBarName {
-  padding: 0.4rem 0rem 0 2.5rem;
+  padding: 0.4rem 0rem 0 2.3rem;
   position: relative;
   .NoticeBarNameLeft {
     position: absolute;
     top: 0;
-    left: 2.4rem;
+    left: 2.2rem;
     width: 0.9rem;
     height: 100%;
     z-index: 1000;
@@ -486,13 +486,13 @@
     position: absolute;
     top: 0.45rem;
     right: 0rem;
-    width: 0.9rem;
+    width: 0.6rem;
     height: calc(100% - 0.45rem);
     z-index: 1000;
     background: linear-gradient(
       90deg,
       rgba(255, 255, 255, 0),
-      rgba(255, 255, 255, 0.9) 65%,
+      rgba(255, 255, 255, 0.9) 50%,
       #fff
     );
   }
