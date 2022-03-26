@@ -159,12 +159,12 @@ const Dynamic = ({
       setNameString(nameString);
     }
   }, [urlPathname]);
-  useEffect(() => {
-    imgIndex = [];
-    demoImages = [];
-    setCircleFriendList([]);
-    return componentWillUnmount;
-  }, []);
+  // useEffect(() => {
+  //   imgIndex = [];
+  //   demoImages = [];
+  //   setCircleFriendList([]);
+  //   return componentWillUnmount;
+  // }, []);
   const componentWillUnmount = () => {
     setPageS(1);
     imgIndex = [];
@@ -198,6 +198,7 @@ const Dynamic = ({
         return item;
       });
       setDemoImagesList(demoImages);
+      return componentWillUnmount;
     }
   }, [circleFriendData]);
 
@@ -793,8 +794,7 @@ const Dynamic = ({
                 key={`${item?.title}_${index}`}
                 className={`dynamic-const-box ${
                   ((!name && index === 0) ||
-                    (personalInformation && index === 0) ||
-                    name !== myLocName) &&
+                    (_value !== myLocName && index === 0)) &&
                   'dynamic-const-box-first'
                 }`}
               >
