@@ -1061,16 +1061,16 @@ const Dynamic = ({
       >
         <CameraOutList callback={onetCameraOut} />
       </div>
-      {/* {visible && ( */}
-      <ImageViewer.Multi
-        images={demoImagesList}
-        visible={visible}
-        defaultIndex={defaultIndex}
-        onClose={() => {
-          setVisible(false);
-        }}
-      />
-      {/* )} */}
+      {visible && (
+        <ImageViewer.Multi
+          images={demoImagesList}
+          visible={visible}
+          defaultIndex={defaultIndex}
+          onClose={() => {
+            setVisible(false);
+          }}
+        />
+      )}
       <Popup
         className="PopupBox"
         visible={commentParameterV}
