@@ -474,7 +474,7 @@
     left: 2.2rem;
     width: 0.9rem;
     height: 100%;
-    z-index: 1000;
+    z-index: 10;
     background: linear-gradient(
       -90deg,
       rgba(255, 255, 255, 0),
@@ -488,7 +488,7 @@
     right: 0rem;
     width: 0.6rem;
     height: calc(100% - 0.45rem);
-    z-index: 1000;
+    z-index: 10;
     background: linear-gradient(
       90deg,
       rgba(255, 255, 255, 0),
