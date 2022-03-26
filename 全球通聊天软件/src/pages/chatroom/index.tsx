@@ -194,6 +194,12 @@ const ChatList = () => {
     }
   }, [audioUrl]);
 
+  useEffect(() => {
+    if (history.location.search === '?OnPlayUrl=0' && onPlayUrl) {
+      videoPlays();
+    }
+  }, [history.location.search]);
+
   const onPause = (url: string) => {
     const play: any = document.getElementById('play');
     if (play.getAttribute('index') === url) {
@@ -259,6 +265,7 @@ const ChatList = () => {
 
   const onPlay = (url: any) => {
     setOnPlayUrl(url);
+    history.push(`/chatroom?OnPlayUrl=1`);
   };
   const videoPlays = () => {
     // 视频开关
@@ -2569,7 +2576,13 @@ const ChatList = () => {
             >
               <source src={`${onPlayUrl}`} type="" />
             </video>
-            <div onClick={videoPlays} className="video-closure">
+            <div
+              onClick={() => {
+                history.goBack();
+                videoPlays();
+              }}
+              className="video-closure"
+            >
               <CloseCircleOutline className="video-closure-icon" />
             </div>
           </div>

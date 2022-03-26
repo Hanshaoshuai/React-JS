@@ -183,7 +183,7 @@ const ChatRecord = () => {
           setGetBuddyListsL(data.body);
           localStorage.setItem('getBuddyLists', JSON.stringify(data.body));
           if (location) {
-            history.push('/chatroom');
+            history.push(`/chatroom?OnPlayUrl=0`);
           }
         }
       }

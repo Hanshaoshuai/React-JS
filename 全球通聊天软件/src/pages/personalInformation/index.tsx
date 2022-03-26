@@ -289,6 +289,10 @@ const ChatRecord = () => {
     setSetUp(!setUps);
   };
   const goBackS = () => {
+    if (localStorage.getItem('fromChatRoom')) {
+      history.goBack();
+      return;
+    }
     if (setUps) {
       setTabTex('详细资料');
       setSetUp(!setUps);
@@ -300,11 +304,7 @@ const ChatRecord = () => {
     localStorage.removeItem('type');
     setAddSearchFriends('');
     localStorage.removeItem('addSearchFriends');
-    if (localStorage.getItem('fromChatRoom')) {
-      history.replace('/');
-    } else {
-      history.goBack();
-    }
+    history.goBack();
   };
   const save = () => {
     if (localStorage.getItem('personalInformation') || searchResults) {
