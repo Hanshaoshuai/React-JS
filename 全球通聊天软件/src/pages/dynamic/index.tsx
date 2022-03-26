@@ -1061,6 +1061,7 @@ const Dynamic = ({
           left: '0',
           overflowY: 'auto',
           background: '#fff',
+          zIndex: 10,
         }}
       >
         <CameraOutList callback={onetCameraOut} />
