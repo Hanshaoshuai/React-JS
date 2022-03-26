@@ -195,7 +195,7 @@ const ChatRecord = () => {
           'circleFriendsBackgroundFriend',
           data.circleFriendsBackground || ''
         );
-        const { information, newOptions0 } = data.information || {};
+        const { information, newOptions0 } = data?.information || {};
         setLabelData(information || {});
         setLabelOption(newOptions0 || []);
         setMyRegion(newOptions0 ? newOptions0[3].value : '');

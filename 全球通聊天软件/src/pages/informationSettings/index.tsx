@@ -152,7 +152,9 @@ const InformationSettings = ({
     if (labelData?.YOU_XI) {
       newList(options9, labelData.YOU_XI);
     }
-    setInformation(labelData);
+    if (labelData) {
+      setInformation(labelData);
+    }
   }, [labelData]);
 
   const determine = () => {
