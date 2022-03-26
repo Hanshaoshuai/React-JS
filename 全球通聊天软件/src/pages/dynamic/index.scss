@@ -486,13 +486,13 @@
     position: absolute;
     top: 0.45rem;
     right: 0rem;
-    width: 0.6rem;
+    width: 0.9rem;
     height: calc(100% - 0.45rem);
     z-index: 1000;
     background: linear-gradient(
       90deg,
       rgba(255, 255, 255, 0),
-      rgba(255, 255, 255, 0.9) 50%,
+      rgba(255, 255, 255, 0.9) 65%,
       #fff
     );
   }
