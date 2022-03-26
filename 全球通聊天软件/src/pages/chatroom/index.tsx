@@ -1194,7 +1194,10 @@ const ChatList = () => {
       history.push(
         `/personalInformation?personal=1&my-${new Date().getTime()}=${JSON.stringify(
           {
-            name: DianJi ? DianJi : localStorage.getItem('toChatName'),
+            name:
+              DianJi && DianJi !== 1
+                ? DianJi
+                : localStorage.getItem('toChatName'),
           }
         )}`
       );
