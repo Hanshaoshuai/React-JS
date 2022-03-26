@@ -159,12 +159,12 @@ const Dynamic = ({
       setNameString(nameString);
     }
   }, [urlPathname]);
-  // useEffect(() => {
-  //   imgIndex = [];
-  //   demoImages = [];
-  //   setCircleFriendList([]);
-  //   return componentWillUnmount;
-  // }, []);
+  useEffect(() => {
+    imgIndex = [];
+    demoImages = [];
+    setCircleFriendList([]);
+    return componentWillUnmount;
+  }, []);
   const componentWillUnmount = () => {
     setPageS(1);
     imgIndex = [];
@@ -198,8 +198,12 @@ const Dynamic = ({
         return item;
       });
       setDemoImagesList(demoImages);
-      return componentWillUnmount;
     }
+    return () => {
+      imgIndex = [];
+      demoImages = [];
+      setCircleFriendList([]);
+    };
   }, [circleFriendData]);
 
   const getCircleFriendList = async (key?: string, nameId?: any) => {
