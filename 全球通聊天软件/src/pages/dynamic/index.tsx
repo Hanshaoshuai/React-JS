@@ -24,6 +24,7 @@ import { MyContext } from '../../models/context';
 import { moment } from '../../helpers';
 import { urlObj } from '../personalInformation/urlObj';
 
+let indexLength = 0;
 let imgIndex: any = [];
 let demoImages: any = [];
 let toIndexId: any = null;
@@ -82,6 +83,7 @@ const Dynamic = ({
     } else if (display) {
       if (name) {
         setPageS(2);
+        indexLength = 0;
         imgIndex = [];
         demoImages = [];
       }
@@ -160,6 +162,7 @@ const Dynamic = ({
     }
   }, [urlPathname]);
   useEffect(() => {
+    indexLength = 0;
     imgIndex = [];
     demoImages = [];
     setCircleFriendList([]);
@@ -167,6 +170,7 @@ const Dynamic = ({
   }, []);
   const componentWillUnmount = () => {
     setPageS(1);
+    indexLength = 0;
     imgIndex = [];
     demoImages = [];
     setCircleFriendList([]);
@@ -200,6 +204,7 @@ const Dynamic = ({
       setDemoImagesList(demoImages);
     }
     return () => {
+      indexLength = 0;
       imgIndex = [];
       demoImages = [];
       setCircleFriendList([]);
@@ -211,6 +216,7 @@ const Dynamic = ({
     if (key) {
       setSwitchName(true);
       setDividerBottom(false);
+      indexLength = 0;
       imgIndex = [];
       demoImages = [];
     }
@@ -226,7 +232,6 @@ const Dynamic = ({
     }).then((res: any) => {
       // console.log(res);
       setSwitchName(false);
-      let index = 0;
       if (res.code === 200) {
         setPageS(pageS + 1);
         if (!res.data.length) {
@@ -248,9 +253,9 @@ const Dynamic = ({
             item.imgList.map((item: any) => {
               imgIndex.push({
                 url: item.apath,
-                index: index,
+                index: indexLength,
               });
-              index += 1;
+              indexLength += 1;
               demoImages.push(item.apath);
               return item;
             });
