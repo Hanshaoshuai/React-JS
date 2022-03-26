@@ -108,21 +108,21 @@ const Dynamic = ({
       videoPlays('null', 'no', 'no');
     }
     if (
-      !_valueObj.comment &&
-      !_valueObj.dynamic &&
-      !_valueObj.dynamicDynamic &&
-      !_valueObj.dynamicDynamicComment
+      !_valueObj?.comment &&
+      !_valueObj?.dynamic &&
+      !_valueObj?.dynamicDynamic &&
+      !_valueObj?.dynamicDynamicComment
     ) {
       setCommentParameterV(false);
     }
-    if (!_valueObj.cameraOutline) {
+    if (!_valueObj?.cameraOutline) {
       setCameraOut(false);
     }
     // console.log(_name, _value, _valueObj);
     if (!labelData) {
       if (localStorage.getItem('myInformation')) {
         const { information } = JSON.parse(
-          localStorage.getItem('myInformation') || '{}'
+          localStorage.getItem('myInformation') || '{information:""}'
         );
         labelData = information || {};
       }
