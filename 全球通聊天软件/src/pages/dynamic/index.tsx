@@ -652,7 +652,9 @@ const Dynamic = ({
       <div
         className="searchBox"
         style={{
-          backgroundColor: `rgba(255, 122, 89, ${transparency})`,
+          backgroundColor: `rgba(255, 122, 89, ${
+            cameraOut ? 0 : transparency
+          })`,
         }}
       >
         <div className="home-search">
@@ -668,7 +670,7 @@ const Dynamic = ({
               onClick={goBackS}
             />
           )}
-          {transparency > 0 && (
+          {transparency > 0 && !cameraOut && (
             <span>
               {personalInformation ||
               localStorage.getItem('secondary') ||
