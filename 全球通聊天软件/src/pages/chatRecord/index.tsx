@@ -64,6 +64,7 @@ const ChatRecord = () => {
     localStorage.removeItem('fromType');
     localStorage.removeItem('type');
     localStorage.removeItem('fromChatRoom');
+    localStorage.removeItem('nickNameSpare');
 
     if (myHeadPortrait && myapathZoom) {
       setImgeSrc(localStorage.getItem('myapathZoom'));
@@ -215,6 +216,7 @@ const ChatRecord = () => {
       localStorage.setItem('headPortrait', headPortrait);
       localStorage.setItem('toNames', name.toString());
       localStorage.setItem('nickName', nickName);
+      localStorage.setItem('nickNameSpare', nickName);
       localStorage.setItem('toChatName', name.toString());
       localStorage.setItem('personalInformation', '1');
     }
@@ -250,6 +252,7 @@ const ChatRecord = () => {
     window.localStorage.setItem('toChatName', friendName);
     window.localStorage.setItem('toNames', toNames);
     window.localStorage.setItem('nickName', nickName1);
+    localStorage.setItem('nickNameSpare', nickName1);
     window.localStorage.setItem('fromName', toName);
     window.localStorage.setItem('headPortrait', headPortrait);
     window.localStorage.setItem('sex', sex);
@@ -344,6 +347,7 @@ const ChatRecord = () => {
         localStorage.setItem('groupOwner', groupOwner);
         localStorage.setItem('localNumber', localNumber);
         localStorage.setItem('nickName', nickNameGrou);
+        localStorage.setItem('nickNameSpare', nickNameGrou);
         localStorage.setItem('type', 'groupChat');
         localStorage.setItem('toNames', toNames);
         localStorage.setItem('fromName', toName);

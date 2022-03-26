@@ -73,7 +73,8 @@ const ChatList = () => {
   const [textNameOld] = useState(localStorage.getItem('textName'));
   const [Myimg] = useState<any>(localStorage.getItem('myapathZoom'));
   const [Youimg] = useState<any>(localStorage.getItem('headPortrait'));
-  const [nickNameTop] = useState<any>(localStorage.getItem('nickName'));
+  // const [nickNameTop] = useState<any>(localStorage.getItem('nickName'));
+  const [nickNameTop] = useState<any>(localStorage.getItem('nickNameSpare'));
   const [chatType] = useState(localStorage.getItem('type'));
   const [myLocName] = useState<any>(localStorage.getItem('name'));
   const [toChatName] = useState<any>(localStorage.getItem('toChatName'));
