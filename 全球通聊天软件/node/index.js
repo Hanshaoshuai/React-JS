@@ -213,9 +213,9 @@ io.sockets.on('connection', function (socket) {
   });
 
   // 接收 iceOffer
-  socket.on('iceOffer', function (message) {
+  socket.on('iceOffer', function (message, room, chatNames) {
     // socket.to('room').emit('iceOffer', message);
-    socket.emit('iceOffer', message);
+    socket.emit('iceOffer', message, room, chatNames);
   });
 
   // 接收 iceAnswer

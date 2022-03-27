@@ -83,10 +83,11 @@ const VideoCallPlay = ({
           });
           // 监听 ice
           pc.addEventListener('icecandidate', (event: any) => {
+            console.log(event);
             var iceCandidate = event.candidate;
             if (iceCandidate) {
               // 发送 iceOffer 请求
-              window.socket.emit('iceOffer', iceCandidate);
+              window.socket.emit('iceOffer', iceCandidate, room, chatNames);
             }
           });
         });
@@ -96,48 +97,53 @@ const VideoCallPlay = ({
           'signalOffer',
           (message: any, room: any, chatNames: any) => {
             console.log('接收 Offer 请求信令', message, room, chatNames);
-            // if (chatNames === LocName) {
-            pc.setRemoteDescription(new RTCSessionDescription(message)); // 设置远端描述
-            // 创建 Answer 请求
-            pc.createAnswer().then((answer: any) => {
-              pc.setLocalDescription(answer); // 设置本地 Answer 描述
-              window.socket.emit('signalAnswer', answer, room, chatNames); // 发送 Answer 请求信令
-            });
-            // }
+            if (chatNames === LocName) {
+              pc.setRemoteDescription(new RTCSessionDescription(message)); // 设置远端描述
+              // 创建 Answer 请求
+              pc.createAnswer().then((answer: any) => {
+                pc.setLocalDescription(answer); // 设置本地 Answer 描述
+                window.socket.emit('signalAnswer', answer, room, chatNames); // 发送 Answer 请求信令
+              });
+
+              // 监听远端视频流
+              pc.addEventListener('addstream', (event: any) => {
+                console.log(event.stream);
+                remoteVideo.current.srcObject = event.stream; // 播放远端视频流
+              });
+            }
           }
         );
-        // 监听远端视频流
-        pc.addEventListener('addstream', (event: any) => {
-          console.log(event.stream);
-          remoteVideo.current.srcObject = event.stream; // 播放远端视频流
-        });
+
         // 接收 Answer 请求信令
         window.socket.on(
           'signalAnswer',
           (message: any, room: any, chatNames: any) => {
-            // if (chatNames === LocName) {
-            pc.setRemoteDescription(new RTCSessionDescription(message)); // 设置远端描述
-            console.log('remote answer', message);
-            // }
+            if (chatNames === LocName) {
+              pc.setRemoteDescription(new RTCSessionDescription(message)); // 设置远端描述
+              console.log('remote answer', message);
+
+              // 监听远端视频流
+              pc.addEventListener('addstream', (event: any) => {
+                remoteVideo.current.srcObject = event.stream;
+              });
+            }
           }
         );
-        // 监听远端视频流
-        pc.addEventListener('addstream', (event: any) => {
-          remoteVideo.current.srcObject = event.stream;
-        });
 
+        // // 接收 iceAnswer
+        // window.socket.on('iceAnswer', (message: any) => {
+        //   addIceCandidates(message);
+        // });
         // 接收 iceOffer
-        window.socket.on('iceOffer', (message: any) => {
-          addIceCandidates(message);
-        });
-
-        // 接收 iceAnswer
-        window.socket.on('iceAnswer', (message: any) => {
-          addIceCandidates(message);
-        });
+        window.socket.on(
+          'iceOffer',
+          (message: any, room: any, chatNames: any) => {
+            addIceCandidates(message, room, chatNames);
+          }
+        );
         // 添加 IceCandidate
-        function addIceCandidates(message: any) {
-          if (pc !== 'undefined') {
+        function addIceCandidates(message: any, room: any, chatNames: any) {
+          if (pc !== 'undefined' && chatNames === LocName) {
             pc.addIceCandidate(new RTCIceCandidate(message));
           }
         }
