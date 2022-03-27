@@ -120,24 +120,23 @@ const VideoCallPlay = ({
             if (chatNames === LocName) {
               pc.setRemoteDescription(new RTCSessionDescription(message)); // 设置远端描述
               console.log('remote answer', message);
-
-              // 监听远端视频流
-              pc.addEventListener('addstream', (event: any) => {
-                remoteVideo.current.srcObject = event.stream;
-              });
-
-              // 接收 iceOffer
-              window.socket.on('iceOffer', (message: any) => {
-                addIceCandidates(message);
-              });
-
-              // 接收 iceAnswer
-              window.socket.on('iceAnswer', (message: any) => {
-                addIceCandidates(message);
-              });
             }
           }
         );
+        // 监听远端视频流
+        pc.addEventListener('addstream', (event: any) => {
+          remoteVideo.current.srcObject = event.stream;
+        });
+
+        // 接收 iceOffer
+        window.socket.on('iceOffer', (message: any) => {
+          addIceCandidates(message);
+        });
+
+        // 接收 iceAnswer
+        window.socket.on('iceAnswer', (message: any) => {
+          addIceCandidates(message);
+        });
         // 添加 IceCandidate
         function addIceCandidates(message: any) {
           if (pc !== 'undefined') {
