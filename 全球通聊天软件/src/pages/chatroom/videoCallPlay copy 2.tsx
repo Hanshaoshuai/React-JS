@@ -8,173 +8,33 @@ declare global {
 }
 let timer: any = null;
 const VideoCallPlay = ({
-  call, // 开始按钮
+  call,
   onStartQuery,
   videoCallCancel,
   actionName,
   onFinish,
   chatNames,
   locMyName,
-  myLocName,
-  onStartQueryId,
 }: any) => {
   // 传输视频，不传输音频
   const [mediaStreamConstraints, setMediaStreamConstraints] = useState({
     video: true,
     audio: true,
   });
-  const [LocName] = useState<any>(localStorage.getItem('name'));
   const [actionNames, setActionNames] = useState('');
   const [start, setStart] = useState(false);
   const [callStarted, setCallStarted] = useState(false);
   const localVideo: any = useRef();
   const remoteVideo: any = useRef();
-  //   var localVideo = document.getElementById('local_video'); // 本地视频 Video
-  // var remoteVideo = document.getElementById('remote_video'); // 远端视频 Video
-  var startButton: any = document.getElementById('startButton'); // 加入房间按钮
-  var hangupButton: any = document.getElementById('hangupButton'); // 挂断按钮
-
-  var pc: any; // RTCPeerConnection 实例（WebRTC 连接实例）
-  var localStream: any; // 本地视频流
-  // var socket = io.connect(); // 创建 socket 连接
-
-  // ice 打洞服务器
-  var config = {
-    iceServers: [
-      {
-        urls: 'stun:stun.l.google.com:19302',
-      },
-    ],
-  };
-
-  // offer 配置
-  const offerOptions = {
-    offerToReceiveVideo: 1,
-    offerToReceiveAudio: 1,
-  };
-  // hangupButton.disabled = true;
-
-  // startButton.addEventListener('click', () => {
-  //   startActions();
-  // });
-  // hangupButton.addEventListener('click', hangupAction);
-
-  // 点击加入房间
-  const startActions = () => {
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
-      .then((mediastream) => {
-        localStream = mediastream; // 本地视频流
-        localVideo.current.srcObject = mediastream; // 播放本地视频流
-        // startButton.disabled = true;
-        window.socket.emit('conn', `${myLocName}`, chatNames); // 连接 socket
-        // socket 连接成功
-        window.socket.on('conn', (room: any, chatNames: any) => {
-          // hangupButton.disabled = false;
-          pc = new RTCPeerConnection(config); // 创建 RTC 连接
-          console.log('socket 连接成功', room, chatNames, localStream);
-          localStream
-            .getTracks()
-            .forEach((track: any) => pc.addTrack(track, localStream)); // 添加本地视频流 track
-          // 创建 Offer 请求
-          pc.createOffer(offerOptions).then((offer: any) => {
-            pc.setLocalDescription(offer); // 设置本地 Offer 描述，（设置描述之后会触发ice事件）
-            window.socket.emit('signalOffer', offer, room, chatNames); // 发送 Offer 请求信令
-          });
-          // 监听 ice
-          pc.addEventListener('icecandidate', (event: any) => {
-            var iceCandidate = event.candidate;
-            if (iceCandidate) {
-              // 发送 iceOffer 请求
-              window.socket.emit('iceOffer', iceCandidate);
-            }
-          });
-        });
-
-        // 接收 Offer 请求信令
-        window.socket.on(
-          'signalOffer',
-          (message: any, room: any, chatNames: any) => {
-            console.log('接收 Offer 请求信令', message, room, chatNames);
-            if (chatNames === LocName) {
-              pc.setRemoteDescription(new RTCSessionDescription(message)); // 设置远端描述
-              // 创建 Answer 请求
-              pc.createAnswer().then((answer: any) => {
-                pc.setLocalDescription(answer); // 设置本地 Answer 描述
-                window.socket.emit('signalAnswer', answer, room, chatNames); // 发送 Answer 请求信令
-              });
-
-              // 监听远端视频流
-              pc.addEventListener('addstream', (event: any) => {
-                console.log(event.stream);
-                remoteVideo.current.srcObject = event.stream; // 播放远端视频流
-              });
-            }
-          }
-        );
-
-        // 接收 Answer 请求信令
-        window.socket.on(
-          'signalAnswer',
-          (message: any, room: any, chatNames: any) => {
-            if (chatNames === LocName) {
-              pc.setRemoteDescription(new RTCSessionDescription(message)); // 设置远端描述
-              console.log('remote answer', message);
-
-              // 监听远端视频流
-              pc.addEventListener('addstream', (event: any) => {
-                remoteVideo.current.srcObject = event.stream;
-              });
-
-              // 接收 iceOffer
-              window.socket.on('iceOffer', (message: any) => {
-                addIceCandidates(message);
-              });
-
-              // 接收 iceAnswer
-              window.socket.on('iceAnswer', (message: any) => {
-                addIceCandidates(message);
-              });
-            }
-          }
-        );
-        // 添加 IceCandidate
-        function addIceCandidates(message: any) {
-          if (pc !== 'undefined') {
-            pc.addIceCandidate(new RTCIceCandidate(message));
-          }
-        }
-        // 挂断
-        function hangupAction() {
-          localStream.getTracks().forEach((track: any) => track.stop());
-          pc.close();
-          pc = null;
-          hangupButton.disabled = true;
-          startButton.disabled = false;
-        }
-      })
-      .catch(function (e) {
-        console.log(JSON.stringify(e));
-      });
-  };
-
   let localPeerConnection: any = null;
   let transceiver: any = null;
   var webcamStream: any = null;
 
   useEffect(() => {
     if (onStartQuery && call) {
-      console.log(onStartQuery);
       startIntervals();
     }
-  }, [onStartQuery]);
-
-  useEffect(() => {
-    if (onStartQueryId) {
-      console.log(onStartQuery);
-      startIntervals();
-    }
-  }, [onStartQueryId]);
+  }, []);
 
   useEffect(() => {
     setActionNames(actionName);
@@ -214,9 +74,8 @@ const VideoCallPlay = ({
     if (!call) {
       setStart(true);
     }
-    startActions();
-    // startQuery(); // 开始呼叫
-    // startAction(); // 点击调用 获取本地视频
+    startQuery(); // 开始呼叫
+    startAction(); // 点击调用 获取本地视频
   };
 
   const clearIntervals = () => {
@@ -495,7 +354,6 @@ const VideoCallPlay = ({
   return (
     <div className="videoCall">
       <video
-        muted={true}
         id="localVideo"
         autoPlay={true}
         // playsinline
@@ -536,7 +394,6 @@ const VideoCallPlay = ({
       </div>
       <div className="videoCall-vice">
         <video
-          muted={true}
           id="remoteVideo"
           autoPlay={true}
           // playsinline

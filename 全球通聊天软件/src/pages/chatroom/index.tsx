@@ -2597,6 +2597,7 @@ const ChatList = () => {
           onFinish={onFinish}
           chatNames={chatNames}
           locMyName={locMyName}
+          myLocName = {myLocName}
         />
       )}
     </>

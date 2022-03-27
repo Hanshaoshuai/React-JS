@@ -188,6 +188,41 @@ io.sockets.on('connection', function (socket) {
       text: uid + '离开了',
     });
   });
+
+  // 视频通话
+  // 新连接
+  socket.on('conn', function (userName, chatNames) {
+    // socket.join(userName); // 加入房间
+    console.log(socket.adapter.rooms);
+    socket.emit('conn', userName, chatNames);
+    console.log('新用户：' + userName, chatNames);
+  });
+
+  // 接收 Offer 信令并发送给其他连接
+  socket.on('signalOffer', function (message, room, chatNames) {
+    console.log('接收 Offer 信令并发送给其他连接', message, room, chatNames)
+    // socket.to(room).emit('signalOffer', message);
+    socket.emit('signalOffer', message, room, chatNames);
+  });
+
+  // 接收 Answer 答复信令
+  socket.on('signalAnswer', function (message, room, chatNames) {
+    // socket.to('room').emit('signalAnswer', message);
+    console.log('接收 Answer 答复信令', message, room, chatNames)
+    socket.emit('signalAnswer', message, room, chatNames);
+  });
+
+  // 接收 iceOffer
+  socket.on('iceOffer', function (message) {
+    // socket.to('room').emit('iceOffer', message);
+    socket.emit('iceOffer', message);
+  });
+
+  // 接收 iceAnswer
+  socket.on('iceAnswer', function (message) {
+    // socket.to('room').emit('iceAnswer', message);
+    socket.emit('iceAnswer', message);
+  });
 });
 
 //存入记录

@@ -51,6 +51,7 @@ const ChatRecord = () => {
   );
   const [boxList, setBoxList] = useState<any>(false);
   const [videoCalls, setVideoCalls] = useState(false);
+  const [videoCallsId, setVideoCallsId] = useState(false);
   const [actionName, setActionName] = useState('切换语音');
   const [onFinish, setOnFinish] = useState(false);
   const [toChatName, settoChatName] = useState('');
@@ -105,12 +106,14 @@ const ChatRecord = () => {
       messages?.text?.toName === localName
     ) {
       setVideoCalls(true);
+      setVideoCallsId(true);
       settoChatName(messages.text.toName);
     } else if (
       messages?.text?.VideoAndVoice === '语音' &&
       messages?.text?.toName === localName
     ) {
       setVideoCalls(true);
+      setVideoCallsId(true);
       setActionName('静音');
       settoChatName(messages.text.toName);
     } else if (
@@ -160,6 +163,7 @@ const ChatRecord = () => {
 
   const videoCallCancel = () => {
     setVideoCalls(false);
+    setVideoCallsId(false);
     setOnFinish(false);
     if (onFinish) return;
     window.socket.emit('clientmessage', {
@@ -844,6 +848,7 @@ const ChatRecord = () => {
           onFinish={onFinish}
           chatNames={localStorage.getItem('toChatName')}
           locMyName={myNameL}
+          onStartQueryId={videoCallsId}
         />
       )}
     </>
