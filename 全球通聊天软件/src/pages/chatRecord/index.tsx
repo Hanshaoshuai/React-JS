@@ -849,6 +849,7 @@ const ChatRecord = () => {
           chatNames={localStorage.getItem('toChatName')}
           locMyName={myNameL}
           onStartQueryId={videoCallsId}
+          myLocName={localName}
         />
       )}
     </>
