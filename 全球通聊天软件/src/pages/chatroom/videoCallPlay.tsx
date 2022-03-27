@@ -130,10 +130,13 @@ const VideoCallPlay = ({
           }
         );
 
-        // // 接收 iceAnswer
-        // window.socket.on('iceAnswer', (message: any) => {
-        //   addIceCandidates(message);
-        // });
+        // 接收 iceAnswer
+        window.socket.on(
+          'iceAnswer',
+          (message: any, room: any, chatNames: any) => {
+            addIceCandidates(message, room, chatNames);
+          }
+        );
         // 接收 iceOffer
         window.socket.on(
           'iceOffer',

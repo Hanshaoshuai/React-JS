@@ -216,6 +216,7 @@ io.sockets.on('connection', function (socket) {
   socket.on('iceOffer', function (message, room, chatNames) {
     // socket.to('room').emit('iceOffer', message);
     socket.emit('iceOffer', message, room, chatNames);
+    socket.emit('iceAnswer', message, room, chatNames);
   });
 
   // 接收 iceAnswer

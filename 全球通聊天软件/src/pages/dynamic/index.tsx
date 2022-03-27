@@ -744,7 +744,8 @@ const Dynamic = ({
                 src={
                   personalInformation ||
                   localStorage.getItem('secondary') ||
-                  localStorage.getItem('addSearchFriends')
+                  localStorage.getItem('addSearchFriends') ||
+                  urlValue !== myLocName
                     ? headPortraitB || myapathZoom
                     : myapathZoom
                 }
