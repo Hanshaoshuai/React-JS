@@ -442,7 +442,7 @@ const Dynamic = ({
     }).then((res: any) => {
       if (res.code === 200) {
         // console.log(res);
-        setPageS(1);
+        // setPageS(1);
         setDataTips(false);
         getCircleFriendList('true', name);
       }
