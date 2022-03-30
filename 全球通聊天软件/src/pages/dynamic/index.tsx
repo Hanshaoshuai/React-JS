@@ -629,7 +629,7 @@ const Dynamic = ({
         onSetCommentBlock(null);
         setTextAreaValue('');
         if (!urlValueObj.dynamicDynamic) {
-          // getCircleFriendList('true', name);
+          getCircleFriendList('true', name);
         }
         history.goBack();
       }
