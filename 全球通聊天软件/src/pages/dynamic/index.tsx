@@ -234,7 +234,7 @@ const Dynamic = ({
       setSwitchName(false);
       if (res.code === 200) {
         if (key) {
-          setPageS(1);
+          setPageS(2);
           setDataTips(false);
         } else {
           setPageS(pageS + 1);
