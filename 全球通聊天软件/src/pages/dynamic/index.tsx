@@ -211,7 +211,11 @@ const Dynamic = ({
     };
   }, [circleFriendData]);
 
-  const getCircleFriendList = async (key?: string, nameId?: any) => {
+  const getCircleFriendList = async (
+    key?: string,
+    nameId?: any,
+    indexName?: boolean
+  ) => {
     if (urlValueObj.videoPlay) return;
     if (key) {
       setSwitchName(true);
@@ -234,7 +238,11 @@ const Dynamic = ({
       setSwitchName(false);
       if (res.code === 200) {
         if (key) {
-          setPageS(2);
+          if (indexName) {
+            setPageS(1);
+          } else {
+            setPageS(2);
+          }
           setDataTips(false);
         } else {
           setPageS(pageS + 1);
@@ -629,7 +637,7 @@ const Dynamic = ({
         onSetCommentBlock(null);
         setTextAreaValue('');
         if (!urlValueObj.dynamicDynamic) {
-          getCircleFriendList('true', name);
+          getCircleFriendList('true', name, true);
         }
         history.goBack();
       }
