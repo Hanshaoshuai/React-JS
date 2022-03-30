@@ -221,7 +221,7 @@ const Dynamic = ({
       demoImages = [];
     }
     await getCircleFriends({
-      page: pageS,
+      page: key ? 1 : pageS,
       pageSize: 13,
       name: urlValue,
       personal:
@@ -442,7 +442,8 @@ const Dynamic = ({
     }).then((res: any) => {
       if (res.code === 200) {
         // console.log(res);
-        // setPageS(1);
+        setPageS(1);
+        setSwitchName(false);
         setDataTips(false);
         getCircleFriendList('true', name);
       }
@@ -625,7 +626,8 @@ const Dynamic = ({
         // console.log(res);
         onSetCommentBlock(null);
         setTextAreaValue('');
-        // setPageS(1);
+        setPageS(1);
+        setSwitchName(false);
         setDataTips(false);
         if (!urlValueObj.dynamicDynamic) {
           getCircleFriendList('true', name);
