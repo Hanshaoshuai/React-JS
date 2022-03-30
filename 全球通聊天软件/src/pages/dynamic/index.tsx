@@ -221,7 +221,7 @@ const Dynamic = ({
       demoImages = [];
     }
     await getCircleFriends({
-      page: key ? 1 : pageS,
+      page: pageS,
       pageSize: 13,
       name: urlValue,
       personal:
