@@ -233,7 +233,12 @@ const Dynamic = ({
       // console.log(res);
       setSwitchName(false);
       if (res.code === 200) {
-        setPageS(pageS + 1);
+        if (key) {
+          setPageS(1);
+          setDataTips(false);
+        } else {
+          setPageS(pageS + 1);
+        }
         if (!res.data.length) {
           setDataTips(true);
         }
@@ -442,9 +447,6 @@ const Dynamic = ({
     }).then((res: any) => {
       if (res.code === 200) {
         // console.log(res);
-        setPageS(1);
-        setSwitchName(false);
-        setDataTips(false);
         getCircleFriendList('true', name);
       }
     });
@@ -626,9 +628,6 @@ const Dynamic = ({
         // console.log(res);
         onSetCommentBlock(null);
         setTextAreaValue('');
-        setPageS(1);
-        setSwitchName(false);
-        setDataTips(false);
         if (!urlValueObj.dynamicDynamic) {
           getCircleFriendList('true', name);
         }
