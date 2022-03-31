@@ -109,9 +109,11 @@ io.sockets.on('connection', function (socket) {
     if (data.uploadCompleted) {//只作为图片上传完成使用
       socket.broadcast.emit('message', {
         text: 'uploadCompleted',
+        toName: data.toName,
       });
       socket.emit('message', {
         text: 'uploadCompleted',
+        toName: data.toName,
       })
       return;
     }

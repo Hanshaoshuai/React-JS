@@ -61,8 +61,20 @@ export default function App() {
     );
   }, []);
   useEffect(() => {
-    // console.log('message====>>>>>', messages);
-    if (messages.text !== '上线了' && messages?.text?.toName === myLocName) {
+    let toName: any = {};
+    toName = JSON.parse(messages.toName || '{}');
+    if (
+      messages.toName &&
+      Object.prototype.toString.call(toName) === '[object Array]'
+    ) {
+      console.log(messages.toName);
+      toName = toName.filter((term: any) => term.name === myLocName)[0] || {};
+    }
+    // console.log('message====>>>>>', messages, toName);
+    if (
+      messages.text !== '上线了' &&
+      (messages?.text?.toName === myLocName || toName.name === myLocName)
+    ) {
       const play: any = document.getElementById('play');
       indexId++;
       if (play && indexId === 1) {
