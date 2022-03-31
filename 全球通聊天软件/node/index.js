@@ -216,13 +216,12 @@ io.sockets.on('connection', function (socket) {
   socket.on('iceOffer', function (message, room, chatNames) {
     // socket.to('room').emit('iceOffer', message);
     socket.emit('iceOffer', message, room, chatNames);
-    socket.emit('iceAnswer', message, room, chatNames);
   });
 
   // 接收 iceAnswer
-  socket.on('iceAnswer', function (message) {
+  socket.on('iceAnswer', function (message, room, chatNames) {
     // socket.to('room').emit('iceAnswer', message);
-    socket.emit('iceAnswer', message);
+    socket.emit('iceAnswer', message, room, chatNames);
   });
 });
 

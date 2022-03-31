@@ -37,7 +37,7 @@ import {
 } from '../../api';
 import { onUploadProgress } from '../../services/request';
 import { sync } from 'resolve';
-import VideoCallPlay from './videoCallPlay';
+import VideoCallPlay from './videoCallPlayCall';
 
 let Flength = 0;
 let dateTimes: any = '';
@@ -2597,7 +2597,7 @@ const ChatList = () => {
           onFinish={onFinish}
           chatNames={chatNames}
           locMyName={locMyName}
-          myLocName = {myLocName}
+          myLocName={myLocName}
         />
       )}
     </>

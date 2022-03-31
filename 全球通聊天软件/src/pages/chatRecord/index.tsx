@@ -20,7 +20,7 @@ import {
 import { moment } from '../../helpers';
 import Spins from '../A-Spin';
 
-import VideoCallPlay from '../chatroom/videoCallPlay';
+import VideoCallPlayAnswer from '../chatroom/videoCallPlayAnswer';
 import { setBadge } from '../../actions';
 
 import { MyContext } from '../../models/context';
@@ -51,10 +51,9 @@ const ChatRecord = () => {
   );
   const [boxList, setBoxList] = useState<any>(false);
   const [videoCalls, setVideoCalls] = useState(false);
-  const [videoCallsId, setVideoCallsId] = useState(false);
   const [actionName, setActionName] = useState('切换语音');
   const [onFinish, setOnFinish] = useState(false);
-  const [toChatName, settoChatName] = useState('');
+  const [fromName, settoChatName] = useState<any>('');
   const [introduce, setIntroduce] = useState(false);
   const [dividerBlock, setDividerBlock] = useState(false);
 
@@ -100,22 +99,20 @@ const ChatRecord = () => {
     //   localStorage.setItem("myHeadPortrait", messages.icon);
     //   setImgeSrc(messages.icon);
     // }
-    // console.log(messages);
+    console.log(messages);
     if (
       messages?.text?.VideoAndVoice === '视频' &&
       messages?.text?.toName === localName
     ) {
       setVideoCalls(true);
-      setVideoCallsId(true);
-      settoChatName(messages.text.toName);
+      settoChatName(messages.text.fromName);
     } else if (
       messages?.text?.VideoAndVoice === '语音' &&
       messages?.text?.toName === localName
     ) {
       setVideoCalls(true);
-      setVideoCallsId(true);
       setActionName('静音');
-      settoChatName(messages.text.toName);
+      settoChatName(messages.text.fromName);
     } else if (
       messages?.text?.VideoAndVoice === '通话结束' &&
       messages?.text?.toName === localName
@@ -163,7 +160,6 @@ const ChatRecord = () => {
 
   const videoCallCancel = () => {
     setVideoCalls(false);
-    setVideoCallsId(false);
     setOnFinish(false);
     if (onFinish) return;
     window.socket.emit('clientmessage', {
@@ -839,17 +835,16 @@ const ChatRecord = () => {
           <Spins styleSize={[65, 33]} color={'#ff7a59'} fontSize={'33px'} />
         )}
       </div>
-      {videoCalls && (
-        <VideoCallPlay
+      {videoCalls && fromName && (
+        <VideoCallPlayAnswer
           call={false}
           onStartQuery={videoCalls}
           videoCallCancel={videoCallCancel}
           actionName={actionName}
           onFinish={onFinish}
-          chatNames={localStorage.getItem('toChatName')}
           locMyName={myNameL}
-          onStartQueryId={videoCallsId}
           myLocName={localName}
+          chatNames={fromName}
         />
       )}
     </>

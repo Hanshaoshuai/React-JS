@@ -2,7 +2,7 @@ import './index.scss';
 
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import { ActionSheet, Button, Dialog, Space, Toast } from 'antd-mobile';
-import VideoCallPlay from './videoCallPlay';
+import VideoCallPlay from './videoCallPlayCall';
 import { MyContext } from '../../models/context';
 
 let VideoCallPlayCall: any = null;

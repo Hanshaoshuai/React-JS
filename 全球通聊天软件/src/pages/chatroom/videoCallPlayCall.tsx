@@ -16,7 +16,6 @@ const VideoCallPlay = ({
   chatNames,
   locMyName,
   myLocName,
-  onStartQueryId,
 }: any) => {
   // 传输视频，不传输音频
   const [mediaStreamConstraints, setMediaStreamConstraints] = useState({
@@ -61,10 +60,12 @@ const VideoCallPlay = ({
 
   // 点击加入房间
   const startActions = () => {
+    console.log('123===>>>>', myLocName, chatNames);
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((mediastream) => {
         localStream = mediastream; // 本地视频流
+        console.log(localStream, myLocName, chatNames);
         localVideo.current.srcObject = mediastream; // 播放本地视频流
         // startButton.disabled = true;
         window.socket.emit('conn', `${myLocName}`, chatNames); // 连接 socket
@@ -78,7 +79,7 @@ const VideoCallPlay = ({
             .forEach((track: any) => pc.addTrack(track, localStream)); // 添加本地视频流 track
           // 创建 Offer 请求
           pc.createOffer(offerOptions).then((offer: any) => {
-            pc.setLocalDescription(offer); // 设置本地 Offer 描述，（设置描述之后会触发ice事件）
+            pc.setLocalDescription(new RTCSessionDescription(offer)); // 设置本地 Offer 描述，（设置描述之后会触发ice事件）
             window.socket.emit('signalOffer', offer, room, chatNames); // 发送 Offer 请求信令
           });
           // 监听 ice
@@ -100,9 +101,13 @@ const VideoCallPlay = ({
             if (chatNames === LocName) {
               pc.setRemoteDescription(new RTCSessionDescription(message)); // 设置远端描述
               // 创建 Answer 请求
-              pc.createAnswer().then((answer: any) => {
-                pc.setLocalDescription(answer); // 设置本地 Answer 描述
-                window.socket.emit('signalAnswer', answer, room, chatNames); // 发送 Answer 请求信令
+              pc.createAnswer((answer: any) => {
+                pc.setLocalDescription(
+                  new RTCSessionDescription(answer),
+                  () => {
+                    window.socket.emit('signalAnswer', answer, room, chatNames); // 发送 Answer 请求信令
+                  }
+                ); // 设置本地 Answer 描述
               });
 
               // 监听远端视频流
@@ -121,7 +126,7 @@ const VideoCallPlay = ({
             if (chatNames === LocName) {
               pc.setRemoteDescription(new RTCSessionDescription(message)); // 设置远端描述
               console.log('remote answer', message);
-
+              window.socket.emit('iceAnswer', message, room, chatNames);
               // 监听远端视频流
               pc.addEventListener('addstream', (event: any) => {
                 remoteVideo.current.srcObject = event.stream;
@@ -172,15 +177,9 @@ const VideoCallPlay = ({
     if (onStartQuery && call) {
       console.log(onStartQuery);
       startIntervals();
+      startActions();
     }
   }, [onStartQuery]);
-
-  useEffect(() => {
-    if (onStartQueryId) {
-      console.log(onStartQuery);
-      startIntervals();
-    }
-  }, [onStartQueryId]);
 
   useEffect(() => {
     setActionNames(actionName);
@@ -220,7 +219,6 @@ const VideoCallPlay = ({
     if (!call) {
       setStart(true);
     }
-    startActions();
     // startQuery(); // 开始呼叫
     // startAction(); // 点击调用 获取本地视频
   };
