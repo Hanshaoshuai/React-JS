@@ -1986,8 +1986,9 @@ const ChatList = () => {
 
   const setFileList = async (list: any, voice?: any) => {
     // console.log(list);
+    if (!list[0]) return;
     setAddAnothers(false);
-    texts.current?.blur();
+    !voice && texts.current?.blur();
     const dateTime: any = new Date().getTime();
     let itemId = 1;
     let overload = 0;
@@ -2129,6 +2130,7 @@ const ChatList = () => {
                   window.socket.emit('clientmessage', {
                     //只作为文件上传完成使用
                     uploadCompleted: true,
+                    toName: chatNames,
                   });
                   const dom: any = document.getElementById(`${dateTime + i}`);
                   if (dom) {
@@ -2161,6 +2163,7 @@ const ChatList = () => {
             window.socket.emit('clientmessage', {
               //只作为图片上传完成使用
               uploadCompleted: true,
+              toName: chatNames,
             });
             //   //只作为文件上传完成使用
           }
@@ -2183,6 +2186,7 @@ const ChatList = () => {
           window.socket.emit('clientmessage', {
             //只作为图片上传完成使用
             uploadCompleted: true,
+            toName: chatNames,
           });
           //   //只作为图片上传完成使用
         }

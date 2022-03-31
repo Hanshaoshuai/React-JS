@@ -62,13 +62,7 @@ export default function App() {
   }, []);
   useEffect(() => {
     // console.log('message====>>>>>', messages);
-    if (
-      messages.text !== '上线了' &&
-      messages?.text?.fromName &&
-      ((messages?.text?.fromName && myLocName) ||
-        messages?.text === 'uploadCompleted' ||
-        messages?.text?.fromName !== myLocName)
-    ) {
+    if (messages.text !== '上线了' && messages?.text?.toName === myLocName) {
       const play: any = document.getElementById('play');
       indexId++;
       if (play && indexId === 1) {

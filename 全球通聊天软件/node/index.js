@@ -1010,7 +1010,7 @@ app.post('/isRead', function (req, res) {
 })
 
 const addText = async (obj, apath, filePath, apathZoom, typeFileName) => {
-  // console.log(obj)
+  // console.log(obj, apath, filePath)
   let newClientmessage = JSON.parse(obj.clientmessage);
   var fromTos = null
   let yes = false;
@@ -1650,13 +1650,16 @@ app.post('/file_upload', function (req, res) {
       // })
       if (reqs.length === '分片上传最后' || reqs.length === '不分片') {
         // console.log('分片上传最后')
-        apathZoom = `/images/file/${fileName}Zoom.jpg`
-        const tos = () => {
-          res.send({ code: 200, msg: "上传成功", icon: apath, id: fileName, apath, apathZoom })
-        }
-        if ((reqs.image || reqs.file) && addText(reqs, apath, filePath, apathZoom, 'file')) {
-          tos()
-        } else if (reqs.image !== "true") { tos() }
+        let times = setTimeout(() => {
+          apathZoom = `/images/file/${fileName}Zoom.jpg`
+          const tos = () => {
+            res.send({ code: 200, msg: "上传成功", icon: apath, id: fileName, apath, apathZoom })
+          }
+          if ((reqs.image || reqs.file) && addText(reqs, apath, filePath, apathZoom, 'file')) {
+            tos()
+          } else if (reqs.image !== "true") { tos() }
+          clearTimeout(times)
+        }, 300);
         return;
       } else {
         res.send({ code: 200, msg: "分片上传请继续" })
