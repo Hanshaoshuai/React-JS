@@ -121,14 +121,14 @@ const OtherItems = ({
           <span>文件</span>
         </label>
       </div>
-      <div className="otherItemsList" onClick={videoCall}>
+      {/* <div className="otherItemsList" onClick={videoCall}>
         <label>
           <p>
             <img src="" alt="" />
           </p>
           <span>视频通话</span>
         </label>
-      </div>
+      </div> */}
       <ActionSheet
         visible={visible}
         actions={actions}
