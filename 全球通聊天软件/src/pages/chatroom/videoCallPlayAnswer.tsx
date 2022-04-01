@@ -216,9 +216,9 @@ const VideoCallPlayAnswer = ({
     if (!call) {
       setStart(true);
     }
-    startActions();
-    // startQuery(); // 开始呼叫
-    // startAction(); // 点击调用 获取本地视频
+    // startActions();
+    startQuery(); // 开始呼叫
+    startAction(); // 点击调用 获取本地视频
   };
 
   const clearIntervals = () => {

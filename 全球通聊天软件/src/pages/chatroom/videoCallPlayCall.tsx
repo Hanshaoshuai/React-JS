@@ -177,7 +177,7 @@ const VideoCallPlay = ({
     if (onStartQuery && call) {
       console.log(onStartQuery);
       startIntervals();
-      startActions();
+      // startActions();
     }
   }, [onStartQuery]);
 
@@ -219,8 +219,8 @@ const VideoCallPlay = ({
     if (!call) {
       setStart(true);
     }
-    // startQuery(); // 开始呼叫
-    // startAction(); // 点击调用 获取本地视频
+    startQuery(); // 开始呼叫
+    startAction(); // 点击调用 获取本地视频
   };
 
   const clearIntervals = () => {
