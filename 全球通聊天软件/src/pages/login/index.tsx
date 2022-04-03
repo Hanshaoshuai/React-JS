@@ -24,7 +24,6 @@ const {
   realTimeCountDownSeparate,
 } = require('gettimesjs');
 
-let times: any = null;
 const ChatList = () => {
   const history = useHistory();
   const [telephone, setTelephone] = useState<any>();
@@ -33,15 +32,15 @@ const ChatList = () => {
   const [formatDates, setFormatDate] = useState<any>();
 
   useEffect(() => {
-    return componentWillUnmount;
-  }, []);
-  useEffect(() => {
-    times = setInterval(() => {
+    let times = window.setInterval(() => {
       setFormatDate(formatDate('yyyy-MM-dd EE AM hh:mm:ss S q'));
     }, 10);
     if (getToken() && localStorage.getItem('name')) {
       history.push('/');
     }
+    return () => {
+      window.clearInterval(times);
+    };
   }, []);
 
   const onChange = (e: any, text: string) => {
@@ -351,10 +350,6 @@ const ChatList = () => {
 
   const toEducation = () => {
     history.push('/education');
-  };
-
-  const componentWillUnmount = () => {
-    clearInterval(times);
   };
 
   const denglu: any = useRef(null);

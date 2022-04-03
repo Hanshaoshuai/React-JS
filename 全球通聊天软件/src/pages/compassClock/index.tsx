@@ -288,7 +288,7 @@ const CompassClock = ({ callback }: any) => {
       setBranchDegs(mm); // 分
       setTimeDegs(hh); // 时
     }, 1000);
-    console.log(interVal);
+    // console.log(interVal);
     return () => {
       window.clearInterval(interVal);
     };

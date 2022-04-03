@@ -23,6 +23,34 @@ export const options = [
     label: '相互倾诉',
     value: '相互倾诉',
   },
+  {
+    label: '想恋爱',
+    value: '想恋爱',
+  },
+  {
+    label: '想结婚',
+    value: '想结婚',
+  },
+  {
+    label: '熬夜党',
+    value: '熬夜党',
+  },
+  {
+    label: '失恋期',
+    value: '失恋期',
+  },
+  {
+    label: '被催婚',
+    value: '被催婚',
+  },
+  {
+    label: '失眠ing',
+    value: '失眠ing',
+  },
+  {
+    label: '学习',
+    value: '学习',
+  },
 ];
 export const options1 = [
   {
@@ -216,7 +244,7 @@ export const options1 = [
 ];
 export const options2 = [
   {
-    abel: '阿里巴巴',
+    label: '阿里巴巴',
     value: '阿里巴巴',
   },
   {
@@ -239,6 +267,7 @@ export const options2 = [
     label: '小米',
     value: '小米',
   },
+
   {
     label: '网易',
     value: '网易',
@@ -277,7 +306,7 @@ export const options2 = [
   },
   {
     label: '创业者',
-    value: '自由',
+    value: '创业者',
   },
   {
     label: '董事长',
@@ -300,17 +329,18 @@ export const options2 = [
     value: '财富自由',
   },
   {
-    label: '做点小生意',
-    value: '做点小生意',
+    label: '小生意',
+    value: '小生意',
   },
   {
     label: '传统行业',
     value: '传统行业',
   },
   {
-    label: '商业大佬',
-    value: '商业大佬',
+    label: '微商大佬',
+    value: '微商大佬',
   },
+
   {
     label: '程序员',
     value: '程序员',
@@ -335,6 +365,7 @@ export const options2 = [
     label: '上班族',
     value: '上班族',
   },
+
   {
     label: '博主',
     value: '博主',
@@ -359,6 +390,7 @@ export const options2 = [
     label: '画师',
     value: '画师',
   },
+
   {
     label: '歌手',
     value: '歌手',
@@ -366,10 +398,6 @@ export const options2 = [
   {
     label: '摄影师',
     value: '摄影师',
-  },
-  {
-    label: '设计师',
-    value: '设计师',
   },
   {
     label: '工程师',
@@ -502,6 +530,100 @@ export const options2 = [
   {
     label: '演员',
     value: '演员',
+  },
+];
+export const options22 = [
+  {
+    label: '坚持晨跑',
+    value: '坚持晨跑',
+  },
+  {
+    label: '每天运动',
+    value: '每天运动',
+  },
+  {
+    label: '坚持锻炼瑜伽',
+    value: '坚持锻炼瑜伽',
+  },
+  {
+    label: '靠追剧活着',
+    value: '靠追剧活着',
+  },
+  {
+    label: '一个人吃饭旅行',
+    value: '一个人吃饭旅行',
+  },
+  {
+    label: '每周都看演出',
+    value: '每周都看演出',
+  },
+  {
+    label: '业余生活丰富',
+    value: '业余生活丰富',
+  },
+  {
+    label: '兼职外快赚钱',
+    value: '兼职外快赚钱',
+  },
+  {
+    label: '戒烟戒酒',
+    value: '戒烟戒酒',
+  },
+  {
+    label: '有纹身',
+    value: '有纹身',
+  },
+  {
+    label: '坚持记录生活',
+    value: '坚持记录生活',
+  },
+  {
+    label: '定期理财',
+    value: '定期理财',
+  },
+  {
+    label: '坚持早睡早起',
+    value: '坚持早睡早起',
+  },
+  {
+    label: '月光族',
+    value: '月光族',
+  },
+  {
+    label: '社交达人',
+    value: '社交达人',
+  },
+  {
+    label: '美食探店一把手',
+    value: '美食探店一把手',
+  },
+  {
+    label: '一直在减肥路上',
+    value: '一直在减肥路上',
+  },
+  {
+    label: '生活规律',
+    value: '生活规律',
+  },
+  {
+    label: '穿搭小助手',
+    value: '穿搭小助手',
+  },
+  {
+    label: '80后日常',
+    value: '80后日常',
+  },
+  {
+    label: '90后日常',
+    value: '90后日常',
+  },
+  {
+    label: '生活很有规划',
+    value: '生活很有规划',
+  },
+  {
+    label: '高品质生活',
+    value: '高品质生活',
   },
 ];
 export const options3 = [
@@ -833,6 +955,117 @@ export const options4 = [
   {
     label: '精通多种乐队',
     value: '精通多种乐队',
+  },
+];
+export const options44 = [
+  {
+    label: '走遍全中国',
+    value: '走遍全中国',
+  },
+  {
+    label: '环游全球',
+    value: '环游全球',
+  },
+  {
+    label: '住遍青旅',
+    value: '住遍青旅',
+  },
+  {
+    label: '博物馆达人',
+    value: '博物馆达人',
+  },
+  {
+    label: '自驾游爱好者',
+    value: '自驾游爱好者',
+  },
+  {
+    label: '一个人走遍世界',
+    value: '一个人走遍世界',
+  },
+  {
+    label: '旅行说走就走',
+    value: '旅行说走就走',
+  },
+  {
+    label: '出门必住五星级',
+    value: '出门必住五星级',
+  },
+  {
+    label: '为美食而走',
+    value: '为美食而走',
+  },
+  {
+    label: '海盗控',
+    value: '茶道',
+  },
+  {
+    label: '挑战一次极限',
+    value: '挑战一次极限',
+  },
+  {
+    label: '热衷历史古都',
+    value: '热衷历史古都',
+  },
+  {
+    label: '民宿爱好者',
+    value: '民宿爱好者',
+  },
+  {
+    label: '热衷非遗文化',
+    value: '热衷非遗文化',
+  },
+  {
+    label: '热爱北京胡同',
+    value: '热爱北京胡同',
+  },
+  {
+    label: '绿皮车迷',
+    value: '绿皮车迷',
+  },
+  {
+    label: '登山爱好者',
+    value: '登山爱好者',
+  },
+  {
+    label: '重机车环游',
+    value: '重机车环游',
+  },
+  {
+    label: '登顶珠穆拉玛',
+    value: '登顶珠穆拉玛',
+  },
+  {
+    label: '穿越无人区',
+    value: '穿越无人区',
+  },
+  {
+    label: '酷爱滑雪',
+    value: '酷爱滑雪',
+  },
+
+  {
+    label: '看遍世界各地日落',
+    value: '看遍世界各地日落',
+  },
+  {
+    label: '热爱探险',
+    value: '热爱探险',
+  },
+  {
+    label: '跑过半马',
+    value: '跑过半马',
+  },
+  {
+    label: '看过极光',
+    value: '看过极光',
+  },
+  {
+    label: '打卡五大洲',
+    value: '打卡五大洲',
+  },
+  {
+    label: '骑车上万公里',
+    value: '骑车上万公里',
   },
 ];
 export const options5 = [
@@ -1199,6 +1432,218 @@ export const options6 = [
     label: '生鱼片',
     value: '生鱼片',
   },
+  {
+    label: '韩国烤肉',
+    value: '韩国烤肉',
+  },
+  {
+    label: '泰国菜',
+    value: '泰国菜',
+  },
+  {
+    label: '粤菜',
+    value: '粤菜',
+  },
+  {
+    label: '浙江菜',
+    value: '浙江菜',
+  },
+  {
+    label: '东北菜',
+    value: '东北菜',
+  },
+  {
+    label: '清真',
+    value: '清真',
+  },
+  {
+    label: '湘菜',
+    value: '湘菜',
+  },
+  {
+    label: '西餐',
+    value: '西餐',
+  },
+  {
+    label: '意大利面',
+    value: '意大利面',
+  },
+  {
+    label: '墨西哥Tacos',
+    value: '墨西哥Tacos',
+  },
+  {
+    label: '披萨',
+    value: '披萨',
+  },
+  {
+    label: '土耳其烤肉',
+    value: '土耳其烤肉',
+  },
+  {
+    label: '提拉米苏',
+    value: '提拉米苏',
+  },
+  {
+    label: '慕斯蛋糕',
+    value: '慕斯蛋糕',
+  },
+  {
+    label: '川菜',
+    value: '川菜',
+  },
+  {
+    label: '汉堡',
+    value: '汉堡',
+  },
+  {
+    label: '羊肉泡馍',
+    value: '羊肉泡馍',
+  },
+  {
+    label: '牛排',
+    value: '牛排',
+  },
+  {
+    label: '自助餐',
+    value: '自助餐',
+  },
+  {
+    label: '火锅达人',
+    value: '火锅达人',
+  },
+  {
+    label: '无肉不欢',
+    value: '无肉不欢',
+  },
+  {
+    label: '无辣不欢',
+    value: '无辣不欢',
+  },
+  {
+    label: '带馅的都爱吃',
+    value: '带馅的都爱吃',
+  },
+  {
+    label: '奶茶续命',
+    value: '奶茶续命',
+  },
+  {
+    label: '甜品达人',
+    value: '甜品达人',
+  },
+  {
+    label: '行走的美食攻略',
+    value: '行走的美食攻略',
+  },
+  {
+    label: '动手派大厨',
+    value: '动手派大厨',
+  },
+  {
+    label: '大胃王',
+    value: '大胃王',
+  },
+  {
+    label: '深夜美食家',
+    value: '深夜美食家',
+  },
+  {
+    label: '资深吃货',
+    value: '资深吃货',
+  },
+  {
+    label: '不吃香菜',
+    value: '不吃香菜',
+  },
+  {
+    label: '酷爱西餐',
+    value: '酷爱西餐',
+  },
+  {
+    label: '食草系',
+    value: '食草系',
+  },
+  {
+    label: '自制健身餐',
+    value: '自制健身餐',
+  },
+  {
+    label: '从不下馆子',
+    value: '从不下馆子',
+  },
+  {
+    label: '外卖党',
+    value: '外卖党',
+  },
+  {
+    label: 'Ramen',
+    value: 'Ramen',
+  },
+  {
+    label: '饮食清淡',
+    value: '饮食清淡',
+  },
+  {
+    label: '品酒师',
+    value: '品酒师',
+  },
+  {
+    label: '餐厅主厨',
+    value: '餐厅主厨',
+  },
+  {
+    label: '美食博主',
+    value: '美食博主',
+  },
+  {
+    label: '鲁菜',
+    value: '鲁菜',
+  },
+  {
+    label: '浙菜',
+    value: '浙菜',
+  },
+  {
+    label: '微菜',
+    value: '微菜',
+  },
+  {
+    label: '客家菜',
+    value: '客家菜',
+  },
+  {
+    label: '京菜',
+    value: '京菜',
+  },
+  {
+    label: '新疆美食',
+    value: '新疆美食',
+  },
+  {
+    label: '日料',
+    value: '日料',
+  },
+  {
+    label: '韩料',
+    value: '韩料',
+  },
+  {
+    label: '法餐',
+    value: '法餐',
+  },
+  {
+    label: '土耳其餐',
+    value: '土耳其餐',
+  },
+  {
+    label: '西班牙餐',
+    value: '西班牙餐',
+  },
+  {
+    label: '东南亚餐',
+    value: '东南亚餐',
+  },
 ];
 export const options7 = [
   {
@@ -1228,6 +1673,217 @@ export const options7 = [
   {
     label: '跑步',
     value: '跑步',
+  },
+
+  {
+    label: '瑜伽',
+    value: '瑜伽',
+  },
+  {
+    label: '爵士舞',
+    value: '爵士舞',
+  },
+  {
+    label: '华尔兹',
+    value: '华尔兹',
+  },
+  {
+    label: '芭蕾',
+    value: '芭蕾',
+  },
+  {
+    label: '跆拳道',
+    value: '跆拳道',
+  },
+  {
+    label: '游泳',
+    value: '游泳',
+  },
+  {
+    label: '滑轮',
+    value: '滑轮',
+  },
+
+  {
+    label: '柔道',
+    value: '柔道',
+  },
+  {
+    label: '网球',
+    value: '网球',
+  },
+  {
+    label: '高尔夫球',
+    value: '高尔夫球',
+  },
+  {
+    label: '滑雪',
+    value: '滑雪',
+  },
+  {
+    label: '健身房',
+    value: '健身房',
+  },
+  {
+    label: '拳击',
+    value: '拳击',
+  },
+  {
+    label: '暴走',
+    value: '暴走',
+  },
+
+  {
+    label: '街舞',
+    value: '街舞',
+  },
+  {
+    label: '自行车',
+    value: '自行车',
+  },
+  {
+    label: '骑马',
+    value: '骑马',
+  },
+  {
+    label: '射箭',
+    value: '射箭',
+  },
+  {
+    label: '登山',
+    value: '登山',
+  },
+  {
+    label: '撸铁',
+    value: '撸铁',
+  },
+  {
+    label: '跑鞋控',
+    value: '跑鞋控',
+  },
+
+  {
+    label: '徒步行走',
+    value: '徒步行走',
+  },
+  {
+    label: '电竞达人',
+    value: '电竞达人',
+  },
+  {
+    label: 'CrossFit',
+    value: 'CrossFit',
+  },
+  {
+    label: '射击',
+    value: '射击',
+  },
+  {
+    label: '球类达人',
+    value: '球类达人',
+  },
+  {
+    label: '装备党',
+    value: '装备党',
+  },
+  {
+    label: '极限运动',
+    value: '极限运动',
+  },
+  {
+    label: '马拉松',
+    value: '马拉松',
+  },
+  {
+    label: '户外攀岩',
+    value: '户外攀岩',
+  },
+  {
+    label: '滑板',
+    value: '滑板',
+  },
+  {
+    label: '蹦极',
+    value: '蹦极',
+  },
+  {
+    label: '潜水',
+    value: '潜水',
+  },
+  {
+    label: '散打',
+    value: '散打',
+  },
+  {
+    label: '普拉提',
+    value: '普拉提',
+  },
+
+  {
+    label: '骑行',
+    value: '骑行',
+  },
+  {
+    label: '爬山',
+    value: '爬山',
+  },
+  {
+    label: '举铁',
+    value: '举铁',
+  },
+  {
+    label: '平板支撑',
+    value: '平板支撑',
+  },
+  {
+    label: '马甲线',
+    value: '马甲线',
+  },
+  {
+    label: '奥运会',
+    value: '奥运会',
+  },
+  {
+    label: '赛车',
+    value: '赛车',
+  },
+
+  {
+    label: '世界杯',
+    value: '世界杯',
+  },
+  {
+    label: '国足',
+    value: '国足',
+  },
+  {
+    label: '欧冠',
+    value: '欧冠',
+  },
+  {
+    label: '西甲',
+    value: '西甲',
+  },
+  {
+    label: 'CBA',
+    value: 'CBA',
+  },
+  {
+    label: 'WWE',
+    value: 'WWE',
+  },
+  {
+    label: 'UFC',
+    value: 'UFC',
+  },
+
+  {
+    label: '跳水',
+    value: '跳水',
+  },
+  {
+    label: 'MMA',
+    value: 'MMA',
   },
 ];
 export const options8 = [
@@ -1259,6 +1915,292 @@ export const options8 = [
     label: '哈利·波特系列',
     value: '哈利·波特系列',
   },
+  {
+    label: '喜剧之王',
+    value: '喜剧之王',
+  },
+  {
+    label: '功夫熊猫',
+    value: '功夫熊猫',
+  },
+  {
+    label: '西游记',
+    value: '西游记',
+  },
+  {
+    label: '综艺',
+    value: '综艺',
+  },
+  {
+    label: '爱情片',
+    value: '爱情片',
+  },
+  {
+    label: '战争片',
+    value: '战争片',
+  },
+  {
+    label: '美剧',
+    value: '美剧',
+  },
+  {
+    label: '韩剧',
+    value: '韩剧',
+  },
+  {
+    label: '恐怖',
+    value: '恐怖',
+  },
+  {
+    label: '港台剧',
+    value: '港台剧',
+  },
+  {
+    label: '科幻片',
+    value: '科幻片',
+  },
+  {
+    label: '奇幻片',
+    value: '奇幻片',
+  },
+  {
+    label: '灾难片',
+    value: '灾难片',
+  },
+  {
+    label: '人物传奇',
+    value: '人物传奇',
+  },
+  {
+    label: '纪录片',
+    value: '纪录片',
+  },
+  {
+    label: '欧美综艺',
+    value: '欧美综艺',
+  },
+  {
+    label: '古装片',
+    value: '古装片',
+  },
+  {
+    label: '阅片无数',
+    value: '阅片无数',
+  },
+  {
+    label: '电影博主',
+    value: '电影博主',
+  },
+  {
+    label: '影视创作',
+    value: '影视创作',
+  },
+  {
+    label: '日本综艺',
+    value: '日本综艺',
+  },
+  {
+    label: '青春偶像剧',
+    value: '青春偶像剧',
+  },
+];
+export const options88 = [
+  {
+    label: '流行',
+    value: '流行',
+  },
+  {
+    label: '摇滚',
+    value: '摇滚',
+  },
+  {
+    label: '轻音乐',
+    value: '轻音乐',
+  },
+  {
+    label: '经典老歌',
+    value: '经典老歌',
+  },
+  {
+    label: '欧美',
+    value: '欧美',
+  },
+  {
+    label: '日韩',
+    value: '日韩',
+  },
+  {
+    label: '电子',
+    value: '电子',
+  },
+  {
+    label: '爵士',
+    value: '爵士',
+  },
+  {
+    label: '布鲁斯',
+    value: '布鲁斯',
+  },
+  {
+    label: '金属',
+    value: '金属',
+  },
+  {
+    label: '古典',
+    value: '古典',
+  },
+  {
+    label: '乡村',
+    value: '乡村',
+  },
+  {
+    label: '校园民谣',
+    value: '校园民谣',
+  },
+  {
+    label: '陈奕迅',
+    value: '陈奕迅',
+  },
+  {
+    label: '张国荣',
+    value: '张国荣',
+  },
+  {
+    label: '张学友',
+    value: '张学友',
+  },
+  {
+    label: '王菲',
+    value: '王菲',
+  },
+  {
+    label: '李宗盛',
+    value: '李宗盛',
+  },
+  {
+    label: '周杰伦',
+    value: '周杰伦',
+  },
+  {
+    label: '王力宏',
+    value: '王力宏',
+  },
+  {
+    label: '五月天',
+    value: '五月天',
+  },
+  {
+    label: '邓紫棋',
+    value: '邓紫棋',
+  },
+  {
+    label: '萧亚轩',
+    value: '萧亚轩',
+  },
+  {
+    label: '莫文蔚',
+    value: '莫文蔚',
+  },
+  {
+    label: '杨宗纬',
+    value: '杨宗纬',
+  },
+  {
+    label: '刘德华',
+    value: '刘德华',
+  },
+  {
+    label: '罗大佑',
+    value: '罗大佑',
+  },
+  {
+    label: '翻译达人',
+    value: '翻译达人',
+  },
+  {
+    label: '麦霸',
+    value: '麦霸',
+  },
+  {
+    label: '弹指高手',
+    value: '弹指高手',
+  },
+  {
+    label: '唱片爱好者',
+    value: '唱片爱好者',
+  },
+  {
+    label: '音乐节达人',
+    value: '音乐节达人',
+  },
+  {
+    label: '流行音乐',
+    value: '流行音乐',
+  },
+  {
+    label: '交响曲',
+    value: '交响曲',
+  },
+  {
+    label: '爵士乐',
+    value: '爵士乐',
+  },
+  {
+    label: '电音',
+    value: '电音',
+  },
+  {
+    label: '民谣',
+    value: '民谣',
+  },
+  {
+    label: '英伦',
+    value: '英伦',
+  },
+  {
+    label: '拉丁',
+    value: '拉丁',
+  },
+  {
+    label: '蓝调',
+    value: '蓝调',
+  },
+  {
+    label: '后摇',
+    value: '后摇',
+  },
+  {
+    label: '林俊杰',
+    value: '林俊杰',
+  },
+  {
+    label: '周华健',
+    value: '周华健',
+  },
+  {
+    label: '李荣浩',
+    value: '李荣浩',
+  },
+  {
+    label: '张靓颖',
+    value: '张靓颖',
+  },
+  {
+    label: '迈克杰克逊',
+    value: '迈克杰克逊',
+  },
+  {
+    label: '张杰',
+    value: '张杰',
+  },
+  {
+    label: '古风',
+    value: '古风',
+  },
+  {
+    label: '林忆莲',
+    value: '林忆莲',
+  },
 ];
 export const options9 = [
   {
@@ -1289,10 +2231,86 @@ export const options9 = [
     label: '奇迹暖暖',
     value: '奇迹暖暖',
   },
+  {
+    label: '梦幻西游',
+    value: '梦幻西游',
+  },
+  {
+    label: '穿越火线',
+    value: '穿越火线',
+  },
+  {
+    label: '阴阳师',
+    value: '阴阳师',
+  },
+  {
+    label: '魔兽世界',
+    value: '魔兽世界',
+  },
+  {
+    label: '经典魂斗罗',
+    value: '经典魂斗罗',
+  },
+  {
+    label: '电子竞技',
+    value: '电子竞技',
+  },
+  {
+    label: '手游',
+    value: '手游',
+  },
+  {
+    label: 'GTA5',
+    value: 'GTA5',
+  },
+  {
+    label: '单机游戏',
+    value: '单机游戏',
+  },
+  {
+    label: '球球大作战',
+    value: '球球大作战',
+  },
+  {
+    label: '守望先锋',
+    value: '守望先锋',
+  },
+  {
+    label: 'LPL',
+    value: 'LPL',
+  },
+  {
+    label: '英雄联盟',
+    value: '英雄联盟',
+  },
+  {
+    label: '三国杀',
+    value: '三国杀',
+  },
+  {
+    label: '最强王者',
+    value: '最强王者',
+  },
+  {
+    label: '佛系玩家',
+    value: '佛系玩家',
+  },
+  {
+    label: '星际争霸2',
+    value: '星际争霸2',
+  },
+  {
+    label: '网瘾少女',
+    value: '网瘾少女',
+  },
 ];
 export const options0: any = [
   {
     label: '昵称',
+    value: '',
+  },
+  {
+    label: '民族',
     value: '',
   },
   {
@@ -4792,20 +5810,66 @@ for (let key in cityJson) {
 }
 // console.log(nameList);
 export const basicColumnsObj: any = {
-  // {
-  //   label: '浙江',
-  //   value: '浙江',
-  //   children: [
-  //     {
-  //       label: '杭州',
-  //       value: '杭州',
-  //     },
-  //     {
-  //       label: '宁波',
-  //       value: '宁波',
-  //     },
-  //   ],
-  // }
+  民族: [
+    [
+      { label: '汉族', value: '汉族' },
+      { label: '蒙古族', value: '蒙古族' },
+      { label: '回族', value: '回族' },
+      { label: '藏族', value: '藏族' },
+      { label: '维吾尔族', value: '维吾尔族' },
+      { label: '苗族', value: '苗族' },
+      { label: '彝族', value: '彝族' },
+      { label: '壮族', value: '壮族' },
+      { label: '布依族', value: '布依族' },
+      { label: '朝鲜族', value: '朝鲜族' },
+      { label: '满族', value: '满族' },
+      { label: '侗族', value: '侗族' },
+      { label: '瑶族', value: '瑶族' },
+      { label: '白族', value: '白族' },
+      { label: '土家族', value: '土家族' },
+      { label: '哈尼族', value: '哈尼族' },
+      { label: '哈萨克族', value: '哈萨克族' },
+      { label: '傣族', value: '傣族' },
+      { label: '黎族', value: '黎族' },
+      { label: '傈僳族', value: '傈僳族' },
+      { label: '佤族', value: '佤族' },
+      { label: '畲族', value: '畲族' },
+      { label: '高山族', value: '高山族' },
+      { label: '拉祜族', value: '拉祜族' },
+      { label: '水族', value: '水族' },
+      { label: '东乡族', value: '东乡族' },
+      { label: '纳西族', value: '纳西族' },
+      { label: '景颇族', value: '景颇族' },
+      { label: '柯尔克孜族', value: '柯尔克孜族' },
+      { label: '土族', value: '土族' },
+      { label: '达翰尔族', value: '达翰尔族' },
+      { label: '么佬族', value: '么佬族' },
+      { label: '羌族', value: '羌族' },
+      { label: '布朗族', value: '布朗族' },
+      { label: '撒拉族', value: '撒拉族' },
+      { label: '毛南族', value: '毛南族' },
+      { label: '仡佬族', value: '仡佬族' },
+      { label: '锡伯族', value: '锡伯族' },
+      { label: '阿昌族', value: '阿昌族' },
+      { label: '普米族', value: '普米族' },
+      { label: '塔吉克族', value: '塔吉克族' },
+      { label: '怒族', value: '怒族' },
+      { label: '乌孜别克族', value: '乌孜别克族' },
+      { label: '俄罗斯族', value: '俄罗斯族' },
+      { label: '鄂温克族', value: '鄂温克族' },
+      { label: '德昂族', value: '德昂族' },
+      { label: '保安族', value: '保安族' },
+      { label: '裕固族', value: '裕固族' },
+      { label: '京族', value: '京族' },
+      { label: '塔塔尔族', value: '塔塔尔族' },
+      { label: '独龙族', value: '独龙族' },
+      { label: '鄂伦春族', value: '鄂伦春族' },
+      { label: '赫哲族', value: '赫哲族' },
+      { label: '门巴族', value: '门巴族' },
+      { label: '珞巴族', value: '珞巴族' },
+      { label: '基诺族', value: '基诺族' },
+    ],
+  ],
   户籍: nameList,
   学历: [
     [
