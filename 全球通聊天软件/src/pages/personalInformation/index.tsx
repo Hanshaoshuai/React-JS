@@ -138,7 +138,7 @@ const ChatRecord = () => {
       );
       setLabelData(information || {});
       setLabelOption(newOptions0 || []);
-      setMyRegion(newOptions0 ? newOptions0[3].value : '');
+      setMyRegion(newOptions0 ? newOptions0[4].value : '');
       setToNames(newOptions0 ? newOptions0[0].value : '');
     }
   };

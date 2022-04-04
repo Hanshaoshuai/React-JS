@@ -59,8 +59,10 @@ const InformationSettings = ({
 
   const [visible, setVisible] = useState(false);
   const [visibleCascade, setVisibleCascade] = useState(false);
-  const [value, setValue] = useState<(string | null)[]>([]);
+  const [value, setValue] = useState<any>([]);
+  const [valueCascade, setValueCascade] = useState<any>([]);
   const [basicColumns, setBasicColumns] = useState<any>([]);
+  const [basicColumnsCascade, setBasicColumnsCascade] = useState<any>([]);
   const [visibleModal, setVisibleModal] = useState(false);
   const [valueInput, setValueInput] = useState<any>(name);
   const [changeName, setChangeName] = useState(true);
@@ -180,7 +182,7 @@ const InformationSettings = ({
         setVisible(true);
       }
     }
-  }, [value]);
+  }, [value, valueCascade]);
 
   const onSetBasicInformation = async (value: any, valueName: any) => {
     // console.log(value, valueName.split('-'));
@@ -217,10 +219,15 @@ const InformationSettings = ({
       }
       return;
     } else {
-      setValue(valueName.split('-'));
+      if (value === '户籍' || value === '工作所在地') {
+        setValueCascade(valueName.split('-'));
+        setBasicColumnsCascade(basicColumnsObj[value]);
+      } else {
+        setValue(valueName.split('-'));
+        setBasicColumns(basicColumnsObj[value]);
+      }
     }
     setBasicList(value);
-    setBasicColumns(basicColumnsObj[value]);
   };
   const onConfirm = (e: any) => {
     let newList = [...newOptions0].map((item: any) => {
@@ -722,34 +729,30 @@ const InformationSettings = ({
           </div>
         </div>
       </div>
-      {visible && (
-        <Picker
-          columns={basicColumns}
-          visible={visible}
-          onClose={() => {
-            setVisible(false);
-          }}
-          defaultValue={value}
-          onConfirm={onConfirm}
-          // onSelect={(val, extend) => {
-          //   console.log('onSelect', val, extend.items);
-          // }}
-        ></Picker>
-      )}
-      {visibleCascade && (
-        <CascadePicker
-          options={basicColumns}
-          visible={visibleCascade}
-          onClose={() => {
-            setVisibleCascade(false);
-          }}
-          defaultValue={value}
-          onConfirm={onConfirm}
-          // onSelect={(val, extend) => {
-          //   console.log('onSelect', val, extend.items);
-          // }}
-        ></CascadePicker>
-      )}
+      <Picker
+        columns={basicColumns}
+        visible={visible}
+        onClose={() => {
+          setVisible(false);
+        }}
+        value={value}
+        onConfirm={onConfirm}
+        // onSelect={(val, extend) => {
+        //   console.log('onSelect', val, extend.items);
+        // }}
+      ></Picker>
+      <CascadePicker
+        options={basicColumnsCascade}
+        visible={visibleCascade}
+        onClose={() => {
+          setVisibleCascade(false);
+        }}
+        value={valueCascade}
+        onConfirm={onConfirm}
+        // onSelect={(val, extend) => {
+        //   console.log('onSelect', val, extend.items);
+        // }}
+      ></CascadePicker>
       <Dialog
         className="Dialog-box"
         visible={visibleModal}
