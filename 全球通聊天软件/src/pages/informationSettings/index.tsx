@@ -75,6 +75,7 @@ const InformationSettings = ({
   }, [determineWait]);
   useEffect(() => {
     if (!display) {
+      setChangeName(true);
       let timeout = setTimeout(() => {
         setDisplayBlock(false);
         clearTimeout(timeout);
@@ -318,7 +319,7 @@ const InformationSettings = ({
     });
   };
   const onGoBackS = () => {
-    setChangeName(!changeName);
+    setChangeName(true);
     goBackS(false);
   };
   return (
