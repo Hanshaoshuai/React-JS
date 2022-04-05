@@ -76,6 +76,8 @@ const InformationSettings = ({
   useEffect(() => {
     if (!display) {
       setChangeName(true);
+      setVisible(false);
+      setVisibleCascade(false);
       let timeout = setTimeout(() => {
         setDisplayBlock(false);
         clearTimeout(timeout);
