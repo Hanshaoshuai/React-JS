@@ -13,7 +13,7 @@
   width: 100%;
   height: 100%;
   z-index: 10;
-  overflow-y: auto;
+  // overflow-y: auto;
 }
 .personalInformation .searchBox {
   // position: fixed;
@@ -71,7 +71,7 @@
   /* top: 39.1%;
   left: 0; */
   /* z-index: 22; */
-  padding-top: 1.2rem;
+  padding: 1.2rem 0;
 }
 .personalInformation #contents_search {
   display: none;
@@ -125,8 +125,13 @@
   border: none;
 }
 .logo {
-  width: 100%;
+  // width: 100%;
+  width: 95%;
+  margin: 0 auto;
   background: #fff;
+  // margin: 0 0.2rem;
+  border-radius: 0.13rem;
+  overflow: hidden;
 }
 .logo .fankiu {
   width: 100%;
@@ -236,13 +241,83 @@
 }
 
 .personalInformation .contents .denglu-text {
-  width: 100%;
+  // width: 100%;
   margin: 0 auto;
   background: #fff;
   position: relative;
   margin-top: 0.3rem;
   font-size: 0.32rem;
   border: none;
+  margin: 0.3rem 0.2rem 0 0.2rem;
+  border-radius: 0.13rem;
+  .other {
+    .adm-list-body {
+      border: none;
+    }
+    .adm-list-item {
+      padding-left: 0;
+    }
+    .adm-list-item-content {
+      padding-right: 0;
+    }
+    .adm-list-item-content-main {
+      padding: 0.31rem 0;
+    }
+    .adm-list-item:active {
+      background: none;
+      &::after {
+        display: none;
+      }
+    }
+    .main-Selector {
+      // padding: 0 0.3rem;
+    }
+  }
+  .otherQT {
+    width: 100% !important;
+    padding: 0 0 0.2rem 0 !important;
+    background: #f5f4f9;
+    .adm-collapse {
+      // width: 90.8%;
+      background: #fff;
+      padding: 0 4.9% 0 4.9%;
+      margin: 0 auto;
+      border-radius: 0 0 0.13rem 0.13rem;
+    }
+    .adm-collapse-panel-content {
+      .adm-list-item-content-main {
+        padding: 0;
+      }
+      .adm-divider {
+        margin: 0.25rem 0;
+      }
+      .adm-divider-content {
+        font-size: 0.26rem;
+      }
+      .adm-selector-item {
+        color: #ff7a59;
+      }
+      .adm-selector-check-mark-wrapper {
+        border-bottom-color: #ff7a59;
+        border-right-color: #ff7a59;
+      }
+    }
+    .otherQTCollapse {
+      .first {
+        .adm-divider {
+          margin-top: 0;
+        }
+      }
+      .last {
+        margin-bottom: 0.3rem;
+      }
+      .items {
+        &:last-child {
+          margin-bottom: 0.3rem;
+        }
+      }
+    }
+  }
 }
 .personalInformation .contents .denglu-text span {
   display: inline-block;
@@ -263,19 +338,47 @@
 .personalInformation .contents .denglu-text .beiZhu {
   width: 90.8%;
   margin: 0 auto;
-  padding: 0.2rem 0;
+  padding-top: 0.2rem;
   // border-top: 1px solid #d0d0d0;
 }
 .personalInformation .contents .denglu-text .diQu {
   width: 90.8%;
   margin: 0 auto;
-  padding: 0.2rem 0;
-  border-bottom: 1px solid #d0d0d0;
+  padding-top: 0.2rem;
+  // border-bottom: 1px solid #d0d0d0;
   /*display:none;*/
   span {
     &:last-child {
       width: auto;
     }
+  }
+  .optionTerm {
+    width: 48%;
+    display: inline-block;
+    background: #e7f1ff;
+    border-radius: 0.05rem;
+    &:nth-child(even) {
+      margin-left: 4%;
+    }
+    margin-bottom: 0.2rem;
+    .optionTermLabel {
+      padding: 0.15rem;
+      font-size: 0.24rem;
+      line-height: 0.24rem;
+      color: #929292;
+    }
+    .optionTermValue {
+      padding: 0 0.2rem 0.15rem 0.2rem;
+      font-size: 0.27rem;
+      line-height: 0.27rem;
+    }
+  }
+}
+.xiangCe-box {
+  background: #f5f4f9;
+  .xiangCe-box-box {
+    border-radius: 0.13rem;
+    background: #fff;
   }
 }
 .personalInformation .contents .denglu-text .xiangCe {
@@ -473,8 +576,10 @@
   height: 0.9rem;
 }
 .personalInformation .tanChuang .tanChuang_cont {
-  width: 100%;
+  width: 95%;
   background: #fff;
+  margin: 0 auto;
+  border-radius: 0.13rem;
 }
 .personalInformation .tanChuang .tanChuang_cont span {
   display: inline-block;

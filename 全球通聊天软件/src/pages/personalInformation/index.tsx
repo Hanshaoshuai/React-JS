@@ -1,8 +1,8 @@
 import './index.scss';
 
-import React, { useEffect, useState, useRef, useContext } from 'react';
+import React, { useEffect, useState, useRef, useContext, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Toast, ImageViewer } from 'antd-mobile';
+import { Toast, ImageViewer, Collapse, Divider, Selector } from 'antd-mobile';
 import HooksCropperModal from '../HooksCropperModal/HooksCropperModal';
 import InformationSettings from '../informationSettings';
 import { RightOutline } from 'antd-mobile-icons';
@@ -201,7 +201,7 @@ const ChatRecord = () => {
         const { information, newOptions0 } = data?.information || {};
         setLabelData(information || false);
         setLabelOption(newOptions0 || []);
-        setMyRegion(newOptions0 ? newOptions0[3].value : '');
+        setMyRegion(newOptions0 ? newOptions0[4].value : '');
         setCircleFriendsBackground(
           data.circleFriendsBackground || '/images/202203120130501.jpg'
         );
@@ -648,6 +648,143 @@ const ChatRecord = () => {
     getCircleFriendList();
   };
   let listIndexId = 0;
+
+  const listValues = useMemo(() => {
+    const list: any = [];
+    for (let key in labelData) {
+      const options = labelData[key].map((item: any) => ({
+        label: item,
+        value: item,
+      }));
+      if (key === 'ZHUANG_TAI') {
+        list.push(
+          <div key={key} className="first items">
+            <Divider contentPosition="left">状态</Divider>
+            <div className={'main-Selector'}>
+              <Selector
+                options={options}
+                value={labelData[key] || []}
+                multiple={true}
+              />
+            </div>
+          </div>
+        );
+      }
+      if (key === 'XING_GE') {
+        list.push(
+          <div key={key} className="items">
+            <Divider contentPosition="left">性格</Divider>
+            <div className={'main-Selector'}>
+              <Selector
+                options={options}
+                value={labelData[key] || []}
+                multiple={true}
+              />
+            </div>
+          </div>
+        );
+      }
+      if (key === 'JIA_ZHI_GUAN') {
+        list.push(
+          <div key={key} className="items">
+            <Divider contentPosition="left">价值观</Divider>
+            <div className={'main-Selector'}>
+              <Selector
+                options={options}
+                value={labelData[key] || []}
+                multiple={true}
+              />
+            </div>
+          </div>
+        );
+      }
+      if (key === 'AI_HAO') {
+        list.push(
+          <div key={key} className="items">
+            <Divider contentPosition="left">爱好</Divider>
+            <div className={'main-Selector'}>
+              <Selector
+                options={options}
+                value={labelData[key] || []}
+                multiple={true}
+              />
+            </div>
+          </div>
+        );
+      }
+      if (key === 'SHU_JI') {
+        list.push(
+          <div key={key} className="items">
+            <Divider contentPosition="left">书籍</Divider>
+            <div className={'main-Selector'}>
+              <Selector
+                options={options}
+                value={labelData[key] || []}
+                multiple={true}
+              />
+            </div>
+          </div>
+        );
+      }
+      if (key === 'MEI_SHI') {
+        list.push(
+          <div key={key} className="items">
+            <Divider contentPosition="left">美食</Divider>
+            <div className={'main-Selector'}>
+              <Selector
+                options={options}
+                value={labelData[key] || []}
+                multiple={true}
+              />
+            </div>
+          </div>
+        );
+      }
+      if (key === 'YUN_DONG') {
+        list.push(
+          <div key={key} className="items">
+            <Divider contentPosition="left">运动</Divider>
+            <div className={'main-Selector'}>
+              <Selector
+                options={options}
+                value={labelData[key] || []}
+                multiple={true}
+              />
+            </div>
+          </div>
+        );
+      }
+      if (key === 'DIAN_YING') {
+        list.push(
+          <div key={key} className="items">
+            <Divider contentPosition="left">电影</Divider>
+            <div className={'main-Selector'}>
+              <Selector
+                options={options}
+                value={labelData[key] || []}
+                multiple={true}
+              />
+            </div>
+          </div>
+        );
+      }
+      if (key === 'YOU_XI') {
+        list.push(
+          <div key={key} className="last items">
+            <Divider contentPosition="left">游戏</Divider>
+            <div className={'main-Selector'}>
+              <Selector
+                options={options}
+                value={labelData[key] || []}
+                multiple={true}
+              />
+            </div>
+          </div>
+        );
+      }
+    }
+    return list;
+  }, [labelData]);
   return (
     <div className="personalInformation" onClick={tabsHid}>
       <InformationSettings
@@ -750,223 +887,259 @@ const ChatRecord = () => {
         </div>
       )}
       {!addSearchFriends || searchResults ? (
-        <div className="contents">
-          <div className="logo">
-            <div className="fankiu">
-              <div className="content-food border-bottom">
-                <div className="imgas">
-                  <label>
-                    <p onClick={viewAvatar}>
-                      <img
-                        className="border"
-                        src={
-                          localStorage.getItem('personalInformation')
-                            ? headPortrait
-                            : myHeadZoom
-                        }
-                        alt=""
-                        id="imges"
-                      />
-                    </p>
-                  </label>
-                </div>
-                {hooksModalVisible && (
-                  <HooksCropperModal
-                    uploadedImageFile={hooksModalFile}
-                    onClose={setHooksModalVisibles}
-                    onSubmit={handleGetResultImgUrl}
-                  />
-                )}
-                <div className="texts">
-                  <span className="first">
-                    <i>{toNames}</i>
-                    <img
-                      className="sexImages"
-                      src={`${
-                        sexImage === 'Sir'
-                          ? '/images/user__easyico.png'
-                          : '/images/user__easyico_1.png'
-                      }`}
-                      alt=""
+        <div style={{ overflowY: 'auto', height: '100%' }}>
+          <div className="contents">
+            <div className="logo">
+              <div className="fankiu">
+                <div className="content-food">
+                  <div className="imgas">
+                    <label>
+                      <p onClick={viewAvatar}>
+                        <img
+                          className="border"
+                          src={
+                            localStorage.getItem('personalInformation')
+                              ? headPortrait
+                              : myHeadZoom
+                          }
+                          alt=""
+                          id="imges"
+                        />
+                      </p>
+                    </label>
+                  </div>
+                  {hooksModalVisible && (
+                    <HooksCropperModal
+                      uploadedImageFile={hooksModalFile}
+                      onClose={setHooksModalVisibles}
+                      onSubmit={handleGetResultImgUrl}
                     />
-                  </span>
-                  <span className="lalst">
-                    聊聊号：<a>{LLNumber}</a>
-                  </span>
-                  {localStorage.getItem('personalInformation') ||
-                  searchResults ? (
-                    <span className="lalst lalst_name">
-                      昵称：<a>{nickName}</a>
-                    </span>
-                  ) : (
-                    ''
                   )}
+                  <div className="texts">
+                    <span className="first">
+                      <i>{toNames}</i>
+                      <img
+                        className="sexImages"
+                        src={`${
+                          sexImage === 'Sir'
+                            ? '/images/user__easyico.png'
+                            : '/images/user__easyico_1.png'
+                        }`}
+                        alt=""
+                      />
+                    </span>
+                    <span className="lalst">
+                      聊聊号：<a>{LLNumber}</a>
+                    </span>
+                    {localStorage.getItem('personalInformation') ||
+                    searchResults ? (
+                      <span className="lalst lalst_name">
+                        昵称：<a>{nickName}</a>
+                      </span>
+                    ) : (
+                      ''
+                    )}
+                  </div>
                 </div>
               </div>
+              <ImageViewer
+                image={
+                  localStorage.getItem('personalInformation')
+                    ? headPortraitB
+                    : myHead
+                }
+                visible={visible}
+                onClose={() => {
+                  setVisible(false);
+                }}
+              />
             </div>
-            <ImageViewer
-              image={
-                localStorage.getItem('personalInformation')
-                  ? headPortraitB
-                  : myHead
-              }
-              visible={visible}
-              onClose={() => {
-                setVisible(false);
-              }}
-            />
-          </div>
-          <div className="denglu-text">
-            {!localStorage.getItem('personalInformation') && !searchResults ? (
-              <div
-                className="sheZhi denglu_sheZhi"
-                // onClick={setUp}
-                onClick={dataSetting}
-              >
-                资料查看
-              </div>
-            ) : friend &&
-              (searchResults ||
-                !localStorage.getItem('personalInformation') ||
-                !fromType) ? (
-              <div className="sheZhi denglu_sheZhi" onClick={setUp}>
-                设置备注
-              </div>
-            ) : (
-              ''
-            )}
-          </div>
-          <div className="denglu-text ziZhu">
-            {remarksNuber ? (
-              <div className="beiZhu">
-                <span>电话号码：</span>
-                <span>{remarksNuber}</span>
-              </div>
-            ) : (
-              ''
-            )}
-            <div className="diQu">
-              <span>地区：</span>
-              <span>{myRegion ? myRegion : '未设置'}</span>
+            <div className="denglu-text">
+              {!localStorage.getItem('personalInformation') &&
+              !searchResults ? (
+                <div
+                  className="sheZhi denglu_sheZhi"
+                  // onClick={setUp}
+                  onClick={dataSetting}
+                >
+                  资料设置
+                  <span
+                    style={{
+                      float: 'right',
+                      textAlign: 'right',
+                      color: '#d0d0d0',
+                    }}
+                  >
+                    <RightOutline />
+                  </span>
+                </div>
+              ) : friend &&
+                (searchResults ||
+                  !localStorage.getItem('personalInformation') ||
+                  !fromType) ? (
+                <div className="sheZhi denglu_sheZhi" onClick={setUp}>
+                  设置备注
+                </div>
+              ) : (
+                ''
+              )}
             </div>
-            <div className="xiangCe" onClick={onDynamic}>
-              <span className="xiangCeTite">个人相册</span>
-              <div className="xiangCeImg">
-                {circleFriendData.map((item: any, index: number) => {
+            <div className="denglu-text ziZhu">
+              {remarksNuber ? (
+                <div className="beiZhu">
+                  <span>电话号码：</span>
+                  <span>{remarksNuber}</span>
+                </div>
+              ) : (
+                ''
+              )}
+              <div className="diQu">基本信息</div>
+              <div className="diQu">
+                {labelOption.map((item: any, index: number) => {
+                  if (index === 0) return null;
                   return (
-                    <>
-                      {item.imgList &&
-                        item.imgList.map((items: any, id: number) => {
-                          listIndexId += 1;
-                          let styles = null;
-                          const list = items?.styleLength.split('_');
-                          const type = list[0];
-                          if (type === 'width') {
-                            styles = {
-                              height: '100%',
-                            };
-                          } else {
-                            styles = {
-                              width: '100%',
-                            };
-                          }
-                          if (listIndexId > 3) {
-                            return null;
-                          }
-                          return (
-                            <div
-                              key={`${items?.title}_${id + index}`}
-                              className="xiangCeImgItem"
-                            >
-                              <img
-                                style={styles}
-                                src={items.apathZoom}
-                                alt=""
-                              />
-                            </div>
-                          );
-                        })}
-                    </>
+                    <div className="optionTerm" key={item.label}>
+                      <div className="optionTermLabel">{item.label}</div>
+                      <div className="optionTermValue">{item.value}</div>
+                    </div>
                   );
                 })}
-                <span style={{ flex: '1' }}>
-                  <RightOutline />
-                </span>
+                <div className="border-bottom"></div>
+                {/* <span>地区：</span>
+              <span>{myRegion ? myRegion : '未设置'}</span> */}
+              </div>
+              <div className="sheZhi denglu_sheZhi other otherQT">
+                <Collapse>
+                  <Collapse.Panel key="1" title="个人标签">
+                    <div className="otherQTCollapse">{listValues}</div>
+                  </Collapse.Panel>
+                </Collapse>
+              </div>
+              <div className="xiangCe-box">
+                <div className="xiangCe-box-box">
+                  <div className="xiangCe" onClick={onDynamic}>
+                    <span className="xiangCeTite">个人相册</span>
+                    <div className="xiangCeImg">
+                      {circleFriendData.map((item: any, index: number) => {
+                        return (
+                          <>
+                            {item.imgList &&
+                              item.imgList.map((items: any, id: number) => {
+                                listIndexId += 1;
+                                let styles = null;
+                                const list = items?.styleLength.split('_');
+                                const type = list[0];
+                                if (type === 'width') {
+                                  styles = {
+                                    height: '100%',
+                                  };
+                                } else {
+                                  styles = {
+                                    width: '100%',
+                                  };
+                                }
+                                if (listIndexId > 3) {
+                                  return null;
+                                }
+                                return (
+                                  <div
+                                    key={`${items?.title}_${id + index}`}
+                                    className="xiangCeImgItem"
+                                  >
+                                    <img
+                                      style={styles}
+                                      src={items.apathZoom}
+                                      alt=""
+                                    />
+                                  </div>
+                                );
+                              })}
+                          </>
+                        );
+                      })}
+                      <span style={{ flex: '1' }}>
+                        <RightOutline />
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          {friend &&
-          urlValue !== myLocName &&
-          (searchResults ||
-            !localStorage.getItem('personalInformation') ||
-            !fromType) ? (
-            <div className="denglu-food" onClick={chatroom}>
-              <span>发送消息</span>
-            </div>
-          ) : (
-            ''
-          )}
-          <div
-            className="denglu-food friends"
-            style={{ display: `${!friend && searchResults ? '' : 'none'}` }}
-          >
-            <span onClick={addFriends}>添加好友</span>
-          </div>
-          <div className={`tanChuang ${setUps ? 'tanChuangB' : ''}`}>
-            <div id="tanChuang_top"></div>
-            <div className="tanChuang_cont">
-              <div className="sheZhi sheZhiFirst">
-                {localStorage.getItem('personalInformation') ||
-                searchResults ? (
-                  <span>备注名：</span>
-                ) : (
-                  <span>昵称：</span>
-                )}
-                <input
-                  value={
-                    localStorage.getItem('personalInformation') || searchResults
-                      ? toNames
-                      : nickName
-                  }
-                  placeholder={`${
-                    localStorage.getItem('personalInformation')
-                      ? '请输入备注'
-                      : '请输入昵称'
-                  }`}
-                  type="text"
-                  className="ferst mint-field-core"
-                  onChange={(e) => onChange(e, 1)}
-                />
+            {friend &&
+            urlValue !== myLocName &&
+            (searchResults ||
+              !localStorage.getItem('personalInformation') ||
+              !fromType) ? (
+              <div className="denglu-food" onClick={chatroom}>
+                <span>发送消息</span>
               </div>
-              <div className="sheZhi sheZhiLste">
-                {localStorage.getItem('personalInformation') ||
-                searchResults ? (
-                  <span>电话号码：</span>
-                ) : (
-                  <span>地区：</span>
-                )}
-                <input
-                  value={
-                    localStorage.getItem('personalInformation') || searchResults
-                      ? remarksNuber
-                      : setRegion
-                  }
-                  placeholder={`${
-                    localStorage.getItem('personalInformation')
-                      ? '请输入电话'
-                      : '请输入地区'
-                  }`}
-                  type="text"
-                  className="last mint-field-core"
-                  onChange={(e) => onChange(e, 2)}
-                />
+            ) : (
+              ''
+            )}
+            <div
+              className="denglu-food friends"
+              style={{ display: `${!friend && searchResults ? '' : 'none'}` }}
+            >
+              <span onClick={addFriends}>添加好友</span>
+            </div>
+            <div className={`tanChuang ${setUps ? 'tanChuangB' : ''}`}>
+              <div id="tanChuang_top"></div>
+              <div className="tanChuang_cont">
+                <div className="sheZhi sheZhiFirst">
+                  {localStorage.getItem('personalInformation') ||
+                  searchResults ? (
+                    <span>备注名：</span>
+                  ) : (
+                    <span>昵称：</span>
+                  )}
+                  <input
+                    value={
+                      localStorage.getItem('personalInformation') ||
+                      searchResults
+                        ? toNames
+                        : nickName
+                    }
+                    placeholder={`${
+                      localStorage.getItem('personalInformation')
+                        ? '请输入备注'
+                        : '请输入昵称'
+                    }`}
+                    type="text"
+                    className="ferst mint-field-core"
+                    onChange={(e) => onChange(e, 1)}
+                  />
+                </div>
+                <div className="sheZhi sheZhiLste">
+                  {localStorage.getItem('personalInformation') ||
+                  searchResults ? (
+                    <span>电话号码：</span>
+                  ) : (
+                    <span>地区：</span>
+                  )}
+                  <input
+                    value={
+                      localStorage.getItem('personalInformation') ||
+                      searchResults
+                        ? remarksNuber
+                        : setRegion
+                    }
+                    placeholder={`${
+                      localStorage.getItem('personalInformation')
+                        ? '请输入电话'
+                        : '请输入地区'
+                    }`}
+                    type="text"
+                    className="last mint-field-core"
+                    onChange={(e) => onChange(e, 2)}
+                  />
+                </div>
               </div>
-            </div>
-            <div className="tanChuang_food tanChuang_first" onClick={save}>
-              <span>保&nbsp;&nbsp;存</span>
-            </div>
-            <div className="tanChuang_food tanChuang_last" onClick={setUp}>
-              <span>取&nbsp;&nbsp;消</span>
+              <div className="tanChuang_food tanChuang_first" onClick={save}>
+                <span>保&nbsp;&nbsp;存</span>
+              </div>
+              <div className="tanChuang_food tanChuang_last" onClick={setUp}>
+                <span>取&nbsp;&nbsp;消</span>
+              </div>
             </div>
           </div>
         </div>

@@ -669,7 +669,7 @@ const ChatRecord = () => {
               style={{
                 display: `${imga_last}`,
                 border: '1px #dddddd solid',
-                background: '#f5f4f9',
+                background: '#f3f2f2',
               }}
             >
               {imgList.map((i: any, keys: any) => {

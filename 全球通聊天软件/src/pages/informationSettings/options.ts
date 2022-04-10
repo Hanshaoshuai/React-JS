@@ -2333,13 +2333,22 @@ export const options0: any = [
     label: '体重',
     value: '',
   },
+  {
+    label: '身高',
+    value: '',
+  },
 ];
 let list = [];
+let listSG = [];
 for (let i = 30; i < 201; i++) {
   if (i === 30) {
     list = [];
+    listSG = [];
   }
   list.push({ label: `${i}kg`, value: `${i}kg` });
+  if (i < 100) {
+    listSG.push({ label: `${100 + i}cm`, value: `${100 + i}cm` });
+  }
 }
 
 const cityJson: any = {
@@ -5787,7 +5796,6 @@ const cityJson: any = {
     ],
   },
 };
-
 const nameList = [];
 for (let key in cityJson) {
   let keyName = {};
@@ -5898,4 +5906,5 @@ export const basicColumnsObj: any = {
     ],
   ],
   体重: [list],
+  身高: [listSG],
 };

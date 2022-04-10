@@ -24,7 +24,6 @@ import { MyContext } from '../../models/context';
 import { moment } from '../../helpers';
 import { urlObj } from '../personalInformation/urlObj';
 
-let indexLength = 0;
 let imgIndex: any = [];
 let demoImages: any = [];
 let toIndexId: any = null;
@@ -76,6 +75,7 @@ const Dynamic = ({
   const [indexKey, setIndexKey] = useState(0);
   const { _name, _value, _valueObj } = urlObj(urlPathname);
   const [displayBlock] = useState(true);
+  const [displayListImg, setDisplayListImg] = useState([]);
 
   useEffect(() => {
     if (!display) {
@@ -83,7 +83,6 @@ const Dynamic = ({
     } else if (display) {
       if (name) {
         setPageS(2);
-        indexLength = 0;
         imgIndex = [];
         demoImages = [];
       }
@@ -162,7 +161,6 @@ const Dynamic = ({
     }
   }, [urlPathname]);
   useEffect(() => {
-    indexLength = 0;
     imgIndex = [];
     demoImages = [];
     setCircleFriendList([]);
@@ -170,7 +168,6 @@ const Dynamic = ({
   }, []);
   const componentWillUnmount = () => {
     setPageS(1);
-    indexLength = 0;
     imgIndex = [];
     demoImages = [];
     setCircleFriendList([]);
@@ -185,26 +182,24 @@ const Dynamic = ({
       }
       getCircleFriendList();
     } else {
-      let index = 0;
       setCircleFriendList(circleFriendData || []);
-      circleFriendData.map((item: any) => {
-        item.imgList &&
-          item.imgList.map((item: any) => {
+      circleFriendData.map((term: any) => {
+        term.imgList &&
+          term.imgList.map((item: any, index: number) => {
             imgIndex.push({
               url: item.apath,
               index: index,
+              time: term.time,
             });
-            index += 1;
             demoImages.push(item.apath);
             return item;
           });
 
-        return item;
+        return term;
       });
       setDemoImagesList(demoImages);
     }
     return () => {
-      indexLength = 0;
       imgIndex = [];
       demoImages = [];
       setCircleFriendList([]);
@@ -216,7 +211,6 @@ const Dynamic = ({
     if (key) {
       setSwitchName(true);
       setDividerBottom(false);
-      indexLength = 0;
       imgIndex = [];
       demoImages = [];
     }
@@ -253,19 +247,19 @@ const Dynamic = ({
           setCircleFriendList((val: any) => [...val, ...(res.data || [])]);
         }
 
-        res.data.map((item: any) => {
-          item.imgList &&
-            item.imgList.map((item: any) => {
+        res.data.map((term: any) => {
+          term.imgList &&
+            term.imgList.map((item: any, index: number) => {
               imgIndex.push({
                 url: item.apath,
-                index: indexLength,
+                index: index,
+                time: term.time,
               });
-              indexLength += 1;
               demoImages.push(item.apath);
               return item;
             });
 
-          return item;
+          return term;
         });
         setDemoImagesList(demoImages);
       }
@@ -451,7 +445,7 @@ const Dynamic = ({
       }
     });
   };
-  const onSetVisible = (url: number) => {
+  const onSetVisible = (url: number, time: any) => {
     onSetCommentBlock(null);
     imgIndex.map((item: any) => {
       if (item.url === url) {
@@ -459,6 +453,14 @@ const Dynamic = ({
       }
       return item;
     });
+    const list = imgIndex.filter((item: any) => {
+      if (item.time === time) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    setDisplayListImg(list.map((item: any) => item.url));
     setVisible(true);
   };
 
@@ -876,7 +878,9 @@ const Dynamic = ({
                           >
                             <img
                               style={styles}
-                              onClick={() => onSetVisible(items.apath)}
+                              onClick={() =>
+                                onSetVisible(items.apath, item.time)
+                              }
                               src={items.apathZoom}
                               alt=""
                             />
@@ -1070,7 +1074,7 @@ const Dynamic = ({
       </div>
       {visible && (
         <ImageViewer.Multi
-          images={demoImagesList}
+          images={displayListImg}
           visible={visible}
           defaultIndex={defaultIndex}
           onClose={() => {
