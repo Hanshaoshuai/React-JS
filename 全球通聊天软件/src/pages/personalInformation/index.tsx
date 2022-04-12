@@ -684,10 +684,10 @@ const ChatRecord = () => {
           </div>
         );
       }
-      if (key === 'JIA_ZHI_GUAN') {
+      if (key === 'ZHI_YE') {
         list.push(
           <div key={key} className="items">
-            <Divider contentPosition="left">价值观</Divider>
+            <Divider contentPosition="left">职业</Divider>
             <div className={'main-Selector'}>
               <Selector
                 options={options}
