@@ -282,6 +282,12 @@ const InformationSettings = ({
         Toast.show('添加自定义前，请先选一个！');
         return;
       }
+      for (let i = 0; i < list.length; i++) {
+        if (list[i] === InputText) {
+          Toast.show('该标签已存在，换个别的吧！');
+          return;
+        }
+      }
       list.push(InputText);
       options.push({
         label: InputText,

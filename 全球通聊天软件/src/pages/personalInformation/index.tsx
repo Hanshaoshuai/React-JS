@@ -698,10 +698,52 @@ const ChatRecord = () => {
           </div>
         );
       }
+      if (key === 'SHENG_HUO_FANG_SHI') {
+        list.push(
+          <div key={key} className="items">
+            <Divider contentPosition="left">生活方式</Divider>
+            <div className={'main-Selector'}>
+              <Selector
+                options={options}
+                value={labelData[key] || []}
+                multiple={true}
+              />
+            </div>
+          </div>
+        );
+      }
+      if (key === 'JIA_ZHI_GUAN') {
+        list.push(
+          <div key={key} className="items">
+            <Divider contentPosition="left">价值观</Divider>
+            <div className={'main-Selector'}>
+              <Selector
+                options={options}
+                value={labelData[key] || []}
+                multiple={true}
+              />
+            </div>
+          </div>
+        );
+      }
       if (key === 'AI_HAO') {
         list.push(
           <div key={key} className="items">
             <Divider contentPosition="left">爱好</Divider>
+            <div className={'main-Selector'}>
+              <Selector
+                options={options}
+                value={labelData[key] || []}
+                multiple={true}
+              />
+            </div>
+          </div>
+        );
+      }
+      if (key === 'LV_XING') {
+        list.push(
+          <div key={key} className="items">
+            <Divider contentPosition="left">旅行</Divider>
             <div className={'main-Selector'}>
               <Selector
                 options={options}
@@ -758,6 +800,20 @@ const ChatRecord = () => {
         list.push(
           <div key={key} className="items">
             <Divider contentPosition="left">电影</Divider>
+            <div className={'main-Selector'}>
+              <Selector
+                options={options}
+                value={labelData[key] || []}
+                multiple={true}
+              />
+            </div>
+          </div>
+        );
+      }
+      if (key === 'YIN_YUE') {
+        list.push(
+          <div key={key} className="items">
+            <Divider contentPosition="left">音乐</Divider>
             <div className={'main-Selector'}>
               <Selector
                 options={options}
