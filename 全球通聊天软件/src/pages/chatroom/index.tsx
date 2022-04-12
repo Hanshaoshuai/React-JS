@@ -198,6 +198,9 @@ const ChatList = () => {
     if (history.location.search === '?OnPlayUrl=0' && onPlayUrl) {
       videoPlays();
     }
+    if (history.location.search !== '?ImageViewer=1') {
+      setVisible(false);
+    }
   }, [history.location.search]);
 
   const onPause = (url: string) => {
@@ -261,6 +264,7 @@ const ChatList = () => {
     // setFileUrl(url);
     setDefaultIndex(imagelistId[url]);
     setVisible(true);
+    history.push(`${window.location.pathname}?ImageViewer=1`);
   };
 
   const onPlay = (url: any) => {
@@ -2561,6 +2565,7 @@ const ChatList = () => {
             defaultIndex={defaultIndex}
             onClose={() => {
               setVisible(false);
+              history.goBack();
             }}
           />
         )}

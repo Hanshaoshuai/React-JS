@@ -29,6 +29,11 @@ body {
   #root {
     width: 100%;
     height: 100%;
+    overflow: hidden;
+    .adm-side-bar,
+    .adm-image-viewer-content {
+      width: auto;
+    }
   }
   a {
     -webkit-tap-highlight-color: transparent;
@@ -36,6 +41,9 @@ body {
     -webkit-user-select: none;
     text-decoration: none;
     -webkit-appearance: none;
+  }
+  ::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
   }
 }
 

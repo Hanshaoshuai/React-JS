@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="htmls">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
@@ -100,6 +100,11 @@
         vl(100, 1024);
       } else {
         vl(100, 1920);
+
+        var rootDom = document.getElementById('htmls');
+        rootDom.style.maxWidth = '910px';
+        rootDom.style.margin = '0 auto';
+        rootDom.style.position = 'relative';
       }
     </script>
     <style id="splash-spinner">

@@ -74,23 +74,31 @@ const Dynamic = ({
   const [switchName, setSwitchName] = useState(false);
   const [indexKey, setIndexKey] = useState(0);
   const { _name, _value, _valueObj } = urlObj(urlPathname);
-  const [displayBlock] = useState(true);
+  const [displayBlock, setDisplayBlock] = useState(false);
   const [displayListImg, setDisplayListImg] = useState([]);
 
   useEffect(() => {
-    if (!display) {
+    if (!display && name) {
       videoPlays('null', '', 'no');
+      let timeout = setTimeout(() => {
+        clearTimeout(timeout);
+        setDisplayBlock(false);
+      }, 310);
     } else if (display) {
       if (name) {
         setPageS(2);
         imgIndex = [];
         demoImages = [];
       }
+      setDisplayBlock(true);
     }
     let timeout = setTimeout(() => {
       setIndexKey(indexKey + 1);
       clearTimeout(timeout);
     }, 310);
+    if (!name) {
+      setDisplayBlock(true);
+    }
   }, [display]);
   useEffect(() => {
     if (toCircleFriendsBackground) {
@@ -158,6 +166,9 @@ const Dynamic = ({
         }
       }
       setNameString(nameString);
+    }
+    if (!_valueObj.ImageViewer) {
+      setVisible(false);
     }
   }, [urlPathname]);
   useEffect(() => {
@@ -462,6 +473,15 @@ const Dynamic = ({
     });
     setDisplayListImg(list.map((item: any) => item.url));
     setVisible(true);
+    history.push(
+      `${window.location.pathname}${
+        window.location.search
+      }&${urlName}-${new Date().getTime()}=${JSON.stringify({
+        name: urlValue || '',
+        album: 'yes',
+        ImageViewer: 1,
+      })}`
+    );
   };
 
   const onSetCommentBlock = (index: any) => {
@@ -1079,6 +1099,7 @@ const Dynamic = ({
           defaultIndex={defaultIndex}
           onClose={() => {
             setVisible(false);
+            history.goBack();
           }}
         />
       )}
