@@ -140,11 +140,20 @@ const InformationSettings = ({
       if (labelData?.XING_GE) {
         newList(options1, labelData.XING_GE);
       }
+      if (labelData?.ZHI_YE) {
+        newList(options2, labelData.ZHI_YE);
+      }
+      if (labelData?.SHENG_HUO_FANG_SHI) {
+        newList(options22, labelData.SHENG_HUO_FANG_SHI);
+      }
       if (labelData?.JIA_ZHI_GUAN) {
         newList(options3, labelData.JIA_ZHI_GUAN);
       }
       if (labelData?.AI_HAO) {
         newList(options4, labelData.AI_HAO);
+      }
+      if (labelData?.LV_XING) {
+        newList(options44, labelData.LV_XING);
       }
       if (labelData?.SHU_JI) {
         newList(options5, labelData.SHU_JI);
@@ -157,6 +166,9 @@ const InformationSettings = ({
       }
       if (labelData?.DIAN_YING) {
         newList(options8, labelData.DIAN_YING);
+      }
+      if (labelData?.YIN_YUE) {
+        newList(options88, labelData.YIN_YUE);
       }
       if (labelData?.YOU_XI) {
         newList(options9, labelData.YOU_XI);
