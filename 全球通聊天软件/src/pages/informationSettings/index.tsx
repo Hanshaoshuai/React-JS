@@ -730,6 +730,7 @@ const InformationSettings = ({
           >
             <span>{changeName ? '设置' : '确定'}</span>
           </div>
+          <div className="border-bottom"></div>
         </div>
       </div>
       <Picker
