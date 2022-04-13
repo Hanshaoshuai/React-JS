@@ -325,11 +325,11 @@ const InformationSettings = ({
         if (numbers > 0 && numbers < item.offsetHeight) {
           // console.log(index, item.innerText, Math.floor(numbers));
         }
-        if (Math.floor(numbers) > 0 && Math.floor(numbers) < 50) {
+        if (Math.floor(numbers) >= 0 && Math.floor(numbers) <= 50) {
           domList[0].children[0].innerText = item.innerText;
         } else if (
-          Math.floor(numbers) > 50 &&
-          Math.floor(numbers) < 100 &&
+          Math.floor(numbers) >= 50 &&
+          Math.floor(numbers) <= 100 &&
           domList[index - 1]
         ) {
           domList[0].children[0].innerText = domList[index - 1].innerText;

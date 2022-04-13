@@ -549,7 +549,8 @@ const Dynamic = ({
     let height = e.target.scrollHeight - e.target.scrollTop;
     if (
       Math.ceil(height) === e.target.clientHeight ||
-      Math.floor(height) === e.target.clientHeight
+      Math.floor(height) === e.target.clientHeight ||
+      Math.floor(height) - e.target.clientHeight < 3
     ) {
       if (dataTips || switchName) return;
       // console.log(1);
