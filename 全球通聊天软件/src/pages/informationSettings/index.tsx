@@ -481,7 +481,7 @@ const InformationSettings = ({
                           <div className="adm-space-item1">
                             <div
                               className="adm-selector-item1"
-                              onClick={() => custom('ZHI_YE', options1, '职业')}
+                              onClick={() => custom('ZHI_YE', options2, '职业')}
                             >
                               添加自定义
                             </div>
@@ -507,7 +507,7 @@ const InformationSettings = ({
                               onClick={() =>
                                 custom(
                                   'SHENG_HUO_FANG_SHI',
-                                  options1,
+                                  options22,
                                   '生活方式'
                                 )
                               }
@@ -582,7 +582,7 @@ const InformationSettings = ({
                             <div
                               className="adm-selector-item1"
                               onClick={() =>
-                                custom('LV_XING', options4, '旅行')
+                                custom('LV_XING', options44, '旅行')
                               }
                             >
                               添加自定义
@@ -705,7 +705,7 @@ const InformationSettings = ({
                             <div
                               className="adm-selector-item1"
                               onClick={() =>
-                                custom('YIN_YUE', options8, '音乐')
+                                custom('YIN_YUE', options88, '音乐')
                               }
                             >
                               添加自定义
