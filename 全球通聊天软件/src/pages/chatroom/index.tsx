@@ -1043,10 +1043,10 @@ const ChatList = () => {
                           style={{
                             display: 'none',
                             width: '0.35rem',
-                            height: '0.305rem',
+                            height: '0.31rem',
                             background: 'url(/images/voice.gif)',
                             backgroundSize: '100% 100%',
-                            margin: '0.01rem 0.04rem 0 0.02rem',
+                            margin: '0 0.04rem 0 0.02rem',
                           }}
                         ></span>
                         {/* {file.voice.voice && (voice.gif
@@ -1379,10 +1379,10 @@ const ChatList = () => {
                           transform: 'rotate(180deg)',
                           display: 'none',
                           width: '0.35rem',
-                          height: '0.305rem',
+                          height: '0.31rem',
                           background: 'url(/images/voice.gif)',
                           backgroundSize: '100% 100%',
-                          margin: '0.01rem 0.02rem 0 0.04rem',
+                          margin: '0 0.02rem 0 0.04rem',
                         }}
                       ></span>
                       <span
