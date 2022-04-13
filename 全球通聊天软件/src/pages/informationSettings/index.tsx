@@ -337,6 +337,9 @@ const InformationSettings = ({
       }
       return item;
     });
+    if (e.target.scrollTop <= 50) {
+      domList[0].children[0].innerText = '状态';
+    }
   };
   const onGoBackS = () => {
     setChangeName(true);
