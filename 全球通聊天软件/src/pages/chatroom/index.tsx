@@ -179,6 +179,8 @@ const ChatList = () => {
 
   useEffect(() => {
     const play: any = document.getElementById('play');
+    const playImg: any = document.getElementById(audioUrl);
+    const playImgPlay: any = document.getElementById(`${audioUrl}Play`);
     if (audioUrl) {
       play.setAttribute('index', audioUrl);
       play.src = `${audioUrl}`;
@@ -188,8 +190,9 @@ const ChatList = () => {
         play.setAttribute('index', '');
         // console.log('ended');
         play.removeEventListener('ended', ended, false);
+        playImg.style.display = 'inline-block';
+        playImgPlay.style.display = 'none';
       };
-
       play.addEventListener('ended', ended, false);
     }
   }, [audioUrl]);
@@ -205,12 +208,19 @@ const ChatList = () => {
 
   const onPause = (url: string) => {
     const play: any = document.getElementById('play');
+    const playImg: any = document.getElementById(url);
+    const playImgPlay: any = document.getElementById(`${url}Play`);
     if (play.getAttribute('index') === url) {
       // console.log(url, audioUrl);
       setAudioUrl('');
       play.setAttribute('index', '');
       play.src = ``;
       play.pause();
+      playImg.style.display = 'inline-block';
+      playImgPlay.style.display = 'none';
+    } else {
+      playImg.style.display = 'none';
+      playImgPlay.style.display = 'inline-block';
     }
   };
 
@@ -1004,6 +1014,8 @@ const ChatList = () => {
                         style={{
                           padding: '0.16rem 0.2rem',
                           position: 'relative',
+                          display: 'flex',
+                          alignItems: 'center',
                         }}
                         onClick={(e: any) => {
                           // console.log(file);
@@ -1021,11 +1033,23 @@ const ChatList = () => {
                           {`${file.voice.number}"`}
                         </span>
                         <SoundOutline
+                          id={`${file.url}`}
                           style={{
                             transform: 'rotate(180deg)',
                           }}
                         />
-                        {/* {file.voice.voice && (
+                        <span
+                          id={`${file.url}Play`}
+                          style={{
+                            display: 'none',
+                            width: '0.35rem',
+                            height: '0.305rem',
+                            background: 'url(/images/voice.gif)',
+                            backgroundSize: '100% 100%',
+                            margin: '0.01rem 0.04rem 0 0.02rem',
+                          }}
+                        ></span>
+                        {/* {file.voice.voice && (voice.gif
                           <div
                             style={{
                               position: 'absolute',
@@ -1343,13 +1367,24 @@ const ChatList = () => {
                       onClick={(e: any) => {
                         setAudioUrl(file.url);
                         onPause(file.url);
-
                         if (file.voice.voice) {
                           onRead(file.url, file.index);
                         }
                       }}
                     >
-                      <SoundOutline />
+                      <SoundOutline id={`${file.url}`} />
+                      <span
+                        id={`${file.url}Play`}
+                        style={{
+                          transform: 'rotate(180deg)',
+                          display: 'none',
+                          width: '0.35rem',
+                          height: '0.305rem',
+                          background: 'url(/images/voice.gif)',
+                          backgroundSize: '100% 100%',
+                          margin: '0.01rem 0.02rem 0 0.04rem',
+                        }}
+                      ></span>
                       <span
                         style={{
                           padding: '0 0.1rem 0 0.2rem',
