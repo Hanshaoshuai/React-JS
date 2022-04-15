@@ -9,6 +9,7 @@ import { MyContext } from './models/context';
 import { APIS } from './api/ip';
 import SuperMap from './pages/superMap';
 import CompassClock from './pages/compassClock';
+import { Toast } from 'antd-mobile';
 
 // const io = require("socket.io");
 import io from 'socket.io-client';
@@ -17,6 +18,7 @@ declare global {
   interface Window {
     socket: any;
     modelName: any;
+    plus: any;
   }
 }
 
@@ -59,6 +61,45 @@ export default function App() {
         list: [1, 2, 3],
       })
     );
+    // 移动端设置返回
+    document.addEventListener('plusready', function () {
+      var webview = window.plus.webview.currentWebview();
+      window.plus.key.addEventListener('backbutton', function () {
+        webview.canBack(function (e: any) {
+          if (e.canBack) {
+            webview.back();
+          } else {
+            //webview.close(); //hide,quit
+            //plus.runtime.quit();
+            //首页返回键处理
+            //处理逻辑：1秒内，连续两次按返回键，则退出应用；
+            var first: any = null;
+            window.plus.key.addEventListener(
+              'backbutton',
+              function () {
+                //首次按键，提示‘再按一次退出应用’
+                if (!first) {
+                  first = new Date().getTime();
+                  console.log('‘再按一次退出应用’');
+                  Toast.show({
+                    content: '再一次退出应用',
+                    position: 'top',
+                  });
+                  setTimeout(function () {
+                    first = null;
+                  }, 1000);
+                } else {
+                  if (new Date().getTime() - first < 1500) {
+                    window.plus.runtime.quit();
+                  }
+                }
+              },
+              false
+            );
+          }
+        });
+      });
+    });
   }, []);
   useEffect(() => {
     let toName: any = {};
