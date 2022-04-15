@@ -1162,7 +1162,10 @@ const ChatRecord = () => {
               <span onClick={addFriends}>添加好友</span>
             </div>
             <div className={`tanChuang ${setUps ? 'tanChuangB' : ''}`}>
-              <div id="tanChuang_top"></div>
+              <div
+                id="tanChuang_top"
+                style={{ height: `calc(0.9rem + ${window.userAgents}px)` }}
+              ></div>
               <div className="tanChuang_cont">
                 <div className="sheZhi sheZhiFirst">
                   {localStorage.getItem('personalInformation') ||
