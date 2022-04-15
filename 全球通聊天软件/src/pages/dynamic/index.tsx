@@ -452,7 +452,7 @@ const Dynamic = ({
     }).then((res: any) => {
       if (res.code === 200) {
         // console.log(res);
-        const list = circleFriendList.map((item: any) => {
+        const list = [...circleFriendList].map((item: any) => {
           if (item.time === time) {
             if (item.commentsList) {
               item.commentsList.map((term: any) => {
