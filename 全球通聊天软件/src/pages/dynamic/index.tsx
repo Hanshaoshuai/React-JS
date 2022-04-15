@@ -452,7 +452,40 @@ const Dynamic = ({
     }).then((res: any) => {
       if (res.code === 200) {
         // console.log(res);
-        getCircleFriendList('true', name);
+        const list = circleFriendList.map((item: any) => {
+          if (item.time === time) {
+            if (item.commentsList) {
+              item.commentsList.map((term: any) => {
+                if (term.friendNameId === myLocName) {
+                  term.thumbsUp = !likeIt ? true : false;
+                }
+                return term;
+              });
+            } else {
+              item.commentsList = [
+                {
+                  time,
+                  name, // 给谁点赞的 对方的电话
+                  friendName: nickname, // 点赞者的中文名
+                  friendNameId: myLocName, // 点赞者的电话
+                  friendHeadPortrait: myapathZoom, // 点赞者的头像
+                  thumbsUp: !likeIt ? true : false, // 设为true
+                  thumbsTime: thumbsTime || new Date().getTime(), // 点赞时间
+                },
+              ];
+            }
+            if (item.thumbsUpLength) {
+              item.thumbsUpLength = !likeIt
+                ? item.thumbsUpLength * 1 + 1
+                : item.thumbsUpLength * 1 - 1;
+            } else {
+              item.thumbsUpLength = !likeIt ? 1 : 0;
+            }
+          }
+          return item;
+        });
+        setCircleFriendList(list);
+        // getCircleFriendList('true', name);
       }
     });
   };
@@ -652,7 +685,41 @@ const Dynamic = ({
         onSetCommentBlock(null);
         setTextAreaValue('');
         if (!urlValueObj.dynamicDynamic) {
-          getCircleFriendList('true', name);
+          const list = [...circleFriendList].map((item: any) => {
+            if (item.time === time) {
+              if (item.commentsList) {
+                item.commentsList.push({
+                  time,
+                  name, // 给谁评论的 对方的电话
+                  friendName: nickname, // 评论者的中文名
+                  friendNameId: myLocName, // 评论者的电话
+                  friendHeadPortrait: myapathZoom, // 评论者的头像
+                  comments: textAreaValue, // 评论内容
+                  commentTime: new Date().getTime(), // 评论时间
+                });
+              } else {
+                item.commentsList = [
+                  {
+                    time,
+                    name, // 给谁评论的 对方的电话
+                    friendName: nickname, // 评论者的中文名
+                    friendNameId: myLocName, // 评论者的电话
+                    friendHeadPortrait: myapathZoom, // 评论者的头像
+                    comments: textAreaValue, // 评论内容
+                    commentTime: new Date().getTime(), // 评论时间
+                  },
+                ];
+              }
+              if (item.commentsLength) {
+                item.commentsLength = item.commentsLength * 1 + 1;
+              } else {
+                item.commentsLength = 1;
+              }
+            }
+            return item;
+          });
+          setCircleFriendList(list);
+          // getCircleFriendList('true', name);
         }
         history.goBack();
       }
@@ -971,6 +1038,7 @@ const Dynamic = ({
                     </div>
                     <div className="dynamic-const-box-text-bottom-right">
                       <i
+                        style={{ cursor: 'pointer' }}
                         onClick={() =>
                           onComment({
                             time: item.time,
@@ -984,7 +1052,10 @@ const Dynamic = ({
                         <i>{item.thumbsUpLength || 0} 赞 </i>
                         {item.commentsLength || 0} 评论
                       </i>
-                      <span onClick={() => onSetCommentBlock(index)}>
+                      <span
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => onSetCommentBlock(index)}
+                      >
                         <KoubeiOutline />
                       </span>
                       <div
@@ -1008,12 +1079,13 @@ const Dynamic = ({
                           style={{
                             lineHeight: '0.3rem',
                             opacity: '0',
+                            cursor: 'pointer',
                           }}
                         >
                           <HeartFill
                             style={{
                               color: likeIt ? '#ff0000' : '#fff',
-                              fontSize: '0.31rem',
+                              fontSize: '0.32rem',
                               verticalAlign: 'bottom',
                               marginRight: '0.04rem',
                             }}
@@ -1024,6 +1096,7 @@ const Dynamic = ({
                           className="comment-button"
                           style={{
                             opacity: '0',
+                            cursor: 'pointer',
                           }}
                           onClick={() =>
                             onComment({
