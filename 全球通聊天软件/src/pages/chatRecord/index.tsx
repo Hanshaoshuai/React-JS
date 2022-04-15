@@ -722,48 +722,53 @@ const ChatRecord = () => {
     <>
       <div className="yijian">
         {tabShow && <div className="auxiliary-box" onClick={tabsHid}></div>}
-        <div className="xiangmu-header">
-          {!boxList && (
-            <span onClick={goBackS} className="xiangmu-left">
-              <img src={imgeSrc} alt="" id="img" />
-            </span>
-          )}
-          <span className="xiangmu-left-go"></span>
-          <span>{boxList ? '人员列表' : '聊聊'}</span>
-          <img
-            src="/images/dashujukeshihuaico.png"
-            alt=""
-            className="xiangmu-rigth"
-            onClick={tabs}
-          />
-          <ul className={`${tabShow ? 'show' : ''}`}>
-            <li onClick={() => options(1)}>好友</li>
-            {/* <li onClick={() => options(2)}>人员列表</li> */}
-            <li onClick={() => options(3)}>发起群聊</li>
-            <li onClick={() => options(4)}>添加好友</li>
-            <Link
-              style={{ color: 'inherit' }}
-              target="_blank"
-              to={{
-                pathname: '/threejs',
-                search: 'navigation=assetStatistics&state=project',
-              }}
-            >
-              <li onClick={() => options(5)}>扫一扫</li>
-            </Link>
-            <li onClick={() => options(6)}>
-              近期项目简介
-              {introduce && (
-                // <div className="introduce" onClick={() => options(7)}>
-                //   访问韩少帅项目简介
-                // </div>
-                <ul className={`${tabShow ? 'show introduce' : ''}`}>
-                  <li onClick={() => options(7)}>查看韩少帅所负责项目</li>
-                  <li onClick={() => options(8)}>我的负责项目</li>
-                </ul>
-              )}
-            </li>
-          </ul>
+        <div
+          className="xiangmu-header"
+          style={{ paddingTop: `${window.userAgents}px` }}
+        >
+          <div style={{ position: 'relative' }}>
+            {!boxList && (
+              <span onClick={goBackS} className="xiangmu-left">
+                <img src={imgeSrc} alt="" id="img" />
+              </span>
+            )}
+            <span className="xiangmu-left-go"></span>
+            <span>{boxList ? '人员列表' : '聊聊'}</span>
+            <img
+              src="/images/dashujukeshihuaico.png"
+              alt=""
+              className="xiangmu-rigth"
+              onClick={tabs}
+            />
+            <ul className={`${tabShow ? 'show' : ''}`}>
+              <li onClick={() => options(1)}>好友</li>
+              {/* <li onClick={() => options(2)}>人员列表</li> */}
+              <li onClick={() => options(3)}>发起群聊</li>
+              <li onClick={() => options(4)}>添加好友</li>
+              <Link
+                style={{ color: 'inherit' }}
+                target="_blank"
+                to={{
+                  pathname: '/threejs',
+                  search: 'navigation=assetStatistics&state=project',
+                }}
+              >
+                <li onClick={() => options(5)}>扫一扫</li>
+              </Link>
+              <li onClick={() => options(6)}>
+                近期项目简介
+                {introduce && (
+                  // <div className="introduce" onClick={() => options(7)}>
+                  //   访问韩少帅项目简介
+                  // </div>
+                  <ul className={`${tabShow ? 'show introduce' : ''}`}>
+                    <li onClick={() => options(7)}>查看韩少帅所负责项目</li>
+                    <li onClick={() => options(8)}>我的负责项目</li>
+                  </ul>
+                )}
+              </li>
+            </ul>
+          </div>
         </div>
         {/* {boxList && ( */}
         <div
@@ -776,6 +781,7 @@ const ChatRecord = () => {
                 width: '100%',
                 height: '0.9rem',
                 background: '#f5f4f9',
+                marginTop: `${window.userAgents}px`,
               }}
             ></div>
             {/* <List> */}
@@ -814,7 +820,10 @@ const ChatRecord = () => {
         <div className="box box_friend">
           <div
             className="fankiu"
-            style={{ paddingTop: '0.9rem' }}
+            style={{
+              paddingTop: '0.9rem',
+              marginTop: `${window.userAgents}px`,
+            }}
             ref={boxRef1}
           >
             {/* {friendList.length > 0

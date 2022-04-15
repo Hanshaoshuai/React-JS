@@ -354,18 +354,29 @@ const InformationSettings = ({
           : 'right-in-leave right-in-leave-leave'
       } InformationSettings`}
     >
-      <div className="searchBox">
-        <div className="home-search">
-          <img
-            src="/images/fanhui.png"
-            className="xiangmu-left"
-            alt=""
-            onClick={onGoBackS}
-          />
-          <span>资料设置</span>
+      <div
+        className="searchBox"
+        style={{ paddingTop: `${window.userAgents}px` }}
+      >
+        <div style={{ position: 'relative' }}>
+          <div className="home-search">
+            <img
+              src="/images/fanhui.png"
+              className="xiangmu-left"
+              alt=""
+              onClick={onGoBackS}
+            />
+            <span>资料设置</span>
+          </div>
         </div>
       </div>
-      <div className="contents contents_search_leng">
+      <div
+        className="contents contents_search_leng"
+        style={{
+          marginTop: `${window.userAgents}px`,
+          height: `calc(100% - 0.9rem - ${window.userAgents}px)`,
+        }}
+      >
         <div className="denglu-text ziZhu">
           <div className="xiangCe">
             <div className={'container'}>

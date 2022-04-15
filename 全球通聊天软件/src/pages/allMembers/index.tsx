@@ -46,18 +46,29 @@ const ChatList = () => {
 
   return (
     <div className="personalInformation personalInformationBox">
-      <div className="searchBox">
-        <div className="home-search">
-          <img
-            src="/images/fanhui.png"
-            className="xiangmu-left"
-            alt=""
-            onClick={goBackS}
-          />
-          <span>所有成员</span>
+      <div
+        className="searchBox"
+        style={{ paddingTop: `${window.userAgents}px` }}
+      >
+        <div style={{ position: 'relative' }}>
+          <div className="home-search">
+            <img
+              src="/images/fanhui.png"
+              className="xiangmu-left"
+              alt=""
+              onClick={goBackS}
+            />
+            <span>所有成员</span>
+          </div>
         </div>
       </div>
-      <div className="contents contents_search_leng">
+      <div
+        className="contents contents_search_leng"
+        style={{
+          paddingTop: `calc(0.9rem + ${window.userAgents}px)`,
+          height: `calc(100% - 0.9rem - ${window.userAgents}px)`,
+        }}
+      >
         <div className="denglu-text ziZhu">
           <div className="xiangCe">
             {imgIdLoc.map((item: any, index: number) => {

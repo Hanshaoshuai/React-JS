@@ -743,76 +743,85 @@ const Dynamic = ({
       <div
         className="searchBox"
         style={{
+          paddingTop: `${window.userAgents}px`,
           backgroundColor: `rgba(255, 122, 89, ${
             cameraOut ? 0 : transparency
           })`,
         }}
       >
-        <div className="home-search">
-          {cameraOut ? (
-            <span onClick={goBackS} className="home-search-img">
-              <LeftOutline />
-            </span>
-          ) : (
-            <img
-              src="/images/fanhui.png"
-              className="xiangmu-left"
-              alt=""
-              onClick={goBackS}
-            />
-          )}
-          {transparency > 0 && !cameraOut && (
-            <span>
-              {personalInformation ||
-              localStorage.getItem('secondary') ||
-              urlValue !== myLocName
-                ? `${toNames ? toNames + '的相册' : '朋友圈'}`
-                : name
-                ? name
-                : '朋友圈'}
-            </span>
-          )}
-          {name && urlValue === myLocName && !cameraOut && (
-            <>
+        <div
+          // className="searchBox"
+          style={{
+            position: 'relative',
+          }}
+        >
+          <div className="home-search">
+            {cameraOut ? (
+              <span onClick={goBackS} className="home-search-img">
+                <LeftOutline />
+              </span>
+            ) : (
               <img
-                src="/images/dashujukeshihuaico.png"
+                src="/images/fanhui.png"
+                className="xiangmu-left"
                 alt=""
-                className="xiangmu-rigth"
-                onClick={tabs}
-              ></img>
-              <ul
-                className={`${tabShow ? 'show' : ''}`}
-                onChange={() => setTabShow(!tabShow)}
-              >
-                {/* <li onClick={options}>更换背景</li> */}
-                <label>
-                  <li>
-                    <input
-                      onChange={(files: any) => mockUpload(files)}
-                      style={{ display: 'none' }}
-                      type={`${
-                        personalInformation || localStorage.getItem('secondary')
-                          ? ''
-                          : 'file'
-                      }`}
-                      name=""
-                      accept="image/jpeg,image/jpg,image/png"
-                      ref={fs}
-                    />
-                    更换背景
-                  </li>
-                </label>
-              </ul>
-            </>
-          )}
-          {hooksModalVisible && (
-            <HooksCropperModal
-              uploadedImageFile={hooksModalFile}
-              onClose={setHooksModalVisibles}
-              onSubmit={handleGetResultImgUrl}
-              aspectRatio={1.3}
-            />
-          )}
+                onClick={goBackS}
+              />
+            )}
+            {transparency > 0 && !cameraOut && (
+              <span>
+                {personalInformation ||
+                localStorage.getItem('secondary') ||
+                urlValue !== myLocName
+                  ? `${toNames ? toNames + '的相册' : '朋友圈'}`
+                  : name
+                  ? name
+                  : '朋友圈'}
+              </span>
+            )}
+            {name && urlValue === myLocName && !cameraOut && (
+              <>
+                <img
+                  src="/images/dashujukeshihuaico.png"
+                  alt=""
+                  className="xiangmu-rigth"
+                  onClick={tabs}
+                ></img>
+                <ul
+                  className={`${tabShow ? 'show' : ''}`}
+                  onChange={() => setTabShow(!tabShow)}
+                >
+                  {/* <li onClick={options}>更换背景</li> */}
+                  <label>
+                    <li>
+                      <input
+                        onChange={(files: any) => mockUpload(files)}
+                        style={{ display: 'none' }}
+                        type={`${
+                          personalInformation ||
+                          localStorage.getItem('secondary')
+                            ? ''
+                            : 'file'
+                        }`}
+                        name=""
+                        accept="image/jpeg,image/jpg,image/png"
+                        ref={fs}
+                      />
+                      更换背景
+                    </li>
+                  </label>
+                </ul>
+              </>
+            )}
+            {hooksModalVisible && (
+              <HooksCropperModal
+                uploadedImageFile={hooksModalFile}
+                onClose={setHooksModalVisibles}
+                onSubmit={handleGetResultImgUrl}
+                aspectRatio={1.3}
+              />
+            )}
+          </div>
         </div>
       </div>
       <div

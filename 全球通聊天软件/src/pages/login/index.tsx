@@ -364,13 +364,19 @@ const ChatList = () => {
 
   return (
     <div className="denglu" ref={denglu}>
-      <div className="searchBox">
+      <div
+        className="searchBox"
+        style={{ paddingTop: `${window.userAgents}px` }}
+      >
         <div className="home-search">
           <span>登录</span>
           <div className="fanhui-right"></div>
         </div>
       </div>
-      <div className="contents">
+      <div
+        className="contents"
+        style={{ paddingTop: `${window.userAgents + 90}px` }}
+      >
         <div
           style={{
             textAlign: 'center',

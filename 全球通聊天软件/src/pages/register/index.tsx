@@ -186,11 +186,18 @@ const Register = () => {
         indexId={true}
         register={true}
       />
-      <div className="xiangmu-header" onClick={yijianHind}>
+      <div
+        className="xiangmu-header"
+        style={{ paddingTop: `${window.userAgents}px` }}
+        onClick={yijianHind}
+      >
         <span className="xiangmu-left"></span>
         <span>注册</span>
       </div>
-      <div className="contents">
+      <div
+        className="contents"
+        style={{ paddingTop: `${window.userAgents + 90}px` }}
+      >
         <div className="logo">
           <label>
             <ul>

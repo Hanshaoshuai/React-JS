@@ -19,18 +19,26 @@ const ProjectInstance = () => {
   };
   return (
     <div className="yijian">
-      <div className="searchBox">
-        <div className="home-search">
-          <img
-            className="xiangmu-left"
-            src="/images/fanhui.png"
-            alt=""
-            onClick={goBackS}
-          />
-          <span className="toNames">项目列表</span>
+      <div
+        className="searchBox"
+        style={{ paddingTop: `${window.userAgents}px` }}
+      >
+        <div style={{ position: 'relative' }}>
+          <div className="home-search">
+            <img
+              className="xiangmu-left"
+              src="/images/fanhui.png"
+              alt=""
+              onClick={goBackS}
+            />
+            <span className="toNames">项目列表</span>
+          </div>
         </div>
       </div>
-      <div className="xiangmu-box">
+      <div
+        className="xiangmu-box"
+        style={{ paddingTop: `calc(0.9rem + ${window.userAgents}px)` }}
+      >
         <List>
           <List.Item
             prefix={<UnorderedListOutline />}

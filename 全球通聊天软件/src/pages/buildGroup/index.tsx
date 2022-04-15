@@ -151,19 +151,27 @@ const ChatList = () => {
 
   return (
     <div className="buildGroup group">
-      <div className="xiangmu-header">
-        <img
-          className="xiangmu-left"
-          src="/images/fanhui.png"
-          alt=""
-          onClick={goBackS}
-        />
-        <span>发起群聊</span>
-        <span className="xiangmu-rigth" onClick={buildGroups}>
-          确定
-        </span>
+      <div
+        className="xiangmu-header"
+        style={{ paddingTop: `${window.userAgents}px` }}
+      >
+        <div style={{ position: 'relative' }}>
+          <img
+            className="xiangmu-left"
+            src="/images/fanhui.png"
+            alt=""
+            onClick={goBackS}
+          />
+          <span>发起群聊</span>
+          <span className="xiangmu-rigth" onClick={buildGroups}>
+            确定
+          </span>
+        </div>
       </div>
-      <div className="denglu-text">
+      <div
+        className="denglu-text"
+        style={{ top: `calc(0.9rem + ${window.userAgents}px)` }}
+      >
         <div className="beiZhu">
           <span>为本群起个好名字吧：</span>
           <input
@@ -176,7 +184,10 @@ const ChatList = () => {
         </div>
       </div>
       <div className="box box_friend">
-        <div className="fankiu" style={{ paddingTop: '2.4rem' }}>
+        <div
+          className="fankiu"
+          style={{ paddingTop: `calc(2.4rem + ${window.userAgents}px)` }}
+        >
           <CheckList
             multiple
             defaultValue={checkListName}

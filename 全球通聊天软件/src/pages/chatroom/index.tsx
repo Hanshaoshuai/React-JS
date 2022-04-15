@@ -2402,47 +2402,54 @@ const ChatList = () => {
   return (
     <>
       <div className="yijian" onClick={tabsHid}>
-        <div className="searchBox">
-          <div className="home-search">
-            <img
-              className="xiangmu-left"
-              src="/images/fanhui.png"
-              alt=""
-              onClick={goBackS}
-            />
-            <span className="toNames">
-              {nickNameTop ? nickNameTop : localStorage.getItem('toNames')}
-            </span>
-            {chatType === 'groupChat' ? (
+        <div
+          className="searchBox"
+          style={{ paddingTop: `${window.userAgents}px` }}
+        >
+          <div style={{ position: 'relative' }}>
+            <div className="home-search">
               <img
-                className="xiangmu-rigth"
-                src="/images/dashujukeshihuaico.png"
+                className="xiangmu-left"
+                src="/images/fanhui.png"
                 alt=""
-                onClick={tabs}
+                onClick={goBackS}
               />
-            ) : (
-              ''
-            )}
-            <ul
-              className={`${tabShow && chatType === 'groupChat' ? 'show' : ''}`}
-            >
-              <li onClick={() => options(1)}>查看所有成员</li>
-              <li onClick={() => options(2)}>添加成员</li>
-              {myLocName !== groupOwner ? (
-                <li className="groupOwner_log" onClick={() => options(3)}>
-                  退出本群
-                </li>
+              <span className="toNames">
+                {nickNameTop ? nickNameTop : localStorage.getItem('toNames')}
+              </span>
+              {chatType === 'groupChat' ? (
+                <img
+                  className="xiangmu-rigth"
+                  src="/images/dashujukeshihuaico.png"
+                  alt=""
+                  onClick={tabs}
+                />
               ) : (
-                <>
-                  <li className="groupOwner" onClick={() => options(4)}>
-                    转让退出本群
-                  </li>
-                  <li className="groupOwner" onClick={() => options(5)}>
-                    移除本群
-                  </li>
-                </>
+                ''
               )}
-            </ul>
+              <ul
+                className={`${
+                  tabShow && chatType === 'groupChat' ? 'show' : ''
+                }`}
+              >
+                <li onClick={() => options(1)}>查看所有成员</li>
+                <li onClick={() => options(2)}>添加成员</li>
+                {myLocName !== groupOwner ? (
+                  <li className="groupOwner_log" onClick={() => options(3)}>
+                    退出本群
+                  </li>
+                ) : (
+                  <>
+                    <li className="groupOwner" onClick={() => options(4)}>
+                      转让退出本群
+                    </li>
+                    <li className="groupOwner" onClick={() => options(5)}>
+                      移除本群
+                    </li>
+                  </>
+                )}
+              </ul>
+            </div>
           </div>
         </div>
         <div
@@ -2457,6 +2464,9 @@ const ChatList = () => {
             }`}
             id="box"
             ref={boxTextes}
+            style={{
+              marginTop: `${window.userAgents}px`,
+            }}
           >
             {Loadings && (
               <div className="boxLoading">

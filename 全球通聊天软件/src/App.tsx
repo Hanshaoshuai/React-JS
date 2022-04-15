@@ -17,6 +17,7 @@ declare global {
   interface Window {
     socket: any;
     modelName: any;
+    userAgents: any;
   }
 }
 

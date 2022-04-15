@@ -856,95 +856,118 @@ const ChatRecord = () => {
       />
       {addSearchFriends ? (
         <>
-          <div className="searchBox home-search-go">
-            <img
-              src="/images/fanhui.png"
-              className="xiangmu-left"
-              alt=""
-              onClick={goBackS}
-            />
-            <div className="home-search">
-              <input
-                placeholder="请输入昵称、聊聊号或手机号"
-                type="text"
-                className="mint-field-core sousuo"
-                onChange={(e: any) => setInputText(e.target.value)}
-              />
-            </div>
-            <span className="sousuoGo" onClick={onSearch}>
-              搜索
-            </span>
-          </div>
-          {!searchResults ? (
-            <div className="contents_search_no">快来搜一搜聊一聊...</div>
-          ) : (
-            ''
-          )}
-        </>
-      ) : (
-        <div className="searchBox">
-          <div className="home-search">
-            {(tabTex === '详细资料' || tabTex === '添加备注') && (
+          <div
+            className="searchBox"
+            style={{ paddingTop: `${window.userAgents}px` }}
+          >
+            <div
+              className="home-search-go"
+              style={{ position: 'relative', height: '0.9rem' }}
+            >
               <img
                 src="/images/fanhui.png"
                 className="xiangmu-left"
                 alt=""
                 onClick={goBackS}
               />
-            )}
-            <span>{tabTex}</span>
-            {friend && !remove && urlName !== 'my' ? (
-              <>
+              <div className="home-search">
+                <input
+                  placeholder="请输入昵称、聊聊号或手机号"
+                  type="text"
+                  className="mint-field-core sousuo"
+                  onChange={(e: any) => setInputText(e.target.value)}
+                />
+              </div>
+              <span className="sousuoGo" onClick={onSearch}>
+                搜索
+              </span>
+            </div>
+          </div>
+          {!searchResults ? (
+            <div
+              className="contents_search_no"
+              style={{ paddingTop: `calc(1.2rem + ${window.userAgents}px)` }}
+            >
+              快来搜一搜聊一聊...
+            </div>
+          ) : (
+            ''
+          )}
+        </>
+      ) : (
+        <div
+          className="searchBox"
+          style={{ paddingTop: `${window.userAgents}px` }}
+        >
+          <div style={{ position: 'relative' }}>
+            <div className="home-search">
+              {(tabTex === '详细资料' || tabTex === '添加备注') && (
                 <img
-                  src="/images/dashujukeshihuaico.png"
+                  src="/images/fanhui.png"
+                  className="xiangmu-left"
                   alt=""
-                  className="xiangmu-rigth"
-                  onClick={tabs}
-                ></img>
-                <ul className={`${tabShow ? 'show' : ''}`}>
-                  <li onClick={options}>移除好友</li>
-                </ul>
-              </>
-            ) : remove ? (
-              <>
-                <img
-                  src="/images/dashujukeshihuaico.png"
-                  alt=""
-                  className="xiangmu-rigth"
-                  onClick={tabs}
-                ></img>
-                <ul className={`${tabShow ? 'show' : ''}`}>
-                  <li onClick={signOuts}>退出登录</li>
-                  <li onClick={logouts}>注销账号</li>
-                  <label>
-                    <li>
-                      <input
-                        onChange={(files: any) => mockUpload(files)}
-                        style={{ display: 'none' }}
-                        type={`${
-                          localStorage.getItem('personalInformation') ||
-                          searchResults
-                            ? ''
-                            : 'file'
-                        }`}
-                        name=""
-                        accept="image/jpeg,image/jpg,image/png"
-                        ref={fs}
-                      />
-                      更换头像
-                    </li>
-                  </label>
-                </ul>
-              </>
-            ) : (
-              ''
-            )}
+                  onClick={goBackS}
+                />
+              )}
+              <span>{tabTex}</span>
+              {friend && !remove && urlName !== 'my' ? (
+                <>
+                  <img
+                    src="/images/dashujukeshihuaico.png"
+                    alt=""
+                    className="xiangmu-rigth"
+                    onClick={tabs}
+                  ></img>
+                  <ul className={`${tabShow ? 'show' : ''}`}>
+                    <li onClick={options}>移除好友</li>
+                  </ul>
+                </>
+              ) : remove ? (
+                <>
+                  <img
+                    src="/images/dashujukeshihuaico.png"
+                    alt=""
+                    className="xiangmu-rigth"
+                    onClick={tabs}
+                  ></img>
+                  <ul className={`${tabShow ? 'show' : ''}`}>
+                    <li onClick={signOuts}>退出登录</li>
+                    <li onClick={logouts}>注销账号</li>
+                    <label>
+                      <li>
+                        <input
+                          onChange={(files: any) => mockUpload(files)}
+                          style={{ display: 'none' }}
+                          type={`${
+                            localStorage.getItem('personalInformation') ||
+                            searchResults
+                              ? ''
+                              : 'file'
+                          }`}
+                          name=""
+                          accept="image/jpeg,image/jpg,image/png"
+                          ref={fs}
+                        />
+                        更换头像
+                      </li>
+                    </label>
+                  </ul>
+                </>
+              ) : (
+                ''
+              )}
+            </div>
           </div>
         </div>
       )}
       {!addSearchFriends || searchResults ? (
         <div style={{ overflowY: 'auto', height: '100%' }}>
-          <div className="contents">
+          <div
+            className="contents"
+            style={{
+              marginTop: `${window.userAgents}px`,
+            }}
+          >
             <div className="logo">
               <div className="fankiu">
                 <div className="content-food">
