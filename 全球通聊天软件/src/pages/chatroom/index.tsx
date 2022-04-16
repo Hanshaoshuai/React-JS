@@ -23,6 +23,7 @@ import OtherItems from './otherItems';
 import { UploadImg } from '../A-components/uploadImg';
 import { FileUpload } from '../A-components/fileUpload';
 import Spins from '../A-Spin';
+import NestingIframe from '../nestingIframe/nestingIframe';
 
 import {
   requestMessage,
@@ -116,6 +117,11 @@ const ChatList = () => {
   const [total, setTotal] = useState(false);
   const [imagesList, setImagesList] = useState<any>([]);
   const [defaultIndex, setDefaultIndex] = useState<any>(0);
+  const [iframeTitle, setIframeTitle] = useState('');
+  const [display, setDisplay] = useState(false);
+  const [iframeUrl, setIframeUrl] = useState('');
+  const [connectUrl, setConnectUrl] = useState(false);
+  const [downloadName, setDownloadName] = useState<any>('');
 
   useEffect(() => {
     if (!voiceSotten && texts && texts.current) {
@@ -204,6 +210,9 @@ const ChatList = () => {
     if (history.location.search !== '?ImageViewer=1') {
       setVisible(false);
     }
+    if (history.location.search === '?OnPlayUrl=0') {
+      setIframeUrl('');
+    }
   }, [history.location.search]);
 
   const onPause = (url: string) => {
@@ -286,33 +295,39 @@ const ChatList = () => {
     setplays(!plays);
     setOnPlayUrl('');
   };
+
+  useEffect(() => {
+    if (iframeUrl) {
+      setDisplay(true);
+    } else {
+      setDisplay(false);
+    }
+  }, [iframeUrl]);
   const fileDownload = (e: string, url?: boolean) => {
     // console.log(origin + e);
-    if (url) {
+    if (url === true) {
+      setConnectUrl(true);
       if (window.modelName === 'pc') {
         window.open(`${e}`);
       } else {
-        // window.location.href = `${e}`;
-        window?.mui.init({
-          subpages: [
-            {
-              url: `${e}`,
-              id: 'aiguimi',
-              styles: {
-                top: '0px',
-                bottom: '0px',
-              },
-            },
-          ],
-        });
+        setIframeTitle(e);
+        setDisplay(true);
+        setIframeUrl(e);
+        history.push(`/chatroom?OnPlayUrl=0&iframe=1`);
       }
     } else {
-      if (window.modelName === 'pc') {
-        window.open(`${origin + e}`);
-      } else {
-        window.location.href = `${origin + e}`;
-      }
+      setConnectUrl(false);
+      setDownloadName(url);
+      // window.open(`${origin + e}`);
+      setIframeTitle(e);
+      setDisplay(true);
+      setIframeUrl(e);
+      history.push(`/chatroom?OnPlayUrl=0&iframe=1`);
     }
+  };
+  const iframeGoBackS = () => {
+    history.goBack();
+    setIframeUrl('');
   };
   const messageVariety = (data: any) => {
     if (data.text === 'uploadCompleted') {
@@ -1097,7 +1112,14 @@ const ChatList = () => {
                             flex: '1',
                             width: '3.31rem',
                           }}
-                          onClick={() => fileDownload(file.url)}
+                          onClick={() =>
+                            fileDownload(
+                              file.url,
+                              file.url.split('/')[
+                                file.url.split('/').length - 1
+                              ]
+                            )
+                          }
                         >
                           {file.url.split('/')[file.url.split('/').length - 1]}
                         </div>
@@ -1443,7 +1465,12 @@ const ChatList = () => {
                           flex: '1',
                           width: '3.31rem',
                         }}
-                        onClick={() => fileDownload(file.url)}
+                        onClick={() =>
+                          fileDownload(
+                            file.url,
+                            file.url.split('/')[file.url.split('/').length - 1]
+                          )
+                        }
                       >
                         {file.url.split('/')[file.url.split('/').length - 1]}
                       </div>
@@ -2674,6 +2701,14 @@ const ChatList = () => {
           myLocName={myLocName}
         />
       )}
+      <NestingIframe
+        title={iframeTitle}
+        display={display}
+        url={iframeUrl}
+        goBackS={iframeGoBackS}
+        connectUrl={connectUrl}
+        downloadName={downloadName}
+      />
     </>
   );
 };

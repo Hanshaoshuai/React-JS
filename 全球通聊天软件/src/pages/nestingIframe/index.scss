@@ -1,0 +1,96 @@
+.nestingIframe {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  //   transform: translateX(100%);
+  background: #f5f4f9;
+  .searchBox {
+    // position: fixed;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0.9rem;
+    background-color: #ff7a59;
+    z-index: 30;
+  }
+  .searchBox .home-search {
+    height: 100%;
+    line-height: 0.9rem;
+    font-size: 0.4rem;
+    text-align: center;
+    color: #fff;
+  }
+  .xiangmu-left {
+    position: absolute;
+    display: inline-block;
+    top: 0.2rem;
+    left: 0.3rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    /*line-height:0.7rem;
+      font-size: 0.32rem;*/
+    // background-image: url("/images/fanhui.png");
+    background-size: 100% 100%;
+  }
+  .nestingIframeContents {
+    width: 100%;
+    overflow-y: auto;
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      border: none;
+      //   body {
+      //     ::-webkit-scrollbar {
+      //       width: 5px;
+      //       height: 5px;
+      //     }
+      //     ::-webkit-scrollbar-thumb {
+      //       background-color: #999;
+      //       -webkit-border-radius: 5px;
+      //       border-radius: 5px;
+      //     }
+      //     ::-webkit-scrollbar-thumb:vertical:hover {
+      //       background-color: #666;
+      //     }
+      //     ::-webkit-scrollbar-thumb:vertical:active {
+      //       background-color: #333;
+      //     }
+      //     ::-webkit-scrollbar-button {
+      //       display: none;
+      //     }
+      //     ::-webkit-scrollbar-track {
+      //       background-color: #f1f1f1;
+      //     }
+      //     ::-webkit-scrollbar {
+      //       display: none; /* Chrome Safari */
+      //     }
+      //   }
+    }
+    .nestingDownload {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      span {
+        font-size: 0.3rem;
+        margin-bottom: 3rem;
+      }
+      a {
+        color: #fff;
+        font-size: 0.4rem;
+        padding: 0.19rem 1rem;
+        background: #ff7a59;
+        border-radius: 0.5rem;
+        line-height: 0.4rem;
+      }
+    }
+  }
+}
