@@ -289,9 +289,17 @@ const ChatList = () => {
   const fileDownload = (e: string, url?: boolean) => {
     // console.log(origin + e);
     if (url) {
-      window.open(`${e}`);
+      if (window.modelName === 'pc') {
+        window.open(`${e}`);
+      } else {
+        window.location.href = `${e}`;
+      }
     } else {
-      window.open(`${origin + e}`);
+      if (window.modelName === 'pc') {
+        window.open(`${origin + e}`);
+      } else {
+        window.location.href = `${origin + e}`;
+      }
     }
   };
   const messageVariety = (data: any) => {

@@ -440,6 +440,8 @@ const ChatRecord = () => {
       return;
     }
     if (type === 5) {
+      window.location.href =
+        'https://hanshaoshuai.cn:1319/threejs?navigation=assetStatistics&state=project';
       return;
     }
     if (type === 6 && !introduce) {
@@ -745,16 +747,16 @@ const ChatRecord = () => {
               {/* <li onClick={() => options(2)}>人员列表</li> */}
               <li onClick={() => options(3)}>发起群聊</li>
               <li onClick={() => options(4)}>添加好友</li>
-              <Link
+              {/* <Link
                 style={{ color: 'inherit' }}
-                target="_blank"
+                target={`${window.modelName === 'pc' ? '_blank' : ''}`}
                 to={{
                   pathname: '/threejs',
                   search: 'navigation=assetStatistics&state=project',
                 }}
-              >
-                <li onClick={() => options(5)}>扫一扫</li>
-              </Link>
+              > */}
+              <li onClick={() => options(5)}>扫一扫</li>
+              {/* </Link> */}
               <li onClick={() => options(6)}>
                 近期项目简介
                 {introduce && (
