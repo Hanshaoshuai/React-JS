@@ -292,7 +292,19 @@ const ChatList = () => {
       if (window.modelName === 'pc') {
         window.open(`${e}`);
       } else {
-        window.location.href = `${e}`;
+        // window.location.href = `${e}`;
+        window?.mui.init({
+          subpages: [
+            {
+              url: `${e}`,
+              id: 'aiguimi',
+              styles: {
+                top: '0px',
+                bottom: '0px',
+              },
+            },
+          ],
+        });
       }
     } else {
       if (window.modelName === 'pc') {

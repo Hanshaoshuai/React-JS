@@ -18,6 +18,7 @@ declare global {
     socket: any;
     modelName: any;
     userAgents: any;
+    mui: any;
   }
 }
 
