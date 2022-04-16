@@ -22,7 +22,7 @@ const NestingIframe = ({
     } else if (display) {
       setDisplayBlock(true);
     }
-    if (url) {
+    if (url && !downloadName) {
       const list = url.split('.');
       const name = list[list.length - 1];
       if (name === 'txt' || name === 'html' || name === 'html') {
