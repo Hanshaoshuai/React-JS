@@ -303,8 +303,8 @@ const ChatList = () => {
       setDisplay(false);
     }
   }, [iframeUrl]);
-  const fileDownload = (e: string, url?: boolean) => {
-    // console.log(origin + e);
+  const fileDownload = ({ d, e, url }: any) => {
+    // console.log(d, e, url);
     if (url === true) {
       setConnectUrl(true);
       if (window.modelName === 'pc') {
@@ -1114,12 +1114,12 @@ const ChatList = () => {
                             width: '3.31rem',
                           }}
                           onClick={() =>
-                            fileDownload(
-                              file.url,
-                              file.url.split('/')[
+                            fileDownload({
+                              e: file.url,
+                              url: file.url.split('/')[
                                 file.url.split('/').length - 1
-                              ]
-                            )
+                              ],
+                            })
                           }
                         >
                           {file.url.split('/')[file.url.split('/').length - 1]}
@@ -1165,7 +1165,7 @@ const ChatList = () => {
                   //   {cont}
                   // </a>
                   <span
-                    onClick={() => fileDownload(cont, true)}
+                    onClick={() => fileDownload({ e: cont, url: true })}
                     style={{ color: '#1b24ff' }}
                   >
                     {cont}
@@ -1319,9 +1319,9 @@ const ChatList = () => {
     }
     const newStyleLength = styleLength(file);
     // console.log(newStyleLength);
-
+    let newCont = cont;
     if (file) {
-      cont = (
+      newCont = (
         <span>
           {file && !file?.file ? (
             <span
@@ -1467,10 +1467,12 @@ const ChatList = () => {
                           width: '3.31rem',
                         }}
                         onClick={() =>
-                          fileDownload(
-                            file.url,
-                            file.url.split('/')[file.url.split('/').length - 1]
-                          )
+                          fileDownload({
+                            e: file.url,
+                            url: file.url.split('/')[
+                              file.url.split('/').length - 1
+                            ],
+                          })
                         }
                       >
                         {file.url.split('/')[file.url.split('/').length - 1]}
@@ -1510,19 +1512,21 @@ const ChatList = () => {
               )}
             </span>
           ) : (
-            cont
+            newCont
           )}
         </span>
       );
     } else {
-      cont = (
+      newCont = (
         <div style={{ padding: '0.16rem 0.2rem' }}>
           {IsURL(cont) ? (
             // <a href={cont} target="view_window">
             //   {cont}
             // </a>
             <span
-              onClick={() => fileDownload(cont, true)}
+              onClick={() => {
+                fileDownload({ e: cont, url: true });
+              }}
               style={{ color: '#1b24ff' }}
             >
               {cont}
@@ -1545,15 +1549,15 @@ const ChatList = () => {
           {type === 'yes' && DianJi ? (
             <>
               <div style={style7}>{myIconName}</div>
-              <span style={style4}>{cont}</span>
+              <span style={style4}>{newCont}</span>
             </>
           ) : type === 'yes' ? (
             <>
-              <span style={style4}>{cont}</span>
+              <span style={style4}>{newCont}</span>
               <div style={style5}></div>
             </>
           ) : (
-            <span style={style4}>{HuanquSenqing(cont, DianJi, type)}</span>
+            <span style={style4}>{HuanquSenqing(newCont, DianJi, type)}</span>
           )}
         </div>
       </div>
