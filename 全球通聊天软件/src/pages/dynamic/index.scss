@@ -5,7 +5,7 @@
   min-height: calc(100% - 0.3rem);
   .dynamic-img {
     width: 100%;
-    height: 5.1rem;
+    height: 6.6rem;
     background-color: rgb(224, 223, 223);
     position: relative;
     .dynamic-img-cont-box {
@@ -25,8 +25,9 @@
       height: 1.3rem;
       //   background-color: bisque;
       position: absolute;
-      bottom: -0.45rem;
+      bottom: -0.15rem;
       right: 0;
+      z-index: 10;
       img {
         width: 1.3rem;
         height: 1.3rem;
@@ -467,7 +468,7 @@
   }
 }
 .NoticeBarName {
-  padding: 0.4rem 0rem 0 2.3rem;
+  padding: 0.2rem 0rem 0 2.3rem;
   position: relative;
   .NoticeBarNameLeft {
     position: absolute;
@@ -485,10 +486,10 @@
   }
   .NoticeBarNameRight {
     position: absolute;
-    top: 0.45rem;
+    top: 0.25rem;
     right: 0rem;
     width: 0.6rem;
-    height: calc(100% - 0.45rem);
+    height: calc(100% - 0.25rem);
     z-index: 10;
     background: linear-gradient(
       90deg,
@@ -525,4 +526,13 @@
   font-size: 0.5rem;
   margin-left: 0.2rem;
   color: #ff7a59;
+}
+.Masking {
+  height: 0.5rem;
+  position: absolute;
+  left: 0;
+  bottom: -0.2rem;
+  background: #fff;
+  border-radius: 0.3rem 0.3rem 0 0;
+  width: 100%;
 }

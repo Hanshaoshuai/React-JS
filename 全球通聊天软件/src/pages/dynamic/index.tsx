@@ -455,7 +455,7 @@ const Dynamic = ({
         const list = [...circleFriendList].map((item: any) => {
           if (item.time === time) {
             if (item.commentsList) {
-              item.commentsList.map((term: any) => {
+              item.commentsList = item.commentsList.map((term: any) => {
                 if (term.friendNameId === myLocName) {
                   term.thumbsUp = !likeIt ? true : false;
                 }
@@ -818,7 +818,7 @@ const Dynamic = ({
                 uploadedImageFile={hooksModalFile}
                 onClose={setHooksModalVisibles}
                 onSubmit={handleGetResultImgUrl}
-                aspectRatio={1.3}
+                aspectRatio={1.1}
               />
             )}
           </div>
@@ -868,6 +868,7 @@ const Dynamic = ({
               <div className="NoticeBarNameRight"></div>
               <NoticeBar content={nameString} color="alert" />
             </div>
+            <div className="Masking"></div>
           </div>
 
           {name && _value === myLocName && (
@@ -1132,6 +1133,7 @@ const Dynamic = ({
           {!circleFriendList.length && (
             <div
               style={{
+                position: 'relative',
                 padding: `${
                   name &&
                   !personalInformation &&
