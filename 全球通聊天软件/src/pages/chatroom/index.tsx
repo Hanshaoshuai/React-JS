@@ -310,6 +310,7 @@ const ChatList = () => {
       if (window.modelName === 'pc') {
         window.open(`${e}`);
       } else {
+        setDownloadName('');
         setIframeTitle(e);
         setDisplay(true);
         setIframeUrl(e);
