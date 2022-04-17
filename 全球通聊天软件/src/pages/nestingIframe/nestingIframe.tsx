@@ -98,7 +98,7 @@ const NestingIframe = ({
   // 当前窗口是否可后退
   const canBack = async () => {
     let back = false;
-    if (!embed.canBack) return;
+    if (!embed) return;
     await embed.canBack((e: any) => {
       console.log('是否可返回：', e.canBack);
       if (e.canBack) {
