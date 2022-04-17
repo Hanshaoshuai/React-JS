@@ -346,14 +346,15 @@ const ChatList = () => {
     }
   };
   const iframeGoBackS = (e?: any) => {
-    history.goBack();
+    if (!e) {
+      history.goBack();
+    }
     setIframeUrl('');
     let timeout = setTimeout(() => {
       localStorage.removeItem('NestingIframe');
+      window.plus.webview.close('nestingIframe');
       clearTimeout(timeout);
     }, 310);
-
-    window.plus.webview.close('nestingIframe');
     // back();
   };
   const messageVariety = (data: any) => {
