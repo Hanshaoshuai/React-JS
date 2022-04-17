@@ -98,9 +98,9 @@ const NestingIframe = ({
   }, [display]);
 
   // 当前窗口是否可后退
-  const canBack = () => {
+  const canBack = async () => {
     let back = false;
-    embed.canBack((e: any) => {
+    await embed.canBack((e: any) => {
       console.log('是否可返回：', e.canBack);
       if (e.canBack) {
         back = true;
@@ -108,6 +108,7 @@ const NestingIframe = ({
       } else {
         back = false;
         localStorage.removeItem('NestingIframe');
+        window.plus.webview.close('nestingIframe');
       }
     });
     return back;

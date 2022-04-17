@@ -168,6 +168,18 @@
     <script type="text/javascript">
       // //首页返回键处理
       // //处理逻辑：500毫秒内，连续两次按返回键，则退出应用；
+      var hrefs = () => {
+        if (
+          window.location.href === 'https://hanshaoshuai.cn:1319/' ||
+          window.location.href === 'https://hanshaoshuai.cn:1319' ||
+          window.location.href === 'https://hanshaoshuai.cn:1319/login' ||
+          window.location.href === 'https://hanshaoshuai.cn:1319/register'
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      };
       var first = null;
       var old_back = mui.back; //保存mui默认返回
       mui.back = function () {
@@ -178,6 +190,9 @@
           if (!localStorage.getItem('NestingIframe')) {
             window.history.back(-1);
           }
+          if (hrefs()) {
+            plus.nativeUI.toast('再按一次退出应用');
+          }
           setTimeout(function () {
             //1s中后清除
             first = null;
@@ -185,16 +200,12 @@
         } else {
           if (new Date().getTime() - first < 1000) {
             //如果两次按下的时间小于1s，
-            plus.nativeUI.toast('再按一次退出应用');
-            if (
-              window.location.href === 'https://hanshaoshuai.cn:1319/' ||
-              window.location.href === 'https://hanshaoshuai.cn:1319' ||
-              window.location.href === 'https://hanshaoshuai.cn:1319/login' ||
-              window.location.href === 'https://hanshaoshuai.cn:1319/register'
-            ) {
+            if (hrefs()) {
               plus.runtime.quit(); //那么就退出app
             } else {
-              window.history.back(-1);
+              if (!localStorage.getItem('NestingIframe')) {
+                window.history.back(-1);
+              }
             }
           }
         }
