@@ -102,11 +102,11 @@ const NestingIframe = ({
     await embed.canBack((e: any) => {
       console.log('是否可返回：', e.canBack);
       if (e.canBack) {
-        localStorage.setItem('NestingIframe', 'true');
         back = true;
         embed.back();
       } else {
         back = false;
+        window.plus.key.removeEventListener('backbutton', () => {}, false);
         goBackS('canBack');
       }
     });
