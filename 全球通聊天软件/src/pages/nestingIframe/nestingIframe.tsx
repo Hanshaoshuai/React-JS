@@ -20,6 +20,8 @@ const NestingIframe = ({
       let timeout = setTimeout(() => {
         setDisplayBlock(false);
         clearTimeout(timeout);
+        ws = null;
+        embed = null;
       }, 310);
     } else if (display) {
       setDisplayBlock(true);
