@@ -305,28 +305,7 @@ const ChatList = () => {
       setDisplay(false);
     }
   }, [iframeUrl]);
-  const plusReady = () => {
-    ws = window.plus.webview.currentWebview();
-    window.plus.key.addEventListener(
-      'backbutton',
-      function () {
-        back();
-      },
-      false
-    );
-  };
-  const back = () => {
-    // if (window.plus) {
-    //   ws || (ws = window.plus.webview.currentWebview());
-    //   ws.preate ? ws.hide('auto') : ws.close('auto');
-    // } else
-    // if (history.length >= 1) {
-    //   window.history.back();
-    // } else {
-    // window.close();
-    // window.plus.webview.close('nestingIframe');
-    // }
-  };
+
   const fileDownload = ({ d, e, url }: any) => {
     // console.log(d, e, url);
     if (url === true) {
@@ -358,7 +337,6 @@ const ChatList = () => {
   const iframeGoBackS = () => {
     history.goBack();
     setIframeUrl('');
-    back();
   };
   const messageVariety = (data: any) => {
     if (data.text === 'uploadCompleted') {

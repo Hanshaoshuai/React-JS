@@ -37,11 +37,14 @@ const NestingIframe = ({
     if ((url && connectUrl) || viewable) {
       // 扩展API加载完毕，现在可以正常调用扩展API
       const plusReady = () => {
+        localStorage.setItem('NestingIframe', 'true');
         ws = window.plus.webview.currentWebview();
         window.plus.key.addEventListener(
           'backbutton',
           function () {
-            canBack();
+            if (!canBack()) {
+              goBackS();
+            }
           },
           false
         );
@@ -92,14 +95,20 @@ const NestingIframe = ({
     }
   }, [display]);
 
-  // 是否可后退
+  // 当前窗口是否可后退
   const canBack = () => {
+    let back = false;
     embed.canBack((e: any) => {
       console.log('是否可返回：', e.canBack);
       if (e.canBack) {
+        back = true;
         embed.back();
+      } else {
+        back = false;
+        localStorage.removeItem('NestingIframe');
       }
     });
+    return back;
   };
   const onRef = useCallback(
     (node) => {
@@ -113,6 +122,11 @@ const NestingIframe = ({
     },
     [display]
   );
+  const setGoBackS = () => {
+    if (!canBack()) {
+      goBackS();
+    }
+  };
 
   return (
     <div
@@ -133,7 +147,7 @@ const NestingIframe = ({
               src="/images/fanhui.png"
               className="xiangmu-left"
               alt=""
-              onClick={goBackS}
+              onClick={setGoBackS}
             />
             <span>{titleName}</span>
           </div>
@@ -147,8 +161,8 @@ const NestingIframe = ({
         }}
       >
         {/* {(url && connectUrl) || viewable ? (
-          <iframe ref={onRef} title={title} src={url}></iframe>
-        ) : ( */}
+            <iframe ref={onRef} title={title} src={url}></iframe>
+            ) : ( */}
         {url && !connectUrl && (
           <div className="nestingDownload">
             <span>暂不支持查看请点击下载</span>
