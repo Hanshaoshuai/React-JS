@@ -183,6 +183,7 @@
         } else {
           if (new Date().getTime() - first < 1000) {
             //如果两次按下的时间小于1s，
+            plus.nativeUI.toast('再按一次退出应用');
             if (
               window.location.href === 'https://hanshaoshuai.cn:1319/' ||
               window.location.href === 'https://hanshaoshuai.cn:1319' ||

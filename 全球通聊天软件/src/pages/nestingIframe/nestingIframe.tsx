@@ -82,6 +82,23 @@ const NestingIframe = ({
           false
         );
       };
+      document.addEventListener('plusready', function () {
+        const webview = window.plus.webview.currentWebview(); //获取这页
+        window.plus.key.addEventListener('backbutton', function () {
+          //监听这页的返回按钮
+          webview.canBack(function (e: any) {
+            //看看这也是否可以返回
+            if (e.canBack) {
+              //如果可以返回
+              webview.back(); //回退；
+            } else {
+              // window.plus.webview.close('nestingIframe');
+              webview.close(); //关闭这页
+              //plus.runtime.quit();//退出app
+            }
+          });
+        });
+      });
     }
   }, [display]);
   const onRef = useCallback(
