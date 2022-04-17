@@ -19,6 +19,7 @@ declare global {
     modelName: any;
     userAgents: any;
     mui: any;
+    plus: any;
   }
 }
 

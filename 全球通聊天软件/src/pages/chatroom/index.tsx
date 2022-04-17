@@ -312,9 +312,58 @@ const ChatList = () => {
       } else {
         setDownloadName('');
         setIframeTitle(e);
-        setDisplay(true);
+        // setDisplay(true);
         setIframeUrl(e);
-        history.push(`/chatroom?OnPlayUrl=0&iframe=1`);
+        // history.push(`/chatroom?OnPlayUrl=0&iframe=1`);
+        let ws: any = null,
+          embed = null;
+        // 扩展API加载完毕，现在可以正常调用扩展API
+        const plusReady = () => {
+          ws = window.plus.webview.currentWebview();
+          setTimeout(() => createEmbed(e), 500); //延迟创建子窗口避免影响窗口动画
+        };
+        // 判断扩展API是否准备，否则监听plusready事件
+        if (window.plus) {
+          plusReady();
+        } else {
+          document.addEventListener('plusready', plusReady, false);
+        }
+        // 创建子Webview
+        const createEmbed = (url: string) => {
+          url = url || 'http://m.weibo.cn/u/3196963860';
+          let topoffset = '44px';
+          window.plus.nativeUI.showWaiting('', {
+            style: 'black',
+            modal: false,
+            background: 'rgba(0,0,0,0)',
+          });
+          embed = window.plus.webview.create(url, 'embed', {
+            top: topoffset,
+            bottom: '0px',
+            position: 'dock',
+            dock: 'bottom',
+            bounce: 'vertical',
+          });
+          ws.append(embed);
+          embed.addEventListener(
+            'loaded',
+            function () {
+              window.plus.nativeUI.closeWaiting();
+            },
+            false
+          );
+          embed.addEventListener(
+            'loading',
+            function () {
+              window.plus.nativeUI.showWaiting('', {
+                style: 'black',
+                modal: false,
+                background: 'rgba(0,0,0,0)',
+              });
+            },
+            false
+          );
+        };
       }
     } else {
       setConnectUrl(false);
