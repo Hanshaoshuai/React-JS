@@ -346,7 +346,9 @@ const ChatList = () => {
     }
   };
   const iframeGoBackS = (e?: any) => {
-    history.goBack();
+    if (!e) {
+      history.goBack();
+    }
     setIframeUrl('');
     window.plus.webview.close('nestingIframe');
     // back();
