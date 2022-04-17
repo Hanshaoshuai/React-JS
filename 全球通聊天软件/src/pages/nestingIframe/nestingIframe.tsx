@@ -59,11 +59,11 @@ const NestingIframe = ({
       // 创建子Webview
       const createEmbed = (url: string) => {
         url = url || 'http://m.weibo.cn/u/3196963860';
-        let topoffset = `${window.userAgents + 45}px`;
+        let topoffset = `${window.userAgents + 46}px`;
         window.plus.nativeUI.showWaiting('', {
           style: 'black',
           modal: false,
-          background: 'rgba(0,0,0,0)',
+          background: 'rgba(255, 122, 89)',
         });
         embed = window.plus.webview.create(url, 'nestingIframe', {
           top: topoffset,
@@ -86,7 +86,7 @@ const NestingIframe = ({
             window.plus.nativeUI.showWaiting('', {
               style: 'black',
               modal: false,
-              background: 'rgba(0,0,0,0)',
+              background: 'rgba(255, 122, 89)',
             });
           },
           false
@@ -108,6 +108,7 @@ const NestingIframe = ({
         back = false;
         window.plus.key.removeEventListener('backbutton', () => {}, false);
         window.plus.webview.close(ws, 'slide-out-right', 300);
+        window.plus.nativeUI.closeWaiting();
         goBackS('canBack');
       }
     });
