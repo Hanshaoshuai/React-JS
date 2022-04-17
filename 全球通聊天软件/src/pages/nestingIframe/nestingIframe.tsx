@@ -63,7 +63,8 @@ const NestingIframe = ({
         window.plus.nativeUI.showWaiting('', {
           style: 'black',
           modal: false,
-          background: 'rgba(255, 122, 89)',
+          background: 'rgba(0,0,0,0)',
+          color: 'rgba(255, 122, 89)',
         });
         embed = window.plus.webview.create(url, 'nestingIframe', {
           top: topoffset,
@@ -86,7 +87,8 @@ const NestingIframe = ({
             window.plus.nativeUI.showWaiting('', {
               style: 'black',
               modal: false,
-              background: 'rgba(255, 122, 89)',
+              background: 'rgba(0,0,0,0)',
+              color: 'rgba(255, 122, 89)',
             });
           },
           false
