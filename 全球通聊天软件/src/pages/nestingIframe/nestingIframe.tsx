@@ -44,9 +44,7 @@ const NestingIframe = ({
         window.plus.key.addEventListener(
           'backbutton',
           function () {
-            if (!canBack()) {
-              goBackS();
-            }
+            canBack();
           },
           false
         );
@@ -108,7 +106,7 @@ const NestingIframe = ({
       } else {
         back = false;
         localStorage.removeItem('NestingIframe');
-        window.plus.webview.close('nestingIframe');
+        goBackS('canBack');
       }
     });
     return back;
@@ -126,9 +124,7 @@ const NestingIframe = ({
     [display]
   );
   const setGoBackS = () => {
-    if (!canBack()) {
-      goBackS();
-    }
+    canBack();
   };
 
   return (

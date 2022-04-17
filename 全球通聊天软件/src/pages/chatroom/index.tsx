@@ -345,9 +345,10 @@ const ChatList = () => {
       history.push(`/chatroom?OnPlayUrl=0&iframe=1`);
     }
   };
-  const iframeGoBackS = () => {
+  const iframeGoBackS = (e?: any) => {
     history.goBack();
     setIframeUrl('');
+    window.plus.webview.close('nestingIframe');
     // back();
   };
   const messageVariety = (data: any) => {
