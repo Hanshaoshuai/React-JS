@@ -354,7 +354,6 @@ const ChatList = () => {
       localStorage.removeItem('NestingIframe');
       clearTimeout(timeout);
     }, 310);
-    window.plus.webview.close('nestingIframe', 'slide-out-right', 3100);
     // back();
   };
   const messageVariety = (data: any) => {
