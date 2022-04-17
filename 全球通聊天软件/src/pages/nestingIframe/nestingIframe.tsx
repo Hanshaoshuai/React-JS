@@ -107,7 +107,7 @@ const NestingIframe = ({
       } else {
         back = false;
         window.plus.key.removeEventListener('backbutton', () => {}, false);
-        window.plus.webview.close(ws, 'slide-out-right', 300);
+        window.plus.webview.close('nestingIframe', 'slide-out-right', 300);
         window.plus.nativeUI.closeWaiting();
         goBackS('canBack');
       }
