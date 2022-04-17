@@ -12,7 +12,7 @@ const NestingIframe = ({
 }: any) => {
   const [titleName, setTitleName] = useState('');
   const [displayBlock, setDisplayBlock] = useState(false);
-  const [viewable, setViewable] = useState(false);
+  //   const [viewable, setViewable] = useState(false);
   useEffect(() => {
     if (!display) {
       let timeout = setTimeout(() => {
@@ -22,14 +22,66 @@ const NestingIframe = ({
     } else if (display) {
       setDisplayBlock(true);
     }
+    let viewable = false;
     if (url && downloadName) {
       const list = url.split('.');
       const name = list[list.length - 1];
       if (name === 'txt' || name === 'html' || name === 'html') {
-        setViewable(true);
+        viewable = true;
       } else {
-        setViewable(false);
+        viewable = false;
       }
+    }
+    if ((url && connectUrl) || viewable) {
+      let ws: any = null,
+        embed = null;
+      // 扩展API加载完毕，现在可以正常调用扩展API
+      const plusReady = () => {
+        ws = window.plus.webview.currentWebview();
+        setTimeout(() => createEmbed(url), 500); //延迟创建子窗口避免影响窗口动画
+      };
+      // 判断扩展API是否准备，否则监听plusready事件
+      if (window.plus) {
+        plusReady();
+      } else {
+        document.addEventListener('plusready', plusReady, false);
+      }
+      // 创建子Webview
+      const createEmbed = (url: string) => {
+        url = url || 'http://m.weibo.cn/u/3196963860';
+        let topoffset = `calc(0.9rem + ${window.userAgents}px)`;
+        window.plus.nativeUI.showWaiting('', {
+          style: 'black',
+          modal: false,
+          background: 'rgba(0,0,0,0)',
+        });
+        embed = window.plus.webview.create(url, 'embed', {
+          top: topoffset,
+          bottom: '0px',
+          position: 'dock',
+          dock: 'bottom',
+          bounce: 'vertical',
+        });
+        ws.append(embed);
+        embed.addEventListener(
+          'loaded',
+          function () {
+            window.plus.nativeUI.closeWaiting();
+          },
+          false
+        );
+        embed.addEventListener(
+          'loading',
+          function () {
+            window.plus.nativeUI.showWaiting('', {
+              style: 'black',
+              modal: false,
+              background: 'rgba(0,0,0,0)',
+            });
+          },
+          false
+        );
+      };
     }
   }, [display]);
   const onRef = useCallback(
@@ -77,9 +129,10 @@ const NestingIframe = ({
           height: `calc(100% - 0.9rem - ${window.userAgents}px)`,
         }}
       >
-        {(url && connectUrl) || viewable ? (
+        {/* {(url && connectUrl) || viewable ? (
           <iframe ref={onRef} title={title} src={url}></iframe>
-        ) : (
+        ) : ( */}
+        {url && !connectUrl && (
           <div className="nestingDownload">
             <span>暂不支持查看请点击下载</span>
             <a download={downloadName} href={url}>
@@ -87,6 +140,7 @@ const NestingIframe = ({
             </a>
           </div>
         )}
+        {/* )} */}
       </div>
     </div>
   );
