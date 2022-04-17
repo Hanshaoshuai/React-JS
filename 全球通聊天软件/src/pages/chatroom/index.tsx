@@ -324,7 +324,7 @@ const ChatList = () => {
     //   window.history.back();
     // } else {
     // window.close();
-    window.plus.webview.goBack();
+    window.plus.webview.back();
     // window.plus.webview.close('nestingIframe');
     // }
   };
