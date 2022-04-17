@@ -319,7 +319,7 @@ const ChatList = () => {
     if (window.plus) {
       ws || (ws = window.plus.webview.currentWebview());
       ws.preate ? ws.hide('auto') : ws.close('auto');
-    } else if (history.length > 1) {
+    } else if (history.length >= 1) {
       window.history.back();
     } else {
       window.close();
