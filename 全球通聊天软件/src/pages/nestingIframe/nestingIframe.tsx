@@ -43,7 +43,7 @@ const NestingIframe = ({
         ws = window.plus.webview.currentWebview();
         window.plus.key.addEventListener(
           'backbutton',
-          function () {
+          () => {
             canBack();
           },
           false
@@ -102,6 +102,7 @@ const NestingIframe = ({
     await embed.canBack((e: any) => {
       console.log('是否可返回：', e.canBack);
       if (e.canBack) {
+        localStorage.setItem('NestingIframe', 'true');
         back = true;
         embed.back();
       } else {
