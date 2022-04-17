@@ -100,7 +100,7 @@ const NestingIframe = ({
     let back = false;
     if (!embed) return;
     await embed.canBack((e: any) => {
-      console.log('是否可返回：', e.canBack);
+      //   console.log('是否可返回：', e.canBack);
       if (e.canBack) {
         back = true;
         embed.back();
