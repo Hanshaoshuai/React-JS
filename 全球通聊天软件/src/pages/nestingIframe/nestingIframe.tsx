@@ -59,7 +59,7 @@ const NestingIframe = ({
       // 创建子Webview
       const createEmbed = (url: string) => {
         url = url || 'http://m.weibo.cn/u/3196963860';
-        let topoffset = `${window.userAgents + 46}px`;
+        let topoffset = `${window.userAgents + 47}px`;
         window.plus.nativeUI.showWaiting('', {
           style: 'black',
           modal: false,
