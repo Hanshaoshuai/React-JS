@@ -95,7 +95,10 @@ const NestingIframe = ({
   // 是否可后退
   const canBack = () => {
     embed.canBack((e: any) => {
-      console.log('是否可返回：' + e.canBack);
+      console.log('是否可返回：', e.canBack);
+      if (e.canBack) {
+        embed.back();
+      }
     });
   };
   const onRef = useCallback(
