@@ -54,6 +54,8 @@ let scrollSize = 0;
 let smallFile = 0;
 let imagelistId: any = {};
 let imagelistIndex = 0;
+let ws: any = null;
+let as = 'pop-in';
 const ChatList = () => {
   const chatNames: any = localStorage.getItem('toChatName');
   const agreess: any = useRef();
@@ -303,6 +305,26 @@ const ChatList = () => {
       setDisplay(false);
     }
   }, [iframeUrl]);
+  const plusReady = () => {
+    ws = window.plus.webview.currentWebview();
+    window.plus.key.addEventListener(
+      'backbutton',
+      function () {
+        back();
+      },
+      false
+    );
+  };
+  const back = () => {
+    if (window.plus) {
+      ws || (ws = window.plus.webview.currentWebview());
+      ws.preate ? ws.hide('auto') : ws.close('auto');
+    } else if (history.length > 1) {
+      window.history.back();
+    } else {
+      window.close();
+    }
+  };
   const fileDownload = ({ d, e, url }: any) => {
     // console.log(d, e, url);
     if (url === true) {
@@ -315,6 +337,11 @@ const ChatList = () => {
         setDisplay(true);
         setIframeUrl(e);
         history.push(`/chatroom?OnPlayUrl=0&iframe=1`);
+        if (window.plus) {
+          plusReady();
+        } else {
+          document.addEventListener('plusready', plusReady, false);
+        }
       }
     } else {
       setConnectUrl(false);
@@ -329,6 +356,7 @@ const ChatList = () => {
   const iframeGoBackS = () => {
     history.goBack();
     setIframeUrl('');
+    back();
   };
   const messageVariety = (data: any) => {
     if (data.text === 'uploadCompleted') {
