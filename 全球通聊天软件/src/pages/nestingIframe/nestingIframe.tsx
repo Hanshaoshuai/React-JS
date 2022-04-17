@@ -2,6 +2,8 @@ import './index.scss';
 
 import React, { useCallback, useEffect, useState } from 'react';
 
+let ws: any = null,
+  embed: any = null;
 const NestingIframe = ({
   title,
   display,
@@ -33,11 +35,16 @@ const NestingIframe = ({
       }
     }
     if ((url && connectUrl) || viewable) {
-      let ws: any = null,
-        embed = null;
       // 扩展API加载完毕，现在可以正常调用扩展API
       const plusReady = () => {
         ws = window.plus.webview.currentWebview();
+        window.plus.key.addEventListener(
+          'backbutton',
+          function () {
+            canBack();
+          },
+          false
+        );
         setTimeout(() => createEmbed(url), 500); //延迟创建子窗口避免影响窗口动画
       };
       // 判断扩展API是否准备，否则监听plusready事件
@@ -67,23 +74,6 @@ const NestingIframe = ({
           'loaded',
           function () {
             window.plus.nativeUI.closeWaiting();
-            document.addEventListener('plusready', function () {
-              const webview = window.plus.webview.currentWebview(); //获取这页
-              window.plus.key.addEventListener('backbutton', function () {
-                //监听这页的返回按钮
-                webview.canBack(function (e: any) {
-                  //看看这也是否可以返回
-                  if (e.canBack) {
-                    //如果可以返回
-                    webview.back(); //回退；
-                  } else {
-                    // window.plus.webview.close('nestingIframe');
-                    webview.close(); //关闭这页
-                    //plus.runtime.quit();//退出app
-                  }
-                });
-              });
-            });
           },
           false
         );
@@ -101,6 +91,13 @@ const NestingIframe = ({
       };
     }
   }, [display]);
+
+  // 是否可后退
+  const canBack = () => {
+    embed.canBack((e: any) => {
+      console.log('是否可返回：' + e.canBack);
+    });
+  };
   const onRef = useCallback(
     (node) => {
       if (node) {

@@ -339,11 +339,11 @@ const ChatList = () => {
         setDisplay(true);
         setIframeUrl(e);
         history.push(`/chatroom?OnPlayUrl=0&iframe=1`);
-        if (window.plus) {
-          plusReady();
-        } else {
-          document.addEventListener('plusready', plusReady, false);
-        }
+        // if (window.plus) {
+        //   plusReady();
+        // } else {
+        //   document.addEventListener('plusready', plusReady, false);
+        // }
       }
     } else {
       setConnectUrl(false);
