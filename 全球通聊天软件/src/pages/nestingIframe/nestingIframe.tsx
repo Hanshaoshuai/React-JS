@@ -105,7 +105,6 @@ const NestingIframe = ({
         embed.back();
       } else {
         back = false;
-        localStorage.removeItem('NestingIframe');
         goBackS('canBack');
       }
     });

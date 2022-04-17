@@ -346,10 +346,11 @@ const ChatList = () => {
     }
   };
   const iframeGoBackS = (e?: any) => {
-    if (!e) {
-      history.goBack();
-    }
+    // if (!e) {
+    history.goBack();
+    // }
     setIframeUrl('');
+    localStorage.removeItem('NestingIframe');
     window.plus.webview.close('nestingIframe');
     // back();
   };
