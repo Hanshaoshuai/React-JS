@@ -346,6 +346,7 @@ const ChatList = () => {
     }
   };
   const iframeGoBackS = (e?: any) => {
+    console.log('111111');
     // if (!e) {
     history.goBack();
     // }

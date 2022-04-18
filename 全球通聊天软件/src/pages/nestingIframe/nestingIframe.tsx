@@ -98,8 +98,11 @@ const NestingIframe = ({
   }, [display]);
 
   // 当前窗口是否可后退
-  const canBack = async () => {
+  const canBack = async (on?: string) => {
     let back = false;
+    if (!window.userAgents && on) {
+      goBackS();
+    }
     if (!embed) return;
     await embed.canBack((e: any) => {
       //   console.log('是否可返回：', e.canBack);
@@ -129,7 +132,7 @@ const NestingIframe = ({
     [display]
   );
   const setGoBackS = () => {
-    canBack();
+    canBack('on');
   };
 
   return (
@@ -153,7 +156,7 @@ const NestingIframe = ({
               alt=""
               onClick={setGoBackS}
             />
-            <span>{titleName}</span>
+            <span>{title}</span>
           </div>
         </div>
       </div>
