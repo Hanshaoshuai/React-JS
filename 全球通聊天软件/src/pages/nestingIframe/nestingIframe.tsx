@@ -134,7 +134,7 @@ const NestingIframe = ({
     [display]
   );
   const setGoBackS = () => {
-    if ((url && !connectUrl) || !viewable) {
+    if (url && !connectUrl && !viewable) {
       goBackS('canBack');
     } else {
       canBack('on');
@@ -176,7 +176,7 @@ const NestingIframe = ({
         {/* {(url && connectUrl) || viewable ? (
             <iframe ref={onRef} title={title} src={url}></iframe>
             ) : ( */}
-        {url && !connectUrl && (
+        {url && !connectUrl && !viewable && (
           <div className="nestingDownload">
             <span>暂不支持查看请点击下载</span>
             <a download={downloadName} href={url}>
