@@ -65,7 +65,7 @@ const ChatRecord = () => {
     localStorage.removeItem('type');
     localStorage.removeItem('fromChatRoom');
     localStorage.removeItem('nickNameSpare');
-
+    localStorage.removeItem('NestingIframe');
     if (myHeadPortrait && myapathZoom) {
       setImgeSrc(localStorage.getItem('myapathZoom'));
     } else if (localName && localName !== '') {
