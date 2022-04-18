@@ -47,8 +47,7 @@ const NestingIframe = ({
           },
           false
         );
-        // setTimeout(() => createEmbed(url), 500); //延迟创建子窗口避免影响窗口动画
-        createEmbed(url);
+        setTimeout(() => createEmbed(url), 400); //延迟创建子窗口避免影响窗口动画
       };
       // 判断扩展API是否准备，否则监听plusready事件
       if (window.plus) {
