@@ -1087,7 +1087,7 @@ const Dynamic = ({
                           }
                           className="give-thumbs-up-button"
                           style={{
-                            lineHeight: '0.32rem',
+                            lineHeight: '0.39rem',
                             opacity: '0',
                             cursor: 'pointer',
                           }}
@@ -1095,9 +1095,9 @@ const Dynamic = ({
                           <HeartFill
                             style={{
                               color: likeIt ? '#ff0000' : '#fff',
-                              fontSize: '0.34rem',
+                              fontSize: '0.41rem',
                               verticalAlign: 'bottom',
-                              marginRight: '0.04rem',
+                              marginRight: '0.08rem',
                             }}
                           />
                           点赞
