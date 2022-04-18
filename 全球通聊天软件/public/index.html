@@ -147,6 +147,26 @@
         }
       }
     </style>
+    <style>
+      body {
+        background-image: url(./magazine1.jpg);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 100%;
+        animation: magazine 3s linear infinite alternate;
+      }
+      @keyframes magazine {
+        0% {
+          background-size: 100%;
+
+          background-position: 0 0;
+        }
+        100% {
+          background-size: 130%;
+          background-position: 15% 15%;
+        }
+      }
+    </style>
   </head>
   <body>
     <!-- <embed src="/mp3/1.mp3" loop="true" autostart="true" width="" height="0" /> -->
