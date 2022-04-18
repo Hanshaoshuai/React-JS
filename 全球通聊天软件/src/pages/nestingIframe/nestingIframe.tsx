@@ -21,9 +21,6 @@ const NestingIframe = ({
       let timeout = setTimeout(() => {
         setDisplayBlock(false);
         clearTimeout(timeout);
-        ws = null;
-        embed = null;
-        viewable = false;
       }, 310);
     } else if (display) {
       setDisplayBlock(true);
@@ -117,6 +114,9 @@ const NestingIframe = ({
         window.plus.webview.close('nestingIframe', 'slide-out-right', 300);
         window.plus.nativeUI.closeWaiting();
         goBackS('canBack');
+        ws = null;
+        embed = null;
+        viewable = false;
       }
     });
     return back;
