@@ -132,7 +132,11 @@ const NestingIframe = ({
     [display]
   );
   const setGoBackS = () => {
-    canBack('on');
+    if (url && !connectUrl) {
+      goBackS('canBack');
+    } else {
+      canBack('on');
+    }
   };
 
   return (
