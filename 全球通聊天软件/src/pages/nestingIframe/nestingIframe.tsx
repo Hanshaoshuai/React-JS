@@ -3,7 +3,8 @@ import './index.scss';
 import React, { useCallback, useEffect, useState } from 'react';
 
 let ws: any = null,
-  embed: any = null;
+  embed: any = null,
+  viewable = false;
 const NestingIframe = ({
   title,
   display,
@@ -22,11 +23,12 @@ const NestingIframe = ({
         clearTimeout(timeout);
         ws = null;
         embed = null;
+        viewable = false;
       }, 310);
     } else if (display) {
       setDisplayBlock(true);
     }
-    let viewable = false;
+
     if (url && downloadName) {
       const list = url.split('.');
       const name = list[list.length - 1];
@@ -132,7 +134,7 @@ const NestingIframe = ({
     [display]
   );
   const setGoBackS = () => {
-    if (url && !connectUrl) {
+    if ((url && !connectUrl) || !viewable) {
       goBackS('canBack');
     } else {
       canBack('on');
