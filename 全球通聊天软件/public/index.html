@@ -147,6 +147,11 @@
       }
     </style>
     <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+      }
       body {
         background-image: url(./magazine1.jpg);
         background-repeat: no-repeat;
@@ -168,7 +173,7 @@
     <!-- <embed src="/mp3/1.mp3" loop="true" autostart="true" width="" height="0" /> -->
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <div class="spinner" id="spinner"></div>
+    <!-- <div class="spinner" id="spinner"></div> -->
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -226,15 +231,6 @@
           }
         }
       };
-      var spinnerId = () => {
-        var rootDom = document.getElementById('spinner');
-        rootDom.style.display = 'none';
-      };
-      if (modelName === '手机') {
-        spinnerId();
-      } else if (modelName === '平板') {
-        spinnerId();
-      }
     </script>
   </body>
 </html>
