@@ -339,9 +339,9 @@ const ChatList = () => {
       setConnectUrl(false);
       setDownloadName(url);
       // window.open(`${origin + e}`);
-      setIframeTitle(e);
+      setIframeTitle(`${window.location.origin}${e}`);
       setDisplay(true);
-      setIframeUrl(e);
+      setIframeUrl(`${window.location.origin}${e}`);
       history.push(`/chatroom?OnPlayUrl=0&iframe=1`);
     }
   };
