@@ -134,6 +134,7 @@ const NestingIframe = ({
     [display]
   );
   const setGoBackS = () => {
+    window.plus.nativeUI.closeWaiting();
     if (url && !connectUrl && !viewable) {
       goBackS('canBack');
     } else {
