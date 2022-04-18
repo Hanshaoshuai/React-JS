@@ -111,14 +111,19 @@
             (e.exports = t.default);
         },
       ]);
+      var spinnerId = () => {
+        var rootDom = document.getElementById('spinner');
+        rootDom.style.display = 'none';
+      };
       // 设置基础字体大小及字体缩放比例
       if (modelName === '手机') {
         vl(100, 750);
+        spinnerId();
       } else if (modelName === '平板') {
         vl(100, 1024);
+        spinnerId();
       } else {
         vl(100, 1920);
-
         var rootDom = document.getElementById('htmls');
         rootDom.style.maxWidth = '910px';
         rootDom.style.margin = '0 auto';
