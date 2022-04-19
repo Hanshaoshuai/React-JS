@@ -81,6 +81,12 @@ const CameraOutList = ({ callback }: any) => {
       Toast.show(`没有要发布的内容！`);
       return;
     }
+    if (connectValue) {
+      if (!IsURL(connectValue)) {
+        Toast.show(`链接必须以http://或https://开头！`);
+        return;
+      }
+    }
     setCameraOut(true);
     if (imgFileList.length > 0) {
       //   console.log(imgFileList);
@@ -94,12 +100,7 @@ const CameraOutList = ({ callback }: any) => {
         videoImgZoom: videoImgUrl,
       });
     }
-    if (connectValue) {
-      if (!IsURL(connectValue)) {
-        Toast.show(`链接必须以http://或https://开头！`);
-        return;
-      }
-    }
+
     if (textValue || resultsImg || resultsVideo) {
       // console.log(myLocName, inputContent, resultsImg, resultsVideo);
       const data: any = {
