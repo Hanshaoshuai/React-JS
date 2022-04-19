@@ -23,6 +23,7 @@ import {
 import { MyContext } from '../../models/context';
 import { moment } from '../../helpers';
 import { urlObj } from '../personalInformation/urlObj';
+import NestingIframe from '../nestingIframe/nestingIframe';
 
 let imgIndex: any = [];
 let demoImages: any = [];
@@ -76,6 +77,10 @@ const Dynamic = ({
   const { _name, _value, _valueObj } = urlObj(urlPathname);
   const [displayBlock, setDisplayBlock] = useState(false);
   const [displayListImg, setDisplayListImg] = useState([]);
+
+  const [iframeTitle, setIframeTitle] = useState('');
+  const [iframeDisplay, setIframeDisplay] = useState(false);
+  const [iframeUrl, setIframeUrl] = useState('');
 
   useEffect(() => {
     if (!display && name) {
@@ -170,7 +175,17 @@ const Dynamic = ({
     if (!_valueObj.ImageViewer) {
       setVisible(false);
     }
+    if (!_valueObj.iframe) {
+      setIframeUrl('');
+    }
   }, [urlPathname]);
+  useEffect(() => {
+    if (iframeUrl) {
+      setIframeDisplay(true);
+    } else {
+      setIframeDisplay(false);
+    }
+  }, [iframeUrl]);
   useEffect(() => {
     imgIndex = [];
     demoImages = [];
@@ -452,27 +467,31 @@ const Dynamic = ({
     }).then((res: any) => {
       if (res.code === 200) {
         // console.log(res);
+        const termObj = {
+          time,
+          name, // 给谁点赞的 对方的电话
+          friendName: nickname, // 点赞者的中文名
+          friendNameId: myLocName, // 点赞者的电话
+          friendHeadPortrait: myapathZoom, // 点赞者的头像
+          thumbsUp: !likeIt ? true : false, // 设为true
+          thumbsTime: thumbsTime || new Date().getTime(), // 点赞时间
+        };
         const list = [...circleFriendList].map((item: any) => {
           if (item.time === time) {
+            let existence = false;
             if (item.commentsList) {
               item.commentsList = item.commentsList.map((term: any) => {
                 if (term.friendNameId === myLocName) {
+                  existence = true;
                   term.thumbsUp = !likeIt ? true : false;
                 }
                 return term;
               });
             } else {
-              item.commentsList = [
-                {
-                  time,
-                  name, // 给谁点赞的 对方的电话
-                  friendName: nickname, // 点赞者的中文名
-                  friendNameId: myLocName, // 点赞者的电话
-                  friendHeadPortrait: myapathZoom, // 点赞者的头像
-                  thumbsUp: !likeIt ? true : false, // 设为true
-                  thumbsTime: thumbsTime || new Date().getTime(), // 点赞时间
-                },
-              ];
+              item.commentsList = [termObj];
+            }
+            if (!existence) {
+              item.commentsList.push(termObj);
             }
             if (item.thumbsUpLength) {
               item.thumbsUpLength = !likeIt
@@ -724,6 +743,67 @@ const Dynamic = ({
         history.goBack();
       }
     });
+  };
+  const onConnectValue = (url: string, title: string) => {
+    setIframeUrl(url);
+    setIframeTitle(title);
+    if (urlName === 'dynamic') {
+      if (urlValueObj.dynamicDynamic) {
+        history.push(
+          `/personalInformation${
+            window.location.search
+          }&${urlName}-${new Date().getTime()}=${JSON.stringify({
+            name: urlValue || '',
+            dynamicDynamic: 'yes',
+            iframe: 'yes',
+          })}`
+        );
+      } else {
+        if (urlValueObj.dynamicInside) {
+          history.push(
+            `/personalInformation${
+              window.location.search
+            }&${urlName}-${new Date().getTime()}=${JSON.stringify({
+              name: urlValue || '',
+              dynamicInside: 'yes',
+              iframe: 'yes',
+            })}`
+          );
+        } else {
+          history.push(
+            `/dynamic${
+              window.location.search
+            }&${urlName}-${new Date().getTime()}=${JSON.stringify({
+              name: urlValue || '',
+              dynamicInside: 'yes',
+              iframe: 'yes',
+            })}`
+          );
+        }
+      }
+    } else {
+      history.push(
+        `/personalInformation${
+          window.location.search
+        }&${urlName}-${new Date().getTime()}=${JSON.stringify({
+          name: urlValue || '',
+          album: 'yes',
+          iframe: 'yes',
+        })}`
+      );
+    }
+  };
+  const iframeGoBackS = (e?: any) => {
+    // console.log('111111');
+    // if (!e) {
+    history.goBack();
+    // }
+    setIframeUrl('');
+    let timeout = setTimeout(() => {
+      localStorage.removeItem('NestingIframe');
+      clearTimeout(timeout);
+    }, 310);
+    // back();
   };
   return (
     <div
@@ -1042,6 +1122,16 @@ const Dynamic = ({
                       </div>
                     </div>
                   )}
+                  {item?.connectValue && (
+                    <div
+                      className="dynamic-connectValue"
+                      onClick={() =>
+                        onConnectValue(item.connectValue, item.title)
+                      }
+                    >
+                      {item?.title || item?.connectValue}
+                    </div>
+                  )}
                   <div className="dynamic-const-box-text-bottom">
                     <div className="dynamic-const-box-text-bottom-left">
                       {moment(parseInt(item.time))}
@@ -1295,6 +1385,14 @@ const Dynamic = ({
           </div>
         )}
       </Popup>
+      <NestingIframe
+        title={iframeTitle}
+        display={iframeDisplay}
+        url={iframeUrl}
+        goBackS={iframeGoBackS}
+        connectUrl={true}
+        downloadName={''}
+      />
     </div>
   );
 };

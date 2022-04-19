@@ -36,6 +36,7 @@ const CameraOutList = ({ callback }: any) => {
   const [onPlayUrl, setOnPlayUrl] = useState<any>('');
   const [value, setValue] = useState<any>('');
   const [textValue, setTextValue] = useState<any>('');
+  const [connectValue, setConnectValue] = useState<any>('');
 
   const onDelete = (item: ImageUploadItem) => {
     // console.log(item);
@@ -98,6 +99,7 @@ const CameraOutList = ({ callback }: any) => {
         headPortrait: headPortrait,
         title: value,
         content: textValue,
+        connectValue: connectValue,
         name: myLocName,
         nickname: nickname,
         inputContent,
@@ -155,6 +157,16 @@ const CameraOutList = ({ callback }: any) => {
             rows={3}
             onChange={(val: any) => {
               setTextValue(val);
+            }}
+          />
+        </Form.Item>
+        <Form.Item label="连接" name="connect">
+          <TextArea
+            placeholder="以http或https开头（如果填写标题，连接将以标题名展示否为连接展示）..."
+            // value={value}
+            rows={2}
+            onChange={(val: any) => {
+              setConnectValue(val);
             }}
           />
         </Form.Item>

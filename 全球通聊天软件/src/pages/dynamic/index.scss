@@ -136,7 +136,7 @@
           i {
             // color: #ff7a59;
             margin-right: 0.5rem;
-            color: rgb(86, 136, 197);
+            color: #787ef0;
           }
           span {
             vertical-align: sub;
@@ -241,6 +241,9 @@
     &:focus:before {
       content: none;
     }
+  }
+  .adm-list-item-content-main {
+    padding: 0 0 12px 0;
   }
   .cameraOutListFileList {
     padding-top: 0.3rem;
@@ -465,6 +468,16 @@
   .contentsTransparency {
     padding-top: 0;
     height: 100% !important;
+    .dynamic-connectValue {
+      display: inline-block;
+      max-width: 4.8rem;
+      padding: 0.1rem 0.1rem;
+      font-size: 0.27rem;
+      overflow-wrap: break-word;
+      line-height: 0.31rem;
+      color: #787ef0;
+      background: rgba(120, 126, 240, 0.2);
+    }
   }
 }
 .NoticeBarName {

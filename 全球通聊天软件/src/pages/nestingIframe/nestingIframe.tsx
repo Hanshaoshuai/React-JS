@@ -40,6 +40,7 @@ const NestingIframe = ({
       localStorage.setItem('NestingIframe', 'true');
       const plusReady = () => {
         ws = window.plus.webview.currentWebview();
+        if (!ws) return;
         window.plus.key.addEventListener(
           'backbutton',
           () => {
@@ -134,6 +135,13 @@ const NestingIframe = ({
     [display]
   );
   const setGoBackS = () => {
+    if ((!ws && url && connectUrl) || (!ws && viewable)) {
+      goBackS('canBack');
+      return;
+    } else if (!ws && url && !connectUrl && !viewable) {
+      goBackS('canBack');
+      return;
+    }
     window.plus.nativeUI.closeWaiting();
     if (url && !connectUrl && !viewable) {
       goBackS('canBack');
@@ -174,9 +182,9 @@ const NestingIframe = ({
           height: `calc(100% - 0.9rem - ${window.userAgents}px)`,
         }}
       >
-        {/* {(url && connectUrl) || viewable ? (
-            <iframe ref={onRef} title={title} src={url}></iframe>
-            ) : ( */}
+        {((!ws && url && connectUrl) || (!ws && viewable)) && (
+          <iframe ref={onRef} title={title} src={url}></iframe>
+        )}
         {url && !connectUrl && !viewable && (
           <div className="nestingDownload">
             <span>暂不支持查看请点击下载</span>
@@ -185,7 +193,6 @@ const NestingIframe = ({
             </a>
           </div>
         )}
-        {/* )} */}
       </div>
     </div>
   );
