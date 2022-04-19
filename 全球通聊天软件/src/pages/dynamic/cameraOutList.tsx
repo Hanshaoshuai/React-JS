@@ -18,6 +18,7 @@ import { FriendsCircleUpload } from './friendsCircleUpload';
 import { SetVideoImg } from './friendsCircleUpload/fileUploadCircle';
 import { onUploadProgress } from '../../services/request';
 import { startFriendsCircleFileUpload } from '../../api';
+import { IsURL } from '../../helpers';
 
 const CameraOutList = ({ callback }: any) => {
   const formDate: any = useRef(null);
@@ -93,6 +94,12 @@ const CameraOutList = ({ callback }: any) => {
         videoImgZoom: videoImgUrl,
       });
     }
+    if (connectValue) {
+      if (!IsURL(connectValue)) {
+        Toast.show(`链接必须以http://或https://开头！`);
+        return;
+      }
+    }
     if (textValue || resultsImg || resultsVideo) {
       // console.log(myLocName, inputContent, resultsImg, resultsVideo);
       const data: any = {
@@ -160,9 +167,9 @@ const CameraOutList = ({ callback }: any) => {
             }}
           />
         </Form.Item>
-        <Form.Item label="连接" name="connect">
+        <Form.Item label="链接" name="connect">
           <TextArea
-            placeholder="以http或https开头（如果填写标题，连接将以标题名展示否为连接展示）..."
+            placeholder="以http或https开头（如果填写标题，链接将以标题名展示否为链接展示）..."
             // value={value}
             rows={2}
             onChange={(val: any) => {
