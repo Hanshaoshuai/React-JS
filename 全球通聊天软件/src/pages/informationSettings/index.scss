@@ -118,8 +118,12 @@
     margin: 0 !important;
   }
   .denglu-food {
-    margin: 0.3rem !important;
+    width: 100% !important;
+    margin: 0.3rem 0 !important;
+    text-align: center;
     span {
+      display: inline-block;
+      width: 95% !important;
       &:active {
         opacity: 0.9;
         box-shadow: 0 0 1px 1px #ff7a59;

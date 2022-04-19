@@ -125,11 +125,7 @@ const NestingIframe = ({
   const onRef = useCallback(
     (node) => {
       if (node) {
-        console.log(
-          node
-          //   node.contentWindow.document.getElementsByTagName('title')[0]
-          // .innerText()
-        );
+        // console.log(node);
       }
     },
     [display]
