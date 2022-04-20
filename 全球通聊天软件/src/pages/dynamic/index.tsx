@@ -19,6 +19,7 @@ import {
   CloseOutline,
   ArrowDownCircleOutline,
   LeftOutline,
+  LinkOutline,
 } from 'antd-mobile-icons';
 import { MyContext } from '../../models/context';
 import { moment } from '../../helpers';
@@ -1146,6 +1147,14 @@ const Dynamic = ({
                         onConnectValue(item.connectValue, item.title)
                       }
                     >
+                      <LinkOutline
+                        style={{
+                          color: '#ff7a59',
+                          fontSize: '0.3rem',
+                          verticalAlign: 'bottom',
+                          marginRight: '0.08rem',
+                        }}
+                      />
                       {item?.title || item?.connectValue}
                     </div>
                   )}

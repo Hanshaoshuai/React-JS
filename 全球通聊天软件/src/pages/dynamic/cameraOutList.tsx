@@ -83,7 +83,7 @@ const CameraOutList = ({ callback }: any) => {
     }
     if (connectValue) {
       if (!IsURL(connectValue)) {
-        Toast.show(`链接必须以http://或https://开头！`);
+        Toast.show(`链接请以http://或https://开头或格式有误！`);
         return;
       }
     }
