@@ -764,7 +764,7 @@ const Dynamic = ({
   };
   const onConnectValue = (url: string, title: string) => {
     setIframeUrl(url);
-    setIframeTitle(title);
+    setIframeTitle(title || url);
     if (urlName === 'dynamic') {
       if (urlValueObj.dynamicDynamic) {
         history.push(
