@@ -137,7 +137,11 @@
           i {
             // color: #ff7a59;
             margin-right: 0.5rem;
-            color: #4f83ff;
+            color: #ff7a59;
+            .dynamic-const-box-commentsList-bottom {
+              color: #ff7a59;
+              margin: 0;
+            }
           }
           span {
             vertical-align: sub;
@@ -435,6 +439,7 @@
           }
         }
         .PopupContentListTermText {
+          position: relative;
           flex: 1;
           span {
             font-size: 0.25rem;
@@ -460,6 +465,18 @@
               }
             }
           }
+          .PopupContentListTermTextBottomThumbsUp {
+            padding: 0.13rem 0 0.05rem 0;
+          }
+          .thumbsUpListLove {
+            width: 30%;
+            height: 0.7rem;
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: 0 auto;
+          }
         }
       }
     }
@@ -477,8 +494,10 @@
       font-size: 0.27rem;
       overflow-wrap: break-word;
       line-height: 0.31rem;
-      color: #4f83ff;
-      background: rgba(79, 131, 255, 0.2);
+      color: #ff7a59;
+      background: rgba(255, 122, 89, 0.2);
+      // color: #4f83ff;
+      // background: rgba(79, 131, 255, 0.2);
     }
   }
 }

@@ -198,7 +198,11 @@ const Dynamic = ({
     demoImages = [];
     setCircleFriendList([]);
   };
-
+  useEffect(() => {
+    if (!commentParameterV && commentParameter.commentsList) {
+      setCommentParameterV(true);
+    }
+  }, [commentParameter]);
   useEffect(() => {
     if (!circleFriendData) {
       const circle = localStorage.getItem('circleFriendsBackgroundLoc');
@@ -407,9 +411,10 @@ const Dynamic = ({
     nickname,
     commentsLength,
     commentsList,
+    thumbsUp,
+    comments,
   }: any) => {
     // console.log(name, nickname, myLocName);
-    setCommentParameterV(true);
     if (urlName === 'dynamic') {
       if (urlValueObj.dynamicDynamic) {
         history.push(
@@ -452,7 +457,15 @@ const Dynamic = ({
         })}`
       );
     }
-    setCommentParameter({ time, name, nickname, commentsLength, commentsList });
+    setCommentParameter({
+      time,
+      name,
+      nickname,
+      commentsLength,
+      commentsList,
+      thumbsUp,
+      comments,
+    });
   };
   const giveThumbs = ({ time, name, nickname, likeIt, thumbsTime }: any) => {
     // console.log(name, nickname, myLocName);
@@ -1137,20 +1150,36 @@ const Dynamic = ({
                       {moment(parseInt(item.time))}
                     </div>
                     <div className="dynamic-const-box-text-bottom-right">
-                      <i
-                        style={{ cursor: 'pointer' }}
-                        onClick={() =>
-                          onComment({
-                            time: item.time,
-                            name: item.name,
-                            nickname: nickname,
-                            commentsLength: item.commentsLength,
-                            commentsList: item.commentsList,
-                          })
-                        }
-                      >
-                        <i>{item.thumbsUpLength || 0} 赞 </i>
-                        {item.commentsLength || 0} 评论
+                      <i style={{ cursor: 'pointer' }}>
+                        <i
+                          onClick={() =>
+                            onComment({
+                              time: item.time,
+                              name: item.name,
+                              nickname: nickname,
+                              commentsLength: item.thumbsUpLength,
+                              commentsList: item.commentsList,
+                              thumbsUp: true,
+                            })
+                          }
+                        >
+                          {item.thumbsUpLength || 0} 赞{' '}
+                        </i>
+                        <i
+                          className="dynamic-const-box-commentsList-bottom"
+                          onClick={() =>
+                            onComment({
+                              time: item.time,
+                              name: item.name,
+                              nickname: nickname,
+                              commentsLength: item.commentsLength,
+                              commentsList: item.commentsList,
+                              comments: true,
+                            })
+                          }
+                        >
+                          {item.commentsLength || 0} 评论
+                        </i>
                       </i>
                       <span
                         style={{ cursor: 'pointer' }}
@@ -1205,6 +1234,7 @@ const Dynamic = ({
                               nickname: nickname,
                               commentsLength: item.commentsLength,
                               commentsList: item.commentsList,
+                              comments: true,
                             })
                           }
                         >
@@ -1301,11 +1331,62 @@ const Dynamic = ({
             }}
             className="PopupTopOutline"
           />
-          {commentParameter.commentsLength || 0} 条评论
+          {commentParameter.commentsLength || 0}{' '}
+          {commentParameter.thumbsUp ? '个赞' : '条评论'}
         </div>
         <div className="PopupContent">
           <div className="PopupContentList">
             {commentParameter.commentsList &&
+              commentParameter.thumbsUp &&
+              commentParameter.commentsList.map((term: any, index: number) => {
+                if (!term.thumbsUp) {
+                  return null;
+                }
+                return (
+                  <div key={`${index}`} className="PopupContentListTerm">
+                    <div className="PopupContentListTermImg">
+                      <img
+                        onClick={() => goFriends(term.friendNameId)}
+                        src={term.friendHeadPortrait}
+                        alt=""
+                      />
+                    </div>
+                    <div
+                      className="PopupContentListTermText"
+                      onClick={() => onReply({ friendName: term.friendName })}
+                    >
+                      <span className="PopupContentListTermTextBottomThumbsUp">
+                        {term.friendName}
+                      </span>
+                      <div className="PopupContentListTermTextBottom">
+                        {/* <div className="PopupContentListTermTextBottomTex">
+                          {term.comments}
+                        </div> */}
+                        <div className="PopupContentListTermTextBottomBottom">
+                          <span>{moment(parseInt(term.thumbsTime))}</span>
+                        </div>
+                      </div>
+                      <div className="thumbsUpListLove">
+                        <HeartFill
+                          style={{
+                            position: 'absolute',
+                            right: '0',
+                            top: '0',
+                            bottom: '0',
+                            margin: 'auto',
+                            color: '#ff0000',
+                            fontSize: '0.41rem',
+                            verticalAlign: 'bottom',
+                            marginRight: '0.08rem',
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            {commentParameter.commentsList &&
+              commentParameter.comments &&
               commentParameter.commentsList.map((term: any, index: number) => {
                 if (!term.comments) {
                   return null;

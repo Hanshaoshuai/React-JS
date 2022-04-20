@@ -77,7 +77,7 @@ const CameraOutList = ({ callback }: any) => {
     upload();
     let resultsImg = null;
     let resultsVideo = null;
-    if (!textValue && !videoImgUrl && !fileList.length) {
+    if (!textValue && !videoImgUrl && !fileList.length && !connectValue) {
       Toast.show(`没有要发布的内容！`);
       return;
     }
@@ -101,7 +101,7 @@ const CameraOutList = ({ callback }: any) => {
       });
     }
 
-    if (textValue || resultsImg || resultsVideo) {
+    if (textValue || resultsImg || resultsVideo || connectValue) {
       // console.log(myLocName, inputContent, resultsImg, resultsVideo);
       const data: any = {
         headPortrait: headPortrait,
@@ -111,8 +111,8 @@ const CameraOutList = ({ callback }: any) => {
         name: myLocName,
         nickname: nickname,
         inputContent,
-        imgList: JSON.stringify(resultsImg),
-        video: resultsVideo,
+        imgList: JSON.stringify(resultsImg || []),
+        video: resultsVideo || '',
         comment: null,
       };
       startFriendsCircleFileUpload(data).then((res: any) => {
@@ -170,7 +170,7 @@ const CameraOutList = ({ callback }: any) => {
         </Form.Item>
         <Form.Item label="链接" name="connect">
           <TextArea
-            placeholder="以http或https开头（如果填写标题，链接将以标题名展示否为链接展示）..."
+            placeholder="以http或https开头,如果填写标题,链接将以标题名展示否为链接展示"
             // value={value}
             rows={2}
             onChange={(val: any) => {
