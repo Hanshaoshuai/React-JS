@@ -1423,34 +1423,36 @@ const Dynamic = ({
               })}
           </div>
         </div>
-        <div className="PopupBottom">
-          <div className="border-top"></div>
-          <div
-            className={`PopupBottomTextArea ${
-              textAreaValue && 'PopupBottomTextAreaRight'
-            }`}
-          >
-            <TextArea
-              placeholder={
-                ReplyMessage ? `回复 @${ReplyMessage}` : '留下你的评论吧'
-              }
-              value={textAreaValue}
-              rows={1}
-              autoSize={{ minRows: 1, maxRows: 3 }}
-              onChange={(val) => {
-                setTextAreaValue(val);
-              }}
-            />
-            {textAreaValue && (
-              <div
-                className="PopupBottomIconBox"
-                onClick={() => releaseSpeech({})}
-              >
-                <ArrowDownCircleOutline className="PopupBottomIcon" />
-              </div>
-            )}
+        {commentParameter.comments && (
+          <div className="PopupBottom">
+            <div className="border-top"></div>
+            <div
+              className={`PopupBottomTextArea ${
+                textAreaValue && 'PopupBottomTextAreaRight'
+              }`}
+            >
+              <TextArea
+                placeholder={
+                  ReplyMessage ? `回复 @${ReplyMessage}` : '留下你的评论吧'
+                }
+                value={textAreaValue}
+                rows={1}
+                autoSize={{ minRows: 1, maxRows: 3 }}
+                onChange={(val) => {
+                  setTextAreaValue(val);
+                }}
+              />
+              {textAreaValue && (
+                <div
+                  className="PopupBottomIconBox"
+                  onClick={() => releaseSpeech({})}
+                >
+                  <ArrowDownCircleOutline className="PopupBottomIcon" />
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        )}
         {!commentParameter.commentsLength && (
           <div
             style={{
