@@ -504,6 +504,7 @@ const Dynamic = ({
                 return term;
               });
             } else {
+              existence = true;
               item.commentsList = [termObj];
             }
             if (!existence) {
