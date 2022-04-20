@@ -13,7 +13,7 @@ import {
 import {
   PlayOutline,
   CloseCircleOutline,
-  KoubeiOutline,
+  MessageOutline,
   HeartFill,
   CameraOutline,
   CloseOutline,
@@ -1156,7 +1156,7 @@ const Dynamic = ({
                         style={{ cursor: 'pointer' }}
                         onClick={() => onSetCommentBlock(index)}
                       >
-                        <KoubeiOutline />
+                        <MessageOutline />
                       </span>
                       <div
                         className="dynamic-const-box-text-bottom-comment"
