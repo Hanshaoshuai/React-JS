@@ -199,7 +199,7 @@ const Dynamic = ({
     setCircleFriendList([]);
   };
   useEffect(() => {
-    if (!commentParameterV && commentParameter.commentsList) {
+    if (!commentParameterV) {
       setCommentParameterV(true);
     }
   }, [commentParameter]);
