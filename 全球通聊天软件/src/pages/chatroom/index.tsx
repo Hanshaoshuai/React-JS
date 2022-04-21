@@ -24,6 +24,7 @@ import { UploadImg } from '../A-components/uploadImg';
 import { FileUpload } from '../A-components/fileUpload';
 import Spins from '../A-Spin';
 import NestingIframe from '../nestingIframe/nestingIframe';
+import { startRecord, stopRecord } from './audios';
 
 import {
   requestMessage,
@@ -56,6 +57,7 @@ let imagelistId: any = {};
 let imagelistIndex = 0;
 let ws: any = null;
 let as = 'pop-in';
+let rec = window.Recorder(); //使用默认配置，mp3格式
 const ChatList = () => {
   const chatNames: any = localStorage.getItem('toChatName');
   const agreess: any = useRef();
@@ -2366,113 +2368,207 @@ const ChatList = () => {
     }
   };
 
+  const recOpen = () => {
+    rec.open(
+      function () {
+        console.log('开始录音');
+        //开始录音
+        rec.start();
+      },
+      (msg: any, isUserNotAllow: any) => {
+        //用户拒绝了权限或浏览器不支持
+        // alert(
+        //   (isUserNotAllow ? '用户拒绝了权限，' : '') + '无法录音:' + msg
+        // );
+        Toast.show({
+          icon: 'fail',
+          content: `${
+            !isUserNotAllow ? '用户拒绝了权限，' : ''
+          }无法录音：${msg}`,
+        });
+      }
+    );
+  };
+
   const voiceBotten = useCallback(
     (node) => {
       if (node !== null) {
         // console.log(node);
-        if (navigator?.mediaDevices?.getUserMedia) {
-          //navigator.mediaDevices.getUserMedia()会提示用户给予使用媒体输入的许可，媒体输入会产生一个MediaStream，里面包含了请求的媒体类型的轨道//
-          let chunks: any = [];
-          const constraints = {
-            audio: true, //这里打开我么的音频
+        //打开麦克风授权获得相关资源
+        let timeouts = false;
+        let CTimeout: any = null;
+        let startTime: any = 0;
+        let stopTime: any = 0;
+        if (window.modelName === 'pc') {
+          node.onmousedown = (e: any) => {
+            node.style.backgroundImage = 'url(/images/voice-1.png)';
+            timeouts = false;
+            startTime = new Date().getTime();
+            CTimeout = setTimeout(() => {
+              timeouts = true;
+              clearTimeout(CTimeout);
+            }, 1000);
+            // mediaRecorder?.state === 'inactive' && mediaRecorder.start(); //当鼠标按下的时候进行录制
+            recOpen();
           };
-          let timeouts = false;
-          let CTimeout: any = null;
-          let startTime: any = 0;
-          let stopTime: any = 0;
-          navigator.mediaDevices.getUserMedia(constraints).then(
-            (MediaStream) => {
-              const mediaRecorder: any = new MediaRecorder(MediaStream); //构造函数会创建一个对指定的 MediaStream 进行录制的 MediaRecorder 对象
-              if (window.modelName === 'pc') {
-                node.onmousedown = (e: any) => {
-                  node.style.backgroundImage = 'url(/images/voice-1.png)';
-                  timeouts = false;
-                  startTime = new Date().getTime();
-                  CTimeout = setTimeout(() => {
-                    timeouts = true;
-                    clearTimeout(CTimeout);
-                  }, 1000);
-                  mediaRecorder?.state === 'inactive' && mediaRecorder.start(); //当鼠标按下的时候进行录制
-                };
-                node.onmouseup = (e: any) => {
-                  node.style.backgroundImage = 'url(/images/voice.png)';
-                  stopTime = new Date().getTime();
-                  if (!timeouts) {
-                    clearTimeout(CTimeout);
-                    Toast.show({
-                      icon: 'fail',
-                      content: '时间太短！',
-                    });
-                  }
-                  mediaRecorder?.state === 'recording' && mediaRecorder.stop(); //当鼠标松开的时候关闭录制
-                };
-              } else {
-                node.ontouchstart = (e: any) => {
-                  node.style.backgroundImage = 'url(/images/voice-1.png)';
-                  timeouts = false;
-                  startTime = new Date().getTime();
-                  CTimeout = setTimeout(() => {
-                    timeouts = true;
-                    clearTimeout(CTimeout);
-                  }, 1000);
-                  // console.log(mediaRecorder);
-                  mediaRecorder?.state === 'inactive' && mediaRecorder.start(); //当鼠标按下的时候进行录制
-                };
-                node.ontouchend = (e: any) => {
-                  node.style.backgroundImage = 'url(/images/voice.png)';
-                  stopTime = new Date().getTime();
-                  if (!timeouts) {
-                    clearTimeout(CTimeout);
-                    Toast.show({
-                      icon: 'fail',
-                      content: '时间太短！',
-                    });
-                  }
-                  // console.log(mediaRecorder);
-                  mediaRecorder?.state === 'recording' && mediaRecorder.stop(); //当鼠标松开的时候关闭录制
-                };
-              }
-              mediaRecorder.ondataavailable = (e: any) => {
-                //响应运行代码Blob数据被提供使用
-                chunks = [];
-                chunks.push(e.data);
-              };
-              mediaRecorder.onstop = (e: any) => {
-                //将收集好的音频数据创建成Blob 对象，然后 通过 URL.createObjectURL 创建成 HTML 中 <audio> 标签可使用的资源链接。
-                if (timeouts) {
-                  let blob = new Blob(chunks, {
-                    type: 'audio/ogg; codecs=opus',
-                  });
-                  timeouts = false;
-                  const number = ((stopTime - startTime) / 1000).toFixed(1);
-                  // console.log(number);
-                  setFileList([blob], { voice: true, number });
-                }
-
-                // chunks = []; //其中，在使用完收到的音频数据后
-                // var audioURL = window.URL.createObjectURL(blob);
-                // const chatArr = [];
-
-                // chatArr.push(audioURL); //这里将收到的音频数据放到一个数组中,为了在下面循环出来
-                // console.log(blob, chatArr);
-                // updata(chatArr)         //执行这个方法将我们的audio循环添加出来
-              };
-            },
-            () => {
-              console.error('授权失败！');
+          node.onmouseup = (e: any) => {
+            node.style.backgroundImage = 'url(/images/voice.png)';
+            stopTime = new Date().getTime();
+            if (!timeouts) {
+              clearTimeout(CTimeout);
               Toast.show({
                 icon: 'fail',
-                content: '授权失败！',
+                content: '时间太短！',
               });
             }
-          );
+            // mediaRecorder?.state === 'recording' && mediaRecorder.stop(); //当鼠标松开的时候关闭录制
+            recStop();
+          };
         } else {
-          console.error('浏览器不支持 getUserMedia');
-          Toast.show({
-            icon: 'fail',
-            content: '浏览器不支持 getUserMedia！',
-          });
+          node.ontouchstart = (e: any) => {
+            node.style.backgroundImage = 'url(/images/voice-1.png)';
+            timeouts = false;
+            startTime = new Date().getTime();
+            CTimeout = setTimeout(() => {
+              timeouts = true;
+              clearTimeout(CTimeout);
+            }, 1000);
+            // console.log(mediaRecorder);
+            // mediaRecorder?.state === 'inactive' && mediaRecorder.start(); //当鼠标按下的时候进行录制
+            recOpen();
+          };
+          node.ontouchend = (e: any) => {
+            node.style.backgroundImage = 'url(/images/voice.png)';
+            stopTime = new Date().getTime();
+            if (!timeouts) {
+              clearTimeout(CTimeout);
+              Toast.show({
+                icon: 'fail',
+                content: '时间太短！',
+              });
+            }
+            // console.log(mediaRecorder);
+            // mediaRecorder?.state === 'recording' && mediaRecorder.stop(); //当鼠标松开的时候关闭录制
+            recStop();
+          };
         }
+        const recStop = () => {
+          rec.stop((blob: any, duration: any) => {
+            console.log(blob, duration);
+            if (timeouts) {
+              let blobs = new Blob([blob], {
+                type: 'audio/ogg; codecs=opus',
+              });
+              timeouts = false;
+              const number = ((stopTime - startTime) / 1000).toFixed(1);
+              // console.log(number);
+              setFileList([blobs], { voice: true, number });
+            }
+          });
+        };
+        // if (navigator?.mediaDevices?.getUserMedia) {
+        //   //navigator.mediaDevices.getUserMedia()会提示用户给予使用媒体输入的许可，媒体输入会产生一个MediaStream，里面包含了请求的媒体类型的轨道//
+        //   let chunks: any = [];
+        //   const constraints = {
+        //     audio: true, //这里打开我么的音频
+        //   };
+        //   let timeouts = false;
+        //   let CTimeout: any = null;
+        //   let startTime: any = 0;
+        //   let stopTime: any = 0;
+        //   navigator.mediaDevices.getUserMedia(constraints).then(
+        //     (MediaStream) => {
+        //       const mediaRecorder: any = new MediaRecorder(MediaStream); //构造函数会创建一个对指定的 MediaStream 进行录制的 MediaRecorder 对象
+        //       if (window.modelName === 'pc') {
+        //         node.onmousedown = (e: any) => {
+        //           node.style.backgroundImage = 'url(/images/voice-1.png)';
+        //           timeouts = false;
+        //           startTime = new Date().getTime();
+        //           CTimeout = setTimeout(() => {
+        //             timeouts = true;
+        //             clearTimeout(CTimeout);
+        //           }, 1000);
+        //           mediaRecorder?.state === 'inactive' && mediaRecorder.start(); //当鼠标按下的时候进行录制
+        //         };
+        //         node.onmouseup = (e: any) => {
+        //           node.style.backgroundImage = 'url(/images/voice.png)';
+        //           stopTime = new Date().getTime();
+        //           if (!timeouts) {
+        //             clearTimeout(CTimeout);
+        //             Toast.show({
+        //               icon: 'fail',
+        //               content: '时间太短！',
+        //             });
+        //           }
+        //           mediaRecorder?.state === 'recording' && mediaRecorder.stop(); //当鼠标松开的时候关闭录制
+        //         };
+        //       } else {
+        //         node.ontouchstart = (e: any) => {
+        //           node.style.backgroundImage = 'url(/images/voice-1.png)';
+        //           timeouts = false;
+        //           startTime = new Date().getTime();
+        //           CTimeout = setTimeout(() => {
+        //             timeouts = true;
+        //             clearTimeout(CTimeout);
+        //           }, 1000);
+        //           // console.log(mediaRecorder);
+        //           mediaRecorder?.state === 'inactive' && mediaRecorder.start(); //当鼠标按下的时候进行录制
+        //         };
+        //         node.ontouchend = (e: any) => {
+        //           node.style.backgroundImage = 'url(/images/voice.png)';
+        //           stopTime = new Date().getTime();
+        //           if (!timeouts) {
+        //             clearTimeout(CTimeout);
+        //             Toast.show({
+        //               icon: 'fail',
+        //               content: '时间太短！',
+        //             });
+        //           }
+        //           // console.log(mediaRecorder);
+        //           mediaRecorder?.state === 'recording' && mediaRecorder.stop(); //当鼠标松开的时候关闭录制
+        //         };
+        //       }
+        //       mediaRecorder.ondataavailable = (e: any) => {
+        //         //响应运行代码Blob数据被提供使用
+        //         chunks = [];
+        //         chunks.push(e.data);
+        //       };
+        //       mediaRecorder.onstop = (e: any) => {
+        //         //将收集好的音频数据创建成Blob 对象，然后 通过 URL.createObjectURL 创建成 HTML 中 <audio> 标签可使用的资源链接。
+        //         if (timeouts) {
+        //           let blob = new Blob(chunks, {
+        //             type: 'audio/ogg; codecs=opus',
+        //           });
+        //           timeouts = false;
+        //           const number = ((stopTime - startTime) / 1000).toFixed(1);
+        //           // console.log(number);
+        //           setFileList([blob], { voice: true, number });
+        //         }
+
+        //         // chunks = []; //其中，在使用完收到的音频数据后
+        //         // var audioURL = window.URL.createObjectURL(blob);
+        //         // const chatArr = [];
+
+        //         // chatArr.push(audioURL); //这里将收到的音频数据放到一个数组中,为了在下面循环出来
+        //         // console.log(blob, chatArr);
+        //         // updata(chatArr)         //执行这个方法将我们的audio循环添加出来
+        //       };
+        //     },
+        //     () => {
+        //       console.error('授权失败！');
+        //       Toast.show({
+        //         icon: 'fail',
+        //         content: '授权失败！',
+        //       });
+        //     }
+        //   );
+        // } else {
+        //   console.error('浏览器不支持 getUserMedia');
+        //   Toast.show({
+        //     icon: 'fail',
+        //     content: '浏览器不支持 getUserMedia！',
+        //   });
+        // }
       }
     },
     [voiceSotten]

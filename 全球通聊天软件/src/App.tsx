@@ -20,6 +20,7 @@ declare global {
     userAgents: any;
     mui: any;
     plus: any;
+    Recorder: any;
   }
 }
 
@@ -70,7 +71,7 @@ export default function App() {
       messages.toName &&
       Object.prototype.toString.call(toName) === '[object Array]'
     ) {
-      console.log(messages.toName);
+      // console.log(messages.toName);
       toName = toName.filter((term: any) => term.name === myLocName)[0] || {};
     }
     // console.log('message====>>>>>', messages, toName);
