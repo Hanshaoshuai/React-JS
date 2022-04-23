@@ -141,11 +141,6 @@ const ChatList = () => {
   }, [contentList, expressionShow, addAnothers]);
 
   useEffect(() => {
-    const rul = textIsURL(
-      `晚上学习开始了，听课到最后有惊喜哦！赶紧进入教室啦上课地址:  https://ke.qq.com/course/2087219上课地址:  https://ke.qq.com/course/20872191上课地址:  https://ke.qq.com/course/20872192`
-    );
-    console.log(rul);
-    const { startIsUrl, textList, urlList } = rul;
     getList('');
     page = 1;
     scrollSize = 0;
