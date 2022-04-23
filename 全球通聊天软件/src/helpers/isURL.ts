@@ -20,6 +20,31 @@ export function IsURL(str_url: string) {
     return false;
   }
 }
+interface span {
+  span: any;
+}
+export function textIsURL(str_url: string) {
+  const reg =
+    /(https?|http|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/g;
+  const regs =
+    /^(https?|http|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/g;
+  var re = new RegExp(regs);
+  let newUrl = str_url.replace('', '');
+  let urlList = newUrl.match(reg) || [];
+  urlList.map((item: any) => {
+    newUrl = newUrl.replace(item, '@@@');
+    return item;
+  });
+  let textList = newUrl.split('@@@');
+  urlList = urlList.filter((v) => (v ? true : false));
+  textList = textList.filter((v) => (v ? true : false));
+  if (!re.test(str_url)) {
+    // 开头不是链接
+    return { startIsUrl: false, textList, urlList };
+  } else {
+    return { startIsUrl: true, textList, urlList };
+  }
+}
 export function urlParse() {
   let url = '',
     obj: any = {};

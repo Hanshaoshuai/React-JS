@@ -17,7 +17,7 @@ import {
 } from 'antd-mobile-icons';
 
 import { expressionList } from './expression';
-import { moment, isObject, IsURL } from '../../helpers';
+import { moment, isObject, IsURL, textIsURL } from '../../helpers';
 import { MyContext } from '../../models/context';
 import OtherItems from './otherItems';
 import { UploadImg } from '../A-components/uploadImg';
@@ -141,6 +141,11 @@ const ChatList = () => {
   }, [contentList, expressionShow, addAnothers]);
 
   useEffect(() => {
+    const rul = textIsURL(
+      `晚上学习开始了，听课到最后有惊喜哦！赶紧进入教室啦上课地址:  https://ke.qq.com/course/2087219上课地址:  https://ke.qq.com/course/20872191上课地址:  https://ke.qq.com/course/20872192`
+    );
+    console.log(rul);
+    const { startIsUrl, textList, urlList } = rul;
     getList('');
     page = 1;
     scrollSize = 0;
@@ -913,6 +918,48 @@ const ChatList = () => {
     }
     return styleLength;
   };
+  const onIsUrl = (cont: any, type?: string) => {
+    let newCont: any = [];
+    if (cont) {
+      const { startIsUrl, textList, urlList } = textIsURL(cont);
+      if (startIsUrl && urlList.length) {
+        newCont = urlList.map((item: any, index: number) => {
+          return (
+            <div key={index}>
+              <div
+                onClick={() => fileDownload({ e: item, url: true })}
+                style={{ color: type ? type : '#1b24ff' }}
+              >
+                {item}
+              </div>
+              {index <= textList.length - 1 ? <div>{textList[index]}</div> : ''}
+            </div>
+          );
+        });
+      } else if (urlList.length) {
+        newCont = textList.map((item: any, index: number) => {
+          return (
+            <div key={index}>
+              <div>{item}</div>
+              {index <= urlList.length - 1 ? (
+                <div
+                  onClick={() => fileDownload({ e: urlList[index], url: true })}
+                  style={{ color: type ? type : '#1b24ff' }}
+                >
+                  {urlList[index]}
+                </div>
+              ) : (
+                ''
+              )}
+            </div>
+          );
+        });
+      } else {
+        newCont = cont;
+      }
+    }
+    return newCont;
+  };
   const My = (type: any, cont: string, file?: any) => {
     // console.log(file);
     domKeys += 1;
@@ -950,6 +997,49 @@ const ChatList = () => {
     }
     const newStyleLength = styleLength(file);
     // console.log(newStyleLength);
+    // let newCont: any = [];
+    // if (cont) {
+    //   const { startIsUrl, textList, urlList } = textIsURL(cont);
+    //   if (startIsUrl && urlList.length) {
+    //     newCont = urlList.map((item: any, index: number) => {
+    //       return (
+    //         <div key={index}>
+    //           <div
+    //             onClick={() => fileDownload({ e: item, url: true })}
+    //             style={{ color: '#1b24ff' }}
+    //           >
+    //             {item}
+    //           </div>
+    //           {index <= textList.length - 1 ? (
+    //             <span>{textList[index]}</span>
+    //           ) : (
+    //             ''
+    //           )}
+    //         </div>
+    //       );
+    //     });
+    //   } else if (urlList.length) {
+    //     newCont = textList.map((item: any, index: number) => {
+    //       return (
+    //         <div key={index}>
+    //           <div>{item}</div>
+    //           {index <= urlList.length - 1 ? (
+    //             <div
+    //               onClick={() => fileDownload({ e: urlList[index], url: true })}
+    //               style={{ color: '#1b24ff' }}
+    //             >
+    //               {urlList[index]}
+    //             </div>
+    //           ) : (
+    //             ''
+    //           )}
+    //         </div>
+    //       );
+    //     });
+    //   } else {
+    //     newCont = cont;
+    //   }
+    // }
 
     return (
       <div
@@ -1189,7 +1279,8 @@ const ChatList = () => {
               </span>
             ) : (
               <div style={{ padding: '0.16rem 0.2rem' }}>
-                {IsURL(cont) ? (
+                {onIsUrl(cont)}
+                {/* {IsURL(cont) ? (
                   // <a href={cont} target="view_window">
                   //   {cont}
                   // </a>
@@ -1201,7 +1292,7 @@ const ChatList = () => {
                   </span>
                 ) : (
                   cont
-                )}
+                )} */}
               </div>
             )}
           </span>
@@ -1548,7 +1639,8 @@ const ChatList = () => {
     } else {
       newCont = (
         <div style={{ padding: '0.16rem 0.2rem' }}>
-          {IsURL(cont) ? (
+          {onIsUrl(cont, '#1b24ff')}
+          {/* {IsURL(cont) ? (
             // <a href={cont} target="view_window">
             //   {cont}
             // </a>
@@ -1562,7 +1654,7 @@ const ChatList = () => {
             </span>
           ) : (
             cont
-          )}
+          )} */}
         </div>
       );
     }
