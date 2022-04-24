@@ -1,6 +1,14 @@
 import '../personalInformation/index.scss';
 import './index.scss';
-import { Divider, ImageViewer, Popup, TextArea, NoticeBar } from 'antd-mobile';
+import {
+  Divider,
+  ImageViewer,
+  Popup,
+  TextArea,
+  NoticeBar,
+  ActionSheet,
+  Dialog,
+} from 'antd-mobile';
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import CameraOutList from './cameraOutList';
@@ -9,6 +17,7 @@ import {
   getCircleFriends,
   friendsCircleFileUpload,
   addComments,
+  dynamicDeletion,
 } from '../../api';
 import {
   PlayOutline,
@@ -20,6 +29,7 @@ import {
   ArrowDownCircleOutline,
   LeftOutline,
   LinkOutline,
+  MoreOutline,
 } from 'antd-mobile-icons';
 import { MyContext } from '../../models/context';
 import { moment } from '../../helpers';
@@ -82,6 +92,8 @@ const Dynamic = ({
   const [iframeTitle, setIframeTitle] = useState('');
   const [iframeDisplay, setIframeDisplay] = useState(false);
   const [iframeUrl, setIframeUrl] = useState('');
+  const [visibleSheet, setVisibleSheet] = useState(false);
+  const [dynamicDeletionTime, setDynamicDeletionTime] = useState('');
 
   useEffect(() => {
     if (!display && name) {
@@ -179,6 +191,9 @@ const Dynamic = ({
     if (!_valueObj.iframe) {
       setIframeUrl('');
     }
+    if (!_valueObj.DynamicDeletion) {
+      setVisibleSheet(false);
+    }
   }, [urlPathname]);
   useEffect(() => {
     if (iframeUrl) {
@@ -239,6 +254,19 @@ const Dynamic = ({
       setCircleFriendList([]);
     };
   }, [circleFriendData]);
+
+  const onDynamicDeletion = () => {
+    dynamicDeletion({
+      name: myLocName,
+      time: dynamicDeletionTime,
+    }).then((res: any) => {
+      if (res.code === 200) {
+        console.log(res.data);
+        setDynamicDeletionTime('');
+        history.goBack();
+      }
+    });
+  };
 
   const getCircleFriendList = async (key?: string, nameId?: any) => {
     if (urlValueObj.videoPlay) return;
@@ -1020,6 +1048,31 @@ const Dynamic = ({
                 <div className="dynamic-const-box-text">
                   <div className="dynamic-const-box-text-name">
                     {item.nickname || item.title}
+                    {urlValue === myLocName && (
+                      <MoreOutline
+                        onClick={() => {
+                          setVisibleSheet(true);
+                          setDynamicDeletionTime(item.time);
+                          history.push(
+                            `/personalInformation${
+                              window.location.search
+                            }&${urlName}-${new Date().getTime()}=${JSON.stringify(
+                              {
+                                name: urlValue || '',
+                                album: 'yes',
+                                DynamicDeletion: 'yes',
+                              }
+                            )}`
+                          );
+                        }}
+                        style={{
+                          color: '#ff7a59',
+                          fontSize: '0.4rem',
+                          verticalAlign: 'bottom',
+                          marginRight: '0.08rem',
+                        }}
+                      />
+                    )}
                   </div>
                   <div className="dynamic-const-box-text-test">
                     {item?.content}
@@ -1488,6 +1541,36 @@ const Dynamic = ({
         goBackS={iframeGoBackS}
         connectUrl={true}
         downloadName={''}
+      />
+      <ActionSheet
+        visible={visibleSheet}
+        cancelText="取消"
+        actions={[
+          {
+            text: '删除',
+            key: 'delete',
+            onClick: async () => {
+              const result = await Dialog.confirm({
+                content: '删除将无法恢复！',
+              });
+              if (result) {
+                onDynamicDeletion();
+                console.log('执行了删除操作');
+              }
+            },
+          },
+        ]}
+        onClose={() => {
+          history.goBack();
+        }}
+        onAction={(action) => {
+          if (action.key === 'edit' || action.key === 'copy') {
+            // Toast.show(`点击了${action.text}`)
+          }
+        }}
+        afterClose={() => {
+          // Toast.show('动作面板已关闭')
+        }}
       />
     </div>
   );

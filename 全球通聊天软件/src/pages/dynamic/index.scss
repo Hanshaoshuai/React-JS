@@ -83,6 +83,9 @@
         padding-bottom: 0.05rem;
         color: #52698b;
         font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
       }
       .dynamic-const-box-text-test {
         line-height: 0.41rem;

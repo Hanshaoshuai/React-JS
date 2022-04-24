@@ -204,3 +204,13 @@ export async function isRead(data: any) {
     return error;
   }
 }
+
+// 删除某一项朋友圈
+export async function dynamicDeletion(data: any) {
+  try {
+    const res: any = await request(`${API_HOST}/dynamicDeletion`, 'POST', data);
+    return res;
+  } catch (error) {
+    return error;
+  }
+}

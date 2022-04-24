@@ -1145,6 +1145,45 @@ app.post('/getCircleFriends', (req, res) => {
     });
   }
 })
+// 删除一项朋友圈动态
+app.post('/dynamicDeletion', (req, res) => {
+  let reqs = req.body;
+  let fileName = reqs.name;
+  // console.log(reqs)
+  let textName = `./friendsCircleTxt/${fileName}.txt`
+  fs.readFile(textName, function (error, data) {
+    if (error) {
+      res.send({ code: 2001, msg: "读取文件error或文件不存在", data: [] })
+      return false;
+    }
+    //console.log(data);  //data是读取的十六进制的数据。  也可以在参数中加入编码格式"utf8"来解决十六进制的问题;
+    // console.log('读取出所有行的信息 ', data.toString());  //读取出所有行的信息
+    let newList = JSON.parse(data.toString());
+    newList = newList.filter((item) => {
+      if (item.time === reqs.time) {
+        return false
+      } else {
+        return true;
+      }
+    })
+    newList = JSON.stringify(newList);
+    // console.log(objs)
+    fs.writeFile(
+      textName,
+      newList,
+      'utf8',
+      function (error) {
+        if (error) {
+          res.send({ code: 2001, data: { text: '删除失败' } })
+          return false;
+        } else {
+          // console.log('写入成功');
+          res.send({ code: 200, data: { text: '删除成功' } })
+        }
+      }
+    );
+  });
+})
 //朋友圈开始发布
 app.post('/startFriendsCircleFileUpload', (req, res) => {
   let reqs = req.body;
