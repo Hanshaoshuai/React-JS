@@ -1048,7 +1048,7 @@ const Dynamic = ({
                 <div className="dynamic-const-box-text">
                   <div className="dynamic-const-box-text-name">
                     {item.nickname || item.title}
-                    {urlValue === myLocName && (
+                    {name && _value === myLocName && (
                       <MoreOutline
                         onClick={() => {
                           setVisibleSheet(true);
@@ -1067,9 +1067,13 @@ const Dynamic = ({
                         }}
                         style={{
                           color: '#ff7a59',
-                          fontSize: '0.4rem',
+                          fontSize: '0.5rem',
                           verticalAlign: 'bottom',
-                          marginRight: '0.08rem',
+                          position: 'absolute',
+                          right: '0',
+                          top: '0',
+                          bottom: '0',
+                          margin: 'auto',
                         }}
                       />
                     )}
