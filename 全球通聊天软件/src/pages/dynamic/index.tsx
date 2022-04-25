@@ -1146,7 +1146,7 @@ const Dynamic = ({
                     <div
                       style={{
                         padding: `${
-                          item.imgList ? '0 0 0.13rem 0' : '0.13rem 0'
+                          item.imgList ? '-0.1rem 0 0.13rem 0' : '0.13rem 0'
                         }`,
                       }}
                     >
