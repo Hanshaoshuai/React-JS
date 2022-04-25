@@ -1081,8 +1081,15 @@ const Dynamic = ({
                   <div className="dynamic-const-box-text-test">
                     {item?.content}
                   </div>
-                  {item.imgList && (
-                    <div className="dynamic-const-box-text-img">
+                  {item.imgList && item.imgList.length && (
+                    <div
+                      className="dynamic-const-box-text-img"
+                      style={{
+                        padding: `${
+                          item.video ? '0.13rem 0 0 0' : '0.13rem 0'
+                        }`,
+                      }}
+                    >
                       {item.imgList.map((items: any, id: number) => {
                         let styles = null;
                         const len = item?.imgList?.length;
@@ -1146,7 +1153,9 @@ const Dynamic = ({
                     <div
                       style={{
                         padding: `${
-                          item.imgList ? '-0.1rem 0 0.13rem 0' : '0.13rem 0'
+                          item.imgList && item.imgList.length
+                            ? '0 0 0.13rem 0'
+                            : '0.13rem 0'
                         }`,
                       }}
                     >
