@@ -1081,9 +1081,9 @@ const Dynamic = ({
                   <div className="dynamic-const-box-text-test">
                     {item?.content}
                   </div>
-                  <div className="dynamic-const-box-text-img">
-                    {item.imgList &&
-                      item.imgList.map((items: any, id: number) => {
+                  {item.imgList && (
+                    <div className="dynamic-const-box-text-img">
+                      {item.imgList.map((items: any, id: number) => {
                         let styles = null;
                         const len = item?.imgList?.length;
                         const list = items?.styleLength.split('_');
@@ -1140,24 +1140,19 @@ const Dynamic = ({
                           </div>
                         );
                       })}
-                    {item.video && (
-                      <div>
-                        <div className="otherItemsListVideos">
-                          <span className="PlayOutline">
-                            <PlayOutline
-                              onClick={() => {
-                                videoPlays('play', {
-                                  videos_s: `videos${index}`,
-                                  videosBox_s: `videosBox${index}`,
-                                  videoPlays_s: `videoPlays${index}`,
-                                });
-                              }}
-                            />
-                          </span>
-                          <img
-                            className="imgIndex"
-                            src={item.video.apathZoom}
-                            alt=""
+                    </div>
+                  )}
+                  {item.video && (
+                    <div
+                      style={{
+                        padding: `${
+                          item.imgList ? '0 0 0.13rem 0' : '0.13rem 0'
+                        }`,
+                      }}
+                    >
+                      <div className="otherItemsListVideos">
+                        <span className="PlayOutline">
+                          <PlayOutline
                             onClick={() => {
                               videoPlays('play', {
                                 videos_s: `videos${index}`,
@@ -1166,40 +1161,51 @@ const Dynamic = ({
                               });
                             }}
                           />
-                          <div
-                            id={`videosBox${index}`}
-                            className="videosBox document-classification-box"
+                        </span>
+                        <img
+                          className="imgIndex"
+                          src={item.video.apathZoom}
+                          alt=""
+                          onClick={() => {
+                            videoPlays('play', {
+                              videos_s: `videos${index}`,
+                              videosBox_s: `videosBox${index}`,
+                              videoPlays_s: `videoPlays${index}`,
+                            });
+                          }}
+                        />
+                        <div
+                          id={`videosBox${index}`}
+                          className="videosBox document-classification-box"
+                        >
+                          <span
+                            id={`videoPlays${index}`}
+                            className="videoPlays"
+                            onClick={() =>
+                              videoPlays('no', {
+                                videos_s: `videos${index}`,
+                                videosBox_s: `videosBox${index}`,
+                                videoPlays_s: `videoPlays${index}`,
+                              })
+                            }
                           >
-                            <span
-                              id={`videoPlays${index}`}
-                              className="videoPlays"
-                              onClick={() =>
-                                videoPlays('no', {
-                                  videos_s: `videos${index}`,
-                                  videosBox_s: `videosBox${index}`,
-                                  videoPlays_s: `videoPlays${index}`,
-                                })
-                              }
-                            >
-                              <CloseCircleOutline className="video-closure-icon" />
-                            </span>
-                            <video
-                              id={`videos${index}`}
-                              className="videos"
-                              controls={true}
-                              // autoPlay={true}
-                              // name="media"
-                              // muted="muted"
-                              // onClick={videoPlays}
-                            >
-                              <source src={`${item.video.apath}`} type="" />
-                            </video>
-                          </div>
+                            <CloseCircleOutline className="video-closure-icon" />
+                          </span>
+                          <video
+                            id={`videos${index}`}
+                            className="videos"
+                            controls={true}
+                            // autoPlay={true}
+                            // name="media"
+                            // muted="muted"
+                            // onClick={videoPlays}
+                          >
+                            <source src={`${item.video.apath}`} type="" />
+                          </video>
                         </div>
                       </div>
-                    )}
-                  </div>
-
+                    </div>
+                  )}
                   {item?.connectValue && (
                     <div
                       className="dynamic-connectValue"
