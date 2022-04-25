@@ -1141,9 +1141,23 @@ const Dynamic = ({
                         );
                       })}
                     {item.video && (
-                      <div className="otherItemsListVideos">
-                        <span className="PlayOutline">
-                          <PlayOutline
+                      <div>
+                        <div className="otherItemsListVideos">
+                          <span className="PlayOutline">
+                            <PlayOutline
+                              onClick={() => {
+                                videoPlays('play', {
+                                  videos_s: `videos${index}`,
+                                  videosBox_s: `videosBox${index}`,
+                                  videoPlays_s: `videoPlays${index}`,
+                                });
+                              }}
+                            />
+                          </span>
+                          <img
+                            className="imgIndex"
+                            src={item.video.apathZoom}
+                            alt=""
                             onClick={() => {
                               videoPlays('play', {
                                 videos_s: `videos${index}`,
@@ -1152,47 +1166,35 @@ const Dynamic = ({
                               });
                             }}
                           />
-                        </span>
-                        <img
-                          className="imgIndex"
-                          src={item.video.apathZoom}
-                          alt=""
-                          onClick={() => {
-                            videoPlays('play', {
-                              videos_s: `videos${index}`,
-                              videosBox_s: `videosBox${index}`,
-                              videoPlays_s: `videoPlays${index}`,
-                            });
-                          }}
-                        />
-                        <div
-                          id={`videosBox${index}`}
-                          className="videosBox document-classification-box"
-                        >
-                          <span
-                            id={`videoPlays${index}`}
-                            className="videoPlays"
-                            onClick={() =>
-                              videoPlays('no', {
-                                videos_s: `videos${index}`,
-                                videosBox_s: `videosBox${index}`,
-                                videoPlays_s: `videoPlays${index}`,
-                              })
-                            }
+                          <div
+                            id={`videosBox${index}`}
+                            className="videosBox document-classification-box"
                           >
-                            <CloseCircleOutline className="video-closure-icon" />
-                          </span>
-                          <video
-                            id={`videos${index}`}
-                            className="videos"
-                            controls={true}
-                            // autoPlay={true}
-                            // name="media"
-                            // muted="muted"
-                            // onClick={videoPlays}
-                          >
-                            <source src={`${item.video.apath}`} type="" />
-                          </video>
+                            <span
+                              id={`videoPlays${index}`}
+                              className="videoPlays"
+                              onClick={() =>
+                                videoPlays('no', {
+                                  videos_s: `videos${index}`,
+                                  videosBox_s: `videosBox${index}`,
+                                  videoPlays_s: `videoPlays${index}`,
+                                })
+                              }
+                            >
+                              <CloseCircleOutline className="video-closure-icon" />
+                            </span>
+                            <video
+                              id={`videos${index}`}
+                              className="videos"
+                              controls={true}
+                              // autoPlay={true}
+                              // name="media"
+                              // muted="muted"
+                              // onClick={videoPlays}
+                            >
+                              <source src={`${item.video.apath}`} type="" />
+                            </video>
+                          </div>
                         </div>
                       </div>
                     )}
