@@ -958,25 +958,29 @@ const ChatList = () => {
   const My = (type: any, cont: string, file?: any) => {
     // console.log(file);
     domKeys += 1;
-    const style: any = {};
-    style.width = '14%';
-    style.float = 'left';
-    style.overflow = 'hidden';
+    const style: any = {
+      position: 'absolute',
+      top: '0.1rem',
+      right: '0',
+      width: '14%',
+      overflow: 'hidden',
+    };
 
-    const style1: any = {};
-    style1.width = '0.76rem';
-    style1.height = '0.76rem';
-    // style1.border = "0.01rem solid #e7e6e9";
-    style1.boxSizing = 'border-box';
-    style1.float = 'right';
-    style1.overflow = 'hidden';
-    style1.borderRadius = '0.08rem';
+    const style1: any = {
+      width: '0.78rem',
+      height: '0.78rem',
+      boxSizing: 'border-box',
+      float: 'right',
+      overflow: 'hidden',
+      borderRadius: '0.08rem',
+    };
 
-    const style2: any = {};
-    style2.background = '#EAEAEA';
-    style2.float = 'right';
-    style2.borderRadius = '0.08rem';
-    style2.width = '100%';
+    const style2: any = {
+      background: '#EAEAEA',
+      float: 'right',
+      borderRadius: '0.08rem',
+      width: '100%',
+    };
 
     const imgStyle: any = { borderRadius: '0.08rem' };
     if (file?.length) {
@@ -1043,29 +1047,33 @@ const ChatList = () => {
         style={{
           width: '92%',
           margin: '0 auto',
-          textAlign: 'justify',
           lineHeight: '0.4rem',
           overflow: 'hidden',
           padding: '0.1rem 0',
+          position: 'relative',
         }}
       >
         <div
           className="fankiu-text clearbox"
-          style={{ width: '86%', float: 'left', position: 'relative' }}
+          style={{
+            width: '72%',
+            margin: '0 auto',
+            overflow: 'hidden',
+            position: 'relative',
+          }}
         >
           <span
             style={{
               display: 'inline-block',
-              // padding: `${file ? '0' : '0.16rem 0.2rem'}`,
               background: `${file ? '' : '#ff7a59'}`,
               color: '#fff',
-              float: 'right',
-              maxWidth: '4.95rem',
               borderRadius: '0.08rem',
               fontSize: '0.32rem',
               border: '0.01rem solid #e7e6e9',
               wordWrap: 'break-word',
               lineHeight: `${file ? '0' : '0.4rem'}`,
+              maxWidth: '100%',
+              float: 'right',
             }}
           >
             {file && !file?.file ? (
@@ -1326,42 +1334,48 @@ const ChatList = () => {
     }
     // console.log(file);
     domKeys += 1;
-    const style: any = {};
-    style.width = '92%'; //样式4
-    style.margin = '0 auto';
-    style.lineHeight = '0.4rem';
-    style.textAlign = 'justify';
-    style.display = 'flex';
-    style.padding = '0.1rem 0';
+    const style: any = {
+      width: '92%', //样式4
+      margin: '0 auto',
+      lineHeight: '0.4rem',
+      padding: '0.1rem 0',
+      position: 'relative',
+      overflow: 'hidden',
+    };
 
-    const style3: any = {};
-    style3.width = '86%';
-    style3.position = 'relative';
+    const style3: any = {
+      width: '72%',
+      position: 'relative',
+      margin: '0 auto',
+    };
 
-    const style4: any = {};
-    style4.display = 'inline-block';
-    // style4.padding = `${file ? '0' : '0.16rem 0.2rem'}`;
-    style4.background = `${file ? '' : '#fff'}`;
-    style4.lineHeight = `${file ? '0' : '0.4rem'}`;
-    style4.maxWidth = '4.95rem';
-    style4.borderRadius = '0.08rem';
-    style4.fontSize = '0.32rem';
-    style4.border = '0.01rem solid #e7e6e9';
-    style4.wordWrap = 'break-word';
-    style4.float = 'left';
-    // style4.overflow = 'hidden';
+    const style4: any = {
+      display: 'inline-block',
+      background: `${file ? '' : '#fff'}`,
+      lineHeight: `${file ? '0' : '0.4rem'}`,
+      borderRadius: '0.08rem',
+      fontSize: '0.32rem',
+      border: '0.01rem solid #e7e6e9',
+      wordWrap: 'break-word',
+      maxWidth: '100%',
+    };
 
-    const style1: any = {};
-    style1.width = '14%';
-    style1.height = '0.76rem';
+    const style1: any = {
+      position: 'absolute',
+      top: '0.1rem',
+      left: '0',
+      width: '14%',
+      height: '0.76rem',
+    };
 
-    const style2: any = {};
-    style2.width = '0.76rem';
-    style2.height = '0.76rem';
-    // style2.border = "0.01rem solid #e7e6e9";
-    style2.boxSizing = 'border-box';
-    style2.overflow = 'hidden';
-    style2.borderRadius = '0.08rem';
+    const style2: any = {
+      width: '0.78rem',
+      height: '0.78rem',
+      boxSizing: 'border-box',
+      overflow: 'hidden',
+      borderRadius: '0.08rem',
+    };
+
     const onImaF = () => {
       //				对方个人资料
       // console.log(yes, DianJi);
