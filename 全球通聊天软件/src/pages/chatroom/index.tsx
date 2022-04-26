@@ -144,6 +144,7 @@ const ChatList = () => {
   const [connectUrl, setConnectUrl] = useState(false);
   const [downloadName, setDownloadName] = useState<any>('');
   const [overallLoadings, setOverallLoadings] = useState(false);
+  const [operationLoadings, setOperationLoadings] = useState(false);
 
   useEffect(() => {
     if (!voiceSotten && texts && texts.current) {
@@ -155,7 +156,11 @@ const ChatList = () => {
   }, [voiceSotten]);
 
   useEffect(() => {
-    scrollHeights(); //滚动底部
+    if (!operationLoadings) {
+      scrollHeights(); //滚动底部
+    } else {
+      setOperationLoadings(false);
+    }
     contentListChange = contentList;
   }, [contentList, expressionShow, addAnothers]);
 
@@ -327,18 +332,7 @@ const ChatList = () => {
       setDisplay(false);
     }
   }, [iframeUrl]);
-  const back = () => {
-    // if (window.plus) {
-    //   ws || (ws = window.plus.webview.currentWebview());
-    //   ws.preate ? ws.hide('auto') : ws.close('auto');
-    // } else
-    // if (history.length >= 1) {
-    //   window.history.back();
-    // } else {
-    // window.close();
-    // window.plus.webview.close('nestingIframe');
-    // }
-  };
+
   const fileDownload = ({ d, e, url }: any) => {
     // console.log(d, e, url);
     if (url === true) {
@@ -368,16 +362,12 @@ const ChatList = () => {
     }
   };
   const iframeGoBackS = (e?: any) => {
-    // console.log('111111');
-    // if (!e) {
     history.goBack();
-    // }
     setIframeUrl('');
     let timeout = setTimeout(() => {
       localStorage.removeItem('NestingIframe');
       clearTimeout(timeout);
     }, 310);
-    // back();
   };
   const messageVariety = (data: any) => {
     if (data.text === 'uploadCompleted') {
@@ -919,10 +909,7 @@ const ChatList = () => {
       </div>
     );
   };
-  const setMulti = (url: any) => {
-    console.log(imagesList);
-    ImageViewer.Multi.show({ images: imagesList });
-  };
+
   const styleLength = (file: any) => {
     let styleLength: any = {};
     if (file?.styleLength) {
@@ -983,8 +970,7 @@ const ChatList = () => {
   };
   const onEditSOutline = (id: any, data?: any) => {
     let dom: any = document.getElementById(`%${id}`);
-    const { startIsUrl, textList, urlList } = textIsURL(dom.innerText);
-    console.log(id, startIsUrl, textList, urlList, contentListChange);
+    // console.log(id, startIsUrl, textList, urlList, contentListChange);
     let AreaValue = '';
     Dialog.confirm({
       content: (
@@ -1000,8 +986,11 @@ const ChatList = () => {
         // console.log(AreaValue);
         operationChange();
         if (!AreaValue) return;
-        const textName = data.groupName || `${data.fromTo}.txt`;
+        const textName =
+          data.groupName ||
+          `${data.fromTo || data.fromName * 1 + data.toName * 1}.txt`;
         setOverallLoadings(true);
+        setOperationLoadings(true);
         recordDeletionOrChange({
           dateTime: id,
           groupName: textName,
@@ -1047,9 +1036,12 @@ const ChatList = () => {
     const result = await Dialog.confirm({
       content: '删除将无法恢复！',
     });
-    const textName = data.groupName || `${data.fromTo}.txt`;
+    const textName =
+      data.groupName ||
+      `${data.fromTo || data.fromName * 1 + data.toName * 1}.txt`;
     if (result) {
       setOverallLoadings(true);
+      setOperationLoadings(true);
       recordDeletionOrChange({
         dateTime: id,
         groupName: textName,
@@ -1191,7 +1183,7 @@ const ChatList = () => {
   }, []);
 
   const My = ({ type, cont, file, data, domKeyId }: any) => {
-    // console.log(file);
+    // console.log(type, cont, file, data, domKeyId);
     domKeys += 1;
     if (domKeyId) {
       domKeys = domKeyId;
