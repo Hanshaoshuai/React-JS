@@ -1163,8 +1163,8 @@ const ChatList = () => {
     }
     let times = new Date().getTime();
     const ondown = () => {
-      if (times - data.dateTime >= 1000 * 60 * 500) {
-        Toast.show(`超过五分钟不可修改或删除！`);
+      if (times - data.dateTime >= 1000 * 60 * 10) {
+        Toast.show(`超过10分钟不可修改或删除！`);
         return false;
       } else {
         return true;
