@@ -343,17 +343,17 @@ const ChatList = () => {
     // window.plus.webview.close('nestingIframe');
     // }
   };
-  const fileDownload = (obj: any) => {
+  const fileDownload = (e: any, url: any) => {
     // console.log(d, e, url);
-    if (obj.url === true) {
+    if (url === true) {
       setConnectUrl(true);
       if (window.modelName === 'pc') {
-        window.open(`${obj.e}`);
+        window.open(`${e}`);
       } else {
         setDownloadName('');
-        setIframeTitle(obj.e);
+        setIframeTitle(e);
         setDisplay(true);
-        setIframeUrl(obj.e);
+        setIframeUrl(e);
         history.push(`/chatroom?OnPlayUrl=0&iframe=1`);
         // if (window.plus) {
         //   plusReady();
@@ -363,11 +363,11 @@ const ChatList = () => {
       }
     } else {
       setConnectUrl(false);
-      setDownloadName(obj.url);
+      setDownloadName(url);
       // window.open(`${origin + e}`);
-      setIframeTitle(`${window.location.origin}${obj.e}`);
+      setIframeTitle(`${window.location.origin}${e}`);
       setDisplay(true);
-      setIframeUrl(`${window.location.origin}${obj.e}`);
+      setIframeUrl(`${window.location.origin}${e}`);
       history.push(`/chatroom?OnPlayUrl=0&iframe=1`);
     }
   };
@@ -953,7 +953,7 @@ const ChatList = () => {
           return (
             <div key={index}>
               <div
-                onClick={() => fileDownload({ e: item, url: true })}
+                onClick={() => fileDownload(item, true)}
                 style={{ color: type ? type : '#1b24ff' }}
               >
                 {item}
@@ -969,7 +969,7 @@ const ChatList = () => {
               <div>{item}</div>
               {index <= urlList.length - 1 ? (
                 <div
-                  onClick={() => fileDownload({ e: urlList[index], url: true })}
+                  onClick={() => fileDownload(urlList[index], true)}
                   style={{ color: type ? type : '#1b24ff' }}
                 >
                   {urlList[index]}
@@ -1011,7 +1011,7 @@ const ChatList = () => {
             urlList.map((item: any, index: number) => {
               newCont += `<div key=${index}>
               <div
-                onClick=window.fileDownload({e:'${item}',url:true}) style=color:#1b24ff
+                onClick=window.fileDownload('${item}',true) style=color:#1b24ff
               >
                 ${item}
               </div>
@@ -1029,7 +1029,7 @@ const ChatList = () => {
               <div>${item}</div>
               ${
                 index <= urlList.length - 1
-                  ? `<div onClick=window.fileDownload({e:'${urlList[index]}',url:true}) style=color:#1b24ff
+                  ? `<div onClick=window.fileDownload('${urlList[index]}',true) style=color:#1b24ff
                   >
                   ${urlList[index]}
                 </div>`
@@ -1439,12 +1439,12 @@ const ChatList = () => {
                             width: '3.31rem',
                           }}
                           onClick={() =>
-                            fileDownload({
-                              e: file.url,
-                              url: file.url.split('/')[
+                            fileDownload(
+                              file.url,
+                              file.url.split('/')[
                                 file.url.split('/').length - 1
-                              ],
-                            })
+                              ]
+                            )
                           }
                         >
                           {file.url.split('/')[file.url.split('/').length - 1]}
@@ -1791,12 +1791,10 @@ const ChatList = () => {
                           width: '3.31rem',
                         }}
                         onClick={() =>
-                          fileDownload({
-                            e: file.url,
-                            url: file.url.split('/')[
-                              file.url.split('/').length - 1
-                            ],
-                          })
+                          fileDownload(
+                            file.url,
+                            file.url.split('/')[file.url.split('/').length - 1]
+                          )
                         }
                       >
                         {file.url.split('/')[file.url.split('/').length - 1]}
