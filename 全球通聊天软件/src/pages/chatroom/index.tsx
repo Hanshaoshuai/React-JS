@@ -74,11 +74,7 @@ let operationId: any = null;
 let rec = window.Recorder(); //使用默认配置，mp3格式
 let contentListChange: any = [];
 let deleteOutlineList: any = [];
-declare global {
-  interface Window {
-    fileDownload: any;
-  }
-}
+
 const ChatList = () => {
   const chatNames: any = localStorage.getItem('toChatName');
   const agreess: any = useRef();
@@ -371,7 +367,6 @@ const ChatList = () => {
       history.push(`/chatroom?OnPlayUrl=0&iframe=1`);
     }
   };
-  window.fileDownload = fileDownload;
   const iframeGoBackS = (e?: any) => {
     // console.log('111111');
     // if (!e) {
@@ -989,7 +984,7 @@ const ChatList = () => {
   const onEditSOutline = (id: any, data?: any) => {
     let dom: any = document.getElementById(`%${id}`);
     const { startIsUrl, textList, urlList } = textIsURL(dom.innerText);
-    // console.log(id, startIsUrl, textList, urlList);
+    console.log(id, startIsUrl, textList, urlList, contentListChange);
     let AreaValue = '';
     Dialog.confirm({
       content: (
@@ -1014,57 +1009,18 @@ const ChatList = () => {
         }).then((res: any) => {
           setOverallLoadings(false);
           if (res.code === 200) {
-            // console.log(res);
             if (AreaValue) {
-              dom.innerHTML = '';
-              const { startIsUrl, textList, urlList } = textIsURL(AreaValue);
-              if (startIsUrl && urlList.length) {
-                urlList.map((item: any, index: number) => {
-                  const box: any = document.createElement('div');
-                  const box1: any = document.createElement('div');
-                  const box2: any = document.createElement('div');
-                  box1.onclick = function () {
-                    fileDownload({ e: item, url: true });
-                  };
-                  box1.style.color = '#1b24ff';
-                  box2.innerHTML = item;
-                  box.appendChild(box1);
-                  if (index <= textList.length - 1) {
-                    if (textList[index]) {
-                      box2.innerHTML = textList[index];
-                      box.appendChild(box2);
-                    }
-                  }
-                  dom.appendChild(urlList.length ? box : AreaValue);
-                  return item;
-                });
-              } else if (urlList.length) {
-                textList.map((item: any, index: number) => {
-                  console.log(item);
-                  const box: any = document.createElement('div');
-                  const box1: any = document.createElement('div');
-                  const box2: any = document.createElement('div');
-                  box1.innerHTML = item;
-                  box.appendChild(box1);
-                  if (index <= textList.length - 1) {
-                    box2.onclick = function () {
-                      fileDownload({
-                        e: urlList[index],
-                        url: true,
-                      });
-                    };
-                    box2.style.color = '#1b24ff';
-                    if (urlList[index]) {
-                      box2.innerHTML = urlList[index];
-                      box.appendChild(box2);
-                    }
-                  }
-                  dom.appendChild(box);
-                  return item;
-                });
-              } else {
-                dom.appendChild(AreaValue);
-              }
+              deleteOutlineList = contentListChange.map((item: any) => {
+                if (item?.props?.id === `@${id}`) {
+                  return My({
+                    cont: AreaValue,
+                    data: data,
+                    domKeyId: item.key,
+                  });
+                }
+                return item;
+              });
+              setContentList(deleteOutlineList);
             }
             // dom.innerHTML = urlList.length ? newCont : AreaValue;
             // Toast.show({
@@ -1234,9 +1190,12 @@ const ChatList = () => {
     }
   }, []);
 
-  const My = ({ type, cont, file, data }: any) => {
+  const My = ({ type, cont, file, data, domKeyId }: any) => {
     // console.log(file);
     domKeys += 1;
+    if (domKeyId) {
+      domKeys = domKeyId;
+    }
     const style: any = {
       position: 'absolute',
       top: '0.1rem',
