@@ -343,7 +343,7 @@ const ChatList = () => {
     // window.plus.webview.close('nestingIframe');
     // }
   };
-  window.fileDownload = (e: any, url: any) => {
+  const fileDownload = ({ d, e, url }: any) => {
     // console.log(d, e, url);
     if (url === true) {
       setConnectUrl(true);
@@ -371,7 +371,7 @@ const ChatList = () => {
       history.push(`/chatroom?OnPlayUrl=0&iframe=1`);
     }
   };
-  // window.fileDownload = fileDownload;
+  window.fileDownload = fileDownload;
   const iframeGoBackS = (e?: any) => {
     // console.log('111111');
     // if (!e) {
@@ -953,7 +953,7 @@ const ChatList = () => {
           return (
             <div key={index}>
               <div
-                onClick={() => window.fileDownload(item, true)}
+                onClick={() => fileDownload({ e: item, url: true })}
                 style={{ color: type ? type : '#1b24ff' }}
               >
                 {item}
@@ -969,7 +969,7 @@ const ChatList = () => {
               <div>{item}</div>
               {index <= urlList.length - 1 ? (
                 <div
-                  onClick={() => window.fileDownload(urlList[index], true)}
+                  onClick={() => fileDownload({ e: urlList[index], url: true })}
                   style={{ color: type ? type : '#1b24ff' }}
                 >
                   {urlList[index]}
@@ -1004,46 +1004,7 @@ const ChatList = () => {
       onConfirm: async () => {
         // console.log(AreaValue);
         operationChange();
-        let newCont: any = '';
-        if (AreaValue) {
-          const { startIsUrl, textList, urlList } = textIsURL(AreaValue);
-          if (startIsUrl && urlList.length) {
-            urlList.map((item: any, index: number) => {
-              newCont += `<div key=${index}>
-              <div
-                onClick=window.fileDownload('${item}',true) style=color:#1b24ff
-              >
-                ${item}
-              </div>
-              ${
-                index <= textList.length - 1
-                  ? `<div>${textList[index]}</div>`
-                  : ''
-              }
-            </div>`;
-              return item;
-            });
-          } else if (urlList.length) {
-            textList.map((item: any, index: number) => {
-              newCont += `<div key=${index}>
-              <div>${item}</div>
-              ${
-                index <= urlList.length - 1
-                  ? `<div onClick=window.fileDownload('${urlList[index]}',true) style=color:#1b24ff
-                  >
-                  ${urlList[index]}
-                </div>`
-                  : ''
-              }
-            </div>`;
-              return item;
-            });
-          } else {
-            newCont = `<span>${AreaValue}</span>`;
-          }
-        } else {
-          return;
-        }
+        if (!AreaValue) return;
         const textName = data.groupName || `${data.fromTo}.txt`;
         setOverallLoadings(true);
         recordDeletionOrChange({
@@ -1054,7 +1015,58 @@ const ChatList = () => {
           setOverallLoadings(false);
           if (res.code === 200) {
             // console.log(res);
-            dom.innerHTML = urlList.length ? newCont : AreaValue;
+            if (AreaValue) {
+              dom.innerHTML = '';
+              const { startIsUrl, textList, urlList } = textIsURL(AreaValue);
+              if (startIsUrl && urlList.length) {
+                urlList.map((item: any, index: number) => {
+                  const box: any = document.createElement('div');
+                  const box1: any = document.createElement('div');
+                  const box2: any = document.createElement('div');
+                  box1.onclick = function () {
+                    fileDownload({ e: item, url: true });
+                  };
+                  box1.style.color = '#1b24ff';
+                  box2.innerHTML = item;
+                  box.appendChild(box1);
+                  if (index <= textList.length - 1) {
+                    if (textList[index]) {
+                      box2.innerHTML = textList[index];
+                      box.appendChild(box2);
+                    }
+                  }
+                  dom.appendChild(urlList.length ? box : AreaValue);
+                  return item;
+                });
+              } else if (urlList.length) {
+                textList.map((item: any, index: number) => {
+                  console.log(item);
+                  const box: any = document.createElement('div');
+                  const box1: any = document.createElement('div');
+                  const box2: any = document.createElement('div');
+                  box1.innerHTML = item;
+                  box.appendChild(box1);
+                  if (index <= textList.length - 1) {
+                    box2.onclick = function () {
+                      fileDownload({
+                        e: urlList[index],
+                        url: true,
+                      });
+                    };
+                    box2.style.color = '#1b24ff';
+                    if (urlList[index]) {
+                      box2.innerHTML = urlList[index];
+                      box.appendChild(box2);
+                    }
+                  }
+                  dom.appendChild(box);
+                  return item;
+                });
+              } else {
+                dom.appendChild(AreaValue);
+              }
+            }
+            // dom.innerHTML = urlList.length ? newCont : AreaValue;
             // Toast.show({
             //   icon: 'success',
             //   content: '更改成功',
@@ -1439,12 +1451,12 @@ const ChatList = () => {
                             width: '3.31rem',
                           }}
                           onClick={() =>
-                            window.fileDownload(
-                              file.url,
-                              file.url.split('/')[
+                            fileDownload({
+                              e: file.url,
+                              url: file.url.split('/')[
                                 file.url.split('/').length - 1
-                              ]
-                            )
+                              ],
+                            })
                           }
                         >
                           {file.url.split('/')[file.url.split('/').length - 1]}
@@ -1791,10 +1803,12 @@ const ChatList = () => {
                           width: '3.31rem',
                         }}
                         onClick={() =>
-                          window.fileDownload(
-                            file.url,
-                            file.url.split('/')[file.url.split('/').length - 1]
-                          )
+                          fileDownload({
+                            e: file.url,
+                            url: file.url.split('/')[
+                              file.url.split('/').length - 1
+                            ],
+                          })
                         }
                       >
                         {file.url.split('/')[file.url.split('/').length - 1]}
