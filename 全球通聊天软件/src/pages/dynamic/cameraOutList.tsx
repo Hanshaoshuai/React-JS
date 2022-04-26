@@ -1,5 +1,5 @@
 import './index.scss';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   ImageUploader,
   Toast,
@@ -18,7 +18,7 @@ import { FriendsCircleUpload } from './friendsCircleUpload';
 import { SetVideoImg } from './friendsCircleUpload/fileUploadCircle';
 import { onUploadProgress } from '../../services/request';
 import { startFriendsCircleFileUpload } from '../../api';
-import { IsURL } from '../../helpers';
+import { IsURL, textIsURL } from '../../helpers';
 
 const CameraOutList = ({ callback }: any) => {
   const formDate: any = useRef(null);
@@ -42,6 +42,7 @@ const CameraOutList = ({ callback }: any) => {
   const onDelete = (item: ImageUploadItem) => {
     // console.log(item);
   };
+
   const mockUpload: any = (file: File) => {
     // console.log(file);
     return {
@@ -82,8 +83,9 @@ const CameraOutList = ({ callback }: any) => {
       return;
     }
     if (connectValue) {
-      if (!IsURL(connectValue)) {
-        Toast.show(`链接请以http://或https://开头或格式有误！`);
+      const { urlList } = textIsURL(connectValue);
+      if (!urlList.length) {
+        Toast.show(`输入内容必须包含有效链接！`);
         return;
       }
     }
@@ -170,7 +172,7 @@ const CameraOutList = ({ callback }: any) => {
         </Form.Item>
         <Form.Item label="链接" name="connect">
           <TextArea
-            placeholder="以http或https开头,如果填写标题,链接将以标题名展示否为链接展示"
+            placeholder="必须包含有效链接,如果填写标题,链接将以标题名展示否为链接展示"
             // value={value}
             rows={2}
             onChange={(val: any) => {

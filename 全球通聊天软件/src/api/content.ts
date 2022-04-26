@@ -214,3 +214,16 @@ export async function dynamicDeletion(data: any) {
     return error;
   }
 }
+// 删除聊天记录
+export async function recordDeletionOrChange(data: any) {
+  try {
+    const res: any = await request(
+      `${API_HOST}/recordDeletionOrChange`,
+      'POST',
+      data
+    );
+    return res;
+  } catch (error) {
+    return error;
+  }
+}

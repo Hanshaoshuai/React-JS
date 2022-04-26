@@ -1084,7 +1084,52 @@ const addText = async (obj, apath, filePath, apathZoom, typeFileName) => {
   }
   return yes;
 }
-
+// 删除聊天记录
+app.post('/recordDeletionOrChange', (req, res) => {
+  let reqs = req.body;
+  let fileName = reqs.groupName;
+  let textName = `./chatRecord/${fileName}`
+  fs.readFile(textName, function (error, data) {
+    if (error) {
+      res.send({ code: 2001, msg: "读取文件error或文件不存在", data: [] })
+      return false;
+    }
+    //console.log(data);  //data是读取的十六进制的数据。  也可以在参数中加入编码格式"utf8"来解决十六进制的问题;
+    // console.log('读取出所有行的信息 ', data.toString());  //读取出所有行的信息
+    let newList = JSON.parse(data.toString());
+    if (reqs.delet) {
+      newList = newList.filter((item) => {
+        if (item.dateTime === reqs.dateTime) {
+          return false
+        } else {
+          return true
+        }
+      })
+    } else {
+      newList = newList.map((item) => {
+        if (item.dateTime === reqs.dateTime) {
+          item.text = reqs.text
+        }
+        return item
+      })
+    }
+    newList = JSON.stringify(newList)
+    fs.writeFile(
+      textName,
+      newList,
+      'utf8',
+      function (error) {
+        if (error) {
+          res.send({ code: 2001, data: { text: '删除失败' } })
+          return false;
+        } else {
+          // console.log('写入成功');
+          res.send({ code: 200, data: { text: reqs.delet ? '删除成功' : '更改成功' } })
+        }
+      }
+    );
+  });
+})
 // 获取朋友圈数据整理
 const onFriendList = (list, req) => {
   let newList = []
@@ -1209,7 +1254,6 @@ app.post('/dynamicDeletion', (req, res) => {
       }
     );
   });
-
 })
 //朋友圈开始发布
 app.post('/startFriendsCircleFileUpload', (req, res) => {

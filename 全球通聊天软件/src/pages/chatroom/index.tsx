@@ -8,12 +8,22 @@ import React, {
   useCallback,
 } from 'react';
 import { useHistory } from 'react-router-dom';
-import { CheckList, Toast, Loading, ImageViewer, Badge } from 'antd-mobile';
+import {
+  CheckList,
+  Toast,
+  Loading,
+  ImageViewer,
+  Badge,
+  Dialog,
+  TextArea,
+} from 'antd-mobile';
 import {
   PlayOutline,
   CloseCircleOutline,
   FileOutline,
   SoundOutline,
+  DeleteOutline,
+  EditSOutline,
 } from 'antd-mobile-icons';
 
 import { expressionList } from './expression';
@@ -36,10 +46,13 @@ import {
   uploadFile,
   fileUpload,
   isRead,
+  recordDeletionOrChange,
 } from '../../api';
 import { onUploadProgress } from '../../services/request';
 import { sync } from 'resolve';
 import VideoCallPlay from './videoCallPlayCall';
+import { time } from 'console';
+import { optionalIndexedAccessType } from '@babel/types';
 
 let Flength = 0;
 let dateTimes: any = '';
@@ -57,7 +70,15 @@ let imagelistId: any = {};
 let imagelistIndex = 0;
 let ws: any = null;
 let as = 'pop-in';
+let operationId: any = null;
 let rec = window.Recorder(); //使用默认配置，mp3格式
+let contentListChange: any = [];
+let deleteOutlineList: any = [];
+declare global {
+  interface Window {
+    fileDownload: any;
+  }
+}
 const ChatList = () => {
   const chatNames: any = localStorage.getItem('toChatName');
   const agreess: any = useRef();
@@ -126,6 +147,7 @@ const ChatList = () => {
   const [iframeUrl, setIframeUrl] = useState('');
   const [connectUrl, setConnectUrl] = useState(false);
   const [downloadName, setDownloadName] = useState<any>('');
+  const [overallLoadings, setOverallLoadings] = useState(false);
 
   useEffect(() => {
     if (!voiceSotten && texts && texts.current) {
@@ -138,6 +160,7 @@ const ChatList = () => {
 
   useEffect(() => {
     scrollHeights(); //滚动底部
+    contentListChange = contentList;
   }, [contentList, expressionShow, addAnothers]);
 
   useEffect(() => {
@@ -217,6 +240,7 @@ const ChatList = () => {
     if (history.location.search === '?OnPlayUrl=0') {
       setIframeUrl('');
     }
+    operationChange();
   }, [history.location.search]);
 
   const onPause = (url: string) => {
@@ -347,6 +371,7 @@ const ChatList = () => {
       history.push(`/chatroom?OnPlayUrl=0&iframe=1`);
     }
   };
+  window.fileDownload = fileDownload;
   const iframeGoBackS = (e?: any) => {
     // console.log('111111');
     // if (!e) {
@@ -397,7 +422,9 @@ const ChatList = () => {
           newList.push(TishiNeirong('您拒绝了对方的好友验证请求！'));
           setContentList(newList);
         } else {
-          newList.push(My('', data.text.text, data.text.file));
+          newList.push(
+            My({ cont: data.text.text, file: data.text.file, data: data.text })
+          );
           setContentList(newList);
           // console.log("11111-", newList, contentList);
         }
@@ -409,7 +436,9 @@ const ChatList = () => {
       ) {
         // console.log("111-", data.text);
         newList.push(FasongShijian());
-        newList.push(My('', data.text.text, data.text.file));
+        newList.push(
+          My({ type: data.text.text, cont: data.text.file, data: data.text })
+        );
         setContentList(newList);
         return;
       } else if (
@@ -426,11 +455,13 @@ const ChatList = () => {
           setShuruShow(true);
         } else if (data.text.text.friend === 'no') {
           newList.push(
-            You(
-              'yes',
-              '',
-              '😄来自' + data.text.fromName + '的好友验证请求，是否同意！'
-            )
+            You({
+              yes: 'yes',
+              type: '',
+              cont:
+                '😄来自' + data.text.fromName + '的好友验证请求，是否同意！',
+              data: data.text,
+            })
           );
           setContentList(newList);
           // $(".shuru").hide();
@@ -438,25 +469,24 @@ const ChatList = () => {
         } else {
           if (data.text.text.friends === 'no') {
             newList.push(
-              You(
-                'yes',
-                'no',
-                '🙁对方拒绝了您的好友验证请求！是否再次添加好友...',
-                'no'
-              )
+              You({
+                yes: 'yes',
+                type: 'no',
+                cont: '🙁对方拒绝了您的好友验证请求！是否再次添加好友...',
+                DianJi: 'no',
+                data: data.text,
+              })
             );
             setContentList(newList);
           } else {
             newList.push(
-              You(
-                'yes',
-                'yes',
-                data.text.text,
-                false,
-                false,
-                false,
-                data.text.file
-              )
+              You({
+                yes: 'yes',
+                type: 'yes',
+                cont: data.text.text,
+                file: data.text.file,
+                data: data.text,
+              })
             );
             setContentList(newList);
           }
@@ -487,15 +517,16 @@ const ChatList = () => {
             return item;
           });
           newList.push(
-            You(
-              'yes',
-              'yes',
-              data.text.text,
-              data.text.fromName,
-              data.text.myIconName,
-              imgs,
-              data.text.file
-            )
+            You({
+              yes: 'yes',
+              type: 'yes',
+              cont: data.text.text,
+              DianJi: data.text.fromName,
+              myIconName: data.text.myIconName,
+              imgs: imgs,
+              file: data.text.file,
+              data: data.text,
+            })
           );
           setContentList(newList);
           clearNumber(
@@ -639,7 +670,7 @@ const ChatList = () => {
     });
   };
 
-  const tousuoGo = (times: any, text: string) => {
+  const tousuoGo = (times: any, text: string, dateTim: any) => {
     //提示投诉信息内容按钮
     if (text === 'no') {
       return;
@@ -662,7 +693,7 @@ const ChatList = () => {
     style.padding = '0.2rem 0';
     style.textAlign = 'center';
     return (
-      <div key={domKeys} style={style}>
+      <div key={domKeys} style={style} id={`&${dateTim}`}>
         <span style={style1}>{times}</span>
       </div>
     );
@@ -913,7 +944,7 @@ const ChatList = () => {
     }
     return styleLength;
   };
-  const onIsUrl = (cont: any, type?: string) => {
+  const onIsUrl = ({ cont, type, data }: any) => {
     let newCont: any = [];
     if (cont) {
       const { startIsUrl, textList, urlList } = textIsURL(cont);
@@ -950,12 +981,247 @@ const ChatList = () => {
           );
         });
       } else {
-        newCont = cont;
+        newCont = <span>{cont}</span>;
       }
     }
     return newCont;
   };
-  const My = (type: any, cont: string, file?: any) => {
+  const onEditSOutline = (id: any, data?: any) => {
+    let dom: any = document.getElementById(`%${id}`);
+    const { startIsUrl, textList, urlList } = textIsURL(dom.innerText);
+    // console.log(id, startIsUrl, textList, urlList);
+    let AreaValue = '';
+    Dialog.confirm({
+      content: (
+        <TextArea
+          onChange={(e) => {
+            AreaValue = e;
+          }}
+          defaultValue={dom.innerText}
+          autoSize={{ minRows: 5 }}
+        />
+      ),
+      onConfirm: async () => {
+        // console.log(AreaValue);
+        operationChange();
+        let newCont: any = '';
+        if (AreaValue) {
+          const { startIsUrl, textList, urlList } = textIsURL(AreaValue);
+          if (startIsUrl && urlList.length) {
+            urlList.map((item: any, index: number) => {
+              newCont += `<div key=${index}>
+              <div
+                onClick=window.fileDownload({"e":'${item}',"url":true}) style=color:#1b24ff
+              >
+                ${item}
+              </div>
+              ${
+                index <= textList.length - 1
+                  ? `<div>${textList[index]}</div>`
+                  : ''
+              }
+            </div>`;
+              return item;
+            });
+          } else if (urlList.length) {
+            textList.map((item: any, index: number) => {
+              newCont += `<div key=${index}>
+              <div>${item}</div>
+              ${
+                index <= urlList.length - 1
+                  ? `<div onClick=window.fileDownload({"e":'${urlList[index]}',"url":true}) style=color:#1b24ff
+                  >
+                  ${urlList[index]}
+                </div>`
+                  : ''
+              }
+            </div>`;
+              return item;
+            });
+          } else {
+            newCont = `<span>${AreaValue}</span>`;
+          }
+        } else {
+          return;
+        }
+        const textName = data.groupName || `${data.fromTo}.txt`;
+        setOverallLoadings(true);
+        recordDeletionOrChange({
+          dateTime: id,
+          groupName: textName,
+          text: urlList.length ? newCont : AreaValue,
+        }).then((res: any) => {
+          setOverallLoadings(false);
+          if (res.code === 200) {
+            // console.log(res);
+            dom.innerHTML = urlList.length ? newCont : AreaValue;
+            // Toast.show({
+            //   icon: 'success',
+            //   content: '更改成功',
+            //   position: 'top',
+            // });
+          } else {
+            Toast.show(`请稍后再试！`);
+          }
+        });
+      },
+    });
+  };
+  const onDeleteOutline = async (id: any, data?: any) => {
+    // console.log(id, contentListChange, data);
+    deleteOutlineList = contentListChange.filter((item: any) => {
+      if (item?.props?.id === `@${id}` || item?.props?.id === `&${id}`) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+    const result = await Dialog.confirm({
+      content: '删除将无法恢复！',
+    });
+    const textName = data.groupName || `${data.fromTo}.txt`;
+    if (result) {
+      setOverallLoadings(true);
+      recordDeletionOrChange({
+        dateTime: id,
+        groupName: textName,
+        delet: true,
+      }).then((res: any) => {
+        setOverallLoadings(false);
+        if (res.code === 200) {
+          // console.log(res);
+          onSetContentList();
+        } else {
+          Toast.show(`请稍后再试！`);
+        }
+      });
+    }
+  };
+  const onSetContentList = () => {
+    setContentList(deleteOutlineList);
+  };
+  const operation = (type?: any, cont?: any, data?: any) => {
+    // console.log(type, cont, data);
+    const style: any = {
+      position: 'absolute',
+      top: '0',
+      [type]: `${cont ? '-1.06rem' : '-0.56rem'}`,
+      height: '0.72rem',
+      lineHeight: '0.72rem',
+      textAlign: 'center',
+      display: 'none',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    };
+    return (
+      <div style={style} id={data.dateTime}>
+        {type === 'right' && cont && (
+          <div
+            style={{
+              color: '#ff7a59',
+              width: '0.48rem',
+            }}
+            onClick={() => onEditSOutline(data.dateTime, data)}
+          >
+            <EditSOutline />
+          </div>
+        )}
+        <div
+          style={{
+            color: 'red',
+            width: '0.5rem',
+          }}
+          onClick={() => onDeleteOutline(data.dateTime, data)}
+        >
+          <DeleteOutline />
+        </div>
+        {type === 'left' && cont && (
+          <div
+            style={{
+              color: '#ff7a59',
+              width: '0.48rem',
+            }}
+            onClick={() => onEditSOutline(data.dateTime, data)}
+          >
+            <EditSOutline />
+          </div>
+        )}
+      </div>
+    );
+  };
+  const operationChange = () => {
+    if (operationId) {
+      let dom: any = document.getElementById(operationId);
+      if (dom) {
+        dom.style.display = 'none';
+      }
+    }
+  };
+  const onOperation = useCallback((node: any, data?: any) => {
+    if (data.fromName !== myLocName) {
+      return;
+    }
+    let times = new Date().getTime();
+    const ondown = () => {
+      if (times - data.dateTime >= 1000 * 60 * 500) {
+        Toast.show(`超过五分钟不可修改或删除！`);
+        return false;
+      } else {
+        return true;
+      }
+    };
+
+    if (node) {
+      let CTimeout: any = null,
+        startTime: any = null,
+        stopTime: any = null,
+        timeouts = false;
+      let id = (node.id || '').replace('#', '');
+      const onChange = () => {
+        if (operationId !== id) {
+          operationChange();
+        }
+        operationId = id;
+        timeouts = false;
+        startTime = new Date().getTime();
+        CTimeout = setTimeout(() => {
+          let dom: any = document.getElementById(id);
+          if (dom && !timeouts && ondown()) {
+            // console.log(id, dom);
+            dom.style.display = 'flex';
+          }
+          clearTimeout(CTimeout);
+        }, 500);
+      };
+      const stopChange = () => {
+        stopTime = new Date().getTime();
+        if (stopTime - startTime < 500 && !timeouts) {
+          timeouts = true;
+        } else {
+          timeouts = false;
+        }
+      };
+      if (window.modelName === 'pc') {
+        node.onmousedown = (e: any) => {
+          //当鼠标按下
+          onChange();
+        };
+        node.onmouseup = (e: any) => {
+          stopChange();
+        };
+      } else {
+        node.ontouchstart = (e: any) => {
+          //当鼠标按下
+          onChange();
+        };
+        node.ontouchend = (e: any) => {
+          stopChange();
+        };
+      }
+    }
+  }, []);
+
+  const My = ({ type, cont, file, data }: any) => {
     // console.log(file);
     domKeys += 1;
     const style: any = {
@@ -995,50 +1261,6 @@ const ChatList = () => {
       }
     }
     const newStyleLength = styleLength(file);
-    // console.log(newStyleLength);
-    // let newCont: any = [];
-    // if (cont) {
-    //   const { startIsUrl, textList, urlList } = textIsURL(cont);
-    //   if (startIsUrl && urlList.length) {
-    //     newCont = urlList.map((item: any, index: number) => {
-    //       return (
-    //         <div key={index}>
-    //           <div
-    //             onClick={() => fileDownload({ e: item, url: true })}
-    //             style={{ color: '#1b24ff' }}
-    //           >
-    //             {item}
-    //           </div>
-    //           {index <= textList.length - 1 ? (
-    //             <span>{textList[index]}</span>
-    //           ) : (
-    //             ''
-    //           )}
-    //         </div>
-    //       );
-    //     });
-    //   } else if (urlList.length) {
-    //     newCont = textList.map((item: any, index: number) => {
-    //       return (
-    //         <div key={index}>
-    //           <div>{item}</div>
-    //           {index <= urlList.length - 1 ? (
-    //             <div
-    //               onClick={() => fileDownload({ e: urlList[index], url: true })}
-    //               style={{ color: '#1b24ff' }}
-    //             >
-    //               {urlList[index]}
-    //             </div>
-    //           ) : (
-    //             ''
-    //           )}
-    //         </div>
-    //       );
-    //     });
-    //   } else {
-    //     newCont = cont;
-    //   }
-    // }
 
     return (
       <div
@@ -1052,15 +1274,17 @@ const ChatList = () => {
           padding: '0.1rem 0',
           position: 'relative',
         }}
+        id={`@${data?.dateTime}`}
       >
         <div
           className="fankiu-text clearbox"
           style={{
             width: '72%',
             margin: '0 auto',
-            overflow: 'hidden',
             position: 'relative',
           }}
+          id={`#${data?.dateTime}`}
+          ref={(e: any) => onOperation(e, data)}
         >
           <span
             style={{
@@ -1074,8 +1298,10 @@ const ChatList = () => {
               lineHeight: `${file ? '0' : '0.4rem'}`,
               maxWidth: '100%',
               float: 'right',
+              position: 'relative',
             }}
           >
+            {operation('left', cont, data)}
             {file && !file?.file ? (
               <span
                 onLoad={imgsOnLoad}
@@ -1156,14 +1382,7 @@ const ChatList = () => {
                     style={imgStyle}
                     src={file.apathZoom}
                     alt=""
-                    onClick={
-                      // () => setMulti(file.url)
-                      // () => {
-                      //   console.log(imagesList);
-                      //   ImageViewer.Multi.show({ images: file.url });
-                      // }
-                      () => setVisibles(file.url)
-                    }
+                    onClick={() => setVisibles(file.url)}
                   />
                 ) : (
                   <>
@@ -1207,23 +1426,6 @@ const ChatList = () => {
                             margin: '0 0.04rem 0 0.02rem',
                           }}
                         ></span>
-                        {/* {file.voice.voice && (voice.gif
-                          <div
-                            style={{
-                              position: 'absolute',
-                              top: '0',
-                              bottom: '0',
-                              left: '-0.6rem',
-                              margin: 'auto',
-                              height: '10px',
-                            }}
-                          >
-                            <Badge
-                              color="rgb(255, 122, 89)"
-                              content={Badge.dot}
-                            ></Badge>
-                          </div>
-                        )} */}
                       </div>
                     ) : (
                       <>
@@ -1281,21 +1483,11 @@ const ChatList = () => {
                 )}
               </span>
             ) : (
-              <div style={{ padding: '0.16rem 0.2rem' }}>
-                {onIsUrl(cont)}
-                {/* {IsURL(cont) ? (
-                  // <a href={cont} target="view_window">
-                  //   {cont}
-                  // </a>
-                  <span
-                    onClick={() => fileDownload({ e: cont, url: true })}
-                    style={{ color: '#1b24ff' }}
-                  >
-                    {cont}
-                  </span>
-                ) : (
-                  cont
-                )} */}
+              <div
+                style={{ padding: '0.16rem 0.2rem' }}
+                id={`%${data?.dateTime}`}
+              >
+                {onIsUrl({ cont, data })}
               </div>
             )}
           </span>
@@ -1319,15 +1511,16 @@ const ChatList = () => {
     );
   };
 
-  const You = (
-    yes?: any,
-    type?: string,
-    cont?: any,
-    DianJi?: any,
-    myIconName?: any,
-    imgs?: any,
-    file?: any
-  ) => {
+  const You = ({
+    yes,
+    type,
+    cont,
+    DianJi,
+    myIconName,
+    imgs,
+    file,
+    data,
+  }: any) => {
     let newYouimg = Youimg;
     if (imgs) {
       newYouimg = imgs;
@@ -1358,6 +1551,7 @@ const ChatList = () => {
       border: '0.01rem solid #e7e6e9',
       wordWrap: 'break-word',
       maxWidth: '100%',
+      position: 'relative',
     };
 
     const style1: any = {
@@ -1647,43 +1841,44 @@ const ChatList = () => {
       );
     } else {
       newCont = (
-        <div style={{ padding: '0.16rem 0.2rem' }}>
-          {onIsUrl(cont, '#1b24ff')}
-          {/* {IsURL(cont) ? (
-            // <a href={cont} target="view_window">
-            //   {cont}
-            // </a>
-            <span
-              onClick={() => {
-                fileDownload({ e: cont, url: true });
-              }}
-              style={{ color: '#1b24ff' }}
-            >
-              {cont}
-            </span>
-          ) : (
-            cont
-          )} */}
+        <div style={{ padding: '0.16rem 0.2rem' }} id={`%${data?.dateTime}`}>
+          {onIsUrl({ cont, type: '#1b24ff', data })}
         </div>
       );
     }
 
     return (
-      <div key={domKeys} className="fankiu-my" style={style}>
+      <div
+        key={domKeys}
+        className="fankiu-my"
+        style={style}
+        id={`@${data?.dateTime}`}
+      >
         <div className="fankiu-img" style={style1}>
           <div style={style2} onClick={onImaF}>
             <img src={newYouimg} alt="" style={style6} />
           </div>
         </div>
-        <div className="fankiu-text" style={style3}>
+        <div
+          className="fankiu-text"
+          style={style3}
+          id={`#${data?.dateTime}`}
+          ref={(e: any) => onOperation(e, data)}
+        >
           {type === 'yes' && DianJi ? (
             <>
               <div style={style7}>{myIconName}</div>
-              <span style={style4}>{newCont}</span>
+              <span style={style4}>
+                {newCont}
+                {operation('right', cont, data)}
+              </span>
             </>
           ) : type === 'yes' ? (
             <>
-              <span style={style4}>{newCont}</span>
+              <span style={style4}>
+                {newCont}
+                {operation('right', cont, data)}
+              </span>
               <div style={style5}></div>
             </>
           ) : (
@@ -1751,7 +1946,9 @@ const ChatList = () => {
       }
       if (item.fromName === myLocName) {
         if (item.type === 'chat') {
-          domList.push(tousuoGo(moment(item.dateTime), item.dateTimes));
+          domList.push(
+            tousuoGo(moment(item.dateTime), item.dateTimes, item.dateTime)
+          );
           if (item.text.friends === 'yes') {
             setShuruShowL = true;
             domList.push(
@@ -1764,15 +1961,17 @@ const ChatList = () => {
           } else if (item.text.friends === 'no') {
             domList.push(TishiNeirong('您拒绝了对方的好友验证请求！'));
           } else {
-            domList.push(My('', item.text, item.file));
+            domList.push(My({ cont: item.text, file: item.file, data: item }));
             setShuruShowL = true;
           }
         } else if (chatType === 'groupChat') {
-          domList.push(tousuoGo(moment(item.dateTime), item.dateTimes));
+          domList.push(
+            tousuoGo(moment(item.dateTime), item.dateTimes, item.dateTime)
+          );
           if (item.text_first) {
             domList.push(TishiNeirong(item.text));
           } else {
-            domList.push(My('', item.text, item.file));
+            domList.push(My({ cont: item.text, file: item.file, data: item }));
           }
           setShuruShowL = true;
         }
@@ -1782,58 +1981,83 @@ const ChatList = () => {
         item.text.toName !== myLocName
       ) {
         // console.log("222", item.text);
-        domList.push(My('', item.text, item.file));
+        domList.push(My({ cont: item.text, file: item.file, data: item }));
         setShuruShowL = true;
       } else if (item.toName === '' && item.fromName === myLocName) {
       } else if (item.toName === '' && item.fromName !== myLocName) {
         //
       } else if (item.toName === myLocName) {
         // console.log('333',data.body[i]);
-        domList.push(tousuoGo(moment(item.dateTime), item.dateTimes));
+        domList.push(
+          tousuoGo(moment(item.dateTime), item.dateTimes, item.dateTime)
+        );
         if (item.text.friend === 'no') {
           if (item.friend === 'yes') {
             domList.push(
-              You(
-                yes,
-                '',
-                '😄来自' + item.fromName + '的好友验证请求，是否同意！',
-                1
-              )
+              You({
+                yes: yes,
+                type: '',
+                cont: '😄来自' + item.fromName + '的好友验证请求，是否同意！',
+                DianJi: 1,
+                data: item,
+              })
             );
           } else {
             domList.push(
-              You(
-                yes,
-                '',
-                '😄来自' + item.fromName + '的好友验证请求，是否同意！'
-              )
+              You({
+                yes: yes,
+                type: '',
+                cont: '😄来自' + item.fromName + '的好友验证请求，是否同意！',
+                data: item,
+              })
             );
           }
         } else {
           if (item.text.friends === 'yes') {
             setShuruShowL = true;
             domList.push(
-              You(yes, 'yes', item.text.text, false, false, false, item.file)
+              You({
+                yes: yes,
+                type: 'yes',
+                cont: item.text.text,
+                DianJi: false,
+                myIconName: false,
+                imgs: false,
+                file: item.file,
+                data: item,
+              })
             );
           } else if (item.text.friends === 'no') {
             domList.push(
-              You(
-                yes,
-                'no',
-                '🙁对方拒绝了您的好友验证请求！是否再次添加好友...',
-                item.friend
-              )
+              You({
+                yes: yes,
+                type: 'no',
+                cont: '🙁对方拒绝了您的好友验证请求！是否再次添加好友...',
+                DianJi: item.friend,
+                data: item,
+              })
             );
           } else {
             domList.push(
-              You(yes, 'yes', item.text, false, false, false, item.file)
+              You({
+                yes: yes,
+                type: 'yes',
+                cont: item.text,
+                DianJi: false,
+                myIconName: false,
+                imgs: false,
+                file: item.file,
+                data: item,
+              })
             );
             setShuruShowL = true;
           }
         }
       } else if (item.type === 'groupChat') {
         if (item.text_first) {
-          domList.push(tousuoGo(moment(item.dateTime), item.dateTimes));
+          domList.push(
+            tousuoGo(moment(item.dateTime), item.dateTimes, item.dateTime)
+          );
           domList.push(TishiNeirong(item.text));
         } else {
           const imglist = JSON.parse(localStorage.getItem('imgIdLoc') || '[]');
@@ -1845,17 +2069,20 @@ const ChatList = () => {
             }
           }
           if (!imgs) return item;
-          domList.push(tousuoGo(moment(item.dateTime), item.dateTimes));
           domList.push(
-            You(
-              yes,
-              'yes',
-              item.text,
-              item.fromName,
-              item.myIconName,
-              imgs,
-              item.file
-            )
+            tousuoGo(moment(item.dateTime), item.dateTimes, item.dateTime)
+          );
+          domList.push(
+            You({
+              yes: yes,
+              type: 'yes',
+              cont: item.text,
+              DianJi: item.fromName,
+              myIconName: item.myIconName,
+              imgs: imgs,
+              file: item.file,
+              data: item,
+            })
           );
         }
         setShuruShowL = true;
@@ -2460,6 +2687,7 @@ const ChatList = () => {
     //   e.target.scrollTop,
     //   e.target.scrollHeight
     // );
+    operationChange();
     if (e.target.scrollTop === 0) {
       scrollSize = e.target.scrollHeight;
       setLoadings(true);
@@ -2938,6 +3166,11 @@ const ChatList = () => {
         connectUrl={connectUrl}
         downloadName={downloadName}
       />
+      {overallLoadings && (
+        <div className="overall">
+          <Loading color="currentColor" />
+        </div>
+      )}
     </>
   );
 };
