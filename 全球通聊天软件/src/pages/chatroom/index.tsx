@@ -343,17 +343,17 @@ const ChatList = () => {
     // window.plus.webview.close('nestingIframe');
     // }
   };
-  const fileDownload = ({ d, e, url }: any) => {
+  const fileDownload = (obj: any) => {
     // console.log(d, e, url);
-    if (url === true) {
+    if (obj.url === true) {
       setConnectUrl(true);
       if (window.modelName === 'pc') {
-        window.open(`${e}`);
+        window.open(`${obj.e}`);
       } else {
         setDownloadName('');
-        setIframeTitle(e);
+        setIframeTitle(obj.e);
         setDisplay(true);
-        setIframeUrl(e);
+        setIframeUrl(obj.e);
         history.push(`/chatroom?OnPlayUrl=0&iframe=1`);
         // if (window.plus) {
         //   plusReady();
@@ -363,11 +363,11 @@ const ChatList = () => {
       }
     } else {
       setConnectUrl(false);
-      setDownloadName(url);
+      setDownloadName(obj.url);
       // window.open(`${origin + e}`);
-      setIframeTitle(`${window.location.origin}${e}`);
+      setIframeTitle(`${window.location.origin}${obj.e}`);
       setDisplay(true);
-      setIframeUrl(`${window.location.origin}${e}`);
+      setIframeUrl(`${window.location.origin}${obj.e}`);
       history.push(`/chatroom?OnPlayUrl=0&iframe=1`);
     }
   };
