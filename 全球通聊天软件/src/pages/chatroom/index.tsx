@@ -1049,7 +1049,7 @@ const ChatList = () => {
         recordDeletionOrChange({
           dateTime: id,
           groupName: textName,
-          text: urlList.length ? newCont : AreaValue,
+          text: AreaValue,
         }).then((res: any) => {
           setOverallLoadings(false);
           if (res.code === 200) {
