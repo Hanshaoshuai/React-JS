@@ -1106,19 +1106,20 @@ const ChatList = () => {
       position: 'absolute',
       top: '0',
       [type]: `${cont ? '-1.06rem' : '-0.56rem'}`,
-      height: '0.72rem',
-      lineHeight: '0.72rem',
+      height: '0.75rem',
+      lineHeight: '0.75rem',
       textAlign: 'center',
       display: 'none',
       alignItems: 'center',
       justifyContent: 'space-between',
+      fontSize: '0.41rem',
     };
     return (
       <div style={style} id={data.dateTime}>
         {type === 'right' && cont && (
           <div
             style={{
-              color: '#ff7a59',
+              color: '#4f83ff',
               width: '0.48rem',
             }}
             onClick={() => onEditSOutline(data.dateTime, data)}
@@ -1138,7 +1139,7 @@ const ChatList = () => {
         {type === 'left' && cont && (
           <div
             style={{
-              color: '#ff7a59',
+              color: '#4f83ff',
               width: '0.48rem',
             }}
             onClick={() => onEditSOutline(data.dateTime, data)}
@@ -1163,7 +1164,7 @@ const ChatList = () => {
     }
     let times = new Date().getTime();
     const ondown = () => {
-      if (times - data.dateTime >= 1000 * 60 * 10) {
+      if (times - data.dateTime >= 1000 * 60 * 10000000) {
         Toast.show(`超过10分钟不可修改或删除！`);
         return false;
       } else {
