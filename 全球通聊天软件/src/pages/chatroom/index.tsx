@@ -1011,7 +1011,7 @@ const ChatList = () => {
             urlList.map((item: any, index: number) => {
               newCont += `<div key=${index}>
               <div
-                onClick=window.fileDownload({"e":'${item}',"url":true}) style=color:#1b24ff
+                onClick=window.fileDownload({e:'${item}',url:true}) style=color:#1b24ff
               >
                 ${item}
               </div>
@@ -1029,7 +1029,7 @@ const ChatList = () => {
               <div>${item}</div>
               ${
                 index <= urlList.length - 1
-                  ? `<div onClick=window.fileDownload({"e":'${urlList[index]}',"url":true}) style=color:#1b24ff
+                  ? `<div onClick=window.fileDownload({e:'${urlList[index]}',url:true}) style=color:#1b24ff
                   >
                   ${urlList[index]}
                 </div>`
