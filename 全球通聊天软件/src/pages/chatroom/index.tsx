@@ -343,7 +343,7 @@ const ChatList = () => {
     // window.plus.webview.close('nestingIframe');
     // }
   };
-  const fileDownload = (e: any, url: any) => {
+  window.fileDownload = (e: any, url: any) => {
     // console.log(d, e, url);
     if (url === true) {
       setConnectUrl(true);
@@ -371,7 +371,7 @@ const ChatList = () => {
       history.push(`/chatroom?OnPlayUrl=0&iframe=1`);
     }
   };
-  window.fileDownload = fileDownload;
+  // window.fileDownload = fileDownload;
   const iframeGoBackS = (e?: any) => {
     // console.log('111111');
     // if (!e) {
@@ -953,7 +953,7 @@ const ChatList = () => {
           return (
             <div key={index}>
               <div
-                onClick={() => fileDownload(item, true)}
+                onClick={() => window.fileDownload(item, true)}
                 style={{ color: type ? type : '#1b24ff' }}
               >
                 {item}
@@ -969,7 +969,7 @@ const ChatList = () => {
               <div>{item}</div>
               {index <= urlList.length - 1 ? (
                 <div
-                  onClick={() => fileDownload(urlList[index], true)}
+                  onClick={() => window.fileDownload(urlList[index], true)}
                   style={{ color: type ? type : '#1b24ff' }}
                 >
                   {urlList[index]}
@@ -1439,7 +1439,7 @@ const ChatList = () => {
                             width: '3.31rem',
                           }}
                           onClick={() =>
-                            fileDownload(
+                            window.fileDownload(
                               file.url,
                               file.url.split('/')[
                                 file.url.split('/').length - 1
@@ -1791,7 +1791,7 @@ const ChatList = () => {
                           width: '3.31rem',
                         }}
                         onClick={() =>
-                          fileDownload(
+                          window.fileDownload(
                             file.url,
                             file.url.split('/')[file.url.split('/').length - 1]
                           )
