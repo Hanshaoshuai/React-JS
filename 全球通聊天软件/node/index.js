@@ -1463,14 +1463,14 @@ const onHandle = (newList, reqs) => {
       if (!reqs.comments) {
         if (commentsList.length) {
           for (let i = 0; i < commentsList.length; i++) {
-            if (commentsList[i].friendNameId === reqs.friendNameId && commentsList[i].thumbsTime === reqs.thumbsTime) {
+            if (commentsList[i].friendNameId === reqs.friendNameId && commentsList[i].time === reqs.time) {
               commentsList[i].thumbsUp = reqs.thumbsUp
               index = true;
               break;
             }
           }
           if (!index) {
-            index = true;
+            index = false;
             commentsList.push({
               time: reqs.time,// 发布者发布时间
               friendName: reqs.friendName, // 点赞者的中文名
