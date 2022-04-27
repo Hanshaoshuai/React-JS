@@ -1145,7 +1145,7 @@ const ChatRecord = () => {
               </div>
             </div>
             {friend &&
-            urlValue !== myLocName &&
+            !remove &&
             (searchResults ||
               !localStorage.getItem('personalInformation') ||
               !fromType) ? (
