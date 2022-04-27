@@ -910,7 +910,7 @@ const ChatRecord = () => {
                 />
               )}
               <span>{tabTex}</span>
-              {friend && urlValue !== localNames ? (
+              {friend && !remove ? (
                 <>
                   <img
                     src="/images/dashujukeshihuaico.png"
