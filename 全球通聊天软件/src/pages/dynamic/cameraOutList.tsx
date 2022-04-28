@@ -270,7 +270,7 @@ const CameraOutList = ({ callback }: any) => {
       </div>
       {cameraOut && (
         <>
-          {imgFileList.length >= 0 && (
+          {imgFileList.length > 0 && (
             <div className="PlaysToSpeed">
               <div className="PlaysToSpeedTepe">
                 <div style={{ width: '0.8rem' }}>
