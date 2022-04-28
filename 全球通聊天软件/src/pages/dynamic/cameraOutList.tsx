@@ -288,12 +288,12 @@ const CameraOutList = ({ callback }: any) => {
                   />
                 </div>
                 <div style={{ width: '0.8rem', textAlign: 'right' }}>
-                  {imageNumber}/{imgFileList.length}
+                  {(imageNumber / imgFileList.length) * 100}%
                 </div>
               </div>
             </div>
           )}
-          {shardCount >= 1 && (
+          {videoList.length >= 1 && (
             <div className="PlaysToSpeed">
               <div className="PlaysToSpeedTepe">
                 <div style={{ width: '0.8rem' }}>
@@ -302,14 +302,19 @@ const CameraOutList = ({ callback }: any) => {
                 <div style={{ flex: 1, marginBottom: '-0.2rem' }}>
                   <ProgressBar
                     percent={
-                      shardCount > 1 && videoNumber >= 1
+                      !shardCount
+                        ? percent
+                        : shardCount > 1 && videoNumber >= 1
                         ? (videoNumber / shardCount) * 100
-                        : percent
+                        : 0
                     }
                   />
                 </div>
                 <div style={{ width: '0.8rem', textAlign: 'right' }}>
-                  {videoNumber}/{shardCount > 1 ? shardCount : videoList.length}
+                  {(videoNumber /
+                    (shardCount > 1 ? shardCount : videoList.length)) *
+                    100}
+                  %
                 </div>
               </div>
             </div>
