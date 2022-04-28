@@ -1572,17 +1572,20 @@ const Dynamic = ({
             text: '删除',
             key: 'delete',
             onClick: async () => {
+              localStorage.setItem('NestingIframe', 'true');
               const result = await Dialog.confirm({
                 content: '删除将无法恢复！',
               });
               if (result) {
                 onDynamicDeletion();
+                localStorage.removeItem('NestingIframe');
                 console.log('执行了删除操作');
               }
             },
           },
         ]}
         onClose={() => {
+          localStorage.removeItem('NestingIframe');
           history.goBack();
         }}
         onAction={(action) => {

@@ -138,6 +138,9 @@ const CameraOutList = ({ callback }: any) => {
       };
       startFriendsCircleFileUpload(data).then((res: any) => {
         if (res.code === 200) {
+          if (formDate) {
+            formDate.current.resetFields();
+          }
           fs1.current.value = null;
           setFileList([]);
           setVideoImgUrl('');
@@ -145,9 +148,6 @@ const CameraOutList = ({ callback }: any) => {
           callback(false);
           setTextValue('');
           setValue('');
-          if (formDate) {
-            formDate.current.resetFields();
-          }
           Toast.show(`发布成功`);
         }
       });
