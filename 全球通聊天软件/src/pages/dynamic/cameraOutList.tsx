@@ -286,7 +286,7 @@ const CameraOutList = ({ callback }: any) => {
               </div>
             </div>
           )}
-          {videoList.length >= 1 && (
+          {videoList.length >= 1 && shardCount >= 1 && (
             <div className="PlaysToSpeed">
               <div className="PlaysToSpeedTepe">
                 <div style={{ width: '0.8rem' }}>
