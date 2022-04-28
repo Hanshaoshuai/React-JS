@@ -77,7 +77,7 @@ const CameraOutList = ({ callback }: any) => {
     }
   };
   const onChange = (e: any) => {
-    console.log(e);
+    // console.log(e);
     const { image, video, number, shardCount } = e;
     if (image) {
       setImageNumber(number);

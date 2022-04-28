@@ -1383,7 +1383,7 @@ const Dynamic = ({
           zIndex: 10,
         }}
       >
-        <CameraOutList callback={onetCameraOut} />
+        {cameraOut && <CameraOutList callback={onetCameraOut} />}
       </div>
       {visible && (
         <ImageViewer.Multi
