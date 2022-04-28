@@ -154,16 +154,9 @@ const CameraOutList = ({ callback }: any) => {
     }
   };
   const upload = () => {
-    let index = 0;
     onUploadProgress.onUploadProgress = (progressEvent: any) => {
       let complete = ((progressEvent.loaded / progressEvent.total) * 100) | 0;
       // console.log('上传=====>>>>', complete);
-      if (complete === 100 && cameraOut) {
-        index += 1;
-      }
-      if (index % 3) {
-        Toast.show(`发布中请不要退出...`);
-      }
       setpercent(complete);
     };
   };
@@ -288,7 +281,7 @@ const CameraOutList = ({ callback }: any) => {
                   />
                 </div>
                 <div style={{ width: '0.8rem', textAlign: 'right' }}>
-                  {(imageNumber / imgFileList.length) * 100}%
+                  {((imageNumber / imgFileList.length) * 100).toFixed(1)}%
                 </div>
               </div>
             </div>
@@ -311,9 +304,11 @@ const CameraOutList = ({ callback }: any) => {
                   />
                 </div>
                 <div style={{ width: '0.8rem', textAlign: 'right' }}>
-                  {(videoNumber /
-                    (shardCount > 1 ? shardCount : videoList.length)) *
-                    100}
+                  {!shardCount
+                    ? percent
+                    : videoNumber >= 1
+                    ? ((videoNumber / shardCount) * 100).toFixed(1)
+                    : 0}
                   %
                 </div>
               </div>
