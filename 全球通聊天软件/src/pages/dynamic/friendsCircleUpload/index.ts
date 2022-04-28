@@ -1,6 +1,11 @@
 import { Toast } from 'antd-mobile';
 import { FileUploadCircle } from './fileUploadCircle';
-export const FriendsCircleUpload = async ({ list, videoImgZoom }: any) => {
+export const FriendsCircleUpload = async ({
+  list,
+  videoImgZoom,
+  onChange,
+}: any) => {
+  let number = 0;
   return new Promise(async (resolve, reject) => {
     let imgUrlList = [];
     const dateTime: any = new Date().getTime();
@@ -41,6 +46,10 @@ export const FriendsCircleUpload = async ({ list, videoImgZoom }: any) => {
           let size = newList.size, //总大小shardSize = 2 * 1024 * 1024,
             shardSize = 10 * 1024 * 1024, //以10MB为一个分片,每个分片的大小
             shardCount = Math.ceil(size / shardSize); //总片数
+          onChange({
+            video: true,
+            shardCount,
+          });
           // eslint-disable-next-line no-loop-func
           let toFileUpload: any = async () => {
             var start = id * shardSize;
@@ -64,6 +73,11 @@ export const FriendsCircleUpload = async ({ list, videoImgZoom }: any) => {
               index: id,
             });
             if (datas.code === 200) {
+              onChange({
+                video: true,
+                number: (number += 1),
+                shardCount,
+              });
               id += 1;
               const dom: any = document.getElementById(`${dateTime + i}`);
               // console.log(datas, id, shardCount);
@@ -76,6 +90,11 @@ export const FriendsCircleUpload = async ({ list, videoImgZoom }: any) => {
               }
               // console.log(id);
               if (id === shardCount - 1) {
+                onChange({
+                  video: true,
+                  number: (number += 1),
+                  shardCount,
+                });
                 // console.log('分片上传最后');
                 typeF = '分片上传最后';
                 start = id * shardSize;
@@ -108,14 +127,6 @@ export const FriendsCircleUpload = async ({ list, videoImgZoom }: any) => {
           };
           toFileUpload();
         } else {
-          // upload({
-          //   dateTime,
-          //   i,
-          //   itemId,
-          //   length: list.length,
-          //   overload,
-          //   setpercent,
-          // });
           const datas: any = await FileUploadCircle({
             fileList: newList, // 上传的内容
             typeF: 'no', // 分片上传是否到最后
@@ -126,20 +137,16 @@ export const FriendsCircleUpload = async ({ list, videoImgZoom }: any) => {
             videoImgZoom, // video缩略图
           });
           if (datas.code === 200) {
+            onChange({
+              video: true,
+              number: (number += 1),
+            });
             resolve(datas);
             //   //只作为文件上传完成使用
             // setDeleteFl(!deleteFl);
           }
         }
       } else {
-        // upload({
-        //   dateTime,
-        //   i,
-        //   itemId,
-        //   length: list.length,
-        //   overload,
-        //   setpercent,
-        // });
         const datas: any = await FileUploadCircle({
           fileList: newList, // 上传的内容
           typeF: 'no', // 分片上传是否到最后
@@ -151,6 +158,10 @@ export const FriendsCircleUpload = async ({ list, videoImgZoom }: any) => {
         });
         // console.log(datas);
         if (datas.code === 200) {
+          onChange({
+            image: true,
+            number: (number += 1),
+          });
           //   //只作为图片上传完成使用
           if (uploadItemLength === list.length) {
             imgUrlList.push(datas);
@@ -166,27 +177,3 @@ export const FriendsCircleUpload = async ({ list, videoImgZoom }: any) => {
     }
   });
 };
-
-// export const upload = ({
-//   dateTime,
-//   i,
-//   itemId,
-//   length,
-//   overload,
-//   setpercent,
-// }: any) => {
-//   onUploadProgress.onUploadProgress = (progressEvent: any) => {
-//     let complete =
-//       (((progressEvent.loaded / progressEvent.total) * 100) | 0) + '%';
-//     // console.log('上传=====>>>>', complete);
-//     setpercent(complete);
-//     if (complete === '100%') {
-//       complete = '99%';
-//     }
-//     const dom: any = document.getElementById(`${dateTime + i}`);
-//     if (dom && dom.innerText !== '99%') {
-//       dom.innerHTML = complete;
-//     }
-//     // setProgress(complete);
-//   };
-// };

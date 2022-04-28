@@ -38,6 +38,9 @@ const CameraOutList = ({ callback }: any) => {
   const [value, setValue] = useState<any>('');
   const [textValue, setTextValue] = useState<any>('');
   const [connectValue, setConnectValue] = useState<any>('');
+  const [imageNumber, setImageNumber] = useState(0);
+  const [videoNumber, setVideoNumber] = useState(0);
+  const [shardCount, setShardCount] = useState(0);
 
   const onDelete = (item: ImageUploadItem) => {
     // console.log(item);
@@ -73,6 +76,20 @@ const CameraOutList = ({ callback }: any) => {
       setOnPlayUrl('');
     }
   };
+  const onChange = (e: any) => {
+    console.log(e);
+    const { image, video, number, shardCount } = e;
+    if (image) {
+      setImageNumber(number);
+    } else {
+      if (shardCount) {
+        setShardCount(shardCount);
+      } else {
+        setShardCount(1);
+      }
+      setVideoNumber(number);
+    }
+  };
   const release = async () => {
     if (cameraOut) return;
     upload();
@@ -94,12 +111,14 @@ const CameraOutList = ({ callback }: any) => {
       //   console.log(imgFileList);
       resultsImg = await FriendsCircleUpload({
         list: imgFileList,
+        onChange: onChange,
       });
     }
     if (videoList.length > 0) {
       resultsVideo = await FriendsCircleUpload({
         list: videoList,
         videoImgZoom: videoImgUrl,
+        onChange: onChange,
       });
     }
 
@@ -250,9 +269,52 @@ const CameraOutList = ({ callback }: any) => {
         </div>
       </div>
       {cameraOut && (
-        <div className="PlaysToSpeed">
-          <ProgressBar percent={percent} />
-        </div>
+        <>
+          {imgFileList.length >= 0 && (
+            <div className="PlaysToSpeed">
+              <div className="PlaysToSpeedTepe">
+                <div style={{ width: '0.8rem' }}>
+                  <div>图片</div>
+                </div>
+                <div style={{ flex: 1, marginBottom: '-0.2rem' }}>
+                  <ProgressBar
+                    percent={
+                      imgFileList.length === 1
+                        ? percent
+                        : imgFileList.length >= 1
+                        ? (imageNumber / imgFileList.length) * 100
+                        : 0
+                    }
+                  />
+                </div>
+                <div style={{ width: '0.8rem', textAlign: 'right' }}>
+                  {imageNumber}/{imgFileList.length}
+                </div>
+              </div>
+            </div>
+          )}
+          {shardCount >= 1 && (
+            <div className="PlaysToSpeed">
+              <div className="PlaysToSpeedTepe">
+                <div style={{ width: '0.8rem' }}>
+                  <div>视频 </div>
+                </div>
+                <div style={{ flex: 1, marginBottom: '-0.2rem' }}>
+                  <ProgressBar
+                    percent={
+                      shardCount > 1
+                        ? (videoNumber / shardCount) * 100
+                        : percent
+                    }
+                  />
+                </div>
+                <div style={{ width: '0.8rem', textAlign: 'right' }}>
+                  {videoNumber}/{shardCount > 1 ? shardCount : videoList.length}
+                </div>
+              </div>
+            </div>
+          )}
+        </>
       )}
       <div
         className="PlaysTo"
