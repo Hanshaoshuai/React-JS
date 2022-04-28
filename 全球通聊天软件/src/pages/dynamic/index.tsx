@@ -1081,7 +1081,7 @@ const Dynamic = ({
                   <div className="dynamic-const-box-text-test">
                     {item?.content}
                   </div>
-                  {item.imgList && item.imgList.length && (
+                  {item.imgList && item.imgList.length > 0 && (
                     <div
                       className="dynamic-const-box-text-img"
                       style={{

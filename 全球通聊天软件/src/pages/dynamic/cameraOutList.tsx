@@ -302,7 +302,7 @@ const CameraOutList = ({ callback }: any) => {
                 <div style={{ flex: 1, marginBottom: '-0.2rem' }}>
                   <ProgressBar
                     percent={
-                      shardCount > 1
+                      shardCount > 1 && videoNumber >= 1
                         ? (videoNumber / shardCount) * 100
                         : percent
                     }
