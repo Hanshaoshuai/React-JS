@@ -1197,8 +1197,8 @@ const ChatList = () => {
     };
 
     const style1: any = {
-      width: '0.75rem',
-      height: '0.75rem',
+      width: '0.73rem',
+      height: '0.73rem',
       boxSizing: 'border-box',
       float: 'right',
       overflow: 'hidden',
@@ -1527,8 +1527,8 @@ const ChatList = () => {
     };
 
     const style2: any = {
-      width: '0.75rem',
-      height: '0.75rem',
+      width: '0.73rem',
+      height: '0.73rem',
       boxSizing: 'border-box',
       overflow: 'hidden',
       borderRadius: '0.08rem',
