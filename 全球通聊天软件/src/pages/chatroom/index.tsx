@@ -968,11 +968,16 @@ const ChatList = () => {
     }
     return newCont;
   };
+  const onClose = () => {
+    localStorage.removeItem('NestingIframe');
+  };
   const onEditSOutline = (id: any, data?: any) => {
+    localStorage.setItem('NestingIframe', 'true');
     let dom: any = document.getElementById(`%${id}`);
     // console.log(id, startIsUrl, textList, urlList, contentListChange);
     let AreaValue = '';
     Dialog.confirm({
+      onClose: onClose,
       content: (
         <TextArea
           onChange={(e) => {
@@ -997,6 +1002,7 @@ const ChatList = () => {
           text: AreaValue,
         }).then((res: any) => {
           setOverallLoadings(false);
+          localStorage.removeItem('NestingIframe');
           if (res.code === 200) {
             if (AreaValue) {
               deleteOutlineList = contentListChange.map((item: any) => {
@@ -1011,12 +1017,6 @@ const ChatList = () => {
               });
               setContentList(deleteOutlineList);
             }
-            // dom.innerHTML = urlList.length ? newCont : AreaValue;
-            // Toast.show({
-            //   icon: 'success',
-            //   content: '更改成功',
-            //   position: 'top',
-            // });
           } else {
             Toast.show(`请稍后再试！`);
           }
@@ -1026,6 +1026,7 @@ const ChatList = () => {
   };
   const onDeleteOutline = async (id: any, data?: any) => {
     // console.log(id, contentListChange, data);
+    localStorage.setItem('NestingIframe', 'true');
     deleteOutlineList = contentListChange.filter((item: any) => {
       if (item?.props?.id === `@${id}` || item?.props?.id === `&${id}`) {
         return false;
@@ -1035,6 +1036,7 @@ const ChatList = () => {
     });
     const result = await Dialog.confirm({
       content: '删除将无法恢复！',
+      onClose: onClose,
     });
     const textName =
       data.groupName ||
@@ -1048,6 +1050,7 @@ const ChatList = () => {
         delet: true,
       }).then((res: any) => {
         setOverallLoadings(false);
+        localStorage.removeItem('NestingIframe');
         if (res.code === 200) {
           // console.log(res);
           onSetContentList();
@@ -1124,7 +1127,7 @@ const ChatList = () => {
     }
     let times = new Date().getTime();
     const ondown = () => {
-      if (times - data.dateTime >= 1000 * 60 * 10000000) {
+      if (times - data.dateTime >= 1000 * 60 * 10) {
         Toast.show(`超过10分钟不可修改或删除！`);
         return false;
       } else {
