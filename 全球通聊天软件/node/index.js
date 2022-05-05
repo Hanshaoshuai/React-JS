@@ -175,11 +175,13 @@ io.sockets.on('connection', function (socket) {
   });
   //发送给自己的消息
   socket.emit('message', {
+    id: socket.id,
     text: '你上线了',
   });
   //告诉所有人上线了(除自己之外)
   socket.broadcast.emit('message', {
-    text: uid + '上线了',
+    id: socket.id,
+    text: '上线了',
   });
   //连接断开，如关闭页面时触发
   socket.on('disconnect', function (data) {
@@ -187,7 +189,8 @@ io.sockets.on('connection', function (socket) {
     // socket.emit('c_leave','离开');
     //socket.broadcast用于向整个网络广播(除自己之外)
     socket.broadcast.emit('message', {
-      text: uid + '离开了',
+      id: socket.id,
+      text: '离开了',
     });
   });
 
@@ -201,29 +204,23 @@ io.sockets.on('connection', function (socket) {
   });
 
   // 接收 Offer 信令并发送给其他连接
-  socket.on('signalOffer', function (message, room, chatNames) {
-    console.log('接收 Offer 信令并发送给其他连接', message, room, chatNames)
-    // socket.to(room).emit('signalOffer', message);
-    socket.emit('signalOffer', message, room, chatNames);
+  socket.on('sdp', function (date) {
+    console.log('接收 Offer 信令并发送给其他连接', date)
+    socket.to(date.to).emit('sdp', date);
+    // socket.emit('sdp', date);
   });
 
-  // 接收 Answer 答复信令
-  socket.on('signalAnswer', function (message, room, chatNames) {
-    // socket.to('room').emit('signalAnswer', message);
-    console.log('接收 Answer 答复信令', message, room, chatNames)
-    socket.emit('signalAnswer', message, room, chatNames);
-  });
+  // // 接收 Answer 答复信令
+  // socket.on('signalAnswer', function (date) {
+  //   // socket.to('room').emit('signalAnswer', message);
+  //   console.log('接收 Answer 答复信令', date)
+  //   socket.emit('sdp', date);
+  // });
 
   // 接收 iceOffer
-  socket.on('iceOffer', function (message, room, chatNames) {
-    // socket.to('room').emit('iceOffer', message);
-    socket.emit('iceOffer', message, room, chatNames);
-  });
-
-  // 接收 iceAnswer
-  socket.on('iceAnswer', function (message, room, chatNames) {
-    // socket.to('room').emit('iceAnswer', message);
-    socket.emit('iceAnswer', message, room, chatNames);
+  socket.on('ice-candidates', function (date) {
+    socket.to(date.to).emit('ice-candidates', date);
+    // socket.emit('ice-candidates', date);
   });
 });
 

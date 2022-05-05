@@ -6,6 +6,19 @@ declare global {
     Peer: any;
   }
 }
+
+var parterName = '';
+var pc: any = []; // RTCPeerConnection 实例（WebRTC 连接实例）
+var localStream: any; // 本地视频流
+window.socket.on('message', (e: any) => {
+  console.log('message===>>>', e);
+  if (e.id && e.text === '上线了' && e.id !== window.socket.id) {
+    parterName = e.id;
+    // pc.push(parterName);
+    // pc[parterName] = new RTCPeerConnection(config); // 创建 RTC 连接
+  }
+});
+
 let timer: any = null;
 const VideoCallPlay = ({
   call, // 开始按钮
@@ -33,141 +46,131 @@ const VideoCallPlay = ({
   var startButton: any = document.getElementById('startButton'); // 加入房间按钮
   var hangupButton: any = document.getElementById('hangupButton'); // 挂断按钮
 
-  var pc: any; // RTCPeerConnection 实例（WebRTC 连接实例）
-  var localStream: any; // 本地视频流
   // var socket = io.connect(); // 创建 socket 连接
 
   // ice 打洞服务器
   var config = {
     iceServers: [
       {
-        urls: 'stun:stun.l.google.com:19302',
+        urls: 'stun:stun.stunprotocol.org',
       },
     ],
   };
 
-  // offer 配置
-  const offerOptions = {
-    offerToReceiveVideo: 1,
-    offerToReceiveAudio: 1,
-  };
-  // hangupButton.disabled = true;
-
-  // startButton.addEventListener('click', () => {
-  //   startActions();
-  // });
-  // hangupButton.addEventListener('click', hangupAction);
-
-  // 点击加入房间
-  const startActions = () => {
-    console.log('123===>>>>', myLocName, chatNames);
+  useEffect(() => {
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((mediastream) => {
         localStream = mediastream; // 本地视频流
-        console.log(localStream, myLocName, chatNames);
-        localVideo.current.srcObject = mediastream; // 播放本地视频流
+        console.log(localStream, window.socket.id, pc);
+        localVideo.srcObject = mediastream; // 播放本地视频流
         // startButton.disabled = true;
-        window.socket.emit('conn', `${myLocName}`, chatNames); // 连接 socket
+        // window.socket.emit('conn', `${myLocName}`, chatNames); // 连接 socket
         // socket 连接成功
-        window.socket.on('conn', (room: any, chatNames: any) => {
-          // hangupButton.disabled = false;
-          pc = new RTCPeerConnection(config); // 创建 RTC 连接
-          console.log('socket 连接成功', room, chatNames, localStream);
-          localStream
-            .getTracks()
-            .forEach((track: any) => pc.addTrack(track, localStream)); // 添加本地视频流 track
-          // 创建 Offer 请求
-          pc.createOffer(offerOptions).then((offer: any) => {
-            pc.setLocalDescription(new RTCSessionDescription(offer)); // 设置本地 Offer 描述，（设置描述之后会触发ice事件）
-            window.socket.emit('signalOffer', offer, room, chatNames); // 发送 Offer 请求信令
-          });
-          // 监听 ice
-          pc.addEventListener('icecandidate', (event: any) => {
-            console.log(event);
-            var iceCandidate = event.candidate;
-            if (iceCandidate) {
-              // 发送 iceOffer 请求
-              window.socket.emit('iceOffer', iceCandidate, room, chatNames);
-            }
-          });
-        });
-
-        // 接收 Offer 请求信令
-        window.socket.on(
-          'signalOffer',
-          (message: any, room: any, chatNames: any) => {
-            console.log('接收 Offer 请求信令', message, room, chatNames);
-            if (chatNames === LocName) {
-              pc.setRemoteDescription(new RTCSessionDescription(message)); // 设置远端描述
-              // 创建 Answer 请求
-              pc.createAnswer((answer: any) => {
-                pc.setLocalDescription(
-                  new RTCSessionDescription(answer),
-                  () => {
-                    window.socket.emit('signalAnswer', answer, room, chatNames); // 发送 Answer 请求信令
-                  }
-                ); // 设置本地 Answer 描述
-              });
-
-              // 监听远端视频流
-              pc.addEventListener('addstream', (event: any) => {
-                console.log(event.stream);
-                remoteVideo.current.srcObject = event.stream; // 播放远端视频流
-              });
-            }
-          }
-        );
-
-        // 接收 Answer 请求信令
-        window.socket.on(
-          'signalAnswer',
-          (message: any, room: any, chatNames: any) => {
-            if (chatNames === LocName) {
-              pc.setRemoteDescription(new RTCSessionDescription(message)); // 设置远端描述
-              console.log('remote answer', message);
-              window.socket.emit('iceAnswer', message, room, chatNames);
-              // 监听远端视频流
-              pc.addEventListener('addstream', (event: any) => {
-                remoteVideo.current.srcObject = event.stream;
-              });
-            }
-          }
-        );
-
-        // 接收 iceAnswer
-        window.socket.on(
-          'iceAnswer',
-          (message: any, room: any, chatNames: any) => {
-            addIceCandidates(message, room, chatNames);
-          }
-        );
-        // 接收 iceOffer
-        window.socket.on(
-          'iceOffer',
-          (message: any, room: any, chatNames: any) => {
-            addIceCandidates(message, room, chatNames);
-          }
-        );
-        // 添加 IceCandidate
-        function addIceCandidates(message: any, room: any, chatNames: any) {
-          if (pc !== 'undefined' && chatNames === LocName) {
-            pc.addIceCandidate(new RTCIceCandidate(message));
-          }
-        }
-        // 挂断
-        function hangupAction() {
-          localStream.getTracks().forEach((track: any) => track.stop());
-          pc.close();
-          pc = null;
-          hangupButton.disabled = true;
-          startButton.disabled = false;
-        }
+        // window.socket.on('conn', (room: any, chatNames: any) => {
+        // hangupButton.disabled = false;
+        console.log('socket 连接成功', localStream, window.socket.id, pc);
       })
       .catch(function (e) {
         console.log(JSON.stringify(e));
       });
+  }, []);
+  // 点击加入房间
+  const startActions = async (parterName: any, createOffer: any) => {
+    console.log('123===>>>>', pc, parterName);
+    if (localStream) {
+      pc[parterName] = new RTCPeerConnection(config); // 创建 RTC 连接
+      localStream
+        .getTracks()
+        .forEach((track: any) => pc[parterName].addTrack(track, localStream)); // 添加本地视频流 track
+
+      if (createOffer) {
+        console.log('createOffer');
+        pc[parterName].onnegotiationneeded = () => {
+          pc[parterName]
+            .createOffer()
+            .then((offer: any) => {
+              console.log('createOffer1111');
+              return pc[parterName].setLocalDescription(offer); // 设置本地 Offer 描述，（设置描述之后会触发ice事件）
+            })
+            .then(() => {
+              console.log(
+                'createOffer2222',
+                pc[parterName],
+                pc[parterName].localDescription
+              );
+              window.socket.emit('sdp', {
+                type: 'video-offer',
+                description: pc[parterName].localDescription,
+                to: parterName,
+                sender: window.socket.id,
+              }); // 发送 Offer 请求信令
+            });
+        };
+      }
+
+      // 监听 ice
+      pc[parterName].onicecandidate = ({ candidate }: any) => {
+        console.log('监听 ice', candidate);
+        if (candidate) {
+          window.socket.emit('ice-candidates', {
+            candidate: candidate,
+            to: parterName,
+            type: 'video-answer',
+            sender: window.socket.id,
+          });
+        }
+      };
+      // 将传入媒体展示
+      pc[parterName].ontrack = (ev: any) => {
+        let str = ev.streams[0];
+        console.log(str);
+        remoteVideo.srcObject = str;
+      };
+    }
   };
+
+  // 接收 Offer 请求信令
+  window.socket.on('sdp', async (data: any) => {
+    console.log('接收 Offer 请求信令', pc, data, window.socket.id);
+    if (data.description && data.description.type === 'offer') {
+      await startActions(data.sender, false);
+      console.log('await11111', pc);
+      pc[data.sender]
+        .setRemoteDescription(new RTCSessionDescription(data.description))
+        .then(() => {
+          // 创建 Answer 请求
+          pc[data.sender]
+            .createAnswer()
+            .then((answer: any) => {
+              return pc[data.sender].setLocalDescription(answer); // 设置本地 Answer 描述
+            })
+            .then(() => {
+              window.socket.emit('sdp', {
+                type: 'video-answer',
+                description: pc[data.sender].localDescription,
+                to: data.sender,
+                sender: window.socket.id,
+              }); // 发送 Answer 请求信令
+            });
+        }); // 设置远端描述
+    } else if (data.description && data.description.type === 'answer') {
+      // 接收 Answer 请求信令 应答
+      pc[data.sender].setRemoteDescription(
+        new RTCSessionDescription(data.description)
+      ); // 设置远端描述
+    }
+  });
+
+  // ice 协商数据
+  window.socket.on('ice-candidates', (data: any) => {
+    if (data.candidate) {
+      console.log('remote answer', pc, data);
+      pc[data.sender]
+        .addIceCandidate(new RTCSessionDescription(data.candidate))
+        .catch(() => {});
+    }
+  });
 
   let localPeerConnection: any = null;
   let transceiver: any = null;
@@ -177,7 +180,9 @@ const VideoCallPlay = ({
     if (onStartQuery && call) {
       console.log(onStartQuery);
       startIntervals();
-      // startActions();
+      startActions(chatNames, true);
+    } else if (onStartQuery) {
+      // startActions(chatNames, false);
     }
   }, [onStartQuery]);
 
@@ -219,8 +224,8 @@ const VideoCallPlay = ({
     if (!call) {
       setStart(true);
     }
-    startQuery(); // 开始呼叫
-    startAction(); // 点击调用 获取本地视频
+    // startQuery(); // 开始呼叫
+    // startAction(); // 点击调用 获取本地视频
   };
 
   const clearIntervals = () => {
