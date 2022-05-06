@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 declare global {
   interface Window {
     Peer: any;
+    setTime: any;
   }
 }
 
@@ -51,33 +52,6 @@ const VideoCallPlay = ({
     ],
   };
 
-  useEffect(() => {
-    // window.socket.on('message', (e: any) => {
-    //   console.log('message===>>>', e);
-    //   if (e.id && e.text === '上线了' && e.id !== window.socket.id) {
-    //     parterName = e.id;
-    //     // pc.push(parterName);
-    //     // pc[parterName] = new RTCPeerConnection(config); // 创建 RTC 连接
-    //   }
-    // });
-    console.log('socket123===>>>>', mySocketId);
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
-      .then((mediastream) => {
-        localStream = mediastream; // 本地视频流
-        console.log(localStream, window.socket.id, pc);
-        localVideo.current.srcObject = mediastream; // 播放本地视频流
-        // startButton.disabled = true;
-        // window.socket.emit('conn', `${myLocName}`, chatNames); // 连接 socket
-        // socket 连接成功
-        // window.socket.on('conn', (room: any, chatNames: any) => {
-        // hangupButton.disabled = false;
-        console.log('socket 连接成功', localStream, mySocketId, pc);
-      })
-      .catch(function (e) {
-        console.log(JSON.stringify(e));
-      });
-  }, []);
   // 点击加入房间
   const startActions = async (parterName: any, createOffer: any) => {
     if (localStream) {
@@ -121,6 +95,8 @@ const VideoCallPlay = ({
             type: 'video-answer',
             sender: mySocketId,
           });
+        } else {
+          clearTimeout(window.setTime);
         }
       };
       // 将传入媒体展示
@@ -179,16 +155,37 @@ const VideoCallPlay = ({
   var webcamStream: any = null;
 
   useEffect(() => {
-    if (onStartQuery && call) {
-      console.log(onStartQuery);
-      startIntervals();
-      startActions(friendSocketId, true);
-      window.socket.emit('getEachOther', {
-        videoCall: true,
-        chatNames: chatNames,
-      });
-    } else if (onStartQuery) {
-      startActions(friendSocketId, false);
+    if (onStartQuery) {
+      console.log('socket123===>>>>', mySocketId);
+      navigator.mediaDevices
+        .getUserMedia({ video: true, audio: true })
+        .then((mediastream) => {
+          localStream = mediastream; // 本地视频流
+          console.log(localStream, window.socket.id, pc);
+          localVideo.current.srcObject = mediastream; // 播放本地视频流
+          // startButton.disabled = true;
+          // window.socket.emit('conn', `${myLocName}`, chatNames); // 连接 socket
+          // socket 连接成功
+          // window.socket.on('conn', (room: any, chatNames: any) => {
+          // hangupButton.disabled = false;
+          console.log('socket 连接成功', localStream, mySocketId, pc);
+          if (call) {
+            console.log(onStartQuery);
+            startIntervals();
+            window.setTime = setTimeout(() => {
+              startActions(friendSocketId, true);
+            }, 1000);
+            window.socket.emit('getEachOther', {
+              videoCall: true,
+              chatNames: chatNames,
+            });
+          } else {
+            // startActions(friendSocketId, false);
+          }
+        })
+        .catch(function (e) {
+          console.log(JSON.stringify(e));
+        });
     }
   }, [onStartQuery]);
 
