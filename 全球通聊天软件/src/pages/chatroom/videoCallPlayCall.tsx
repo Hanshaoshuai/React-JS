@@ -80,13 +80,12 @@ const VideoCallPlay = ({
   }, []);
   // 点击加入房间
   const startActions = async (parterName: any, createOffer: any) => {
-    console.log('123===>>>>', pc, parterName);
     if (localStream) {
       pc[parterName] = new RTCPeerConnection(config); // 创建 RTC 连接
       localStream
         .getTracks()
         .forEach((track: any) => pc[parterName].addTrack(track, localStream)); // 添加本地视频流 track
-
+      console.log('123===>>>>', pc, parterName);
       if (createOffer) {
         console.log('createOffer');
         pc[parterName].onnegotiationneeded = () => {
