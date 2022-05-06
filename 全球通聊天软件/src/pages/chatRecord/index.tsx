@@ -8,7 +8,7 @@ import React, {
   useState,
 } from 'react';
 import { useHistory, Link } from 'react-router-dom';
-import { InfiniteScroll, List, Divider } from 'antd-mobile';
+import { InfiniteScroll, List, Divider, Badge } from 'antd-mobile';
 
 import {
   getList,
@@ -28,6 +28,7 @@ import { MyContext } from '../../models/context';
 let badge: number = 0;
 let pageS = 1;
 // let pageSId = false;
+let friendListL: any = [];
 const ChatRecord = () => {
   const history = useHistory();
   const { state, messages, dispatch } = useContext(MyContext);
@@ -58,6 +59,7 @@ const ChatRecord = () => {
   const [dividerBlock, setDividerBlock] = useState(false);
 
   useEffect(() => {
+    localStorage.removeItem('friendSocketId');
     localStorage.removeItem('addSearchFriends');
     localStorage.removeItem('personalInformation');
     localStorage.removeItem('groupName');
@@ -92,6 +94,30 @@ const ChatRecord = () => {
       });
     }
   }, [myHeadPortrait]);
+  useEffect(() => {
+    window.socket.on('newcomerOnline', ({ name, socketId, text }: any) => {
+      // console.log('newcomerOnline===>>>', name, socketId, text);
+      if (text === '上线') {
+        const list = [...friendListL].map((item: any) => {
+          if (item.name === name) {
+            item.socketId = socketId;
+          }
+          return item;
+        });
+        friendListL = list;
+        setFriendList(list);
+      } else if (text === '下线') {
+        const list = [...friendListL].map((item: any) => {
+          if (item.name === name) {
+            item.socketId = '';
+          }
+          return item;
+        });
+        friendListL = list;
+        setFriendList(list);
+      }
+    });
+  }, []);
   useEffect(() => {
     //消息监听
     getBuddyLists();
@@ -172,6 +198,7 @@ const ChatRecord = () => {
 
   const getBuddyLists = (location?: string) => {
     if (getBuddyListsL && getBuddyListsL.length > 0) {
+      friendListL = getBuddyListsL;
       setFriendList(getBuddyListsL);
     }
     getBuddyList({ name: localName }).then((data) => {
@@ -179,6 +206,7 @@ const ChatRecord = () => {
       if (data.code === 200) {
         if (data.body?.length > 0) {
           badge = 0;
+          friendListL = data.body;
           setFriendList(data.body);
           setGetBuddyListsL(data.body);
           localStorage.setItem('getBuddyLists', JSON.stringify(data.body));
@@ -290,9 +318,11 @@ const ChatRecord = () => {
     toFriends: string,
     groupName: string,
     imgIdLocs: any,
-    groupNameLocs: any
+    groupNameLocs: any,
+    socketId: any
   ) => {
     //			console.log(remarksNuber,textName,groupOwner,localNumber,nickNameGrou,nickName1,text,fromName,toName,friendName,toNames,headPortrait,sex,toFriends);
+    localStorage.setItem('friendSocketId', socketId);
     localStorage.setItem('textName', textName);
     localStorage.setItem('remarksNuber', remarksNuber);
     if (groupName) {
@@ -659,7 +689,8 @@ const ChatRecord = () => {
               toFriends,
               item.groupName,
               item.imgId,
-              item.name
+              item.name,
+              item.socketId
             )
           }
         >
@@ -692,6 +723,23 @@ const ChatRecord = () => {
             <div className="texts-bottom border-bottom"></div>
           </div>
           <div className="times">{moment(parseInt(item.dateTime))}</div>
+          {!imgList.length && (
+            <Badge
+              color={`${item.socketId ? '#87d068' : '#bbbbbb'}`}
+              content={Badge.dot}
+              style={{
+                minWidth: '0.13rem',
+                position: 'absolute',
+                top: '0.22rem',
+                right: '0.22rem',
+                bottom: '0',
+                margin: 'auto',
+                width: '0.13rem',
+                height: '0.13rem',
+                borderRadius: '0.13rem',
+              }}
+            />
+          )}
         </div>
       );
     });
@@ -806,6 +854,21 @@ const ChatRecord = () => {
                     {item.nickName}
                     <div className="texts-bottom border-bottom"></div>
                   </span>
+                  <Badge
+                    color={`${item.socketId ? '#87d068' : '#bbbbbb'}`}
+                    content={Badge.dot}
+                    style={{
+                      minWidth: '0.13rem',
+                      position: 'absolute',
+                      top: '0',
+                      right: '0.22rem',
+                      bottom: '0',
+                      margin: 'auto',
+                      width: '0.13rem',
+                      height: '0.13rem',
+                      borderRadius: '0.13rem',
+                    }}
+                  />
                 </div>
               );
             })}

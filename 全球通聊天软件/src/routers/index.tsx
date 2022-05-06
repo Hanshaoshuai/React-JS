@@ -157,6 +157,16 @@ export default function Routers({ location }: SwitchProps): ReactElement {
           : window.location.pathname,
     });
   }, []);
+  useEffect(() => {
+    if (window.socket.id) {
+      // console.log(window.socket.id);
+      localStorage.setItem('mySocketId', window.socket.id);
+      window.socket.emit('goOnline', {
+        name: myLocName,
+        socketId: window.socket.id,
+      });
+    }
+  }, [window.socket.id, myLocName]);
   const tabsList: any = [
     {
       key: '/',

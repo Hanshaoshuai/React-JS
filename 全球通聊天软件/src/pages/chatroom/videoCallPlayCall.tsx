@@ -10,14 +10,6 @@ declare global {
 var parterName = '';
 var pc: any = []; // RTCPeerConnection 实例（WebRTC 连接实例）
 var localStream: any; // 本地视频流
-window.socket.on('message', (e: any) => {
-  console.log('message===>>>', e);
-  if (e.id && e.text === '上线了' && e.id !== window.socket.id) {
-    parterName = e.id;
-    // pc.push(parterName);
-    // pc[parterName] = new RTCPeerConnection(config); // 创建 RTC 连接
-  }
-});
 
 let timer: any = null;
 const VideoCallPlay = ({
@@ -35,6 +27,8 @@ const VideoCallPlay = ({
     video: true,
     audio: true,
   });
+  const [mySocketId] = useState(localStorage.getItem('mySocketId'));
+  const [friendSocketId] = useState(localStorage.getItem('friendSocketId'));
   const [LocName] = useState<any>(localStorage.getItem('name'));
   const [actionNames, setActionNames] = useState('');
   const [start, setStart] = useState(false);
@@ -58,12 +52,21 @@ const VideoCallPlay = ({
   };
 
   useEffect(() => {
+    window.socket.on('message', (e: any) => {
+      console.log('message===>>>', e);
+      if (e.id && e.text === '上线了' && e.id !== window.socket.id) {
+        parterName = e.id;
+        // pc.push(parterName);
+        // pc[parterName] = new RTCPeerConnection(config); // 创建 RTC 连接
+      }
+    });
+    console.log('socket123===>>>>', window.socket.id);
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((mediastream) => {
         localStream = mediastream; // 本地视频流
         console.log(localStream, window.socket.id, pc);
-        localVideo.srcObject = mediastream; // 播放本地视频流
+        localVideo.current.srcObject = mediastream; // 播放本地视频流
         // startButton.disabled = true;
         // window.socket.emit('conn', `${myLocName}`, chatNames); // 连接 socket
         // socket 连接成功
@@ -125,7 +128,7 @@ const VideoCallPlay = ({
       pc[parterName].ontrack = (ev: any) => {
         let str = ev.streams[0];
         console.log(str);
-        remoteVideo.srcObject = str;
+        remoteVideo.current.srcObject = str;
       };
     }
   };
@@ -180,9 +183,13 @@ const VideoCallPlay = ({
     if (onStartQuery && call) {
       console.log(onStartQuery);
       startIntervals();
-      startActions(chatNames, true);
+      startActions(friendSocketId, true);
+      window.socket.emit('getEachOther', {
+        videoCall: true,
+        chatNames: chatNames,
+      });
     } else if (onStartQuery) {
-      // startActions(chatNames, false);
+      startActions(friendSocketId, false);
     }
   }, [onStartQuery]);
 

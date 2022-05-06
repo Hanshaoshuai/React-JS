@@ -178,34 +178,46 @@ io.sockets.on('connection', function (socket) {
     id: socket.id,
     text: '你上线了',
   });
+  socket.on('goOnline', async (data) => {
+    // console.log('clientmessagkkkkkkkkkkkkkkkkkkkkk', data);
+    const newData = await socketIdChange(data)
+    // console.log(newData, { ...newData, text: '上线' })
+    socket.emit('newcomerOnline', { ...newData, text: '上线' });
+    socket.broadcast.emit('newcomerOnline', { ...newData, text: '上线' });
+  });
   //告诉所有人上线了(除自己之外)
   socket.broadcast.emit('message', {
     id: socket.id,
     text: '上线了',
   });
   //连接断开，如关闭页面时触发
-  socket.on('disconnect', function (data) {
+  socket.on('disconnect', async (data) => {
     // console.log('123456789', data);
     // socket.emit('c_leave','离开');
     //socket.broadcast用于向整个网络广播(除自己之外)
+    // console.log('clientmessagkkkkkkkkkkkkkkkkkkkkk', socket.id);
     socket.broadcast.emit('message', {
       id: socket.id,
       text: '离开了',
     });
+    const newData = await socketIdChange({ name: '', socketId: socket.id })
+    // console.log(newData, { ...newData, text: '下线' })
+    socket.emit('newcomerOnline', { ...newData, text: '下线' });
+    socket.broadcast.emit('newcomerOnline', { ...newData, text: '下线' });
   });
 
   // 视频通话
   // 新连接
   socket.on('conn', function (userName, chatNames) {
     // socket.join(userName); // 加入房间
-    console.log(socket.adapter.rooms);
+    // console.log(socket.adapter.rooms);
     socket.emit('conn', userName, chatNames);
-    console.log('新用户：' + userName, chatNames);
+    // console.log('新用户：' + userName, chatNames);
   });
 
   // 接收 Offer 信令并发送给其他连接
   socket.on('sdp', function (date) {
-    console.log('接收 Offer 信令并发送给其他连接', date)
+    // console.log('接收 Offer 信令并发送给其他连接', date)
     socket.to(date.to).emit('sdp', date);
     // socket.emit('sdp', date);
   });
@@ -223,6 +235,54 @@ io.sockets.on('connection', function (socket) {
     // socket.emit('ice-candidates', date);
   });
 });
+
+// 更改个人socketid
+//更改个人朋友圈背景
+const socketIdChange = ({ name, socketId }) => {
+  return new Promise((resolve, reject) => {
+    MongoClient.connect(url, function (err, db) {
+      if (err) throw err;
+      var dbo = db.db('runoob');
+      var whereStr = name ? { name: name } : { socketId: socketId }; // 查询条件
+      var updateStr = {
+        $set: name ? { socketId: socketId } : { socketId: '' },
+      }; //更换内容
+      // console.log('第-道', updateStr);
+      if (!name) {
+        dbo.collection('site').find(whereStr)
+          .toArray((err, result) => {
+            if (err) throw err;
+            if (result) {
+              // console.log('result====>>', result)
+              resolve({ name: result[0]?.name, socketId: result[0]?.socketId })
+            } else {
+              reject('errr')
+            }
+          })
+      }
+      dbo.collection('site').updateOne(whereStr, updateStr, function (err, res) {
+        if (err) throw err;
+        // console.log('updateOne====>>', res);
+        if (res.acknowledged && name) {
+          dbo.collection('site').find(whereStr)
+            .toArray((err, result) => {
+              if (err) throw err;
+              if (result) {
+                // console.log('result====>>', result)
+                resolve({ name: result[0]?.name, socketId: result[0]?.socketId })
+              } else {
+                reject('errr')
+              }
+              db.close();
+            })
+        } else if (!res.acknowledged) {
+          reject('errr')
+          db.close();
+        }
+      });
+    });
+  });
+}
 
 //存入记录
 function todo(obj, socket) {

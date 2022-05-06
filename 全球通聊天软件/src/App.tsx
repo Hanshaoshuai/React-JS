@@ -51,11 +51,6 @@ export default function App() {
     window.socket.on('message', function (data: any) {
       setMessages(data);
     });
-    // window.socket.on("classIcon", (data: any) => {
-    //   // console.log("classIcon====>>>>>", data);
-    //   setMessages(data);
-    // });
-
     destroyGlobalSpinner();
     dispatchs(
       setSchedule({
@@ -64,6 +59,7 @@ export default function App() {
       })
     );
   }, []);
+
   useEffect(() => {
     let toName: any = {};
     toName = JSON.parse(messages.toName || '{}');
