@@ -180,7 +180,7 @@ const VideoCallPlay = ({
   var webcamStream: any = null;
 
   useEffect(() => {
-    if (onStartQuery) {
+    if (onStartQuery && call) {
       console.log('socket123===>>>>', mySocketId);
       navigator.mediaDevices
         .getUserMedia({ video: true, audio: true })
@@ -203,14 +203,14 @@ const VideoCallPlay = ({
               videoCall: true,
               chatNames: chatNames,
             });
-          } else {
-            startIntervals();
-            // startActions(friendSocketId, false);
           }
         })
         .catch(function (e) {
           console.log(JSON.stringify(e));
         });
+    } else if (onStartQuery) {
+      startIntervals();
+      // startActions(friendSocketId, false);
     }
   }, [onStartQuery]);
 
