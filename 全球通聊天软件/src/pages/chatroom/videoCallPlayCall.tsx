@@ -54,6 +54,7 @@ const VideoCallPlay = ({
   };
 
   const onchange = () => {
+    console.log('11111===>>>>', localStream);
     return new Promise((resolve, reject) => {
       navigator.mediaDevices
         .getUserMedia({ video: true, audio: true })
@@ -76,6 +77,7 @@ const VideoCallPlay = ({
   };
   // 点击加入房间
   const startActions = async (parterName: any, createOffer: any) => {
+    console.log('0000000===>>>>', localStream);
     if (!localStream) {
       await onchange();
     }
