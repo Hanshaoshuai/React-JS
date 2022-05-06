@@ -1,5 +1,6 @@
 import { remo, local } from '../../api';
 import React, { useEffect, useRef, useState } from 'react';
+import { promises } from 'fs';
 
 declare global {
   interface Window {
@@ -52,8 +53,32 @@ const VideoCallPlay = ({
     ],
   };
 
+  const onchange = () => {
+    return new Promise((resolve, reject) => {
+      navigator.mediaDevices
+        .getUserMedia({ video: true, audio: true })
+        .then((mediastream) => {
+          localStream = mediastream; // 本地视频流
+          console.log(localStream, window.socket.id, pc);
+          localVideo.current.srcObject = mediastream; // 播放本地视频流
+          // startButton.disabled = true;
+          // window.socket.emit('conn', `${myLocName}`, chatNames); // 连接 socket
+          // socket 连接成功
+          // window.socket.on('conn', (room: any, chatNames: any) => {
+          // hangupButton.disabled = false;
+          console.log('对方已连接', localStream, mySocketId, pc);
+          resolve(pc);
+        })
+        .catch(function (e) {
+          console.log(JSON.stringify(e));
+        });
+    });
+  };
   // 点击加入房间
   const startActions = async (parterName: any, createOffer: any) => {
+    if (!localStream) {
+      await onchange();
+    }
     if (localStream) {
       pc[parterName] = new RTCPeerConnection(config); // 创建 RTC 连接
       localStream
@@ -171,7 +196,6 @@ const VideoCallPlay = ({
           console.log('socket 连接成功', localStream, mySocketId, pc);
           if (call) {
             console.log(onStartQuery);
-            startIntervals();
             window.setTime = setTimeout(() => {
               startActions(friendSocketId, true);
             }, 1000);
@@ -180,6 +204,7 @@ const VideoCallPlay = ({
               chatNames: chatNames,
             });
           } else {
+            startIntervals();
             // startActions(friendSocketId, false);
           }
         })
