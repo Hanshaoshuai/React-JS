@@ -52,15 +52,15 @@ const VideoCallPlay = ({
   };
 
   useEffect(() => {
-    window.socket.on('message', (e: any) => {
-      console.log('message===>>>', e);
-      if (e.id && e.text === '上线了' && e.id !== window.socket.id) {
-        parterName = e.id;
-        // pc.push(parterName);
-        // pc[parterName] = new RTCPeerConnection(config); // 创建 RTC 连接
-      }
-    });
-    console.log('socket123===>>>>', window.socket.id);
+    // window.socket.on('message', (e: any) => {
+    //   console.log('message===>>>', e);
+    //   if (e.id && e.text === '上线了' && e.id !== window.socket.id) {
+    //     parterName = e.id;
+    //     // pc.push(parterName);
+    //     // pc[parterName] = new RTCPeerConnection(config); // 创建 RTC 连接
+    //   }
+    // });
+    console.log('socket123===>>>>', mySocketId);
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((mediastream) => {
@@ -72,7 +72,7 @@ const VideoCallPlay = ({
         // socket 连接成功
         // window.socket.on('conn', (room: any, chatNames: any) => {
         // hangupButton.disabled = false;
-        console.log('socket 连接成功', localStream, window.socket.id, pc);
+        console.log('socket 连接成功', localStream, mySocketId, pc);
       })
       .catch(function (e) {
         console.log(JSON.stringify(e));
@@ -106,7 +106,7 @@ const VideoCallPlay = ({
                 type: 'video-offer',
                 description: pc[parterName].localDescription,
                 to: parterName,
-                sender: window.socket.id,
+                sender: mySocketId,
               }); // 发送 Offer 请求信令
             });
         };
@@ -120,7 +120,7 @@ const VideoCallPlay = ({
             candidate: candidate,
             to: parterName,
             type: 'video-answer',
-            sender: window.socket.id,
+            sender: mySocketId,
           });
         }
       };
@@ -135,7 +135,7 @@ const VideoCallPlay = ({
 
   // 接收 Offer 请求信令
   window.socket.on('sdp', async (data: any) => {
-    console.log('接收 Offer 请求信令', pc, data, window.socket.id);
+    console.log('接收 Offer 请求信令', pc, data, mySocketId);
     if (data.description && data.description.type === 'offer') {
       await startActions(data.sender, false);
       console.log('await11111', pc);
@@ -153,7 +153,7 @@ const VideoCallPlay = ({
                 type: 'video-answer',
                 description: pc[data.sender].localDescription,
                 to: data.sender,
-                sender: window.socket.id,
+                sender: mySocketId,
               }); // 发送 Answer 请求信令
             });
         }); // 设置远端描述
