@@ -105,7 +105,7 @@ export function Camera({ localVideoElm, remoteVideo }: any) {
       getUserMedia(
         {
           video: true,
-          audio: false,
+          audio: true,
         },
         (stream: any) => {
           localStream = stream;
@@ -134,7 +134,7 @@ export function Camera({ localVideoElm, remoteVideo }: any) {
         getUserMedia(
           {
             video: true,
-            audio: false,
+            audio: true,
           },
           function (stream: any) {
             localStream = stream;
