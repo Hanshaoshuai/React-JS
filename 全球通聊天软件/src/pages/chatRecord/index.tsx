@@ -96,7 +96,7 @@ const ChatRecord = () => {
   }, [myHeadPortrait]);
   useEffect(() => {
     window.socket.on('newcomerOnline', ({ name, socketId, text }: any) => {
-      // console.log('newcomerOnline===>>>', name, socketId, text);
+      console.log('newcomerOnline===>>>', name, socketId, text);
       if (text === '上线') {
         const list = [...friendListL].map((item: any) => {
           if (item.name === name) {

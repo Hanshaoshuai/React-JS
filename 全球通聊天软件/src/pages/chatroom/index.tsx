@@ -190,7 +190,12 @@ const ChatList = () => {
         }, 500);
       }
     });
-
+    window.socket.on('newcomerOnline', ({ name, socketId, text }: any) => {
+      // console.log('newcomerOnline===>>>', name, socketId, text);
+      if (text === '上线' && name === toChatName) {
+        localStorage.setItem('friendSocketId', socketId);
+      }
+    });
     return componentWillUnmount;
   }, []);
   const componentWillUnmount = () => {
