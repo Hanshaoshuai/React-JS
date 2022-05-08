@@ -42,7 +42,6 @@ const VideoCallPlay = ({
   useEffect(() => {
     if (onStartQuery && call) {
       console.log('socket123===>>>>', window.socket.id);
-      Camera({ localVideoElm: localVideo, remoteVideo });
       window.socket.emit('call', {
         to: friendSocketId,
         sender: window.socket.id,
@@ -50,7 +49,9 @@ const VideoCallPlay = ({
     }
   }, [onStartQuery]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    Camera({ localVideoElm: localVideo, remoteVideo });
+  }, []);
 
   useEffect(() => {
     setActionNames(actionName);
