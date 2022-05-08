@@ -1,6 +1,5 @@
-import { remo, local } from '../../api';
 import React, { useEffect, useRef, useState } from 'react';
-
+import { Toast } from 'antd-mobile';
 import { Camera } from './camera';
 declare global {
   interface Window {
@@ -41,10 +40,21 @@ const VideoCallPlay = ({
     // console.log('onStartQuery===>>>>', onStartQuery);
     if (onStartQuery && call) {
       // console.log('socket123===>>>>', window.socket.id);
+      // window.setTime = setInterval(() => {
+      if (!friendSocketId) {
+        clearIntervals();
+        Toast.show({
+          content: '对方不在线请稍后再试！',
+          position: 'top',
+        });
+        return;
+      }
       window.socket.emit('call', {
         to: friendSocketId,
         sender: window.socket.id,
       }); // 发送 呼叫
+      // }, 1000);
+
       setVideoCall(true);
     }
     if (!onStartQuery) {
@@ -59,6 +69,16 @@ const VideoCallPlay = ({
 
   useEffect(() => {
     Camera({ localVideoElm: localVideo, remoteVideo });
+    window.socket.on('newcomerOnline', ({ name, socketId, text }: any) => {
+      // console.log('newcomerOnline===>>>', name, socketId, text);
+      if (text === '下线') {
+        clearIntervals();
+        Toast.show({
+          content: '对方意外中断请重新链接！',
+          position: 'top',
+        });
+      }
+    });
   }, []);
 
   useEffect(() => {

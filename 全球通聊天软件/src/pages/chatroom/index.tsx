@@ -172,6 +172,7 @@ const ChatList = () => {
 
     window.socket.on('call', ({ to, sender }: any) => {
       // console.log(to, sender);
+      // clearInterval(window.setTime);
       setVideoCalls(true);
       setCall(false);
     });
