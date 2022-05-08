@@ -177,11 +177,15 @@ const ChatList = () => {
     });
 
     window.socket.on('respond', ({ to, sender, text }: any) => {
+      console.log('对方挂断+++++++====>>>>', to, sender, text);
       if (text === '接听') {
         setStartCall(true);
       } else {
-        setVideoCalls(false);
-        setStartCall(false);
+        window.time = setTimeout(() => {
+          clearTimeout(window.time);
+          setVideoCalls(false);
+          setStartCall(false);
+        }, 500);
       }
     });
 
@@ -216,7 +220,6 @@ const ChatList = () => {
       messages?.text?.VideoAndVoice === '通话结束' &&
       messages?.text?.toName === myLocName
     ) {
-      setOnFinish(true);
       setCall(false);
     }
   }, [messages]);
@@ -308,7 +311,6 @@ const ChatList = () => {
 
   const videoCallCancel = (text: string) => {
     setVideoCalls(false);
-    setOnFinish(false);
     setCall(false);
     if (onFinish) return;
     window.socket.emit('clientmessage', {

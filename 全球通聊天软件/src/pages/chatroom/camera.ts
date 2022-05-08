@@ -13,8 +13,8 @@ var localStream: any = null;
 
 export function Camera({ localVideoElm, remoteVideo }: any) {
   //封装一部分函数
-  const mySocketId = localStorage.getItem('mySocketId');
-  const friendSocketId = localStorage.getItem('friendSocketId');
+  const mySocketId: any = localStorage.getItem('mySocketId');
+  const friendSocketId: any = localStorage.getItem('friendSocketId');
   const getUserMedia = (constrains: any, success: any, error: any) => {
     if (navigator.mediaDevices.getUserMedia) {
       //最新标准API
@@ -186,7 +186,7 @@ export function Camera({ localVideoElm, remoteVideo }: any) {
     pc[parterName].ontrack = (ev: any) => {
       let str = ev.streams[0];
       console.log(str);
-      if (remoteVideo) {
+      if (remoteVideo.current) {
         remoteVideo.current.srcObject = str;
       }
     };
@@ -196,60 +196,74 @@ export function Camera({ localVideoElm, remoteVideo }: any) {
     console.log(to, sender, text);
     if (text === '接听') {
       StartCall(friendSocketId, true);
+    } else {
+      //   localStream.getTracks().forEach((track: any) => track.stop());
+      console.log('关闭摄像头0000===》》》', window.stream);
+      window.mediaStreamTrack && window.mediaStreamTrack.stop();
+
+      if (window.stream) {
+        console.log('关闭摄像头');
+        window.stream.getTracks().forEach((track: any) => track.stop());
+      }
+      pc = [];
+      localStream = null;
+      if (localVideoElm.current) {
+        localVideoElm.current.srcObject?.getTracks()[0]?.stop();
+        localVideoElm.current.srcObject?.getTracks()[1]?.stop();
+      }
+      if (remoteVideo.current) {
+        remoteVideo.current.srcObject?.getTracks()[0]?.stop();
+        remoteVideo.current.srcObject?.getTracks()[1]?.stop();
+      }
     }
   });
 
   (() => {
     InitCamera();
-
     //输出内容 其中 socket.id 是当前socket连接的唯一ID
     console.log('connect ' + window.socket.id);
-
     // $('#user-id').text(socket.id);
+    // pc.push(window.socket.id);
+    // // socket.emit('new user greet', {
+    // //   sender: socket.id,
+    // //   msg: 'hello world',
+    // // });
+    // window.socket.on('need connect', (data: any) => {
+    //   console.log(data);
+    //   //   //创建新的li并添加到用户列表中
+    //   //   let li = $('<li></li>').text(data.sender).attr('user-id', data.sender);
+    //   //   $('#user-list').append(li);
+    //   //   //同时创建一个按钮
+    //   //   let button = $('<button class="call">通话</button>');
+    //   //   button.appendTo(li);
+    //   //   //监听按钮的点击事件, 这是个demo 需要添加很多东西，比如不能重复拨打已经连接的用户
+    //   //   $(button).click(function () {
+    //   //     //$(this).parent().attr('user-id')
+    //   //     console.log($(this).parent().attr('user-id'));
+    //   //     //点击时，开启对该用户的通话
+    //   //     StartCall($(this).parent().attr('user-id'), true);
+    //   //   });
 
-    pc.push(window.socket.id);
-
-    // socket.emit('new user greet', {
-    //   sender: socket.id,
-    //   msg: 'hello world',
+    //   window.socket.emit('ok we connect', {
+    //     receiver: data.sender,
+    //     sender: window.socket.id,
+    //   });
     // });
+    // //某个用户失去连接时，我们需要获取到这个信息
+    // window.socket.on('user disconnected', (socket_id: any) => {
+    //   console.log('disconnect : ' + socket_id);
 
-    window.socket.on('need connect', (data: any) => {
-      console.log(data);
-      //   //创建新的li并添加到用户列表中
-      //   let li = $('<li></li>').text(data.sender).attr('user-id', data.sender);
-      //   $('#user-list').append(li);
-      //   //同时创建一个按钮
-      //   let button = $('<button class="call">通话</button>');
-      //   button.appendTo(li);
-      //   //监听按钮的点击事件, 这是个demo 需要添加很多东西，比如不能重复拨打已经连接的用户
-      //   $(button).click(function () {
-      //     //$(this).parent().attr('user-id')
-      //     console.log($(this).parent().attr('user-id'));
-      //     //点击时，开启对该用户的通话
-      //     StartCall($(this).parent().attr('user-id'), true);
-      //   });
+    //   //   $('#user-list li[user-id="' + socket_id + '"]').remove();
+    // });
+    // //链接吧..
+    // window.socket.on('ok we connect', (data: any) => {
+    //   console.log(data);
 
-      window.socket.emit('ok we connect', {
-        receiver: data.sender,
-        sender: window.socket.id,
-      });
-    });
-    //某个用户失去连接时，我们需要获取到这个信息
-    window.socket.on('user disconnected', (socket_id: any) => {
-      console.log('disconnect : ' + socket_id);
-
-      //   $('#user-list li[user-id="' + socket_id + '"]').remove();
-    });
-    //链接吧..
-    window.socket.on('ok we connect', (data: any) => {
-      console.log(data);
-
-      //   $('#user-list').append(
-      //     $('<li></li>').text(data.sender).attr('user-id', data.sender)
-      //   );
-      //这里少了程序，比如之前的按钮啊，按钮的点击监听都没有。
-    });
+    //   //   $('#user-list').append(
+    //   //     $('<li></li>').text(data.sender).attr('user-id', data.sender)
+    //   //   );
+    //   //这里少了程序，比如之前的按钮啊，按钮的点击监听都没有。
+    // });
 
     //监听发送的sdp事件
     window.socket.on('sdp', (data: any) => {

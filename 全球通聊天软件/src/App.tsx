@@ -22,6 +22,9 @@ declare global {
     plus: any;
     Recorder: any;
     promise: any;
+    stream: any;
+    mediaStreamTrack: any;
+    time: any;
   }
 }
 

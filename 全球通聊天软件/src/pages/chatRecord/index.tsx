@@ -20,7 +20,7 @@ import {
 import { moment } from '../../helpers';
 import Spins from '../A-Spin';
 
-import VideoCallPlayAnswer from '../chatroom/videoCallPlayAnswer';
+import VideoCallPlay from '../chatroom/videoCallPlayCall';
 import { setBadge } from '../../actions';
 
 import { MyContext } from '../../models/context';
@@ -115,6 +115,20 @@ const ChatRecord = () => {
         });
         friendListL = list;
         setFriendList(list);
+      }
+    });
+    window.socket.on('call', ({ to, sender }: any) => {
+      localStorage.setItem('friendSocketId', sender);
+      setVideoCalls(true);
+    });
+    window.socket.on('respond', ({ to, sender, text }: any) => {
+      // console.log('挂断===》》》', to, sender);
+      if (text === '接听') {
+      } else {
+        window.time = setTimeout(() => {
+          clearTimeout(window.time);
+          setVideoCalls(false);
+        }, 500);
       }
     });
   }, []);
@@ -910,7 +924,7 @@ const ChatRecord = () => {
         )}
       </div>
       {videoCalls && fromName && (
-        <VideoCallPlayAnswer
+        <VideoCallPlay
           call={false}
           onStartQuery={videoCalls}
           videoCallCancel={videoCallCancel}

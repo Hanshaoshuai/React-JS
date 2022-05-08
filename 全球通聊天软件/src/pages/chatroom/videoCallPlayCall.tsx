@@ -9,7 +9,6 @@ declare global {
   }
 }
 
-let timer: any = null;
 const VideoCallPlay = ({
   call, // 开始按钮
   onStartQuery,
@@ -34,18 +33,27 @@ const VideoCallPlay = ({
   const [callStarted, setCallStarted] = useState(false);
   const localVideo: any = useRef();
   const remoteVideo: any = useRef();
+  const [videoCall, setVideoCall] = useState(false);
   //   var localVideo = document.getElementById('local_video'); // 本地视频 Video
   // var remoteVideo = document.getElementById('remote_video'); // 远端视频 Video
-  var startButton: any = document.getElementById('startButton'); // 加入房间按钮
-  var hangupButton: any = document.getElementById('hangupButton'); // 挂断按钮
 
   useEffect(() => {
+    console.log('onStartQuery===>>>>', onStartQuery);
     if (onStartQuery && call) {
       console.log('socket123===>>>>', window.socket.id);
       window.socket.emit('call', {
         to: friendSocketId,
         sender: window.socket.id,
       }); // 发送 呼叫
+      setVideoCall(true);
+    }
+    if (!onStartQuery) {
+      setVideoCall(false);
+    }
+    if (!onStartQuery && localVideo.current) {
+      console.log('关闭===>>>>', localVideo.current);
+      localVideo.current.srcObject?.getTracks()[0]?.stop();
+      localVideo.current.srcObject?.getTracks()[1]?.stop();
     }
   }, [onStartQuery]);
 
@@ -56,12 +64,6 @@ const VideoCallPlay = ({
   useEffect(() => {
     setActionNames(actionName);
   }, [actionName]);
-
-  useEffect(() => {
-    if (onFinish) {
-      clearIntervals();
-    }
-  }, [onFinish]);
 
   const onActionName = () => {
     // console.log(actionNames);
@@ -104,15 +106,20 @@ const VideoCallPlay = ({
     setStart(false);
     setCallStarted(false);
     setActionNames('');
-    clearInterval(timer); // 关闭
     // 向对方通知挂断
+    console.log('向对方通知挂断');
     window.socket.emit('respond', {
       to: friendSocketId,
       sender: mySocketId,
       text: '挂断',
     });
-    localVideo.current.srcObject?.getTracks()[0]?.stop();
-    localVideo.current.srcObject?.getTracks()[1]?.stop();
+    if (localVideo.current) {
+      localVideo.current.srcObject?.getTracks()[0]?.stop();
+      localVideo.current.srcObject?.getTracks()[1]?.stop();
+    }
+    if (window.stream) {
+      window.stream.getTracks().forEach((track: any) => track.stop());
+    }
     // remoteVideo.current.srcObject.getTracks()[1].stop();
     if (!start) {
       if (call) {
@@ -133,10 +140,10 @@ const VideoCallPlay = ({
     <div className="videoCall">
       <video
         muted={true}
-        id="localVideo"
+        id="remoteVideo"
         autoPlay={true}
         // playsinline
-        ref={localVideo}
+        ref={remoteVideo}
       ></video>
       <div className="videoCall-button">
         {
@@ -174,10 +181,10 @@ const VideoCallPlay = ({
       <div className="videoCall-vice">
         <video
           muted={true}
-          id="remoteVideo"
+          id="localVideo"
           autoPlay={true}
           // playsinline
-          ref={remoteVideo}
+          ref={localVideo}
         ></video>
       </div>
     </div>

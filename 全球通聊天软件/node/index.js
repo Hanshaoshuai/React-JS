@@ -230,32 +230,33 @@ io.sockets.on('connection', function (socket) {
   // });
 
   socket.on('call', ({ to, sender }) => {
-    console.log(to, sender)
+    // console.log(to, sender)
     socket.to(to).emit('call', { to, sender });
   })
   socket.on('respond', ({ to, sender, text, }) => {
-    console.log('respond===>>>', to, sender, text)
+    // console.log('respond===>>>', to, sender, text)
     socket.to(to).emit('respond', { to, sender, text });
+    socket.emit('respond', { to, sender, text });
   });
 
   // console.log("a user connected " + socket.id);
 
   socket.on("disconnect", () => {
-    console.log("user disconnected: " + socket.id);
+    // console.log("user disconnected: " + socket.id);
     //某个用户断开连接的时候，我们需要告诉所有还在线的用户这个信息
     socket.broadcast.emit('user disconnected', socket.id);
   });
 
   socket.on("chat message", (msg) => {
-    console.log(socket.id + " say: " + msg);
+    // console.log(socket.id + " say: " + msg);
     //io.emit("chat message", msg);
     socket.broadcast.emit("chat message", msg);
   });
 
   //当有新用户加入，打招呼时，需要转发消息到所有在线用户。
   socket.on('new user greet', (data) => {
-    console.log(data);
-    console.log(socket.id + ' greet ' + data.msg);
+    // console.log(data);
+    // console.log(socket.id + ' greet ' + data.msg);
     socket.broadcast.emit('need connect', { sender: socket.id, msg: data.msg });
   });
   //在线用户回应新用户消息的转发
@@ -265,8 +266,8 @@ io.sockets.on('connection', function (socket) {
 
   //sdp 消息的转发
   socket.on('sdp', (data) => {
-    console.log('sdp');
-    console.log(data.description);
+    // console.log('sdp');
+    // console.log(data.description);
     //console.log('sdp:  ' + data.sender + '   to:' + data.to);
     socket.to(data.to).emit('sdp', {
       description: data.description,
@@ -276,8 +277,8 @@ io.sockets.on('connection', function (socket) {
 
   //candidates 消息的转发
   socket.on('ice candidates', (data) => {
-    console.log('ice candidates:  ');
-    console.log(data);
+    // console.log('ice candidates:  ');
+    // console.log(data);
     socket.to(data.to).emit('ice candidates', {
       candidate: data.candidate,
       sender: data.sender
