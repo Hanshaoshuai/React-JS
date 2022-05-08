@@ -38,9 +38,9 @@ const VideoCallPlay = ({
   // var remoteVideo = document.getElementById('remote_video'); // 远端视频 Video
 
   useEffect(() => {
-    console.log('onStartQuery===>>>>', onStartQuery);
+    // console.log('onStartQuery===>>>>', onStartQuery);
     if (onStartQuery && call) {
-      console.log('socket123===>>>>', window.socket.id);
+      // console.log('socket123===>>>>', window.socket.id);
       window.socket.emit('call', {
         to: friendSocketId,
         sender: window.socket.id,
@@ -51,7 +51,7 @@ const VideoCallPlay = ({
       setVideoCall(false);
     }
     if (!onStartQuery && localVideo.current) {
-      console.log('关闭===>>>>', localVideo.current);
+      // console.log('关闭===>>>>', localVideo.current);
       localVideo.current.srcObject?.getTracks()[0]?.stop();
       localVideo.current.srcObject?.getTracks()[1]?.stop();
     }
@@ -107,7 +107,7 @@ const VideoCallPlay = ({
     setCallStarted(false);
     setActionNames('');
     // 向对方通知挂断
-    console.log('向对方通知挂断');
+    // console.log('向对方通知挂断');
     window.socket.emit('respond', {
       to: friendSocketId,
       sender: mySocketId,

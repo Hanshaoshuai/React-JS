@@ -158,6 +158,7 @@ const ChatRecord = () => {
       messages?.text?.toName === localName
     ) {
       setOnFinish(true);
+      setVideoCalls(false);
     }
   }, [messages]);
   useEffect(() => {
