@@ -130,6 +130,7 @@ const ChatList = () => {
   const [progress, setProgress] = useState('');
 
   const [videoCalls, setVideoCalls] = useState(false);
+  const [startCall, setStartCall] = useState(false);
   const [call, setCall] = useState(false);
   const [actionName, setActionName] = useState('切换语音');
   const [onFinish, setOnFinish] = useState(false);
@@ -168,6 +169,22 @@ const ChatList = () => {
     getList('');
     page = 1;
     scrollSize = 0;
+
+    window.socket.on('call', ({ to, sender }: any) => {
+      console.log(to, sender);
+      setVideoCalls(true);
+      setCall(false);
+    });
+
+    window.socket.on('respond', ({ to, sender, text }: any) => {
+      if (text === '接听') {
+        setStartCall(true);
+      } else {
+        setVideoCalls(false);
+        setStartCall(false);
+      }
+    });
+
     return componentWillUnmount;
   }, []);
   const componentWillUnmount = () => {
@@ -3123,6 +3140,7 @@ const ChatList = () => {
           chatNames={chatNames}
           locMyName={locMyName}
           myLocName={myLocName}
+          startCall={startCall}
         />
       )}
       <NestingIframe

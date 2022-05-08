@@ -101,6 +101,7 @@ app.use('/public', express.static(path.join(__dirname, 'public'))); //中间件�
 // });
 
 io.sockets.on('connection', function (socket) {
+  socket.join(socket.id)
   //此处每个回调socket就是一个独立的客户端，通常会用一个公共列表数组统一管理
   //socket.broadcast用于向整个网络广播(除自己之外)
   // 监听客户端emit的clientmessage事件发送的消息
@@ -208,31 +209,79 @@ io.sockets.on('connection', function (socket) {
 
   // 视频通话
   // 新连接
-  socket.on('conn', function (userName, chatNames) {
-    // socket.join(userName); // 加入房间
-    // console.log(socket.adapter.rooms);
-    socket.emit('conn', userName, chatNames);
-    // console.log('新用户：' + userName, chatNames);
-  });
-
-  // 接收 Offer 信令并发送给其他连接
-  socket.on('sdp', function (date) {
-    // console.log('接收 Offer 信令并发送给其他连接', date)
-    socket.to(date.to).emit('sdp', date);
-    // socket.emit('sdp', date);
-  });
-
-  // // 接收 Answer 答复信令
-  // socket.on('signalAnswer', function (date) {
-  //   // socket.to('room').emit('signalAnswer', message);
-  //   console.log('接收 Answer 答复信令', date)
-  //   socket.emit('sdp', date);
+  // socket.on('conn', function (userName, chatNames) {
+  //   // socket.join(userName); // 加入房间
+  //   // console.log(socket.adapter.rooms);
+  //   socket.emit('conn', userName, chatNames);
+  //   // console.log('新用户：' + userName, chatNames);
   // });
 
-  // 接收 iceOffer
-  socket.on('ice-candidates', function (date) {
-    socket.to(date.to).emit('ice-candidates', date);
-    // socket.emit('ice-candidates', date);
+  // // 接收 Offer 信令并发送给其他连接
+  // socket.on('sdp', function (date) {
+  //   // console.log('接收 Offer 信令并发送给其他连接', date)
+  //   socket.to(date.to).emit('sdp', date);
+  //   // socket.emit('sdp', date);
+  // });
+
+  // // 接收 iceOffer
+  // socket.on('ice-candidates', function (date) {
+  //   socket.to(date.to).emit('ice-candidates', date);
+  //   // socket.emit('ice-candidates', date);
+  // });
+
+  socket.on('call', ({ to, sender }) => {
+    console.log(to, sender)
+    socket.to(to).emit('call', { to, sender });
+  })
+  socket.on('respond', ({ to, sender, text, }) => {
+    console.log('respond===>>>', to, sender, text)
+    socket.to(to).emit('respond', { to, sender, text });
+  });
+
+  // console.log("a user connected " + socket.id);
+
+  socket.on("disconnect", () => {
+    console.log("user disconnected: " + socket.id);
+    //某个用户断开连接的时候，我们需要告诉所有还在线的用户这个信息
+    socket.broadcast.emit('user disconnected', socket.id);
+  });
+
+  socket.on("chat message", (msg) => {
+    console.log(socket.id + " say: " + msg);
+    //io.emit("chat message", msg);
+    socket.broadcast.emit("chat message", msg);
+  });
+
+  //当有新用户加入，打招呼时，需要转发消息到所有在线用户。
+  socket.on('new user greet', (data) => {
+    console.log(data);
+    console.log(socket.id + ' greet ' + data.msg);
+    socket.broadcast.emit('need connect', { sender: socket.id, msg: data.msg });
+  });
+  //在线用户回应新用户消息的转发
+  socket.on('ok we connect', (data) => {
+    io.to(data.receiver).emit('ok we connect', { sender: data.sender });
+  });
+
+  //sdp 消息的转发
+  socket.on('sdp', (data) => {
+    console.log('sdp');
+    console.log(data.description);
+    //console.log('sdp:  ' + data.sender + '   to:' + data.to);
+    socket.to(data.to).emit('sdp', {
+      description: data.description,
+      sender: data.sender
+    });
+  });
+
+  //candidates 消息的转发
+  socket.on('ice candidates', (data) => {
+    console.log('ice candidates:  ');
+    console.log(data);
+    socket.to(data.to).emit('ice candidates', {
+      candidate: data.candidate,
+      sender: data.sender
+    });
   });
 });
 
