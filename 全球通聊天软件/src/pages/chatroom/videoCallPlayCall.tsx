@@ -72,6 +72,7 @@ const VideoCallPlay = ({
     window.socket.on('newcomerOnline', ({ name, socketId, text }: any) => {
       // console.log('newcomerOnline===>>>', name, socketId, text);
       if (text === '下线') {
+        localStorage.removeItem('friendSocketId');
         clearIntervals();
         Toast.show({
           content: '对方意外中断请重新链接！',
