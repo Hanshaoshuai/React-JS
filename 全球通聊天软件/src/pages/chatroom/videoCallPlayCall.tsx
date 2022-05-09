@@ -166,15 +166,16 @@ const VideoCallPlay = ({
 
   return (
     <div className="videoCall">
-      {actionNames === '切换语音' && (
-        <video
-          muted={true}
-          id="remoteVideo"
-          autoPlay={true}
-          // playsinline
-          ref={remoteVideo}
-        ></video>
-      )}
+      <video
+        muted={true}
+        id="remoteVideo"
+        autoPlay={true}
+        // playsinline
+        ref={remoteVideo}
+        style={{
+          display: `${actionNames === '切换语音' ? 'block' : 'none'}`,
+        }}
+      ></video>
       <div className="videoCall-button">
         {
           <>
@@ -208,17 +209,19 @@ const VideoCallPlay = ({
           </>
         }
       </div>
-      {actionNames === '切换语音' ? (
-        <div className="videoCall-vice">
-          <video
-            muted={true}
-            id="localVideo"
-            autoPlay={true}
-            // playsinline
-            ref={localVideo}
-          ></video>
-        </div>
-      ) : (
+      <div
+        className="videoCall-vice"
+        style={{ display: `${actionNames === '切换语音' ? 'block' : 'none'}` }}
+      >
+        <video
+          muted={true}
+          id="localVideo"
+          autoPlay={true}
+          // playsinline
+          ref={localVideo}
+        ></video>
+      </div>
+      {actionNames !== '切换语音' && (
         <div
           style={{
             position: 'absolute',
