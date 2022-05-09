@@ -65,10 +65,6 @@ const VideoCallPlay = ({
       if (text === '下线') {
         localStorage.removeItem('friendSocketId');
         clearIntervals();
-        Toast.show({
-          content: '对方意外中断请重新链接！',
-          position: 'top',
-        });
       }
     });
     window.socket.on('switch', ({ to, sender, text }: any) => {

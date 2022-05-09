@@ -8,7 +8,7 @@ import React, {
   useState,
 } from 'react';
 import { useHistory, Link } from 'react-router-dom';
-import { InfiniteScroll, List, Divider, Badge } from 'antd-mobile';
+import { InfiniteScroll, Toast, Divider, Badge } from 'antd-mobile';
 
 import {
   getList,
@@ -115,6 +115,18 @@ const ChatRecord = () => {
         });
         friendListL = list;
         setFriendList(list);
+        localStorage.removeItem('friendSocketId');
+        if (videoCalls) {
+          Toast.show({
+            content: '对方意外中断请重新链接！',
+            position: 'top',
+          });
+          window.time = setTimeout(() => {
+            clearTimeout(window.time);
+            localStorage.removeItem('NestingIframe');
+            setVideoCalls(false);
+          }, 500);
+        }
       }
     });
     window.socket.on('call', ({ to, sender, headPortrait }: any) => {
@@ -126,8 +138,8 @@ const ChatRecord = () => {
       // console.log('挂断===》》》', to, sender);
       if (text === '接听') {
       } else {
-        const time = setTimeout(() => {
-          clearTimeout(time);
+        window.time = setTimeout(() => {
+          clearTimeout(window.time);
           localStorage.removeItem('NestingIframe');
           setVideoCalls(false);
         }, 500);

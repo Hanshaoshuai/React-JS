@@ -183,11 +183,11 @@ const ChatList = () => {
       if (text === '接听') {
         setStartCall(true);
       } else {
-        const time = setTimeout(() => {
+        window.time = setTimeout(() => {
           setVideoCalls(false);
           setStartCall(false);
           setCall(false);
-          clearTimeout(time);
+          clearTimeout(window.time);
           localStorage.removeItem('NestingIframe');
         }, 500);
       }
@@ -396,9 +396,9 @@ const ChatList = () => {
   const iframeGoBackS = (e?: any) => {
     history.goBack();
     setIframeUrl('');
-    let timeout = setTimeout(() => {
+    window.time = setTimeout(() => {
       localStorage.removeItem('NestingIframe');
-      clearTimeout(timeout);
+      clearTimeout(window.time);
     }, 310);
   };
   const messageVariety = (data: any) => {
