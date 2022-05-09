@@ -230,9 +230,9 @@ io.sockets.on('connection', function (socket) {
   // });
 
   // 向对方呼叫
-  socket.on('call', ({ to, sender }) => {
+  socket.on('call', ({ to, sender, headPortrait }) => {
     // console.log(to, sender)
-    socket.to(to).emit('call', { to, sender });
+    socket.to(to).emit('call', { to, sender, headPortrait });
   })
   // 对方回应
   socket.on('respond', ({ to, sender, text, }) => {

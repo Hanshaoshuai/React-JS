@@ -218,6 +218,10 @@ export function Camera({ localVideoElm, remoteVideo, localAudio }: any) {
         remoteVideo.current.srcObject?.getTracks()[0]?.stop();
         remoteVideo.current.srcObject?.getTracks()[1]?.stop();
       }
+      if (localAudio && localAudio.current) {
+        localAudio.current.srcObject?.getTracks()[0]?.stop();
+        localAudio.current.srcObject?.getTracks()[1]?.stop();
+      }
     }
   });
 

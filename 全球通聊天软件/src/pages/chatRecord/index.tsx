@@ -117,8 +117,9 @@ const ChatRecord = () => {
         setFriendList(list);
       }
     });
-    window.socket.on('call', ({ to, sender }: any) => {
+    window.socket.on('call', ({ to, sender, headPortrait }: any) => {
       localStorage.setItem('friendSocketId', sender);
+      localStorage.setItem('headPortrait', headPortrait);
       setVideoCalls(true);
     });
     window.socket.on('respond', ({ to, sender, text }: any) => {

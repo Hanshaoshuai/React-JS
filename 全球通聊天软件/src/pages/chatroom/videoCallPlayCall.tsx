@@ -34,6 +34,9 @@ const VideoCallPlay = ({
   const remoteVideo: any = useRef();
   const localAudio: any = useRef();
   const [videoCall, setVideoCall] = useState(false);
+  const [headPortraits, setHeadPortraits] = useState(
+    localStorage.getItem('headPortrait') || ''
+  );
   //   var localVideo = document.getElementById('local_video'); // 本地视频 Video
   // var remoteVideo = document.getElementById('remote_video'); // 远端视频 Video
 
@@ -53,6 +56,7 @@ const VideoCallPlay = ({
       window.socket.emit('call', {
         to: friendSocketId,
         sender: window.socket.id,
+        headPortrait: localStorage.getItem('myHeadPortrait'),
       }); // 发送 呼叫
       // }, 1000);
 
@@ -97,6 +101,12 @@ const VideoCallPlay = ({
       //     localAudio.current.play();
       //   }
       // }
+    });
+    window.socket.on('call', ({ to, sender, headPortrait }: any) => {
+      // console.log(to, sender);
+      // clearInterval(window.setTime);
+      setHeadPortraits(headPortrait);
+      localStorage.setItem('NestingIframe', 'true');
     });
   }, []);
 
@@ -159,6 +169,10 @@ const VideoCallPlay = ({
     if (localVideo.current) {
       localVideo.current.srcObject?.getTracks()[0]?.stop();
       localVideo.current.srcObject?.getTracks()[1]?.stop();
+    }
+    if (localAudio) {
+      localAudio.current.srcObject?.getTracks()[0]?.stop();
+      localAudio.current.srcObject?.getTracks()[1]?.stop();
     }
     if (window.stream) {
       window.stream.getTracks().forEach((track: any) => track.stop());
@@ -223,7 +237,7 @@ const VideoCallPlay = ({
           </>
         }
       </div>
-      {actionNames === '切换语音' && (
+      {actionNames === '切换语音' ? (
         <div className="videoCall-vice">
           <video
             muted={true}
@@ -233,8 +247,33 @@ const VideoCallPlay = ({
             ref={localVideo}
           ></video>
         </div>
+      ) : (
+        <div
+          style={{
+            position: 'absolute',
+            width: '1.9rem',
+            height: '1.9rem',
+            top: 0,
+            left: 0,
+            bottom: '20%',
+            right: 0,
+            margin: 'auto',
+          }}
+        >
+          <img
+            style={{ width: '100%', height: '100%' }}
+            src={headPortraits}
+            alt=""
+          />
+        </div>
       )}
-      <audio id="local-audio" ref={localAudio} autoPlay={true} controls>
+      <audio
+        style={{ display: 'none' }}
+        id="local-audio"
+        ref={localAudio}
+        autoPlay={true}
+        controls
+      >
         播放麦克风捕获的声音
       </audio>
     </div>
