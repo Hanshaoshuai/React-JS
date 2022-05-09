@@ -19,26 +19,17 @@ const VideoCallPlay = ({
   myLocName,
   startCall,
 }: any) => {
-  // 传输视频，不传输音频
-  const [mediaStreamConstraints, setMediaStreamConstraints] = useState({
-    video: true,
-    audio: true,
-  });
   const [mySocketId] = useState(localStorage.getItem('mySocketId'));
   const [friendSocketId] = useState(localStorage.getItem('friendSocketId'));
-  const [LocName] = useState<any>(localStorage.getItem('name'));
   const [actionNames, setActionNames] = useState('');
   const [start, setStart] = useState(false);
   const [callStarted, setCallStarted] = useState(false);
   const localVideo: any = useRef();
   const remoteVideo: any = useRef();
   const localAudio: any = useRef();
-  const [videoCall, setVideoCall] = useState(false);
   const [headPortraits, setHeadPortraits] = useState(
     localStorage.getItem('headPortrait') || ''
   );
-  //   var localVideo = document.getElementById('local_video'); // 本地视频 Video
-  // var remoteVideo = document.getElementById('remote_video'); // 远端视频 Video
 
   useEffect(() => {
     // console.log('onStartQuery===>>>>', onStartQuery);
@@ -59,11 +50,6 @@ const VideoCallPlay = ({
         headPortrait: localStorage.getItem('myHeadPortrait'),
       }); // 发送 呼叫
       // }, 1000);
-
-      setVideoCall(true);
-    }
-    if (!onStartQuery) {
-      setVideoCall(false);
     }
     if (!onStartQuery && localVideo.current) {
       // console.log('关闭===>>>>', localVideo.current);
@@ -90,17 +76,6 @@ const VideoCallPlay = ({
       if (text === '切换语音') {
         setActionNames('静音');
       }
-      //  else if (text === '静音') {
-      //   setActionNames('开启声音');
-      //   if (localAudio) {
-      //     localAudio.current.pause();
-      //   }
-      // } else if (text === '开启声音') {
-      //   setActionNames('静音');
-      //   if (localAudio) {
-      //     localAudio.current.play();
-      //   }
-      // }
     });
     window.socket.on('call', ({ to, sender, headPortrait }: any) => {
       // console.log(to, sender);
@@ -128,13 +103,11 @@ const VideoCallPlay = ({
       onSwitch('切换语音');
       setActionNames('静音');
     } else if (actionNames === '静音') {
-      onSwitch('静音');
       setActionNames('开启声音');
       if (localAudio) {
         localAudio.current.pause();
       }
     } else if (actionNames === '开启声音') {
-      onSwitch('开启声音');
       setActionNames('静音');
       if (localAudio) {
         localAudio.current.play();
@@ -151,8 +124,6 @@ const VideoCallPlay = ({
         text: '接听',
       });
     }
-    // startQuery(); // 开始呼叫 { to, sender }
-    // startAction(); // 点击调用 获取本地视频
   };
 
   const clearIntervals = () => {
@@ -170,7 +141,7 @@ const VideoCallPlay = ({
       localVideo.current.srcObject?.getTracks()[0]?.stop();
       localVideo.current.srcObject?.getTracks()[1]?.stop();
     }
-    if (localAudio) {
+    if (localAudio && localAudio.current) {
       localAudio.current.srcObject?.getTracks()[0]?.stop();
       localAudio.current.srcObject?.getTracks()[1]?.stop();
     }
