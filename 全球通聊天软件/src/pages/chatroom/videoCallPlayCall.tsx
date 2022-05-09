@@ -32,6 +32,7 @@ const VideoCallPlay = ({
   const [callStarted, setCallStarted] = useState(false);
   const localVideo: any = useRef();
   const remoteVideo: any = useRef();
+  const localAudio: any = useRef();
   const [videoCall, setVideoCall] = useState(false);
   //   var localVideo = document.getElementById('local_video'); // 本地视频 Video
   // var remoteVideo = document.getElementById('remote_video'); // 远端视频 Video
@@ -68,7 +69,7 @@ const VideoCallPlay = ({
   }, [onStartQuery]);
 
   useEffect(() => {
-    Camera({ localVideoElm: localVideo, remoteVideo });
+    Camera({ localVideoElm: localVideo, remoteVideo, localAudio });
     window.socket.on('newcomerOnline', ({ name, socketId, text }: any) => {
       // console.log('newcomerOnline===>>>', name, socketId, text);
       if (text === '下线') {
@@ -80,33 +81,54 @@ const VideoCallPlay = ({
         });
       }
     });
+    window.socket.on('switch', ({ to, sender, text }: any) => {
+      setActionNames(text);
+      if (text === '切换语音') {
+        setActionNames('静音');
+      }
+      //  else if (text === '静音') {
+      //   setActionNames('开启声音');
+      //   if (localAudio) {
+      //     localAudio.current.pause();
+      //   }
+      // } else if (text === '开启声音') {
+      //   setActionNames('静音');
+      //   if (localAudio) {
+      //     localAudio.current.play();
+      //   }
+      // }
+    });
   }, []);
 
   useEffect(() => {
     setActionNames(actionName);
   }, [actionName]);
 
+  const onSwitch = (test: string) => {
+    window.socket.emit('switch', {
+      to: friendSocketId,
+      sender: mySocketId,
+      text: test,
+    });
+  };
   const onActionName = () => {
     // console.log(actionNames);
     if (actionNames === '切换语音') {
       // console.log(actionNames);
+      onSwitch('切换语音');
       setActionNames('静音');
-      setMediaStreamConstraints({
-        video: false,
-        audio: true,
-      });
     } else if (actionNames === '静音') {
+      onSwitch('静音');
       setActionNames('开启声音');
-      setMediaStreamConstraints({
-        video: false,
-        audio: false,
-      });
+      if (localAudio) {
+        localAudio.current.pause();
+      }
     } else if (actionNames === '开启声音') {
+      onSwitch('开启声音');
       setActionNames('静音');
-      setMediaStreamConstraints({
-        video: false,
-        audio: true,
-      });
+      if (localAudio) {
+        localAudio.current.play();
+      }
     }
   };
 
@@ -159,13 +181,15 @@ const VideoCallPlay = ({
 
   return (
     <div className="videoCall">
-      <video
-        muted={true}
-        id="remoteVideo"
-        autoPlay={true}
-        // playsinline
-        ref={remoteVideo}
-      ></video>
+      {actionNames === '切换语音' && (
+        <video
+          muted={true}
+          id="remoteVideo"
+          autoPlay={true}
+          // playsinline
+          ref={remoteVideo}
+        ></video>
+      )}
       <div className="videoCall-button">
         {
           <>
@@ -199,15 +223,20 @@ const VideoCallPlay = ({
           </>
         }
       </div>
-      <div className="videoCall-vice">
-        <video
-          muted={true}
-          id="localVideo"
-          autoPlay={true}
-          // playsinline
-          ref={localVideo}
-        ></video>
-      </div>
+      {actionNames === '切换语音' && (
+        <div className="videoCall-vice">
+          <video
+            muted={true}
+            id="localVideo"
+            autoPlay={true}
+            // playsinline
+            ref={localVideo}
+          ></video>
+        </div>
+      )}
+      <audio id="local-audio" ref={localAudio} autoPlay={true} controls>
+        播放麦克风捕获的声音
+      </audio>
     </div>
   );
 };

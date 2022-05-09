@@ -11,7 +11,7 @@ declare global {
 var pc: any = [];
 var localStream: any = null;
 
-export function Camera({ localVideoElm, remoteVideo }: any) {
+export function Camera({ localVideoElm, remoteVideo, localAudio }: any) {
   //封装一部分函数
   const mySocketId: any = localStorage.getItem('mySocketId');
   const friendSocketId: any = localStorage.getItem('friendSocketId');
@@ -189,6 +189,9 @@ export function Camera({ localVideoElm, remoteVideo }: any) {
       if (remoteVideo.current) {
         remoteVideo.current.srcObject = str;
       }
+      if (localAudio.current) {
+        localAudio.current.srcObject = str;
+      }
     };
   };
 
@@ -198,11 +201,11 @@ export function Camera({ localVideoElm, remoteVideo }: any) {
       StartCall(friendSocketId, true);
     } else {
       //   localStream.getTracks().forEach((track: any) => track.stop());
-      console.log('关闭摄像头0000===》》》', window.stream);
+      //   console.log('关闭摄像头0000===》》》', window.stream);
       window.mediaStreamTrack && window.mediaStreamTrack.stop();
 
       if (window.stream) {
-        console.log('关闭摄像头');
+        // console.log('关闭摄像头');
         window.stream.getTracks().forEach((track: any) => track.stop());
       }
       pc = [];

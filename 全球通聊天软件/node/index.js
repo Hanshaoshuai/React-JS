@@ -229,16 +229,21 @@ io.sockets.on('connection', function (socket) {
   //   // socket.emit('ice-candidates', date);
   // });
 
+  // 向对方呼叫
   socket.on('call', ({ to, sender }) => {
     // console.log(to, sender)
     socket.to(to).emit('call', { to, sender });
   })
+  // 对方回应
   socket.on('respond', ({ to, sender, text, }) => {
     // console.log('respond===>>>', to, sender, text)
     socket.to(to).emit('respond', { to, sender, text });
     socket.emit('respond', { to, sender, text });
   });
-
+  // 语音切换
+  socket.on('switch', ({ to, sender, text, }) => {
+    socket.to(to).emit('switch', { to, sender, text });
+  });
   // console.log("a user connected " + socket.id);
 
   socket.on("disconnect", () => {

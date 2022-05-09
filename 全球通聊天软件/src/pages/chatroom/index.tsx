@@ -173,6 +173,7 @@ const ChatList = () => {
     window.socket.on('call', ({ to, sender }: any) => {
       // console.log(to, sender);
       // clearInterval(window.setTime);
+      localStorage.setItem('NestingIframe', 'true');
       setVideoCalls(true);
       setCall(false);
     });
@@ -187,6 +188,7 @@ const ChatList = () => {
           setStartCall(false);
           setCall(false);
           clearTimeout(window.time);
+          localStorage.removeItem('NestingIframe');
         }, 500);
       }
     });
@@ -315,9 +317,11 @@ const ChatList = () => {
     setActionName(text);
     setExpressionShow(false);
     setAddAnothers(false);
+    localStorage.setItem('NestingIframe', 'true');
   };
 
   const videoCallCancel = (text: string) => {
+    localStorage.removeItem('NestingIframe');
     setVideoCalls(false);
     setCall(false);
     if (onFinish) return;
