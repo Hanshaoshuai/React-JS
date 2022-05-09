@@ -183,11 +183,11 @@ const ChatList = () => {
       if (text === '接听') {
         setStartCall(true);
       } else {
-        window.time = setTimeout(() => {
+        const time = setTimeout(() => {
           setVideoCalls(false);
           setStartCall(false);
           setCall(false);
-          clearTimeout(window.time);
+          clearTimeout(time);
           localStorage.removeItem('NestingIframe');
         }, 500);
       }
@@ -219,6 +219,7 @@ const ChatList = () => {
       messages?.text?.toName === myLocName
     ) {
       setVideoCalls(true);
+      setActionName('切换语音');
     } else if (
       messages?.text?.VideoAndVoice === '语音' &&
       messages?.text?.toName === myLocName

@@ -126,8 +126,9 @@ const ChatRecord = () => {
       // console.log('挂断===》》》', to, sender);
       if (text === '接听') {
       } else {
-        window.time = setTimeout(() => {
-          clearTimeout(window.time);
+        const time = setTimeout(() => {
+          clearTimeout(time);
+          localStorage.removeItem('NestingIframe');
           setVideoCalls(false);
         }, 500);
       }
@@ -146,6 +147,7 @@ const ChatRecord = () => {
       messages?.text?.toName === localName
     ) {
       setVideoCalls(true);
+      setActionName('切换语音');
       settoChatName(messages.text.fromName);
     } else if (
       messages?.text?.VideoAndVoice === '语音' &&
