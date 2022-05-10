@@ -1058,7 +1058,7 @@ const ChatList = () => {
           newCont = (
             <span>
               {data.fromName === myLocName && icon}
-              {` ${cont}时长 ${H !== '00' ? H + ':' : ''}${
+              {` 【${cont}】时长 ${H !== '00' ? H + ':' : ''}${
                 M !== '00' ? M + ':' : ''
               }${S} `}
               {data.fromName !== myLocName && icon}
@@ -1066,10 +1066,18 @@ const ChatList = () => {
           );
         } else if (data.VideoAndVoice) {
           let tests = '';
-          if (data.fromName === myLocName) {
-            tests = `${data.text} - 您${data.VideoAndVoice}`;
+          if (data.VideoAndVoice === '拒绝通话') {
+            if (data.fromName === myLocName) {
+              tests = `【${data.text}】 对方${data.VideoAndVoice}`;
+            } else {
+              tests = `【${data.text}】 您${data.VideoAndVoice}`;
+            }
           } else {
-            tests = `${data.text} - 对方${data.VideoAndVoice}`;
+            if (data.fromName === myLocName) {
+              tests = `【${data.text}】 您${data.VideoAndVoice}`;
+            } else {
+              tests = `【${data.text}】 对方${data.VideoAndVoice}`;
+            }
           }
           newCont = (
             <span>
