@@ -323,7 +323,7 @@ code {
   }
   .videoCall-vice {
     width: 27%;
-    height: 27%;
+    min-height: 3rem;
     position: absolute;
     top: 6%;
     right: 20px;
