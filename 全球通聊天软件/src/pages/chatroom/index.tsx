@@ -208,11 +208,12 @@ const ChatList = () => {
   };
   useEffect(() => {
     //监听服务服务端emit的message事件发送的消息
-    console.log(messages);
+    // console.log(messages);
     if (firstEntry) {
       if (
         !messages?.text?.VideoAndVoice ||
-        (messages?.text?.VideoAndVoice && messages?.text?.length)
+        (messages?.text?.VideoAndVoice && messages?.text?.length) ||
+        messages?.text?.VideoAndVoice === '视频失败'
       )
         messageVariety(messages);
     }
@@ -1074,9 +1075,17 @@ const ChatList = () => {
             }
           } else {
             if (data.fromName === myLocName) {
-              tests = `【${data.text}】 您${data.VideoAndVoice}`;
+              if (data.text === '视频失败') {
+                tests = `【${data.text}】 对方不在线！`;
+              } else {
+                tests = `【${data.text}】 您${data.VideoAndVoice}`;
+              }
             } else {
-              tests = `【${data.text}】 对方${data.VideoAndVoice}`;
+              if (data.text === '视频失败') {
+                tests = `【${data.text}】 您不在线！`;
+              } else {
+                tests = `【${data.text}】 对方${data.VideoAndVoice}`;
+              }
             }
           }
           newCont = (
