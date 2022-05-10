@@ -1055,7 +1055,7 @@ const ChatList = () => {
           data.length &&
           data.VideoAndVoice === '结束'
         ) {
-          const { D, H, M, S, MS } = realTimeCountDownSeparate(238900);
+          const { D, H, M, S, MS } = realTimeCountDownSeparate(data.length);
           newCont = (
             <span>
               {data.fromName === myLocName && icon}
