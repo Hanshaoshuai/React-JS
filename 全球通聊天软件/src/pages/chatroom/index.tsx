@@ -24,6 +24,8 @@ import {
   SoundOutline,
   DeleteOutline,
   EditSOutline,
+  PhoneFill,
+  VideoOutline,
 } from 'antd-mobile-icons';
 
 import { expressionList } from './expression';
@@ -179,10 +181,8 @@ const ChatList = () => {
     });
 
     window.socket.on('respond', ({ to, sender, text }: any) => {
-      // console.log('对方挂断+++++++====>>>>', to, sender, text);
-      if (text === '接听') {
-        setStartCall(true);
-      } else {
+      // console.log('接听+++++++====>>>>', to, sender, text);
+      if (text === '挂断') {
         window.time = setTimeout(() => {
           setVideoCalls(false);
           setStartCall(false);
@@ -208,30 +208,36 @@ const ChatList = () => {
   };
   useEffect(() => {
     //监听服务服务端emit的message事件发送的消息
-    // console.log(messages);
+    console.log(messages);
     if (firstEntry) {
-      messageVariety(messages);
+      if (
+        !messages?.text?.VideoAndVoice ||
+        (messages?.text?.VideoAndVoice && messages?.text?.length)
+      )
+        messageVariety(messages);
     }
     setFirstEntry(true);
-
     if (
-      messages?.text?.VideoAndVoice === '视频' &&
-      messages?.text?.toName === myLocName
+      messages?.text?.toName === myLocName ||
+      messages?.text?.fromName === myLocName
     ) {
-      setVideoCalls(true);
-      setActionName('切换语音');
-    } else if (
-      messages?.text?.VideoAndVoice === '语音' &&
-      messages?.text?.toName === myLocName
-    ) {
-      setVideoCalls(true);
-      setActionName('静音');
-    } else if (
-      messages?.text?.VideoAndVoice === '通话结束' &&
-      messages?.text?.toName === myLocName
-    ) {
-      setCall(false);
-      setVideoCalls(false);
+      if (messages?.text?.VideoAndVoice === '视频') {
+        setVideoCalls(true);
+        setActionName('切换语音');
+        localStorage.setItem('startTime', messages?.text?.startTime);
+      } else if (messages?.text?.VideoAndVoice === '语音') {
+        setVideoCalls(true);
+        setActionName('静音');
+        localStorage.setItem('startTime', messages?.text?.startTime);
+      } else if (messages?.text?.conversation) {
+        window.time = setTimeout(() => {
+          setVideoCalls(false);
+          setCall(false);
+          clearTimeout(window.time);
+          localStorage.removeItem('NestingIframe');
+        }, 500);
+        localStorage.removeItem('NestingIframe');
+      }
     }
   }, [messages]);
 
@@ -322,16 +328,19 @@ const ChatList = () => {
   };
 
   const videoCallCancel = (text: string) => {
-    localStorage.removeItem('NestingIframe');
-    setVideoCalls(false);
-    setCall(false);
-    if (onFinish) return;
-    window.socket.emit('clientmessage', {
-      fromName: myLocName,
-      toName: toChatName,
-      text: `${text ? text : '通话结束'}`,
-      VideoAndVoice: '通话结束',
-    });
+    // localStorage.removeItem('NestingIframe');
+    // setVideoCalls(false);
+    // setCall(false);
+    // if (onFinish) return;
+    // window.socket.emit('clientmessage', {
+    //   fromName: myLocName,
+    //   toName: toChatName,
+    //   text: `${text ? text : '通话结束'}`,
+    //   VideoAndVoice: '通话结束',
+    //   conversation: true,
+    //   startTime: localStorage.getItem('startTime'),
+    //   endTime: new Date().getTime(),
+    // });
   };
 
   const imgsOnLoad = () => {
@@ -941,6 +950,45 @@ const ChatList = () => {
       </div>
     );
   };
+  // 格式为{D: 0, H: '00', M: '03', S: 58, MS: 89}
+  const realTimeCountDownSeparate = (num: number) => {
+    num = num / 1000;
+    let D: any = num / 3600 / 24;
+    let H: any = D - Math.floor(D);
+    H = H * 24;
+    let M: any = H - Math.floor(H);
+    M = M * 60;
+    let S: any = M - Math.floor(M);
+    S = S * 60;
+    let MS: any = S - Math.floor(S);
+    MS = Math.floor(MS * 100);
+    if (D >= 1) {
+      H = H < 10 ? '0' + Math.floor(H).toString() : Math.floor(H);
+      M = M < 10 ? '0' + Math.floor(M).toString() : Math.floor(M);
+      S = S < 10 ? '0' + Math.floor(S).toString() : Math.floor(S);
+      MS = MS < 10 ? '0' + MS.toString() : MS;
+      // return Math.floor(D) + '天' + H + "小时" + M + "分钟" + S + "秒" + MS + "毫秒"
+      return { D: Math.floor(D), H: H, M: M, S: S, MS: MS };
+    } else if (H >= 1) {
+      H = H < 10 ? '0' + Math.floor(H).toString() : Math.floor(H);
+      M = M < 10 ? '0' + Math.floor(M).toString() : Math.floor(M);
+      S = S < 10 ? '0' + Math.floor(S).toString() : Math.floor(S);
+      MS = MS < 10 ? '0' + MS.toString() : MS;
+      // return H + "小时" + M + "分钟" + S + "秒" + MS + "毫秒"
+      return { D: 0, H: H, M: M, S: S, MS: MS };
+    } else if (M >= 1) {
+      M = M < 10 ? '0' + Math.floor(M).toString() : Math.floor(M);
+      S = S < 10 ? '0' + Math.floor(S).toString() : Math.floor(S);
+      MS = MS < 10 ? '0' + MS.toString() : MS;
+      // return M + "分钟" + S + "秒" + MS + "毫秒"
+      return { D: 0, H: '00', M: M, S: S, MS: MS };
+    } else {
+      S = S < 10 ? '0' + Math.floor(S).toString() : Math.floor(S);
+      MS = MS < 10 ? '0' + MS.toString() : MS;
+      // return S + "秒" + MS + "毫秒"
+      return { D: 0, H: '00', M: '00', S: S, MS: MS };
+    }
+  };
 
   const styleLength = (file: any) => {
     let styleLength: any = {};
@@ -995,7 +1043,43 @@ const ChatList = () => {
           );
         });
       } else {
-        newCont = <span>{cont}</span>;
+        let icon: any = '';
+        if (data.text === '语音') {
+          icon = <PhoneFill />;
+        } else if (data.text === '视频') {
+          icon = <VideoOutline />;
+        }
+        if (
+          data.VideoAndVoice &&
+          data.length &&
+          data.VideoAndVoice === '结束'
+        ) {
+          const { D, H, M, S, MS } = realTimeCountDownSeparate(238900);
+          newCont = (
+            <span>
+              {data.fromName === myLocName && icon}
+              {` ${cont}时长 ${H !== '00' ? H + ':' : ''}${
+                M !== '00' ? M + ':' : ''
+              }${S} `}
+              {data.fromName !== myLocName && icon}
+            </span>
+          );
+        } else if (data.VideoAndVoice) {
+          let tests = '';
+          if (data.fromName === myLocName) {
+            tests = `${data.text} - 您${data.VideoAndVoice}`;
+          } else {
+            tests = `${data.text} - 对方${data.VideoAndVoice}`;
+          }
+          newCont = (
+            <span>
+              {data.fromName === myLocName && icon} {`${tests} `}
+              {data.fromName !== myLocName && icon}
+            </span>
+          );
+        } else {
+          newCont = <span>{cont}</span>;
+        }
       }
     }
     return newCont;
@@ -1154,6 +1238,7 @@ const ChatList = () => {
     }
   };
   const onOperation = useCallback((node: any, data?: any) => {
+    if (data.VideoAndVoice) return;
     if (data.fromName !== myLocName) {
       return;
     }

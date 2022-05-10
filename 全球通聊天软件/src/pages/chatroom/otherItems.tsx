@@ -67,6 +67,28 @@ const OtherItems = ({
   const onAction = (action: any) => {
     setVisible(false);
     if (action.key === 'delete') return;
+    if (!localStorage.getItem('friendSocketId')) {
+      Toast.show({
+        content: '对方不在线请稍后再试！',
+        position: 'top',
+      });
+      let actionKey = '';
+      if (action.key === 'startVideo') {
+        actionKey = '视频';
+      } else if (action.key === 'startVoice') {
+        actionKey = '语音';
+      }
+      window.socket.emit('clientmessage', {
+        fromName: myLocName,
+        toName: toChatName,
+        text: `${actionKey}失败`,
+        VideoAndVoice: `${actionKey}失败`,
+        conversation: true,
+        startTime: '',
+        endTime: '',
+      });
+      return;
+    }
     let actionKey = '';
     if (action.key === 'startVideo') {
       actionKey = '视频';
@@ -75,12 +97,15 @@ const OtherItems = ({
       actionKey = '语音';
       onSetVideoCalls('静音');
     }
-
+    localStorage.setItem('startTime', new Date().getTime().toString());
     window.socket.emit('clientmessage', {
       fromName: myLocName,
       toName: toChatName,
       text: actionKey,
       VideoAndVoice: actionKey,
+      conversation: true,
+      startTime: new Date().getTime(),
+      endTime: '',
     });
   };
 

@@ -36,14 +36,6 @@ const VideoCallPlay = ({
     if (onStartQuery && call) {
       // console.log('socket123===>>>>', window.socket.id);
       // window.setTime = setInterval(() => {
-      if (!friendSocketId) {
-        clearIntervals();
-        Toast.show({
-          content: '对方不在线请稍后再试！',
-          position: 'top',
-        });
-        return;
-      }
       window.socket.emit('call', {
         to: friendSocketId,
         sender: window.socket.id,
@@ -78,6 +70,14 @@ const VideoCallPlay = ({
       // clearInterval(window.setTime);
       setHeadPortraits(headPortrait);
       localStorage.setItem('NestingIframe', 'true');
+    });
+    // 监听对方回应
+    window.socket.on('respond', ({ to, sender, text }: any) => {
+      // console.log('respond===>>>', to, sender, text)
+      if (text === '接听') {
+        setStart(true);
+        setCallStarted(true);
+      }
     });
   }, []);
 
@@ -119,15 +119,28 @@ const VideoCallPlay = ({
         sender: mySocketId,
         text: '接听',
       });
+      setCallStarted(true);
     }
   };
 
+  const onChange = (text: string) => {
+    window.socket.emit('clientmessage', {
+      fromName: myLocName,
+      toName: chatNames,
+      text: `${text}`,
+      VideoAndVoice: `${text}`,
+      conversation: true,
+      startTime: localStorage.getItem('startTime'),
+      endTime: new Date().getTime(),
+      operator: myLocName,
+    });
+  };
+
   const clearIntervals = () => {
-    setStart(false);
-    setCallStarted(false);
     setActionNames('');
     // 向对方通知挂断
     // console.log('向对方通知挂断');
+    Camera({ close: true });
     window.socket.emit('respond', {
       to: friendSocketId,
       sender: mySocketId,
@@ -147,16 +160,15 @@ const VideoCallPlay = ({
     // remoteVideo.current.srcObject.getTracks()[1].stop();
     if (!start) {
       if (call) {
-        if (callStarted) {
-          videoCallCancel();
-        } else {
-          videoCallCancel('取消通话');
-        }
+        // videoCallCancel('取消通话');
+        onChange('取消通话');
       } else {
-        videoCallCancel('拒绝通话！');
+        // videoCallCancel('拒绝通话');
+        onChange('拒绝通话');
       }
     } else {
-      videoCallCancel();
+      // videoCallCancel('通话结束');
+      onChange('结束');
     }
   };
 

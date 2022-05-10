@@ -136,12 +136,11 @@ const ChatRecord = () => {
     });
     window.socket.on('respond', ({ to, sender, text }: any) => {
       // console.log('挂断===》》》', to, sender);
-      if (text === '接听') {
-      } else {
+      if (text === '挂断') {
         window.time = setTimeout(() => {
-          clearTimeout(window.time);
           localStorage.removeItem('NestingIframe');
           setVideoCalls(false);
+          clearTimeout(window.time);
         }, 500);
       }
     });
@@ -153,27 +152,29 @@ const ChatRecord = () => {
     //   localStorage.setItem("myHeadPortrait", messages.icon);
     //   setImgeSrc(messages.icon);
     // }
-    // console.log(messages);
+    console.log(messages);
+
     if (
-      messages?.text?.VideoAndVoice === '视频' &&
-      messages?.text?.toName === localName
+      messages?.text?.toName === localName ||
+      messages?.text?.fromName === localName
     ) {
-      setVideoCalls(true);
-      setActionName('切换语音');
-      settoChatName(messages.text.fromName);
-    } else if (
-      messages?.text?.VideoAndVoice === '语音' &&
-      messages?.text?.toName === localName
-    ) {
-      setVideoCalls(true);
-      setActionName('静音');
-      settoChatName(messages.text.fromName);
-    } else if (
-      messages?.text?.VideoAndVoice === '通话结束' &&
-      messages?.text?.toName === localName
-    ) {
-      setOnFinish(true);
-      setVideoCalls(false);
+      if (messages?.text?.VideoAndVoice === '视频') {
+        setVideoCalls(true);
+        setActionName('切换语音');
+        settoChatName(messages.text.fromName);
+        localStorage.setItem('startTime', messages?.text?.startTime);
+      } else if (messages?.text?.VideoAndVoice === '语音') {
+        setVideoCalls(true);
+        setActionName('静音');
+        localStorage.setItem('startTime', messages?.text?.startTime);
+        settoChatName(messages.text.fromName);
+      } else if (messages?.text?.conversation) {
+        window.time = setTimeout(() => {
+          setVideoCalls(false);
+          clearTimeout(window.time);
+          localStorage.removeItem('NestingIframe');
+        }, 500);
+      }
     }
   }, [messages]);
   useEffect(() => {
@@ -223,6 +224,9 @@ const ChatRecord = () => {
       toName: localStorage.getItem('toChatName') || '',
       text: `${'通话'}结束`,
       VideoAndVoice: '通话结束',
+      conversation: true,
+      startTime: localStorage.getItem('startTime'),
+      endTime: new Date().getTime(),
     });
   };
 

@@ -11,11 +11,16 @@ declare global {
 var pc: any = [];
 var localStream: any = null;
 
-export function Camera({ localVideoElm, remoteVideo, localAudio }: any) {
+export function Camera({ localVideoElm, remoteVideo, localAudio, close }: any) {
+  if (close) {
+    pc = [];
+    localStream = null;
+    return;
+  }
   //封装一部分函数
   const mySocketId: any = localStorage.getItem('mySocketId');
   const friendSocketId: any = localStorage.getItem('friendSocketId');
-  const getUserMedia = (constrains: any, success: any, error: any) => {
+  let getUserMedia: any = (constrains: any, success: any, error: any) => {
     if (navigator.mediaDevices.getUserMedia) {
       //最新标准API
       navigator.mediaDevices
@@ -34,17 +39,16 @@ export function Camera({ localVideoElm, remoteVideo, localAudio }: any) {
     }
   };
 
-  function canGetUserMediaUse() {
+  let canGetUserMediaUse: any = () => {
     return !!(
       navigator.mediaDevices.getUserMedia ||
       navigator.webkitGetUserMedia ||
       navigator.mozGetUserMedia ||
       navigator.msGetUserMedia
     );
-  }
+  };
 
   //   const localVideoElm = document.getElementById('video-local');
-
   //   $('document').ready(() => {
   //     $('#capture').click(() => {
   //       let video = localVideoElm; //原生dom
@@ -85,7 +89,7 @@ export function Camera({ localVideoElm, remoteVideo, localAudio }: any) {
   //   });
 
   //STUN,TURN服务器配置参数
-  const iceServer = {
+  let iceServer: any = {
     iceServers: [
       { urls: ['stun:ss-turn1.xirsys.com'] },
       {
@@ -100,7 +104,7 @@ export function Camera({ localVideoElm, remoteVideo, localAudio }: any) {
     ],
   };
 
-  const InitCamera = () => {
+  let InitCamera: any = () => {
     if (canGetUserMediaUse()) {
       getUserMedia(
         {
@@ -120,10 +124,10 @@ export function Camera({ localVideoElm, remoteVideo, localAudio }: any) {
     }
   };
 
-  const StartCall = (parterName: any, createOffer: any) => {
+  let StartCall: any = (parterName: any, createOffer: any) => {
     pc[parterName] = new RTCPeerConnection(iceServer);
     //如果已经有本地流，那么直接获取Tracks并调用addTrack添加到RTC对象中。
-    console.log(pc, localStream);
+    // console.log(pc, localStream);
     if (localStream) {
       localStream.getTracks().forEach((track: any) => {
         pc[parterName].addTrack(track, localStream); //should trigger negotiationneeded event
@@ -154,7 +158,7 @@ export function Camera({ localVideoElm, remoteVideo, localAudio }: any) {
       //每当WebRTC基础结构需要你重新启动会话协商过程时，都会调用此函数。它的工作是创建和发送一个请求，给被叫方，要求它与我们联系。
       pc[parterName].onnegotiationneeded = () => {
         //https://developer.mozilla.org/zh-CN/docs/Web/API/RTCPeerConnection/createOffer
-        console.log('createOffer00000');
+        // console.log('createOffer00000');
         pc[parterName]
           .createOffer()
           .then((offer: any) => {
@@ -162,7 +166,7 @@ export function Camera({ localVideoElm, remoteVideo, localAudio }: any) {
           })
           .then(() => {
             //把发起者的描述信息通过Signal Server发送到接收者
-            console.log('createOffer11111');
+            // console.log('createOffer11111');
             window.socket.emit('sdp', {
               type: 'video-offer',
               description: pc[parterName].localDescription,
@@ -185,7 +189,7 @@ export function Camera({ localVideoElm, remoteVideo, localAudio }: any) {
     //当向连接中添加磁道时，track 事件的此处理程序由本地WebRTC层调用。例如，可以将传入媒体连接到元素以显示它。详见 Receiving new streams 。
     pc[parterName].ontrack = (ev: any) => {
       let str = ev.streams[0];
-      console.log(str);
+      // console.log(str);
       if (remoteVideo.current) {
         remoteVideo.current.srcObject = str;
       }
@@ -195,40 +199,10 @@ export function Camera({ localVideoElm, remoteVideo, localAudio }: any) {
     };
   };
 
-  window.socket.on('respond', ({ to, sender, text }: any) => {
-    console.log(to, sender, text);
-    if (text === '接听') {
-      StartCall(friendSocketId, true);
-    } else {
-      //   localStream.getTracks().forEach((track: any) => track.stop());
-      //   console.log('关闭摄像头0000===》》》', window.stream);
-      window.mediaStreamTrack && window.mediaStreamTrack.stop();
-
-      if (window.stream) {
-        // console.log('关闭摄像头');
-        window.stream.getTracks().forEach((track: any) => track.stop());
-      }
-      pc = [];
-      localStream = null;
-      if (localVideoElm.current) {
-        localVideoElm.current.srcObject?.getTracks()[0]?.stop();
-        localVideoElm.current.srcObject?.getTracks()[1]?.stop();
-      }
-      if (remoteVideo.current) {
-        remoteVideo.current.srcObject?.getTracks()[0]?.stop();
-        remoteVideo.current.srcObject?.getTracks()[1]?.stop();
-      }
-      if (localAudio && localAudio.current) {
-        localAudio.current.srcObject?.getTracks()[0]?.stop();
-        localAudio.current.srcObject?.getTracks()[1]?.stop();
-      }
-    }
-  });
-
-  (() => {
+  let play: any = () => {
     InitCamera();
     //输出内容 其中 socket.id 是当前socket连接的唯一ID
-    console.log('connect ' + window.socket.id);
+    // console.log('connect ' + window.socket.id);
     // $('#user-id').text(socket.id);
     // pc.push(window.socket.id);
     // // socket.emit('new user greet', {
@@ -306,7 +280,7 @@ export function Camera({ localVideoElm, remoteVideo, localAudio }: any) {
 
     //如果是ice candidates的协商信息
     window.socket.on('ice candidates', (data: any) => {
-      console.log('ice candidate: ' + data.candidate);
+      // console.log('ice candidate: ' + data.candidate);
       //{ candidate: candidate, to: partnerName, sender: socketID }
       //如果ice candidate非空（当candidate为空时，那么本次协商流程到此结束了）
       if (data.candidate) {
@@ -315,5 +289,35 @@ export function Camera({ localVideoElm, remoteVideo, localAudio }: any) {
         pc[data.sender].addIceCandidate(candidate).catch(); //catch err function empty
       }
     });
-  })();
+  };
+  play();
+  window.socket.on('respond', ({ to, sender, text }: any) => {
+    // console.log(to, sender, text);
+    if (text === '接听') {
+      StartCall(friendSocketId, true);
+    } else {
+      pc = [];
+      localStream = null;
+      Camera({ close: true });
+      //   localStream.getTracks().forEach((track: any) => track.stop());
+      //   console.log('关闭摄像头0000===》》》', window.stream);
+      window.mediaStreamTrack && window.mediaStreamTrack.stop();
+      if (window.stream) {
+        // console.log('关闭摄像头');
+        window.stream.getTracks().forEach((track: any) => track.stop());
+      }
+      if (localVideoElm.current) {
+        localVideoElm.current.srcObject?.getTracks()[0]?.stop();
+        localVideoElm.current.srcObject?.getTracks()[1]?.stop();
+      }
+      if (remoteVideo.current) {
+        remoteVideo.current.srcObject?.getTracks()[0]?.stop();
+        remoteVideo.current.srcObject?.getTracks()[1]?.stop();
+      }
+      if (localAudio && localAudio.current) {
+        localAudio.current.srcObject?.getTracks()[0]?.stop();
+        localAudio.current.srcObject?.getTracks()[1]?.stop();
+      }
+    }
+  });
 }

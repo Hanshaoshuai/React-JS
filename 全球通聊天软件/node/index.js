@@ -105,7 +105,7 @@ io.sockets.on('connection', function (socket) {
   //此处每个回调socket就是一个独立的客户端，通常会用一个公共列表数组统一管理
   //socket.broadcast用于向整个网络广播(除自己之外)
   // 监听客户端emit的clientmessage事件发送的消息
-  socket.on('clientmessage', function (data) {
+  socket.on('clientmessage', (data) => {
     // console.log('clientmessagkkkkkkkkkkkkkkkkkkkkk', data);
     if (data.uploadCompleted) {//只作为图片上传完成使用
       socket.broadcast.emit('message', {
@@ -237,7 +237,7 @@ io.sockets.on('connection', function (socket) {
   // 对方回应
   socket.on('respond', ({ to, sender, text, }) => {
     // console.log('respond===>>>', to, sender, text)
-    socket.to(to).emit('respond', { to, sender, text });
+    socket.broadcast.emit('respond', { to, sender, text });
     socket.emit('respond', { to, sender, text });
   });
   // 语音切换
@@ -406,7 +406,25 @@ function todo(obj, socket) {
               }
             }
           }
-          objs.push(obj);
+          let newObjs = {}
+          if (obj.conversation && obj.endTime) {
+            objs.map((item) => {
+              if (item.conversation && item.startTime * 1 === obj.startTime * 1) {
+                let times = obj.endTime * 1 - item.startTime * 1;
+                item.length = times
+                item.VideoAndVoice = obj.VideoAndVoice
+                item.endTime = obj.endTime * 1
+                item.operator = obj.operator;
+                newObjs = item;
+              }
+              return item;
+            })
+            // conversation: true,
+            // startTime
+            // endTime
+          } else {
+            objs.push(obj);
+          }
           objs = JSON.stringify(objs);
           fs.writeFile(
             './chatRecord/' + fromTo,
@@ -418,7 +436,17 @@ function todo(obj, socket) {
                 return false;
               }
               // console.log('写入成功');
-              creatNameber(emitData, socket);
+              if (!emitData.endTime) {
+                creatNameber(emitData, socket);
+              } else {
+
+                socket.broadcast.emit('message', {
+                  text: newObjs,
+                });
+                socket.emit('message', {
+                  text: newObjs,
+                });
+              }
             }
           );
         });
