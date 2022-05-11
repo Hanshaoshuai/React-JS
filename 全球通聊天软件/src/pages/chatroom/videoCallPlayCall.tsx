@@ -51,7 +51,15 @@ const VideoCallPlay = ({
   }, [onStartQuery]);
 
   useEffect(() => {
-    Camera({ localVideoElm: localVideo, remoteVideo, localAudio });
+    if (actionName) {
+      console.log('actionName====>>>', actionName);
+      Camera({
+        localVideoElm: localVideo,
+        remoteVideo,
+        localAudio,
+        video: actionName === '切换语音' ? true : false,
+      });
+    }
     window.socket.on('newcomerOnline', ({ name, socketId, text }: any) => {
       // console.log('newcomerOnline===>>>', name, socketId, text);
       if (text === '下线') {

@@ -11,7 +11,13 @@ declare global {
 var pc: any = [];
 var localStream: any = null;
 
-export function Camera({ localVideoElm, remoteVideo, localAudio, close }: any) {
+export function Camera({
+  localVideoElm,
+  remoteVideo,
+  localAudio,
+  close,
+  video,
+}: any) {
   if (close) {
     pc = [];
     localStream = null;
@@ -108,12 +114,14 @@ export function Camera({ localVideoElm, remoteVideo, localAudio, close }: any) {
     if (canGetUserMediaUse()) {
       getUserMedia(
         {
-          video: true,
+          video: video,
           audio: true,
         },
         (stream: any) => {
           localStream = stream;
-          localVideoElm.current.srcObject = stream;
+          if (video) {
+            localVideoElm.current.srcObject = stream;
+          }
         },
         (err: any) => {
           console.log('访问用户媒体失败: ', err.name, err.message);
@@ -137,14 +145,16 @@ export function Camera({ localVideoElm, remoteVideo, localAudio, close }: any) {
       if (canGetUserMediaUse()) {
         getUserMedia(
           {
-            video: true,
+            video: video,
             audio: true,
           },
-          function (stream: any) {
+          (stream: any) => {
             localStream = stream;
-            localVideoElm.current.srcObject = stream;
+            if (video) {
+              localVideoElm.current.srcObject = stream;
+            }
           },
-          function (error: any) {
+          (error: any) => {
             console.log('访问用户媒体设备失败：', error.name, error.message);
           }
         );
@@ -190,7 +200,7 @@ export function Camera({ localVideoElm, remoteVideo, localAudio, close }: any) {
     pc[parterName].ontrack = (ev: any) => {
       let str = ev.streams[0];
       // console.log(str);
-      if (remoteVideo.current) {
+      if (remoteVideo.current && video) {
         remoteVideo.current.srcObject = str;
       }
       if (localAudio.current) {
@@ -306,11 +316,11 @@ export function Camera({ localVideoElm, remoteVideo, localAudio, close }: any) {
         // console.log('关闭摄像头');
         window.stream.getTracks().forEach((track: any) => track.stop());
       }
-      if (localVideoElm.current) {
+      if (localVideoElm.current && video) {
         localVideoElm.current.srcObject?.getTracks()[0]?.stop();
         localVideoElm.current.srcObject?.getTracks()[1]?.stop();
       }
-      if (remoteVideo.current) {
+      if (remoteVideo.current && video) {
         remoteVideo.current.srcObject?.getTracks()[0]?.stop();
         remoteVideo.current.srcObject?.getTracks()[1]?.stop();
       }
