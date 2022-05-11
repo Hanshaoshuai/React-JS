@@ -492,9 +492,9 @@ function todo(obj, socket) {
 
 //  视频聊天部分↓↓↓
 app.get('/data/:id', function (req, res) {
-  console.log('get===>>>', req.query, req.params)
+  // console.log('get===>>>', req.query, req.params)
   const deviceId = req.params.id
-  console.log('get===>>>', router)
+  // console.log('get===>>>', router)
   if (!router.__dataStore[deviceId] || router.__dataStore[deviceId].length === 0) {
     // console.log('无数据')
     res.statusCode = 200
@@ -503,16 +503,16 @@ app.get('/data/:id', function (req, res) {
     // console.log(router.__dataStore)
     const data = router.__dataStore[deviceId].shift()
     // console.log('我发给了谁' + deviceId)
-    console.log('data====>>>>>', data)
+    // console.log('data====>>>>>', data)
     res.statusCode = 200
     res.end(JSON.stringify(data))
   }
 })
 
 app.post('/data/:id', (req, res) => {
-  console.log('post请求成功===>>>', req.params)
+  // console.log('post请求成功===>>>', req.params)
   const deviceId = req.params.id
-  console.log('post请求成功===>>>', router)
+  // console.log('post请求成功===>>>', router)
   if (!router.__dataStore[deviceId]) {
     router.__dataStore[deviceId] = []
   }
