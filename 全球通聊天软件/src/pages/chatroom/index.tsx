@@ -134,7 +134,7 @@ const ChatList = () => {
   const [videoCalls, setVideoCalls] = useState(false);
   const [startCall, setStartCall] = useState(false);
   const [call, setCall] = useState(false);
-  const [actionName, setActionName] = useState('切换语音');
+  const [actionName, setActionName] = useState('');
   const [onFinish, setOnFinish] = useState(false);
 
   const [Loadings, setLoadings] = useState(false);

@@ -45,14 +45,15 @@ const VideoCallPlay = ({
     }
     if (!onStartQuery && localVideo.current) {
       // console.log('关闭===>>>>', localVideo.current);
-      localVideo.current.srcObject?.getTracks()[0]?.stop();
-      localVideo.current.srcObject?.getTracks()[1]?.stop();
+      localVideo.current.srcObject
+        ?.getTracks()
+        .forEach((track: any) => track.stop());
     }
   }, [onStartQuery]);
 
   useEffect(() => {
     if (actionName) {
-      console.log('actionName====>>>', actionName);
+      // console.log('actionName====>>>', actionName);
       Camera({
         localVideoElm: localVideo,
         remoteVideo,
@@ -70,6 +71,11 @@ const VideoCallPlay = ({
     window.socket.on('switch', ({ to, sender, text }: any) => {
       setActionNames(text);
       if (text === '切换语音') {
+        // if (localVideo.current) {
+        //   localVideo.current.srcObject
+        //     ?.getTracks()
+        //     .forEach((track: any) => track.stop());
+        // }
         setActionNames('静音');
       }
     });
@@ -94,6 +100,11 @@ const VideoCallPlay = ({
   }, [actionName]);
 
   const onSwitch = (test: string) => {
+    // if (localVideo.current) {
+    //   localVideo.current.srcObject
+    //     ?.getTracks()
+    //     .forEach((track: any) => track.stop());
+    // }
     window.socket.emit('switch', {
       to: friendSocketId,
       sender: mySocketId,
@@ -155,12 +166,14 @@ const VideoCallPlay = ({
       text: '挂断',
     });
     if (localVideo.current) {
-      localVideo.current.srcObject?.getTracks()[0]?.stop();
-      localVideo.current.srcObject?.getTracks()[1]?.stop();
+      localVideo.current.srcObject
+        ?.getTracks()
+        .forEach((track: any) => track.stop());
     }
     if (localAudio && localAudio.current) {
-      localAudio.current.srcObject?.getTracks()[0]?.stop();
-      localAudio.current.srcObject?.getTracks()[1]?.stop();
+      localAudio.current.srcObject
+        ?.getTracks()
+        .forEach((track: any) => track.stop());
     }
     if (window.stream) {
       window.stream.getTracks().forEach((track: any) => track.stop());

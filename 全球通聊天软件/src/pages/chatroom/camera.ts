@@ -312,21 +312,26 @@ export function Camera({
       //   localStream.getTracks().forEach((track: any) => track.stop());
       //   console.log('关闭摄像头0000===》》》', window.stream);
       window.mediaStreamTrack && window.mediaStreamTrack.stop();
-      if (window.stream) {
-        // console.log('关闭摄像头');
+      if (window.stream && window.stream.getTracks) {
         window.stream.getTracks().forEach((track: any) => track.stop());
+      } else if (window.stream) {
+        window.stream.getAudioTracks().forEach((track: any) => track.stop());
+        window.stream.getVideoTracks().forEach((track: any) => track.stop());
       }
       if (localVideoElm.current && video) {
-        localVideoElm.current.srcObject?.getTracks()[0]?.stop();
-        localVideoElm.current.srcObject?.getTracks()[1]?.stop();
+        localVideoElm.current.srcObject
+          ?.getTracks()
+          .forEach((track: any) => track.stop());
       }
       if (remoteVideo.current && video) {
-        remoteVideo.current.srcObject?.getTracks()[0]?.stop();
-        remoteVideo.current.srcObject?.getTracks()[1]?.stop();
+        remoteVideo.current.srcObject
+          ?.getTracks()
+          .forEach((track: any) => track.stop());
       }
       if (localAudio && localAudio.current) {
-        localAudio.current.srcObject?.getTracks()[0]?.stop();
-        localAudio.current.srcObject?.getTracks()[1]?.stop();
+        localAudio.current.srcObject
+          ?.getTracks()
+          .forEach((track: any) => track.stop());
       }
     }
   });
