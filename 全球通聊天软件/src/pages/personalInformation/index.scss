@@ -331,11 +331,14 @@
   width: 2rem;
 }
 .personalInformation .contents .denglu-text .names {
-  width: 100%;
+  width: calc(100% - 0.2rem);
   text-align: center;
-  padding: 0.2rem 0 !important;
+  padding: 0.2rem 0.1rem !important;
   font-size: 0.31rem !important;
   line-height: 0.31rem !important;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .personalInformation .contents .denglu-text .sheZhi {
   width: 90.8%;
