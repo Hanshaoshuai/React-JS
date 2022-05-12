@@ -69,7 +69,7 @@ const ChatList = () => {
           height: `calc(100% - 0.9rem - ${window.userAgents}px)`,
         }}
       >
-        <div className="denglu-text ziZhu">
+        <div className="denglu-text ziZhu" style={{ overflowY: 'auto' }}>
           <div className="xiangCe">
             {imgIdLoc.map((item: any, index: number) => {
               return (
