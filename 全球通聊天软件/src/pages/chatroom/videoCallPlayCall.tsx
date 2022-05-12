@@ -65,7 +65,7 @@ const VideoCallPlay = ({
     window.socket.on('switch', ({ to, sender, text }: any) => {
       setActionNames(text);
       if (text === '切换语音') {
-        if (localVideo.current) {
+        if (localVideo?.current) {
           localVideo.current.srcObject?.getTracks().forEach((track: any) => {
             if (track.kind === 'video') {
               track.enabled = false;

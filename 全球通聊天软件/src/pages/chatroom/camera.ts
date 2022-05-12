@@ -18,11 +18,8 @@ export function Camera({
   close,
   video,
 }: any) {
-  if (close) {
-    // pc = [];
-    // localStream = null;
-    return;
-  }
+  pc = [];
+  localStream = null;
   //封装一部分函数
   const mySocketId: any = localStorage.getItem('mySocketId');
   const friendSocketId: any = localStorage.getItem('friendSocketId');
@@ -311,14 +308,14 @@ export function Camera({
       //   localAudio.current.srcObject
       //   // .audioTracks.get(0).setEnabled(false)
       // );
-      if (localVideoElm.current) {
+      if (localVideoElm?.current) {
         // console.log('关闭===>>>>', localVideo.current);
         localVideoElm.current.srcObject?.getTracks().forEach((track: any) => {
           track.enabled = false;
           track.stop();
         });
       }
-      if (localAudio.current) {
+      if (localAudio?.current) {
         localAudio.current.srcObject?.getTracks().forEach((track: any) => {
           track.enabled = false;
           track.stop();
