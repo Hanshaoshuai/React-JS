@@ -105,7 +105,7 @@ io.sockets.on('connection', function (socket) {
   //此处每个回调socket就是一个独立的客户端，通常会用一个公共列表数组统一管理
   //socket.broadcast用于向整个网络广播(除自己之外)
   // 监听客户端emit的clientmessage事件发送的消息
-  socket.on('clientmessage', (data) => {
+  socket.on('clientmessage', async (data) => {
     // console.log('clientmessagkkkkkkkkkkkkkkkkkkkkk', data);
     if (data.uploadCompleted) {//只作为图片上传完成使用
       socket.broadcast.emit('message', {
@@ -142,7 +142,7 @@ io.sockets.on('connection', function (socket) {
     }
     if (Array.isArray(data.toName)) {
       //群聊//记录存入
-      todo(data, socket);
+      await todo(data, socket);
       // socket.emit('message', {
       //   text: data,
       // });
@@ -155,13 +155,13 @@ io.sockets.on('connection', function (socket) {
         dbo
           .collection('site')
           .find(whereStr)
-          .toArray(function (err, result) {
+          .toArray(async (err, result) => {
             if (err) throw err;
             // console.log(result);
             if (result && result.length !== 0) {
               data.type = 'chat';
               //记录存入
-              todo(data, socket);
+              await todo(data, socket);
             } else if (data.toName !== '') {
               data.type = 'chat';
               data.text = '没有该用户！';
@@ -343,151 +343,160 @@ const socketIdChange = ({ name, socketId }) => {
 function todo(obj, socket) {
   // console.log('写入文件', obj);
   //创建目录
-  var fromTo = null,
-    objs = [];
-  fs.mkdir('./chatRecord', function (error) {
-    if (error) {
-      // console.log(error);
-      return false;
-    }
-    // console.log('创建目录成功');
-  });
-  if (obj.type === 'groupChat') {
-    if (obj.groupName) {
-      fromTo = obj.groupName;
+  return new Promise((resolve, reject) => {
+    var fromTo = null,
+      objs = [];
+    fs.mkdir('./chatRecord', function (error) {
+      if (error) {
+        // console.log(error);
+        reject('errr')
+        return false;
+      }
+      // console.log('创建目录成功');
+    });
+    if (obj.type === 'groupChat') {
+      if (obj.groupName) {
+        fromTo = obj.groupName;
+        fsChenge(obj, socket);
+      }
+    } else {
+      fromTo = (obj.fromName * 1 + obj.toName * 1).toString() + '.txt';
       fsChenge(obj, socket);
     }
-  } else {
-    fromTo = (obj.fromName * 1 + obj.toName * 1).toString() + '.txt';
-    fsChenge(obj, socket);
-  }
-  function fsChenge(emitData, socket) {
-    // console.log('写入文件名2222', fromTo);
-    fs.exists('./chatRecord/' + fromTo, function (exists) {
-      if (exists) {
-        // console.log('文件存在');
-        // 5.fs.readFile 读取文件
-        fs.readFile('./chatRecord/' + fromTo, function (error, data) {
-          if (error) {
-            // console.log('读取文件error', error);
-            return false;
-          }
-          //console.log(data);  //data是读取的十六进制的数据。  也可以在参数中加入编码格式"utf8"来解决十六进制的问题;
-          // console.log('读取出所有行的信息 ',data.toString());  //读取出所有行的信息
-          objs = JSON.parse(data.toString());
-          var length = objs.length;
-          if (obj.text.friends === 'yes') {
-            if (objs.length === 1) {
-              objs[0].friend = 'yes';
-            } else {
-              if (length >= 1) {
-                objs[length - 1].friend = 'yes';
-              }
-              if (length >= 2) {
-                objs[length - 2].friend = 'yes';
-              }
+    function fsChenge(emitData, socket) {
+      // console.log('写入文件名2222', fromTo);
+      fs.exists('./chatRecord/' + fromTo, function (exists) {
+        if (exists) {
+          // console.log('文件存在');
+          // 5.fs.readFile 读取文件
+          fs.readFile('./chatRecord/' + fromTo, function (error, data) {
+            if (error) {
+              // console.log('读取文件error', error);
+              reject('errr')
+              return false;
             }
-          } else if (obj.text.addFriend === 2) {
-            if (objs.length === 2) {
-              objs[1].friend = 'yes';
-            } else {
-              objs[length - 1].friend = 'yes';
-              // objs[length-2].friend = 'yes';
-            }
-          } else {
-            if (objs.length === 1) {
-              objs[0].friend = 'yes';
-            } else {
-              if (length >= 1) {
-                objs[length - 1].friend = 'yes';
-              }
-              if (length >= 2) {
-                objs[length - 2].friend = 'yes';
-              }
-            }
-          }
-          let newObjs = {}
-          if (obj.conversation && obj.endTime) {
-            objs.map((item) => {
-              if (item.conversation && item.startTime * 1 === obj.startTime * 1) {
-                let times = obj.endTime * 1 - item.startTime * 1;
-                item.length = times
-                item.VideoAndVoice = obj.VideoAndVoice
-                item.endTime = obj.endTime * 1
-                item.operator = obj.operator;
-                newObjs = item;
-              }
-              return item;
-            })
-            // conversation: true,
-            // startTime
-            // endTime
-          } else {
-            objs.push(obj);
-          }
-          objs = JSON.stringify(objs);
-          fs.writeFile(
-            './chatRecord/' + fromTo,
-            objs,
-            'utf8',
-            function (error) {
-              if (error) {
-                // console.log(error);
-                return false;
-              }
-              // console.log('写入成功');
-              if (!emitData.endTime) {
-                creatNameber(emitData, socket);
+            //console.log(data);  //data是读取的十六进制的数据。  也可以在参数中加入编码格式"utf8"来解决十六进制的问题;
+            // console.log('读取出所有行的信息 ',data.toString());  //读取出所有行的信息
+            objs = JSON.parse(data.toString());
+            var length = objs.length;
+            if (obj.text.friends === 'yes') {
+              if (objs.length === 1) {
+                objs[0].friend = 'yes';
               } else {
-
-                socket.broadcast.emit('message', {
-                  text: newObjs,
-                });
-                socket.emit('message', {
-                  text: newObjs,
-                });
+                if (length >= 1) {
+                  objs[length - 1].friend = 'yes';
+                }
+                if (length >= 2) {
+                  objs[length - 2].friend = 'yes';
+                }
+              }
+            } else if (obj.text.addFriend === 2) {
+              if (objs.length === 2) {
+                objs[1].friend = 'yes';
+              } else {
+                objs[length - 1].friend = 'yes';
+                // objs[length-2].friend = 'yes';
+              }
+            } else {
+              if (objs.length === 1) {
+                objs[0].friend = 'yes';
+              } else {
+                if (length >= 1) {
+                  objs[length - 1].friend = 'yes';
+                }
+                if (length >= 2) {
+                  objs[length - 2].friend = 'yes';
+                }
               }
             }
-          );
-        });
-      }
-      if (!exists) {
-        // console.log('文件不存在');
-        //3. fs.writeFile  写入文件（会覆盖之前的内容）（文件不存在就创建）  utf8参数可以省略
-        objs.push(obj);
-        objs = JSON.stringify(objs);
-        fs.writeFile('./chatRecord/' + fromTo, objs, 'utf8', function (error) {
-          if (error) {
-            // console.log(error);
-            return false;
-          }
-          // console.log('写入成功');
-          creatNameber(emitData, socket);
-        });
-      }
-    });
-  }
-  // 下面是存入数据库的
-  // 	MongoClient.connect(url, function (err, db) {
-  // 		if (err) throw err;
-  // 		console.log('数据库已创建');
-  // 		var dbase = db.db("runoob");
-  // 		dbase.createCollection('chatRecord', function (err, res) {
-  // 			if (err) throw err;
-  // 			console.log("创建集合!");
-  // 			db.close();
-  // 			MongoClient.connect(url, function(err, db) {
-  // 				if (err) throw err;
-  // 				var dbo = db.db("runoob");
-  // 				dbo.collection("chatRecord").insertOne(obj, function(err, res) {
-  // 					if (err) throw err;
-  // 					console.log("记录成功");
-  // 					creatNameber(obj,socket)
-  // 					db.close();
-  // 				});
-  // 			});
-  // 		});
-  // 	});
+            let newObjs = {}
+            if (obj.conversation && obj.endTime) {
+              objs.map((item) => {
+                if (item.conversation && item.startTime * 1 === obj.startTime * 1) {
+                  let times = obj.endTime * 1 - item.startTime * 1;
+                  item.length = times
+                  item.VideoAndVoice = obj.VideoAndVoice
+                  item.endTime = obj.endTime * 1
+                  item.operator = obj.operator;
+                  newObjs = item;
+                }
+                return item;
+              })
+              // conversation: true,
+              // startTime
+              // endTime
+            } else {
+              objs.push(obj);
+            }
+            objs = JSON.stringify(objs);
+            fs.writeFile(
+              './chatRecord/' + fromTo,
+              objs,
+              'utf8',
+              function (error) {
+                if (error) {
+                  // console.log(error);
+                  reject('errr')
+                  return false;
+                }
+                // console.log('写入成功');
+                if (!emitData.endTime) {
+                  creatNameber(emitData, socket);
+                  resolve()
+                } else {
+                  socket.broadcast.emit('message', {
+                    text: newObjs,
+                  });
+                  socket.emit('message', {
+                    text: newObjs,
+                  });
+                  resolve()
+                }
+              }
+            );
+          });
+        }
+        if (!exists) {
+          // console.log('文件不存在');
+          //3. fs.writeFile  写入文件（会覆盖之前的内容）（文件不存在就创建）  utf8参数可以省略
+          objs.push(obj);
+          objs = JSON.stringify(objs);
+          fs.writeFile('./chatRecord/' + fromTo, objs, 'utf8', function (error) {
+            if (error) {
+              // console.log(error);
+              reject('errr')
+              return false;
+            }
+            // console.log('写入成功');
+            creatNameber(emitData, socket);
+            resolve()
+          });
+        }
+      });
+    }
+    // 下面是存入数据库的
+    // 	MongoClient.connect(url, function (err, db) {
+    // 		if (err) throw err;
+    // 		console.log('数据库已创建');
+    // 		var dbase = db.db("runoob");
+    // 		dbase.createCollection('chatRecord', function (err, res) {
+    // 			if (err) throw err;
+    // 			console.log("创建集合!");
+    // 			db.close();
+    // 			MongoClient.connect(url, function(err, db) {
+    // 				if (err) throw err;
+    // 				var dbo = db.db("runoob");
+    // 				dbo.collection("chatRecord").insertOne(obj, function(err, res) {
+    // 					if (err) throw err;
+    // 					console.log("记录成功");
+    // 					creatNameber(obj,socket)
+    // 					db.close();
+    // 				});
+    // 			});
+    // 		});
+    // 	});
+
+  })
 }
 
 //  视频聊天部分↓↓↓

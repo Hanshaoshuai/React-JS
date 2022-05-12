@@ -1073,13 +1073,13 @@ const ChatList = () => {
             }
           } else {
             if (data.fromName === myLocName) {
-              if (data.text === '视频失败') {
+              if (data.text === '视频失败' || data.text === '语音失败') {
                 tests = `【${data.text}】 对方不在线！`;
               } else {
                 tests = `【${data.text}】 您${data.VideoAndVoice}`;
               }
             } else {
-              if (data.text === '视频失败') {
+              if (data.text === '视频失败' || data.text === '语音失败') {
                 tests = `【${data.text}】 您不在线！`;
               } else {
                 tests = `【${data.text}】 对方${data.VideoAndVoice}`;

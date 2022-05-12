@@ -19,8 +19,8 @@ export function Camera({
   video,
 }: any) {
   if (close) {
-    pc = [];
-    localStream = null;
+    // pc = [];
+    // localStream = null;
     return;
   }
   //封装一部分函数
@@ -172,7 +172,7 @@ export function Camera({
         pc[parterName]
           .createOffer()
           .then((offer: any) => {
-            return pc[parterName].setLocalDescription(offer);
+            return pc[parterName]?.setLocalDescription(offer);
           })
           .then(() => {
             //把发起者的描述信息通过Signal Server发送到接收者
@@ -259,7 +259,7 @@ export function Camera({
     //监听发送的sdp事件
     window.socket.on('sdp', (data: any) => {
       //如果时offer类型的sdp
-      if (data.description.type === 'offer') {
+      if (data?.description?.type === 'offer') {
         //那么被呼叫者需要开启RTC的一套流程，同时不需要createOffer，所以第二个参数为false
         StartCall(data.sender, false);
         //把发送者(offer)的描述，存储在接收者的remoteDesc中。
@@ -281,7 +281,7 @@ export function Camera({
             })
             .catch(); //catch error function empty
         });
-      } else if (data.description.type === 'answer') {
+      } else if (data?.description?.type === 'answer') {
         //如果使应答类消息（那么接收到这个事件的是呼叫者）
         let desc = new RTCSessionDescription(data.description);
         pc[data.sender].setRemoteDescription(desc);
@@ -306,32 +306,23 @@ export function Camera({
     if (text === '接听') {
       StartCall(friendSocketId, true);
     } else {
-      pc = [];
-      localStream = null;
-      Camera({ close: true });
-      //   localStream.getTracks().forEach((track: any) => track.stop());
-      //   console.log('关闭摄像头0000===》》》', window.stream);
-      window.mediaStreamTrack && window.mediaStreamTrack.stop();
-      if (window.stream && window.stream.getTracks) {
-        window.stream.getTracks().forEach((track: any) => track.stop());
-      } else if (window.stream) {
-        window.stream.getAudioTracks().forEach((track: any) => track.stop());
-        window.stream.getVideoTracks().forEach((track: any) => track.stop());
+      // console.log(
+      //   '关闭摄像头0000===》》》',
+      //   localAudio.current.srcObject
+      //   // .audioTracks.get(0).setEnabled(false)
+      // );
+      if (localVideoElm.current) {
+        // console.log('关闭===>>>>', localVideo.current);
+        localVideoElm.current.srcObject?.getTracks().forEach((track: any) => {
+          track.enabled = false;
+          track.stop();
+        });
       }
-      if (localVideoElm.current && video) {
-        localVideoElm.current.srcObject
-          ?.getTracks()
-          .forEach((track: any) => track.stop());
-      }
-      if (remoteVideo.current && video) {
-        remoteVideo.current.srcObject
-          ?.getTracks()
-          .forEach((track: any) => track.stop());
-      }
-      if (localAudio && localAudio.current) {
-        localAudio.current.srcObject
-          ?.getTracks()
-          .forEach((track: any) => track.stop());
+      if (localAudio.current) {
+        localAudio.current.srcObject?.getTracks().forEach((track: any) => {
+          track.enabled = false;
+          track.stop();
+        });
       }
     }
   });
