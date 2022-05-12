@@ -34,9 +34,7 @@ const router = Router()
 router.__dataStore = {}
 
 const formidable = require('formidable');
-const { promises } = require('stream');
 var MongoClient = require('mongodb').MongoClient;
-
 
 var app = express();
 
@@ -194,9 +192,7 @@ io.sockets.on('connection', function (socket) {
   //连接断开，如关闭页面时触发
   socket.on('disconnect', async (data) => {
     // console.log('123456789', data);
-    // socket.emit('c_leave','离开');
     //socket.broadcast用于向整个网络广播(除自己之外)
-    // console.log('clientmessagkkkkkkkkkkkkkkkkkkkkk', socket.id);
     socket.broadcast.emit('message', {
       id: socket.id,
       text: '离开了',
@@ -208,27 +204,6 @@ io.sockets.on('connection', function (socket) {
   });
 
   // 视频通话
-  // 新连接
-  // socket.on('conn', function (userName, chatNames) {
-  //   // socket.join(userName); // 加入房间
-  //   // console.log(socket.adapter.rooms);
-  //   socket.emit('conn', userName, chatNames);
-  //   // console.log('新用户：' + userName, chatNames);
-  // });
-
-  // // 接收 Offer 信令并发送给其他连接
-  // socket.on('sdp', function (date) {
-  //   // console.log('接收 Offer 信令并发送给其他连接', date)
-  //   socket.to(date.to).emit('sdp', date);
-  //   // socket.emit('sdp', date);
-  // });
-
-  // // 接收 iceOffer
-  // socket.on('ice-candidates', function (date) {
-  //   socket.to(date.to).emit('ice-candidates', date);
-  //   // socket.emit('ice-candidates', date);
-  // });
-
   // 向对方呼叫
   socket.on('call', ({ to, sender, headPortrait }) => {
     // console.log(to, sender)
@@ -379,7 +354,7 @@ function todo(obj, socket) {
             // console.log('读取出所有行的信息 ',data.toString());  //读取出所有行的信息
             objs = JSON.parse(data.toString());
             var length = objs.length;
-            if (obj.text.friends === 'yes') {
+            if (obj.text?.friends === 'yes') {
               if (objs.length === 1) {
                 objs[0].friend = 'yes';
               } else {
@@ -390,7 +365,7 @@ function todo(obj, socket) {
                   objs[length - 2].friend = 'yes';
                 }
               }
-            } else if (obj.text.addFriend === 2) {
+            } else if (obj.text?.addFriend === 2) {
               if (objs.length === 2) {
                 objs[1].friend = 'yes';
               } else {
@@ -474,28 +449,6 @@ function todo(obj, socket) {
         }
       });
     }
-    // 下面是存入数据库的
-    // 	MongoClient.connect(url, function (err, db) {
-    // 		if (err) throw err;
-    // 		console.log('数据库已创建');
-    // 		var dbase = db.db("runoob");
-    // 		dbase.createCollection('chatRecord', function (err, res) {
-    // 			if (err) throw err;
-    // 			console.log("创建集合!");
-    // 			db.close();
-    // 			MongoClient.connect(url, function(err, db) {
-    // 				if (err) throw err;
-    // 				var dbo = db.db("runoob");
-    // 				dbo.collection("chatRecord").insertOne(obj, function(err, res) {
-    // 					if (err) throw err;
-    // 					console.log("记录成功");
-    // 					creatNameber(obj,socket)
-    // 					db.close();
-    // 				});
-    // 			});
-    // 		});
-    // 	});
-
   })
 }
 
@@ -1509,15 +1462,6 @@ app.post('/friendsCircleFileUpload', function (req, res) {
     //   console.log('end===>>>');
     // }
   })
-  // fileList, // 分片的内容
-  // typeF, // 分片上传是否到最后\或不分片
-  // name, // 文件名字
-  // type, // 文件名后缀
-  // fileType, // 文件类型
-  // dateTime, // 时间戳
-  // fileSize,
-  // videoImgZoom, // video缩略图
-  // index, // 第几片上传
   forms.parse(req, async (err, fields, files) => {
     if (err) {
       res.send({ code: 2001, msg: "上传失败" })
@@ -1727,51 +1671,6 @@ app.post('/addComments', async (req, res) => {
       }
     );
   });
-  // MongoClient.connect(url, function (err, db) {
-  //   if (err) throw err;
-  //   var dbo = db.db('runoob');
-  //   var whereStr = { name: fileName }; // 查询条件
-  //   dbo
-  //     .collection('site')
-  //     .find(whereStr)
-  //     .toArray(function (err, result) {
-  //       // 返回集合中所有数据
-  //       if (err) throw err;
-  //       // console.log(result);
-  //       if (result && result.length === 0) {
-  //         res.send({ code: 2001, msg: '网络忙请稍后....' });
-  //         db.close();
-  //       } else if (result && result.length === 1) {
-  //         console.log(result)
-  //         let commentsList = result[0].commentsList || [];
-  //         commentsList.push({
-  //           friendName: reqs.friendName, // 点赞者的中文名
-  //           friendNameId: reqs.friendNameId, // 点赞者的电话
-  //           thumbsUp: reqs.thumbsUp || false, // 设为true
-  //           comments: reqs.comments || '', // 评论内容
-  //         })
-  //         MongoClient.connect(url, function (err, db) {
-  //           if (err) throw err;
-  //           var dbo = db.db('runoob');
-  //           var whereStr = { name: fileName }; // 查询条件
-  //           var updateStr = {
-  //             $set: { commentsList: commentsList },
-  //           }; //更换内容
-  //           // console.log('第-道', updateStr);
-  //           dbo.collection('site').updateOne(whereStr, updateStr, function (err, res) {
-  //             if (err) throw err;
-  //             // console.log('更改请求方数据成功');
-  //             if (res.acknowledged) {
-  //               resolve.send({ code: 200, msg: `${reqs.thumbsUp || reqs.comments}成功` })
-  //             } else {
-  //               resolve.send({ code: 2001, msg: "失败" })
-  //             }
-  //             db.close();
-  //           });
-  //         });
-  //       }
-  //     })
-  // })
 })
 
 // 上传图片
@@ -2039,48 +1938,6 @@ app.post('/file_upload', function (req, res) {
                 db.close();
               });
           });
-          // MongoClient.connect(url, function (err, db) {
-          //   if (err) throw err;
-          //   var dbo = db.db('runoob');
-          //   // var whereStr = {'imgId':req.query.imgId};  // 查询条件
-          //   dbo
-          //     .collection('buildingGroup')
-          //     .find({})
-          //     .toArray(function (err, result_2) {
-          //       // 返回集合中所有数据
-          //       if (err) throw err;
-          //       // console.log('群聊数据', result_2);
-          //       // var img_list = [];
-          //       if (result_2) {
-          //         for (var i = 0; i < result_2.length; i++) {
-          //           for (var e = 0; e < result_2[i].imgId.length; e++) {
-          //             if (result_2[i].imgId[e].name === reqs.myName) {
-          //               const buildingGroupName = result_2[i].buildingGroupName;
-          //               const index = i;
-          //               result_2[i].imgId[e].classIcon = apath;
-          //               result_2[i].imgId[e].apathZoom = apathZoom;
-          //               MongoClient.connect(url, function (err, db) {
-          //                 var dbo = db.db('runoob');
-          //                 var whereStr = { buildingGroupName: buildingGroupName }; // 查询条件
-          //                 var updateStr = { $set: result_2[index] }; //更换内容
-          //                 // console.log('第-道', updateStr);
-          //                 dbo
-          //                   .collection('buildingGroup')
-          //                   .updateOne(whereStr, updateStr, function (err, res) {
-          //                     if (err) throw err;
-          //                     // console.log('======', res.result);
-          //                     // console.log('更改请求方数据成功');
-          //                     db.close();
-          //                   });
-          //               });
-          //               break;
-          //             }
-          //           }
-          //         }
-          //       }
-          //       db.close();
-          //     });
-          // });
         }
         if (dataBufferZoom) {
           fs.writeFile(`${filePath}/${fileName}Zoom.${reqs.type}`, dataBufferZoom, (err) => {
@@ -2104,72 +1961,6 @@ app.post('/file_upload', function (req, res) {
         })
       }
     })
-    //文档更新成功
-    // MongoClient.connect(url, function (err, db) {
-    //   if (err) throw err;
-    //   var dbo = db.db('runoob');
-    //   var whereStr = { imgId: reqs.imgId }; // 查询条件
-    //   var updateStr = { $set: { classIcon: reqs.classIcon } };
-    //   dbo
-    //     .collection('headPortrait')
-    //     .updateOne(whereStr, updateStr, function (err, res) {
-    //       if (err) throw err;
-    //       // console.log('======', res);
-    //       if (res.acknowledged && reqs.myName) {
-    //         MongoClient.connect(url, function (err, db) {
-    //           var dbo = db.db('runoob');
-    //           var whereStr = { name: reqs.myName }; // 查询条件
-    //           var updateStr = { $set: { imgId: reqs.imgId } }; //更换内容
-    //           // console.log('第-道', updateStr);
-    //           dbo
-    //             .collection('site')
-    //             .updateOne(whereStr, updateStr, function (err, res) {
-    //               if (err) throw err;
-    //               // console.log('======', res.result);
-    //               // console.log('更改请求方数据成功');
-    //               result.code = 200;
-    //               result.id = reqs.imgId;
-    //               result.msg = '更换成功';
-    //               result.icon = reqs.classIcon;
-    //               // 									resto(result);
-    //               // console.log('文档更新成功');
-    //               resto.send(result);
-    //               db.close();
-    //             });
-    //         });
-    //         return;
-    //       }
-    //       MongoClient.connect(url, function (err, db) {
-    //         // if (err) throw err;
-    //         // console.log('数据库已创建');
-    //         var dbase = db.db('runoob');
-    //         dbase.createCollection('headPortrait', function (err, res) {
-    //           // if (err) throw err;
-    //           // console.log('创建集合!');
-    //         });
-    //       });
-    //       if (res.acknowledged && !reqs.myName) {
-    //         // result = {code:200,msg:"图片提交成功",icon:reqs.classIcon};
-    //         MongoClient.connect(url, function (err, db) {
-    //           if (err) throw err;
-    //           var dbo = db.db('runoob');
-    //           dbo
-    //             .collection('headPortrait')
-    //             .insertOne(reqs, function (err, res) {
-    //               if (err) throw err;
-    //               // console.log('图片插入成功', err, res);
-    //               result.code = 200;
-    //               result.id = reqs.imgId;
-    //               result.msg = '头像设置成功';
-    //               result.icon = reqs.classIcon;
-    //               resto.send(result);
-    //               db.close();
-    //             });
-    //         });
-    //       }
-    //       db.close();
-    //     });
-    // });
   });
 });
 //消息请求
@@ -2180,12 +1971,6 @@ app.get('/get1', function (req, res) {
   var objs = [];
   var list = {};
   if (req.query.type === 'groupChat') {
-    // var friendName = JSON.parse(req.query.friendName);
-    // // toNames = toNames.split(",");
-    // for (var i = 0; i < friendName.length; i++) {
-    //   fromTo += friendName[i].name * 1;
-    // }
-    // fromTo = req.query.nickName + fromTo + '.txt';
     fromTo = req.query.groupName
   } else {
     fromTo =
@@ -2204,30 +1989,9 @@ app.get('/get1', function (req, res) {
       res.send({ code: 200, body: [] });
       return
     };
-    objs = JSON.parse(data.toString());
+    objs = JSON.parse(data.toString() || '[]');
     if (objs.length > 0) {
-      // objs.sort(function (a, b) {
-      //   return a.dateTime - b.dateTime;
-      // });
-      // let newList = [];
       let size = (req.query.page * 1) * (req.query.pageSize * 1)
-      // if (size < objs.length) {
-      //   for (let i = objs.length - 1; i > 0; i--) {
-      //     if (size > 0) {
-      //       newList.push(objs[i]);
-      //     } else {
-      //       break;
-      //     }
-      //     size -= 1;
-      //   }
-      //   newList.sort(function (a, b) {
-      //     return a.dateTime - b.dateTime;
-      //   });
-      //   list.body = newList;
-      // } else {
-      //   list.body = objs;
-      //   list.total = true;
-      // }
       objs.reverse()
       if (size < objs.length) {
         list.body = objs.slice(size - req.query.pageSize * 1, size)
@@ -2243,32 +2007,6 @@ app.get('/get1', function (req, res) {
       res.send({ code: 200, body: [] });
     }
   });
-  // 	MongoClient.connect(url, function(err, db) {
-  // 			if (err) throw err;
-  // 		var dbo = db.db("runoob");
-  // 		var fromTo = (req.query.friendName*1+req.query.myName*1).toString();
-  // 		var whereStr = {'fromTo':fromTo};  // 查询条件
-  // 		var page = ((req.query.page*1)-1)*(req.query.pageSize*1);
-  // 		var pageSize = req.query.pageSize * 1;
-  // 		var mysort = { dateTime: -1 };
-  // 		var list = {}
-  // 		console.log("Git请求参数：",whereStr)
-  // 		dbo.collection("chatRecord").find(whereStr).sort(mysort).skip(page).limit(pageSize).toArray(function(err, result) { // 返回集合中所有数据
-  // 			if (err) throw err;
-  // 			// console.log(result);
-  // 			db.close();
-  // 			if(result.length > 0){
-  // 				result.sort(function (a, b) {
-  // 					return a.dateTime - b.dateTime;
-  // 				});
-  // 				list.code = 200;
-  // 				list.body = result;
-  // 				res.send(list);
-  // 			}else{
-  // 				res.send({'code':200,'body':[]});
-  // 			}
-  // 		});
-  // 	});
 });
 
 //所有人列表请求
