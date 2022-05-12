@@ -352,7 +352,11 @@ function todo(obj, socket) {
             }
             //console.log(data);  //data是读取的十六进制的数据。  也可以在参数中加入编码格式"utf8"来解决十六进制的问题;
             // console.log('读取出所有行的信息 ',data.toString());  //读取出所有行的信息
-            objs = JSON.parse(data.toString());
+            if (!data.toString()) {
+              reject('errr')
+              return false;
+            }
+            objs = JSON.parse(data.toString() || '[]');
             var length = objs.length;
             if (obj.text?.friends === 'yes') {
               if (objs.length === 1) {
