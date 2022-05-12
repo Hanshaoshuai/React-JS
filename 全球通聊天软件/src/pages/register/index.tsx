@@ -1,6 +1,6 @@
 import './index.scss';
 
-import { Toast, Radio } from 'antd-mobile';
+import { Toast, Radio, Switch } from 'antd-mobile';
 import React, { useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { registers } from '../../api';
@@ -15,7 +15,7 @@ const Register = () => {
   const [telephone, setTelephone] = useState<any>();
   const [verify, setVerify] = useState<any>();
   const [password, setPassword] = useState<any>('');
-  const [value, setValue] = useState<any>('Sir');
+  const [value, setValue] = useState<any>(false);
   const [percentBlock] = useState<any>(false);
   const [imgSrc, setImgSrc] = useState<any>('/images/touxiang.jpg');
   const [imgApathZoom, setImgApathZoom] = useState<any>('');
@@ -59,7 +59,7 @@ const Register = () => {
   };
 
   const radioChange = (e: any) => {
-    // console.log("radio checked", e);
+    // console.log('radio checked', e);
     setValue(e);
   };
   const onChange = (e: any, text: string) => {
@@ -138,7 +138,7 @@ const Register = () => {
       nickName: name,
       name: telephone,
       password,
-      sex: value,
+      sex: value ? 'Sir' : 'sex',
       imgId,
       headPortrait: imgSrc,
       apathZoom: imgApathZoom,
@@ -286,12 +286,29 @@ const Register = () => {
         </div>
         <div className="sir_madam">
           <div id="sir_madam_box">
-            <Radio.Group onChange={radioChange} value={value}>
+            {/* <Radio.Group onChange={radioChange} value={value}>
               <Radio style={{ marginRight: '6px' }} value={'Sir'}>
-                先生
+                男
               </Radio>
-              <Radio value={'sex'}>女士</Radio>
-            </Radio.Group>
+              <Radio value={'sex'}>女</Radio>
+            </Radio.Group> */}
+
+            <div
+              style={{
+                fontSize: '0.37rem',
+                padding: '0 0.22rem',
+                color: `${value ? '#1677ff' : '#ff7a59'}`,
+                fontWeight: '600',
+              }}
+            >
+              {value ? '男' : '女'}
+            </div>
+            <Switch
+              checked={value}
+              onChange={(checked) => {
+                setValue(checked);
+              }}
+            />
           </div>
         </div>
         <div className="denglu-food" onClick={registersQ}>

@@ -169,8 +169,19 @@
   font-size: 0.32rem;
 }
 .denglu .contents .sir_madam #sir_madam_box {
-  display: inline-block;
-  float: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  // :global {
+  .adm-switch,
+  .adm-switch-checkbox {
+    height: 0.55rem !important;
+    --height: 0.55rem !important;
+    width: 1rem;
+    --width: 1rem;
+  }
+  // }
 }
 .denglu .contents .denglu-food {
   width: 90.8%;
