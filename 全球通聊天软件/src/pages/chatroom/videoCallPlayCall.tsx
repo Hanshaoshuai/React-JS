@@ -55,6 +55,10 @@ const VideoCallPlay = ({
         video: actionName === '切换语音' ? true : false,
       });
     }
+    setActionNames(actionName);
+  }, [actionName]);
+
+  useEffect(() => {
     window.socket.on('newcomerOnline', ({ name, socketId, text }: any) => {
       // console.log('newcomerOnline===>>>', name, socketId, text);
       if (text === '下线') {
@@ -91,10 +95,6 @@ const VideoCallPlay = ({
       }
     });
   }, []);
-
-  useEffect(() => {
-    setActionNames(actionName);
-  }, [actionName]);
 
   const onSwitch = (test: string) => {
     if (localVideo.current) {
