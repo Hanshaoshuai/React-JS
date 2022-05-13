@@ -1814,7 +1814,7 @@ const Dynamic = ({
                 overflowY: 'auto',
                 margin: '0 auto',
                 width: '100%',
-                height: '100%',
+                height: 'calc( 100% - 39px)',
               }}
             >
               <div
@@ -1914,8 +1914,8 @@ const Dynamic = ({
                         position: 'absolute',
                         top: '0',
                         left: '0',
-                        width: '1.1rem',
-                        height: '1.1rem',
+                        width: '100%',
+                        height: '100%',
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
