@@ -28,6 +28,7 @@ const SuperMap = ({ callback }: any) => {
   const [switchsY, setSwitchsY] = useState(0);
   const [titles, setTitles] = useState<any>({});
   const [fullScreen, setFullScreen] = useState<any>(true);
+  const [button, setButton] = useState(false);
   let iconWidth = 19;
   let iconHeight = 19;
   let itemHeight = 914130;
@@ -192,6 +193,7 @@ const SuperMap = ({ callback }: any) => {
 
     const timeout = setTimeout(() => {
       selfRotate();
+      setButton(true);
       clearTimeout(timeout);
     }, 4100);
     return () => {
@@ -208,6 +210,7 @@ const SuperMap = ({ callback }: any) => {
   const reset = () => {
     initialization();
     switchs();
+    setButton(false);
   };
   const initialization = () => {
     // 初始化视角
@@ -229,6 +232,7 @@ const SuperMap = ({ callback }: any) => {
       });
       const timeout = setTimeout(() => {
         viewer.clock.shouldAnimate = true;
+        setButton(true);
         clearTimeout(timeout);
       }, 4100);
     }
@@ -439,9 +443,11 @@ const SuperMap = ({ callback }: any) => {
         </div>
         <div id="cesiumContainer" className="cesiumContainer"></div>
         <div className="cesiumContainer-button">
-          <Button className="button" color="primary" onClick={realspace}>
-            添加S3M图层
-          </Button>
+          {button && (
+            <Button className="button" color="primary" onClick={realspace}>
+              添加S3M图层
+            </Button>
+          )}
           <Button className="button" color="primary" onClick={reset}>
             重置
           </Button>

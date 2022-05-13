@@ -1297,13 +1297,34 @@ app.post('/getCircleFriends', (req, res) => {
   }
 })
 const onFilter = (List, reqs) => {
-  let newList = List.filter((item) => {
-    if (item.time === reqs.time) {
-      return false
-    } else {
-      return true;
-    }
-  })
+  let newList = []
+  if (reqs.textValue) {
+    newList = List.map((item) => {
+      if (item.time === reqs.time) {
+        item.content = reqs.textValue
+        item.video = reqs.deleteVideo ? {} : ''
+        if (reqs?.deleteImage?.length) {
+          item.imgList = item.imgList.filter((term) => {
+            for (let i = 0; i < reqs.deleteImage.length; i++) {
+              if (term.apathZoom === reqs.deleteImage[i]) {
+                return false
+              }
+            }
+            return true
+          })
+        }
+      }
+      return item;
+    })
+  } else {
+    newList = List.filter((item) => {
+      if (item.time === reqs.time) {
+        return false
+      } else {
+        return true;
+      }
+    })
+  }
   return JSON.stringify(newList)
 }
 // 删除一项朋友圈动态

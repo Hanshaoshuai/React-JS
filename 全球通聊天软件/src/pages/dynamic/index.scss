@@ -514,6 +514,17 @@
   // .adm-mask {
   //   position: absolute !important;
   // }
+  .adm-dialog-action-row {
+    display: flex;
+    align-items: stretch;
+    border-top: 0.5px solid var(--adm-border-color);
+    .adm-button {
+      color: #ff7a59 !important;
+      &:first-child {
+        border-right: 0.5px solid var(--adm-border-color);
+      }
+    }
+  }
 }
 .NoticeBarName {
   padding: 0.13rem 0rem 0 2.3rem;

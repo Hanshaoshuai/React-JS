@@ -9,7 +9,13 @@ import {
   ActionSheet,
   Dialog,
 } from 'antd-mobile';
-import React, { useEffect, useRef, useState, useContext } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useContext,
+  useCallback,
+} from 'react';
 import { useHistory } from 'react-router-dom';
 import CameraOutList from './cameraOutList';
 import HooksCropperModal from '../HooksCropperModal/HooksCropperModal';
@@ -44,6 +50,7 @@ let videoPlaysBlock = false;
 let urlName = '';
 let urlValue = '';
 let urlValueObj: any = {};
+let deleteImageL: any = [];
 const Dynamic = ({
   name,
   onBack,
@@ -93,7 +100,11 @@ const Dynamic = ({
   const [iframeDisplay, setIframeDisplay] = useState(false);
   const [iframeUrl, setIframeUrl] = useState('');
   const [visibleSheet, setVisibleSheet] = useState(false);
-  const [dynamicDeletionTime, setDynamicDeletionTime] = useState('');
+  const [dynamicDeletionTime, setDynamicDeletionTime] = useState<any>({});
+  const [dynamicEdit, setDynamicEdit] = useState(false);
+  const [textValue, setTextValue] = useState<any>('');
+  const [deleteVideo, setDeleteVideo] = useState<any>('');
+  const [deleteImage, setDeleteImage] = useState<any>([]);
 
   useEffect(() => {
     if (!display && name) {
@@ -258,11 +269,11 @@ const Dynamic = ({
   const onDynamicDeletion = () => {
     dynamicDeletion({
       name: myLocName,
-      time: dynamicDeletionTime,
+      time: dynamicDeletionTime.time,
     }).then((res: any) => {
       if (res.code === 200) {
         console.log(res.data);
-        setDynamicDeletionTime('');
+        setDynamicDeletionTime({});
         history.goBack();
       }
     });
@@ -851,6 +862,41 @@ const Dynamic = ({
     }, 310);
     // back();
   };
+  const onTextArea = useCallback(
+    (node: any) => {
+      if (node) {
+        node.focus();
+      }
+    },
+    [dynamicEdit]
+  );
+  const onCancel = () => {
+    localStorage.removeItem('NestingIframe');
+    setDynamicEdit(false);
+    setDeleteVideo('');
+    setDeleteImage([]);
+    setTextValue('');
+  };
+  const onDetermine = () => {
+    localStorage.removeItem('NestingIframe');
+    setDynamicEdit(false);
+    setDeleteVideo('');
+    setDeleteImage([]);
+    setTextValue('');
+    dynamicDeletion({
+      name: myLocName,
+      time: dynamicDeletionTime.time,
+      textValue,
+      deleteVideo,
+      deleteImage,
+    }).then((res: any) => {
+      if (res.code === 200) {
+        console.log(res.data);
+        setDynamicDeletionTime({});
+        history.goBack();
+      }
+    });
+  };
   return (
     <div
       style={{ display: `${displayBlock ? 'block' : 'none'}` }}
@@ -1052,7 +1098,7 @@ const Dynamic = ({
                       <MoreOutline
                         onClick={() => {
                           setVisibleSheet(true);
-                          setDynamicDeletionTime(item.time);
+                          setDynamicDeletionTime(item);
                           history.push(
                             `/personalInformation${
                               window.location.search
@@ -1569,6 +1615,148 @@ const Dynamic = ({
         cancelText="取消"
         actions={[
           {
+            text: '编辑',
+            key: 'edit',
+            onClick: async () => {
+              setVisibleSheet(false);
+              setDynamicEdit(true);
+              localStorage.setItem('NestingIframe', 'true');
+              // const result = await Dialog.confirm({
+              //   content: (
+              //     <>
+              //       {dynamicDeletionTime.content && (
+              //         <TextArea
+              //           ref={onTextArea}
+              //           // placeholder="请详输入你此时此刻的心情..."
+              //           value={dynamicDeletionTime.content}
+              //           rows={3}
+              //           onChange={(val: any) => {
+              //             setTextValue(val);
+              //           }}
+              //         />
+              //       )}
+              //       {dynamicDeletionTime.imgList ? (
+              //         <div
+              //           style={{
+              //             overflow: 'hidden',
+              //             margin: '0 auto',
+              //             width: '5.05rem',
+              //             paddingLeft: '0.21rem',
+              //           }}
+              //         >
+              //           {dynamicDeletionTime?.imgList.map((item: any) => {
+              //             for (let i = 0; i < deleteImageL.length; i++) {
+              //               if (deleteImageL[i] === item.apathZoom) {
+              //                 return null;
+              //               }
+              //             }
+              //             return (
+              //               <div
+              //                 key={item.apathZoom}
+              //                 style={{
+              //                   position: 'relative',
+              //                   width: '1.1rem',
+              //                   height: '1.1rem',
+              //                   display: 'flex',
+              //                   justifyContent: 'center',
+              //                   alignItems: 'center',
+              //                   overflow: 'hidden',
+              //                   margin: '0 0.13rem 0.13rem 0',
+              //                   float: 'left',
+              //                 }}
+              //               >
+              //                 <img
+              //                   className="imgIndex"
+              //                   src={item.apathZoom}
+              //                   alt=""
+              //                 />
+              //                 <div
+              //                   style={{
+              //                     position: 'absolute',
+              //                     top: '0',
+              //                     left: '0',
+              //                     width: '1.1rem',
+              //                     height: '1.1rem',
+              //                     display: 'flex',
+              //                     justifyContent: 'center',
+              //                     alignItems: 'center',
+              //                     background: 'rgba(0, 0, 0, 0.5)',
+              //                     color: '#ff7a59',
+              //                   }}
+              //                   onClick={() => {
+              //                     deleteImageL = [
+              //                       ...deleteImageL,
+              //                       item.apathZoom,
+              //                     ];
+              //                     console.log(deleteImageL);
+              //                     setDeleteImage(deleteImageL);
+              //                   }}
+              //                 >
+              //                   删除
+              //                 </div>
+              //               </div>
+              //             );
+              //           })}
+              //         </div>
+              //       ) : (
+              //         ''
+              //       )}
+              //       {dynamicDeletionTime.video && !deleteVideo ? (
+              //         <div
+              //           style={{
+              //             width: '100%',
+              //           }}
+              //         >
+              //           <img
+              //             style={{
+              //               position: 'relative',
+              //               width: '100%',
+              //             }}
+              //             className="imgIndex"
+              //             src={dynamicDeletionTime.video.apathZoom}
+              //             alt=""
+              //             // onClick={() => {
+              //             //   videoPlays('play', {
+              //             //     videos_s: `videos${index}`,
+              //             //     videosBox_s: `videosBox${index}`,
+              //             //     videoPlays_s: `videoPlays${index}`,
+              //             //   });
+              //             // }}
+              //           />
+              //           <div
+              //             style={{
+              //               position: 'absolute',
+              //               top: '0',
+              //               left: '0',
+              //               width: '1.1rem',
+              //               height: '1.1rem',
+              //               display: 'flex',
+              //               justifyContent: 'center',
+              //               alignItems: 'center',
+              //               background: 'rgba(0, 0, 0, 0.5)',
+              //               color: '#ff7a59',
+              //             }}
+              //             onClick={() => {
+              //               setDeleteVideo(dynamicDeletionTime.video.apathZoom);
+              //             }}
+              //           >
+              //             删除
+              //           </div>
+              //         </div>
+              //       ) : (
+              //         ''
+              //       )}
+              //     </>
+              //   ),
+              // });
+              // if (result) {
+              //   // onDynamicDeletion();
+              //   localStorage.removeItem('NestingIframe');
+              //   console.log('执行了编辑操作');
+              // }
+            },
+          },
+          {
             text: '删除',
             key: 'delete',
             onClick: async () => {
@@ -1597,6 +1785,163 @@ const Dynamic = ({
           // Toast.show('动作面板已关闭')
         }}
       />
+      {dynamicEdit && (
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            background: 'rgba(0, 0, 0, 0.5)',
+            position: 'absolute',
+            top: '0',
+            left: '0',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 1000000,
+          }}
+        >
+          <div
+            style={{
+              overflow: 'hidden',
+              margin: '0 auto',
+              width: '75vw',
+              background: '#fff',
+              borderRadius: '0.2rem',
+            }}
+          >
+            <div
+              style={{
+                padding: '20px 12px',
+              }}
+            >
+              {dynamicDeletionTime.content && (
+                <TextArea
+                  ref={onTextArea}
+                  // placeholder="请详输入你此时此刻的心情..."
+                  value={textValue || dynamicDeletionTime.content}
+                  rows={3}
+                  onChange={(val: any) => {
+                    setTextValue(val);
+                  }}
+                />
+              )}
+              {dynamicDeletionTime.imgList ? (
+                <div
+                  style={{
+                    overflow: 'hidden',
+                    margin: '0 auto',
+                    width: '5.05rem',
+                    paddingLeft: '0.21rem',
+                  }}
+                >
+                  {dynamicDeletionTime?.imgList.map((item: any) => {
+                    for (let i = 0; i < deleteImage.length; i++) {
+                      if (deleteImage[i] === item.apathZoom) {
+                        return null;
+                      }
+                    }
+                    return (
+                      <div
+                        key={item.apathZoom}
+                        style={{
+                          position: 'relative',
+                          width: '1.1rem',
+                          height: '1.1rem',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          overflow: 'hidden',
+                          margin: '0 0.13rem 0.13rem 0',
+                          float: 'left',
+                        }}
+                      >
+                        <img className="imgIndex" src={item.apathZoom} alt="" />
+                        <div
+                          style={{
+                            position: 'absolute',
+                            top: '0',
+                            left: '0',
+                            width: '1.1rem',
+                            height: '1.1rem',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            background: 'rgba(0, 0, 0, 0.5)',
+                            color: '#ff7a59',
+                          }}
+                          onClick={() => {
+                            setDeleteImage([...deleteImage, item.apathZoom]);
+                          }}
+                        >
+                          删除
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                ''
+              )}
+              {dynamicDeletionTime.video && !deleteVideo ? (
+                <div
+                  style={{
+                    width: '100%',
+                  }}
+                >
+                  <img
+                    style={{
+                      position: 'relative',
+                      width: '100%',
+                    }}
+                    className="imgIndex"
+                    src={dynamicDeletionTime.video.apathZoom}
+                    alt=""
+                  />
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '0',
+                      left: '0',
+                      width: '1.1rem',
+                      height: '1.1rem',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      background: 'rgba(0, 0, 0, 0.5)',
+                      color: '#ff7a59',
+                    }}
+                    onClick={() => {
+                      setDeleteVideo(dynamicDeletionTime.video.apathZoom);
+                    }}
+                  >
+                    删除
+                  </div>
+                </div>
+              ) : (
+                ''
+              )}
+            </div>
+            <div className="adm-dialog-footer">
+              <div className="adm-dialog-action-row">
+                <button
+                  onClick={onCancel}
+                  type="button"
+                  className="adm-button adm-button-primary adm-button-block adm-button-fill-none adm-button-shape-rectangular adm-dialog-button"
+                >
+                  取消
+                </button>
+                <button
+                  onClick={onDetermine}
+                  type="button"
+                  className="adm-button adm-button-primary adm-button-block adm-button-fill-none adm-button-shape-rectangular adm-dialog-button adm-dialog-button-bold"
+                >
+                  确认
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
