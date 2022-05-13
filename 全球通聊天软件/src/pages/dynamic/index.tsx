@@ -866,7 +866,6 @@ const Dynamic = ({
     (node: any) => {
       if (node) {
         node.focus();
-        console.log(node, node.id);
       }
     },
     [dynamicEdit]
@@ -1803,125 +1802,137 @@ const Dynamic = ({
         >
           <div
             style={{
-              overflow: 'hidden',
-              margin: '0 auto',
+              position: 'relative',
               width: '75vw',
+              height: '50%',
               background: '#fff',
               borderRadius: '0.2rem',
             }}
           >
             <div
               style={{
-                padding: '20px 12px',
+                overflowY: 'auto',
+                margin: '0 auto',
+                width: '100%',
+                height: '100%',
               }}
             >
-              {dynamicDeletionTime.content && (
-                <TextArea
-                  ref={onTextArea}
-                  id={dynamicDeletionTime.content}
-                  // placeholder="请详输入你此时此刻的心情..."
-                  value={textValue || dynamicDeletionTime.content}
-                  rows={3}
-                  onChange={(val: any) => {
-                    setTextValue(val);
-                  }}
-                />
-              )}
-              {dynamicDeletionTime.imgList ? (
-                <div
-                  style={{
-                    overflow: 'hidden',
-                    margin: '0 auto',
-                    width: '5.05rem',
-                    paddingLeft: '0.21rem',
-                  }}
-                >
-                  {dynamicDeletionTime?.imgList.map((item: any) => {
-                    for (let i = 0; i < deleteImage.length; i++) {
-                      if (deleteImage[i] === item.apathZoom) {
-                        return null;
+              <div
+                style={{
+                  padding: '20px 12px',
+                }}
+              >
+                {dynamicDeletionTime.content && (
+                  <TextArea
+                    ref={onTextArea}
+                    // placeholder="请详输入你此时此刻的心情..."
+                    value={textValue || dynamicDeletionTime.content}
+                    rows={3}
+                    onChange={(val: any) => {
+                      setTextValue(val);
+                    }}
+                  />
+                )}
+                {dynamicDeletionTime.imgList ? (
+                  <div
+                    style={{
+                      overflow: 'hidden',
+                      margin: '0 auto',
+                      width: '5.05rem',
+                      paddingLeft: '0.21rem',
+                    }}
+                  >
+                    {dynamicDeletionTime?.imgList.map((item: any) => {
+                      for (let i = 0; i < deleteImage.length; i++) {
+                        if (deleteImage[i] === item.apathZoom) {
+                          return null;
+                        }
                       }
-                    }
-                    return (
-                      <div
-                        key={item.apathZoom}
-                        style={{
-                          position: 'relative',
-                          width: '1.1rem',
-                          height: '1.1rem',
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          overflow: 'hidden',
-                          margin: '0 0.13rem 0.13rem 0',
-                          float: 'left',
-                        }}
-                      >
-                        <img className="imgIndex" src={item.apathZoom} alt="" />
+                      return (
                         <div
+                          key={item.apathZoom}
                           style={{
-                            position: 'absolute',
-                            top: '0',
-                            left: '0',
+                            position: 'relative',
                             width: '1.1rem',
                             height: '1.1rem',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            background: 'rgba(0, 0, 0, 0.5)',
-                            color: '#ff7a59',
-                          }}
-                          onClick={() => {
-                            setDeleteImage([...deleteImage, item.apathZoom]);
+                            overflow: 'hidden',
+                            margin: '0 0.13rem 0.13rem 0',
+                            float: 'left',
                           }}
                         >
-                          删除
+                          <img
+                            className="imgIndex"
+                            src={item.apathZoom}
+                            alt=""
+                          />
+                          <div
+                            style={{
+                              position: 'absolute',
+                              top: '0',
+                              left: '0',
+                              width: '1.1rem',
+                              height: '1.1rem',
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              background: 'rgba(0, 0, 0, 0.5)',
+                              color: '#ff7a59',
+                            }}
+                            onClick={() => {
+                              setDeleteImage([...deleteImage, item.apathZoom]);
+                            }}
+                          >
+                            删除
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : (
-                ''
-              )}
-              {dynamicDeletionTime.video && !deleteVideo ? (
-                <div
-                  style={{
-                    width: '100%',
-                  }}
-                >
-                  <img
-                    style={{
-                      position: 'relative',
-                      width: '100%',
-                    }}
-                    className="imgIndex"
-                    src={dynamicDeletionTime.video.apathZoom}
-                    alt=""
-                  />
+                      );
+                    })}
+                  </div>
+                ) : (
+                  ''
+                )}
+                {dynamicDeletionTime.video && !deleteVideo ? (
                   <div
                     style={{
-                      position: 'absolute',
-                      top: '0',
-                      left: '0',
-                      width: '1.1rem',
-                      height: '1.1rem',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      background: 'rgba(0, 0, 0, 0.5)',
-                      color: '#ff7a59',
-                    }}
-                    onClick={() => {
-                      setDeleteVideo(dynamicDeletionTime.video.apathZoom);
+                      width: '100%',
+                      position: 'relative',
                     }}
                   >
-                    删除
+                    <img
+                      style={{
+                        width: '100%',
+                      }}
+                      className="imgIndex"
+                      src={dynamicDeletionTime.video.apathZoom}
+                      alt=""
+                    />
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '0',
+                        left: '0',
+                        width: '1.1rem',
+                        height: '1.1rem',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        background: 'rgba(0, 0, 0, 0.5)',
+                        color: '#ff7a59',
+                      }}
+                      onClick={() => {
+                        setDeleteVideo(dynamicDeletionTime.video.apathZoom);
+                      }}
+                    >
+                      删除
+                    </div>
                   </div>
-                </div>
-              ) : (
-                ''
-              )}
+                ) : (
+                  ''
+                )}
+              </div>
             </div>
             <div className="adm-dialog-footer">
               <div className="adm-dialog-action-row">

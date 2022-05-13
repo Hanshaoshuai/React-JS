@@ -1302,7 +1302,7 @@ const onFilter = (List, reqs) => {
     newList = List.map((item) => {
       if (item.time === reqs.time) {
         item.content = reqs.textValue ? reqs.textValue : item.content
-        item.video = reqs.deleteVideo ? {} : item.video
+        item.video = reqs.deleteVideo ? '' : item.video
         if (reqs?.deleteImage?.length && item.imgList && item.imgList !== null && item.imgList !== 'null') {
           let list = JSON.parse(item.imgList)
           list = list.filter((term) => {
