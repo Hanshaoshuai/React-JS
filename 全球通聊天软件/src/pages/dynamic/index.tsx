@@ -866,6 +866,7 @@ const Dynamic = ({
     (node: any) => {
       if (node) {
         node.focus();
+        console.log(node, node.id);
       }
     },
     [dynamicEdit]
@@ -1817,6 +1818,7 @@ const Dynamic = ({
               {dynamicDeletionTime.content && (
                 <TextArea
                   ref={onTextArea}
+                  id={dynamicDeletionTime.content}
                   // placeholder="请详输入你此时此刻的心情..."
                   value={textValue || dynamicDeletionTime.content}
                   rows={3}

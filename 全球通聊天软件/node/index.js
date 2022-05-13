@@ -1301,10 +1301,11 @@ const onFilter = (List, reqs) => {
   if (reqs.textValue || reqs.deleteVideo || reqs.deleteImage) {
     newList = List.map((item) => {
       if (item.time === reqs.time) {
-        item.content = reqs.textValue
-        item.video = reqs.deleteVideo ? {} : ''
+        item.content = reqs.textValue ? reqs.textValue : item.content
+        item.video = reqs.deleteVideo ? {} : item.video
         if (reqs?.deleteImage?.length && item.imgList && item.imgList !== null && item.imgList !== 'null') {
-          item.imgList = item.imgList.filter((term) => {
+          let list = JSON.parse(item.imgList)
+          list = list.filter((term) => {
             for (let i = 0; i < reqs.deleteImage.length; i++) {
               if (term.apathZoom === reqs.deleteImage[i]) {
                 return false
@@ -1312,6 +1313,7 @@ const onFilter = (List, reqs) => {
             }
             return true
           })
+          item.imgList = JSON.stringify(list)
         }
       }
       return item;
