@@ -1303,8 +1303,8 @@ const onFilter = (List, reqs) => {
       if (item.time === reqs.time) {
         item.content = reqs.textValue
         item.video = reqs.deleteVideo ? {} : ''
-        if (reqs?.deleteImage?.length) {
-          item.imgList = item?.imgList.filter((term) => {
+        if (reqs?.deleteImage?.length && item.imgList) {
+          item.imgList = item.imgList.filter((term) => {
             for (let i = 0; i < reqs.deleteImage.length; i++) {
               if (term.apathZoom === reqs.deleteImage[i]) {
                 return false
