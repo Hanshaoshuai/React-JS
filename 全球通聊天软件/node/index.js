@@ -1298,12 +1298,12 @@ app.post('/getCircleFriends', (req, res) => {
 })
 const onFilter = (List, reqs) => {
   let newList = []
-  if (reqs.textValue) {
+  if (reqs.textValue || reqs.deleteVideo || reqs.deleteImage) {
     newList = List.map((item) => {
       if (item.time === reqs.time) {
         item.content = reqs.textValue
         item.video = reqs.deleteVideo ? {} : ''
-        if (reqs?.deleteImage?.length && item.imgList) {
+        if (reqs?.deleteImage?.length && item.imgList && item.imgList !== null && item.imgList !== 'null') {
           item.imgList = item.imgList.filter((term) => {
             for (let i = 0; i < reqs.deleteImage.length; i++) {
               if (term.apathZoom === reqs.deleteImage[i]) {
