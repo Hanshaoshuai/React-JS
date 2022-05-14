@@ -62,7 +62,7 @@ const VideoCallPlay = ({
       // console.log('newcomerOnline===>>>', name, socketId, text);
       if (text === '下线') {
         localStorage.removeItem('friendSocketId');
-        clearIntervals();
+        clearIntervals('异常中断');
       }
     });
     window.socket.on('switch', ({ to, sender, text }: any) => {
@@ -179,9 +179,11 @@ const VideoCallPlay = ({
       endTime: new Date().getTime(),
       operator: myLocName,
     });
+    localStorage.removeItem('startTime');
+    localStorage.removeItem('friendSocketId');
   };
 
-  const clearIntervals = () => {
+  const clearIntervals = (text: any) => {
     setActionNames('');
     // 向对方通知挂断
     Camera({ close: true });
@@ -190,21 +192,7 @@ const VideoCallPlay = ({
       sender: mySocketId,
       text: '挂断',
     });
-    localStorage.removeItem('startTime');
-    localStorage.removeItem('friendSocketId');
-    if (localVideo?.current) {
-      // console.log('关闭===>>>>', localVideo.current);
-      localVideo.current.srcObject?.getTracks().forEach((track: any) => {
-        track.enabled = false;
-        track.stop();
-      });
-    }
-    if (localAudio?.current) {
-      localAudio.current.srcObject?.getTracks().forEach((track: any) => {
-        track.enabled = false;
-        track.stop();
-      });
-    }
+
     if (!start) {
       if (call) {
         // videoCallCancel('取消通话');
@@ -215,7 +203,20 @@ const VideoCallPlay = ({
       }
     } else {
       // videoCallCancel('通话结束');
-      onChange('结束');
+      onChange(text ? '异常中断' : '结束');
+    }
+    if (localVideo?.current) {
+      // console.log('关闭===>>>>', localVideo.current);
+      localVideo.current?.srcObject?.getTracks().forEach((track: any) => {
+        track.enabled = false;
+        track.stop();
+      });
+    }
+    if (localAudio?.current) {
+      localAudio.current?.srcObject?.getTracks().forEach((track: any) => {
+        track.enabled = false;
+        track.stop();
+      });
     }
   };
   const onSwitchVideo = () => {
