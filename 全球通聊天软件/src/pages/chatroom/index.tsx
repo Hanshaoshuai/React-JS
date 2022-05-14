@@ -37,6 +37,8 @@ import { FileUpload } from '../A-components/fileUpload';
 import Spins from '../A-Spin';
 import NestingIframe from '../nestingIframe/nestingIframe';
 import { startRecord, stopRecord } from './audios';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSchedule } from '../../actions';
 
 import {
   requestMessage,
@@ -78,13 +80,14 @@ let contentListChange: any = [];
 let deleteOutlineList: any = [];
 
 const ChatList = () => {
+  const dispatchs = useDispatch();
   const chatNames: any = localStorage.getItem('toChatName');
   const agreess: any = useRef();
   const texts: any = useRef();
   const boxTextes: any = useRef();
   const contentScroll: any = useRef();
   const history = useHistory();
-  const { messages } = useContext(MyContext);
+  const { messages, dispatch } = useContext(MyContext);
   const [tabShow, setTabShow] = useState<any>(false);
   const [expressionShow, setExpressionShow] = useState(false);
   const [addAnothers, setAddAnothers] = useState(false);
@@ -172,26 +175,26 @@ const ChatList = () => {
     page = 1;
     scrollSize = 0;
 
-    window.socket.on('call', ({ to, sender }: any) => {
-      // console.log(to, sender);
-      // clearInterval(window.setTime);
-      localStorage.setItem('NestingIframe', 'true');
-      setVideoCalls(true);
-      setCall(false);
-    });
+    // window.socket.on('call', ({ to, sender }: any) => {
+    //   // console.log(to, sender);
+    //   // clearInterval(window.setTime);
+    //   localStorage.setItem('NestingIframe', 'true');
+    //   setVideoCalls(true);
+    //   setCall(false);
+    // });
 
-    window.socket.on('respond', ({ to, sender, text }: any) => {
-      // console.log('接听+++++++====>>>>', to, sender, text);
-      if (text === '挂断') {
-        window.time = setTimeout(() => {
-          setVideoCalls(false);
-          setStartCall(false);
-          setCall(false);
-          clearTimeout(window.time);
-          localStorage.removeItem('NestingIframe');
-        }, 500);
-      }
-    });
+    // window.socket.on('respond', ({ to, sender, text }: any) => {
+    //   // console.log('接听+++++++====>>>>', to, sender, text);
+    //   if (text === '挂断') {
+    //     window.time = setTimeout(() => {
+    //       setVideoCalls(false);
+    //       setStartCall(false);
+    //       setCall(false);
+    //       clearTimeout(window.time);
+    //       localStorage.removeItem('NestingIframe');
+    //     }, 500);
+    //   }
+    // });
     window.socket.on('newcomerOnline', ({ name, socketId, text }: any) => {
       // console.log('newcomerOnline===>>>', name, socketId, text);
       if (text === '上线' && name === toChatName) {
@@ -320,12 +323,30 @@ const ChatList = () => {
   };
 
   const onSetVideoCalls = (text: string) => {
+    if (videoCalls) {
+      Toast.show({
+        content: '不可以同时进行多方通话！',
+        position: 'top',
+      });
+    }
+    dispatch({
+      type: 'videoCall',
+      videoCall: true,
+    });
+    dispatch({
+      type: 'textActionName',
+      textActionName: text,
+    });
+    dispatchs({
+      type: 'textActionName',
+      textActionName: text,
+    });
     setCall(true);
     setVideoCalls(true);
     setActionName(text);
     setExpressionShow(false);
     setAddAnothers(false);
-    localStorage.setItem('NestingIframe', 'true');
+    // localStorage.setItem('NestingIframe', 'true');
   };
 
   const videoCallCancel = (text: string) => {
@@ -3245,7 +3266,7 @@ const ChatList = () => {
           </div>
         )}
       </div>
-      {videoCalls && (
+      {/* {videoCalls && (
         <VideoCallPlay
           call={call}
           onStartQuery={videoCalls}
@@ -3257,7 +3278,7 @@ const ChatList = () => {
           myLocName={myLocName}
           startCall={startCall}
         />
-      )}
+      )} */}
       <NestingIframe
         title={iframeTitle}
         display={display}

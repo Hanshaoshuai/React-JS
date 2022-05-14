@@ -1,4 +1,10 @@
-export function Drag(mv: any, box = document.body) {
+export function Drag({ mv, box = document.body, slide, onSlideChange }: any) {
+  // mv:要移动的dom
+  // box: 参照的dom
+  // slide：只获取鼠标移动数据  onSlideChange 为回调获取数据
+  if (!mv) {
+    mv = document.body;
+  }
   var startx = 0;
   var starty: any;
   var startLeft: any;
@@ -29,6 +35,13 @@ export function Drag(mv: any, box = document.body) {
     e = e ? e : window.event;
     // console.log(e);
     if (isDown) {
+      if (slide) {
+        onSlideChange({
+          x: (e.clientX || e.touches['0']?.clientX) - startx,
+          y: (e.clientY || e.touches['0']?.clientY) - starty,
+        });
+        return;
+      }
       var lefts = (e.clientX || e.touches['0']?.clientX) - (startx - startLeft);
       var tops = (e.clientY || e.touches['0']?.clientY) - (starty - startTop);
       if (lefts <= 0) {
@@ -54,6 +67,11 @@ export function Drag(mv: any, box = document.body) {
     }
   };
   var moveup = function () {
+    if (onSlideChange) {
+      onSlideChange({
+        touchend: true,
+      });
+    }
     isDown = false;
     if (!window.captureEvents) {
       // releaseCapture();
@@ -69,12 +87,12 @@ export function Drag(mv: any, box = document.body) {
     console.log('平板');
     mv.ontouchstart = movedown;
     mv.ontouchmove = move;
-    // mv.ontouchend = moveup;
+    mv.ontouchend = moveup;
   } else {
     console.log('手机');
     mv.ontouchstart = movedown;
     mv.ontouchmove = move;
-    // mv.ontouchend = moveup;
+    mv.ontouchend = moveup;
   }
 
   //   var mover = new Mover(

@@ -6,6 +6,8 @@ const settings: string = '?personal=1';
 const urlPathname: any = {};
 const recordUrl: any = { list: ['/'], returnTarget: '/' };
 const videoPlaysBlock: any = false;
+const videoCall: any = false;
+const textActionName: any = '';
 
 export default function initStates() {
   return {
@@ -17,5 +19,7 @@ export default function initStates() {
     urlPathname,
     recordUrl,
     videoPlaysBlock,
+    videoCall,
+    textActionName,
   };
 }

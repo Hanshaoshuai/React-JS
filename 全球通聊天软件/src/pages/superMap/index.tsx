@@ -204,7 +204,7 @@ const SuperMap = ({ callback }: any) => {
   useEffect(() => {
     initialization();
     if (infoBoxContainer) {
-      Drag(infoBoxContainer.current);
+      Drag({ mv: infoBoxContainer.current });
     }
   }, []);
   const reset = () => {

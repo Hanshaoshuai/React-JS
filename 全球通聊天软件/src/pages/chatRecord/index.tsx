@@ -129,21 +129,21 @@ const ChatRecord = () => {
         }
       }
     });
-    window.socket.on('call', ({ to, sender, headPortrait }: any) => {
-      localStorage.setItem('friendSocketId', sender);
-      localStorage.setItem('headPortrait', headPortrait);
-      setVideoCalls(true);
-    });
-    window.socket.on('respond', ({ to, sender, text }: any) => {
-      // console.log('挂断===》》》', to, sender);
-      if (text === '挂断') {
-        window.time = setTimeout(() => {
-          localStorage.removeItem('NestingIframe');
-          setVideoCalls(false);
-          clearTimeout(window.time);
-        }, 500);
-      }
-    });
+    // window.socket.on('call', ({ to, sender, headPortrait }: any) => {
+    //   localStorage.setItem('friendSocketId', sender);
+    //   localStorage.setItem('headPortrait', headPortrait);
+    //   setVideoCalls(true);
+    // });
+    // window.socket.on('respond', ({ to, sender, text }: any) => {
+    //   // console.log('挂断===》》》', to, sender);
+    //   if (text === '挂断') {
+    //     window.time = setTimeout(() => {
+    //       localStorage.removeItem('NestingIframe');
+    //       setVideoCalls(false);
+    //       clearTimeout(window.time);
+    //     }, 500);
+    //   }
+    // });
   }, []);
   useEffect(() => {
     //消息监听
@@ -215,20 +215,20 @@ const ChatRecord = () => {
     await onGetList();
   };
 
-  const videoCallCancel = () => {
-    setVideoCalls(false);
-    setOnFinish(false);
-    if (onFinish) return;
-    window.socket.emit('clientmessage', {
-      fromName: localName,
-      toName: localStorage.getItem('toChatName') || '',
-      text: `${'通话'}结束`,
-      VideoAndVoice: '通话结束',
-      conversation: true,
-      startTime: localStorage.getItem('startTime'),
-      endTime: new Date().getTime(),
-    });
-  };
+  // const videoCallCancel = () => {
+  //   setVideoCalls(false);
+  //   setOnFinish(false);
+  //   if (onFinish) return;
+  //   window.socket.emit('clientmessage', {
+  //     fromName: localName,
+  //     toName: localStorage.getItem('toChatName') || '',
+  //     text: `${'通话'}结束`,
+  //     VideoAndVoice: '通话结束',
+  //     conversation: true,
+  //     startTime: localStorage.getItem('startTime'),
+  //     endTime: new Date().getTime(),
+  //   });
+  // };
 
   const getBuddyLists = (location?: string) => {
     if (getBuddyListsL && getBuddyListsL.length > 0) {
@@ -943,7 +943,7 @@ const ChatRecord = () => {
           <Spins styleSize={[65, 33]} color={'#ff7a59'} fontSize={'33px'} />
         )}
       </div>
-      {videoCalls && fromName && (
+      {/* {videoCalls && fromName && (
         <VideoCallPlay
           call={false}
           onStartQuery={videoCalls}
@@ -954,7 +954,7 @@ const ChatRecord = () => {
           myLocName={localName}
           chatNames={fromName}
         />
-      )}
+      )} */}
     </>
   );
 };

@@ -1,13 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Toast } from 'antd-mobile';
 import { Camera } from './camera';
+import { Drag } from '../../helpers';
 declare global {
   interface Window {
     Peer: any;
     setTime: any;
   }
 }
-
+let slideChange: any = {};
 const VideoCallPlay = ({
   call, // 开始按钮
   onStartQuery,
@@ -30,24 +31,22 @@ const VideoCallPlay = ({
   const [headPortraits, setHeadPortraits] = useState(
     localStorage.getItem('headPortrait') || ''
   );
+  const [switchVideo, setSwitchVideo] = useState(false);
+  const [slide, setSlideChange] = useState<any>({ x: 0, y: 0 });
+  const [narrow, setNarrow] = useState<any>(false);
 
   useEffect(() => {
-    // console.log('onStartQuery===>>>>', onStartQuery);
     if (onStartQuery && call) {
-      // console.log('socket123===>>>>', window.socket.id);
-      // window.setTime = setInterval(() => {
       window.socket.emit('call', {
         to: friendSocketId,
         sender: window.socket.id,
         headPortrait: localStorage.getItem('myHeadPortrait'),
       }); // 发送 呼叫
-      // }, 1000);
     }
   }, [onStartQuery]);
 
   useEffect(() => {
     if (actionName) {
-      // console.log('actionName====>>>', actionName);
       Camera({
         localVideoElm: localVideo,
         remoteVideo,
@@ -82,7 +81,6 @@ const VideoCallPlay = ({
     });
     window.socket.on('call', ({ to, sender, headPortrait }: any) => {
       // console.log(to, sender);
-      // clearInterval(window.setTime);
       setHeadPortraits(headPortrait);
       localStorage.setItem('NestingIframe', 'true');
     });
@@ -94,7 +92,20 @@ const VideoCallPlay = ({
         setCallStarted(true);
       }
     });
+    Drag({ slide: true, onSlideChange });
   }, []);
+
+  const onSlideChange = ({ x, y, touchend }: any) => {
+    // console.log(x, y, touchend, slideChange, slideChange.y < -100);
+    if (touchend && slideChange.y < -100) {
+      setNarrow(true);
+    } else if (touchend) {
+      setSlideChange({ x: 0, y: 0 });
+    } else {
+      setSlideChange({ x, y });
+      slideChange = { x, y };
+    }
+  };
 
   const onSwitch = (test: string) => {
     if (localVideo.current) {
@@ -158,7 +169,6 @@ const VideoCallPlay = ({
   const clearIntervals = () => {
     setActionNames('');
     // 向对方通知挂断
-    // console.log('向对方通知挂断');
     Camera({ close: true });
     window.socket.emit('respond', {
       to: friendSocketId,
@@ -178,93 +188,152 @@ const VideoCallPlay = ({
       onChange('结束');
     }
   };
+  const onSwitchVideo = () => {
+    if (!switchVideo) {
+      setSwitchVideo(!switchVideo);
+    }
+  };
+  const onSwitchVideoRemo = () => {
+    if (switchVideo) {
+      setSwitchVideo(!switchVideo);
+    }
+  };
+  const styles = {
+    width: '1.3rem',
+    height: '1.3rem',
+    borderRadius: '8px',
+  };
+
+  const infoBoxContainer = useCallback(
+    (node) => {
+      if (node && narrow) {
+        Drag({ mv: node });
+        node.style.left = '';
+        node.style.top = '';
+      } else if (node) {
+        // node.style.transform = `scale(1, ${1 - slide.y / 100}) translateZ(0)`;
+        // node.style.transition = '0ms cubic-bezier(.1, .57, .1, 1)';
+      }
+    },
+    [narrow]
+  );
 
   return (
-    <div className="videoCall">
-      <video
-        muted={true}
-        id="remoteVideo"
-        autoPlay={true}
-        // playsinline
-        ref={remoteVideo}
-        style={{
-          display: `${actionNames === '切换语音' ? 'block' : 'none'}`,
-        }}
-      ></video>
-      <div className="videoCall-button">
-        {
-          <>
-            <div className="videoCall-switch-box">
-              <div className="videoCall-cancel" onClick={clearIntervals}>
-                {call && !callStarted ? '取消' : '挂断'}
-              </div>
-            </div>
-            <div className="videoCall-switch-box">
-              {start || call ? (
-                <div
-                  className="videoCall-cancel-center"
-                  onClick={clearIntervals}
-                >
-                  关闭
-                </div>
-              ) : (
-                <div
-                  className="videoCall-cancel-center videoCall-cancel-center-srart"
-                  onClick={startIntervals}
-                >
-                  接听
-                </div>
-              )}
-            </div>
-            <div className="videoCall-switch-box">
-              <div className="videoCall-switch" onClick={onActionName}>
-                {actionNames}
-              </div>
-            </div>
-          </>
-        }
-      </div>
+    <div
+      className={`videoCall ${narrow ? 'dragName' : 'dragNameNone'}`}
+      ref={infoBoxContainer}
+    >
+      {narrow && (
+        <img
+          onClick={() => {
+            slideChange = {};
+            setNarrow(false);
+          }}
+          style={styles}
+          src={headPortraits}
+          alt=""
+        />
+      )}
       <div
-        className="videoCall-vice"
-        style={{ display: `${actionNames === '切换语音' ? 'block' : 'none'}` }}
+        style={{
+          display: `${!narrow ? 'block' : 'none'}`,
+          width: '100%',
+          height: '100%',
+        }}
       >
-        <video
-          muted={true}
-          id="localVideo"
-          autoPlay={true}
-          // playsinline
-          ref={localVideo}
-        ></video>
-      </div>
-      {actionNames !== '切换语音' && (
         <div
+          onClick={onSwitchVideoRemo}
+          className={`${switchVideo ? 'videoCall-vice' : 'remoteVideo'}`}
+        >
+          <video
+            muted={true}
+            id="remoteVideo"
+            autoPlay={true}
+            // playsinline
+            ref={remoteVideo}
+            style={{
+              display: `${actionNames === '切换语音' ? 'block' : 'none'}`,
+            }}
+          ></video>
+        </div>
+        <div className="videoCall-button">
+          {
+            <>
+              <div className="videoCall-switch-box">
+                <div className="videoCall-cancel" onClick={clearIntervals}>
+                  {call && !callStarted ? '取消' : '挂断'}
+                </div>
+              </div>
+              <div className="videoCall-switch-box">
+                {start || call ? (
+                  <div
+                    className="videoCall-cancel-center"
+                    onClick={clearIntervals}
+                  >
+                    关闭
+                  </div>
+                ) : (
+                  <div
+                    className="videoCall-cancel-center videoCall-cancel-center-srart"
+                    onClick={startIntervals}
+                  >
+                    接听
+                  </div>
+                )}
+              </div>
+              <div className="videoCall-switch-box">
+                <div className="videoCall-switch" onClick={onActionName}>
+                  {actionNames}
+                </div>
+              </div>
+            </>
+          }
+        </div>
+        <div
+          onClick={onSwitchVideo}
+          className={`${!switchVideo ? 'videoCall-vice' : 'remoteVideo'}`}
           style={{
-            position: 'absolute',
-            width: '1.9rem',
-            height: '1.9rem',
-            top: 0,
-            left: 0,
-            bottom: '20%',
-            right: 0,
-            margin: 'auto',
+            display: `${actionNames === '切换语音' ? 'block' : 'none'}`,
           }}
         >
-          <img
-            style={{ width: '100%', height: '100%' }}
-            src={headPortraits}
-            alt=""
-          />
+          <video
+            muted={true}
+            id="localVideo"
+            autoPlay={true}
+            // playsinline
+            ref={localVideo}
+          ></video>
         </div>
-      )}
-      <audio
-        style={{ display: 'none' }}
-        id="local-audio"
-        ref={localAudio}
-        autoPlay={true}
-        controls
-      >
-        播放麦克风捕获的声音
-      </audio>
+        {actionNames !== '切换语音' && (
+          <div
+            style={{
+              position: 'absolute',
+              width: '1.9rem',
+              height: '1.9rem',
+              top: 0,
+              left: 0,
+              bottom: '20%',
+              right: 0,
+              margin: 'auto',
+            }}
+          >
+            <img
+              style={{ width: '100%', height: '100%' }}
+              src={headPortraits}
+              alt=""
+            />
+          </div>
+        )}
+        <audio
+          style={{ display: 'none' }}
+          id="local-audio"
+          ref={localAudio}
+          autoPlay={true}
+          controls
+        >
+          播放麦克风捕获的声音
+        </audio>
+      </div>
     </div>
   );
 };

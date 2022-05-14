@@ -1,12 +1,10 @@
 const initialState = {
   data: 'reducer',
   list: [],
+  textActionName: '',
 };
 
-export const schedule = (
-  state = initialState,
-  action: { type: any; data: any }
-) => {
+export const schedule = (state = initialState, action: any) => {
   // debugger
   switch (action.type) {
     case 'SET_SCHEDULE':
@@ -14,6 +12,11 @@ export const schedule = (
         ...state,
         data: action.data.data || '',
         list: action.data.list || [],
+      };
+    case 'textActionName':
+      return {
+        ...state,
+        textActionName: action.textActionName || '',
       };
     default:
       return state;

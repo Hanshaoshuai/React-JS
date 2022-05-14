@@ -1,5 +1,5 @@
 import './App.scss';
-import React, { useReducer, useState, useEffect } from 'react';
+import React, { useReducer, useState, useEffect, useMemo } from 'react';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSchedule } from './actions';
@@ -9,6 +9,7 @@ import { MyContext } from './models/context';
 import { APIS } from './api/ip';
 import SuperMap from './pages/superMap';
 import CompassClock from './pages/compassClock';
+import VideoCallPlay from './pages/chatroom/videoCallPlayCall';
 
 // const io = require("socket.io");
 import io from 'socket.io-client';
@@ -42,14 +43,33 @@ const states: any = state();
 const reducer: any = reducers();
 export default function App() {
   const dispatchs = useDispatch();
+
   const schedule: any = useSelector<any>((state) => state.schedule);
+  const { textActionName } = schedule;
   const [myLocName] = useState<any>(localStorage.getItem('name'));
   let indexId: any = 0;
   // console.log(schedule);
   const [state, dispatch] = useReducer(reducer, states);
+  const { videoCall, list }: any = state;
   const [messages, setMessages] = useState<any>({});
   const [superMaps, setSuperMaps] = useState(true);
   const [Clock, setClock] = useState(true);
+  const [toChatName] = useState<any>(localStorage.getItem('toChatName'));
+  const [locMyName] = useState(localStorage.getItem('myName'));
+  const [videoCalls, setVideoCalls] = useState(false);
+  const [startCall, setStartCall] = useState(false);
+  const [call, setCall] = useState(false);
+  const [actionName, setActionName] = useState('');
+  const [onFinish, setOnFinish] = useState(false);
+
+  useEffect(() => {
+    // console.log(videoCall, list, schedule, textActionName);
+    if (videoCall && textActionName) {
+      setCall(videoCall);
+      setVideoCalls(true);
+      setActionName(textActionName);
+    }
+  }, [videoCall, textActionName, list]);
 
   useEffect(() => {
     window.socket.on('message', function (data: any) {
@@ -62,6 +82,34 @@ export default function App() {
         list: [1, 2, 3],
       })
     );
+
+    // 视频语音通话部分
+    window.socket.on('call', ({ to, sender, headPortrait }: any) => {
+      localStorage.setItem('friendSocketId', sender);
+      localStorage.setItem('headPortrait', headPortrait);
+      setVideoCalls(true);
+      setCall(false);
+    });
+    window.socket.on('respond', ({ to, sender, text }: any) => {
+      // console.log('接听+++++++====>>>>', to, sender, text);
+      if (text === '挂断') {
+        window.time = setTimeout(() => {
+          dispatchs({
+            type: 'videoCall',
+            videoCall: false,
+          });
+          dispatchs({
+            type: 'textActionName',
+            textActionName: '',
+          });
+          setVideoCalls(false);
+          setStartCall(false);
+          setCall(false);
+          clearTimeout(window.time);
+          localStorage.removeItem('NestingIframe');
+        }, 500);
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -94,6 +142,30 @@ export default function App() {
         indexId = 0;
       }
     }
+
+    // 视频语音通话部分
+    if (
+      messages?.text?.toName === myLocName ||
+      messages?.text?.fromName === myLocName
+    ) {
+      if (messages?.text?.VideoAndVoice === '视频') {
+        setVideoCalls(true);
+        setActionName('切换语音');
+        localStorage.setItem('startTime', messages?.text?.startTime);
+      } else if (messages?.text?.VideoAndVoice === '语音') {
+        setVideoCalls(true);
+        setActionName('静音');
+        localStorage.setItem('startTime', messages?.text?.startTime);
+      } else if (messages?.text?.conversation) {
+        window.time = setTimeout(() => {
+          setVideoCalls(false);
+          setCall(false);
+          clearTimeout(window.time);
+          localStorage.removeItem('NestingIframe');
+        }, 500);
+        localStorage.removeItem('NestingIframe');
+      }
+    }
   }, [messages]);
 
   const destroyGlobalSpinner = () => {
@@ -123,6 +195,22 @@ export default function App() {
   const callbackMap = () => {
     setSuperMaps(false);
   };
+
+  const videoDom = useMemo(() => {
+    return (
+      <VideoCallPlay
+        call={call}
+        onStartQuery={videoCalls}
+        actionName={actionName}
+        onFinish={onFinish}
+        chatNames={toChatName}
+        locMyName={locMyName}
+        myLocName={myLocName}
+        startCall={startCall}
+      />
+    );
+  }, [videoCalls]);
+
   return (
     <>
       {Clock && (
@@ -132,6 +220,7 @@ export default function App() {
       )}
       {superMaps && <SuperMap callback={callbackMap} />}
       <audio id="play" src="/mp3/1.mp3"></audio>
+      {videoCalls && videoDom}
       <Router>
         <MyContext.Provider value={{ state, dispatch, messages }}>
           <Switch>

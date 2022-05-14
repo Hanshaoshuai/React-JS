@@ -20,6 +20,12 @@ const reducer = (state: any, action: any) => {
       return Object.assign({}, state, {
         videoPlaysBlock: action.videoPlaysBlock,
       });
+    case 'videoCall':
+      return Object.assign({}, state, { videoCall: action.videoCall });
+    case 'textActionName':
+      return Object.assign({}, state, {
+        textActionName: action.textActionName,
+      });
     default:
       return state;
   }
