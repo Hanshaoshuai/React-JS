@@ -203,7 +203,7 @@ const VideoCallPlay = ({
       }
     } else {
       // videoCallCancel('通话结束');
-      onChange(text ? '异常中断' : '结束');
+      onChange(text === '异常中断' ? '异常中断' : '结束');
     }
     if (localVideo?.current) {
       // console.log('关闭===>>>>', localVideo.current);
