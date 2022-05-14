@@ -94,6 +94,8 @@ export default function App() {
     window.socket.on('respond', ({ to, sender, text }: any) => {
       // console.log('接听+++++++====>>>>', to, sender, text);
       if (text === '挂断') {
+        localStorage.removeItem('startTime');
+        localStorage.removeItem('friendSocketId');
         window.time = setTimeout(() => {
           dispatchs({
             type: 'videoCall',

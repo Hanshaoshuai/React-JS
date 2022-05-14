@@ -355,7 +355,9 @@ const ChatRecord = () => {
     socketId: any
   ) => {
     //			console.log(remarksNuber,textName,groupOwner,localNumber,nickNameGrou,nickName1,text,fromName,toName,friendName,toNames,headPortrait,sex,toFriends);
-    localStorage.setItem('friendSocketId', socketId);
+    if (!localStorage.getItem('friendSocketId')) {
+      localStorage.setItem('friendSocketId', socketId);
+    }
     localStorage.setItem('textName', textName);
     localStorage.setItem('remarksNuber', remarksNuber);
     if (groupName) {

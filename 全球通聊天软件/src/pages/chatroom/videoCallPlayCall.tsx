@@ -190,6 +190,8 @@ const VideoCallPlay = ({
       sender: mySocketId,
       text: '挂断',
     });
+    localStorage.removeItem('startTime');
+    localStorage.removeItem('friendSocketId');
     if (localVideo?.current) {
       // console.log('关闭===>>>>', localVideo.current);
       localVideo.current.srcObject?.getTracks().forEach((track: any) => {
