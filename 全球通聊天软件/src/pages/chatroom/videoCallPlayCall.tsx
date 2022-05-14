@@ -190,6 +190,19 @@ const VideoCallPlay = ({
       sender: mySocketId,
       text: '挂断',
     });
+    if (localVideo?.current) {
+      // console.log('关闭===>>>>', localVideo.current);
+      localVideo.current.srcObject?.getTracks().forEach((track: any) => {
+        track.enabled = false;
+        track.stop();
+      });
+    }
+    if (localAudio?.current) {
+      localAudio.current.srcObject?.getTracks().forEach((track: any) => {
+        track.enabled = false;
+        track.stop();
+      });
+    }
     if (!start) {
       if (call) {
         // videoCallCancel('取消通话');
