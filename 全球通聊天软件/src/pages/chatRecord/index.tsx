@@ -115,7 +115,7 @@ const ChatRecord = () => {
         friendListL = list;
         setFriendList(list);
         if (localStorage.getItem('friendSocketId') === socketId) {
-          localStorage.removeItem('friendSocketId');
+          // localStorage.removeItem('friendSocketId');
         }
         if (videoCalls) {
           Toast.show({

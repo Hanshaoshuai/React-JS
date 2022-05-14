@@ -303,7 +303,7 @@ export function Camera({
     if (text === '接听') {
       StartCall(friendSocketId, true);
     } else {
-      localStorage.removeItem('friendSocketId');
+      // localStorage.removeItem('friendSocketId');
       localStorage.removeItem('startTime');
       // console.log(
       //   '关闭摄像头0000===》》》',

@@ -43,10 +43,8 @@ const states: any = state();
 const reducer: any = reducers();
 export default function App() {
   const dispatchs = useDispatch();
-
   const schedule: any = useSelector<any>((state) => state.schedule);
   const { textActionName } = schedule;
-  const [myLocName] = useState<any>(localStorage.getItem('name'));
   let indexId: any = 0;
   // console.log(schedule);
   const [state, dispatch] = useReducer(reducer, states);
@@ -54,13 +52,9 @@ export default function App() {
   const [messages, setMessages] = useState<any>({});
   const [superMaps, setSuperMaps] = useState(true);
   const [Clock, setClock] = useState(true);
-  const [toChatName] = useState<any>(localStorage.getItem('toChatName'));
-  const [locMyName] = useState(localStorage.getItem('myName'));
   const [videoCalls, setVideoCalls] = useState(false);
-  const [startCall, setStartCall] = useState(false);
   const [call, setCall] = useState(false);
   const [actionName, setActionName] = useState('');
-  const [onFinish, setOnFinish] = useState(false);
 
   useEffect(() => {
     console.log(videoCall, textActionName);
@@ -95,7 +89,7 @@ export default function App() {
       // console.log('接听+++++++====>>>>', to, sender, text);
       if (text === '挂断') {
         localStorage.removeItem('startTime');
-        localStorage.removeItem('friendSocketId');
+        // localStorage.removeItem('friendSocketId');
         window.time = setTimeout(() => {
           dispatchs({
             type: 'videoCall',
@@ -106,7 +100,6 @@ export default function App() {
             textActionName: '',
           });
           setVideoCalls(false);
-          setStartCall(false);
           setCall(false);
           clearTimeout(window.time);
           localStorage.removeItem('NestingIframe');
@@ -116,6 +109,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    const myLocName = localStorage.getItem('name');
     let toName: any = {};
     toName = JSON.parse(messages.toName || '{}');
     if (
@@ -213,10 +207,9 @@ export default function App() {
           call={call}
           onStartQuery={videoCalls}
           actionName={actionName}
-          onFinish={onFinish}
-          chatNames={toChatName}
-          locMyName={locMyName}
-          myLocName={myLocName}
+          // chatNames={toChatName}
+          // locMyName={locMyName}
+          // myLocName={myLocName}
         />
       )}
       <Router>

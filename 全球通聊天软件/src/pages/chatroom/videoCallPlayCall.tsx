@@ -12,14 +12,13 @@ let slideChange: any = {};
 const VideoCallPlay = ({
   call, // 开始按钮
   onStartQuery,
-  videoCallCancel,
   actionName,
-  onFinish,
-  chatNames,
-  locMyName,
-  myLocName,
-  startCall,
-}: any) => {
+}: // chatNames,
+// locMyName,
+// myLocName,
+any) => {
+  const [chatNames] = useState<any>(localStorage.getItem('toChatName'));
+  const [myLocName] = useState<any>(localStorage.getItem('name'));
   const [mySocketId] = useState(localStorage.getItem('mySocketId'));
   const [friendSocketId] = useState(localStorage.getItem('friendSocketId'));
   const [actionNames, setActionNames] = useState('');
@@ -180,7 +179,7 @@ const VideoCallPlay = ({
       operator: myLocName,
     });
     localStorage.removeItem('startTime');
-    localStorage.removeItem('friendSocketId');
+    // localStorage.removeItem('friendSocketId');
   };
 
   const clearIntervals = (text: any) => {
