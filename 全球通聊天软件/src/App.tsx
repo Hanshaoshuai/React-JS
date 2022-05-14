@@ -197,36 +197,6 @@ export default function App() {
     setSuperMaps(false);
   };
 
-  // const videoDom = useMemo(() => {
-  //   if (videoCalls && actionName && call) {
-  //     return (
-  //       <VideoCallPlay
-  //         call={true}
-  //         onStartQuery={videoCalls}
-  //         actionName={actionName}
-  //         onFinish={onFinish}
-  //         chatNames={toChatName}
-  //         locMyName={locMyName}
-  //         myLocName={myLocName}
-  //       />
-  //     );
-  //   } else if (videoCalls && actionName && !call) {
-  //     return (
-  //       <VideoCallPlay
-  //         call={call}
-  //         onStartQuery={videoCalls}
-  //         actionName={actionName}
-  //         onFinish={onFinish}
-  //         chatNames={toChatName}
-  //         locMyName={locMyName}
-  //         myLocName={myLocName}
-  //       />
-  //     );
-  //   } else {
-  //     return null;
-  //   }
-  // }, [videoCalls, actionName, call]);
-
   return (
     <>
       {Clock && (
