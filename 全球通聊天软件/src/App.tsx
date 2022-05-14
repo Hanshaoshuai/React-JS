@@ -63,28 +63,29 @@ export default function App() {
   const [onFinish, setOnFinish] = useState(false);
 
   useEffect(() => {
-    // console.log(videoCall, list, schedule, textActionName);
+    console.log(videoCall, textActionName);
     if (videoCall && textActionName) {
-      setCall(videoCall);
+      setCall(true);
       setVideoCalls(true);
       setActionName(textActionName);
     }
-  }, [videoCall, textActionName, list]);
+  }, [videoCall, textActionName]);
 
   useEffect(() => {
     window.socket.on('message', function (data: any) {
       setMessages(data);
     });
     destroyGlobalSpinner();
-    dispatchs(
-      setSchedule({
-        data: '数据更改',
-        list: [1, 2, 3],
-      })
-    );
+    // dispatchs(
+    //   setSchedule({
+    //     data: '数据更改',
+    //     list: [1, 2, 3],
+    //   })
+    // );
 
     // 视频语音通话部分
     window.socket.on('call', ({ to, sender, headPortrait }: any) => {
+      // console.log(to, sender);
       localStorage.setItem('friendSocketId', sender);
       localStorage.setItem('headPortrait', headPortrait);
       setVideoCalls(true);
@@ -196,20 +197,35 @@ export default function App() {
     setSuperMaps(false);
   };
 
-  const videoDom = useMemo(() => {
-    return (
-      <VideoCallPlay
-        call={call}
-        onStartQuery={videoCalls}
-        actionName={actionName}
-        onFinish={onFinish}
-        chatNames={toChatName}
-        locMyName={locMyName}
-        myLocName={myLocName}
-        startCall={startCall}
-      />
-    );
-  }, [videoCalls]);
+  // const videoDom = useMemo(() => {
+  //   if (videoCalls && actionName && call) {
+  //     return (
+  //       <VideoCallPlay
+  //         call={true}
+  //         onStartQuery={videoCalls}
+  //         actionName={actionName}
+  //         onFinish={onFinish}
+  //         chatNames={toChatName}
+  //         locMyName={locMyName}
+  //         myLocName={myLocName}
+  //       />
+  //     );
+  //   } else if (videoCalls && actionName && !call) {
+  //     return (
+  //       <VideoCallPlay
+  //         call={call}
+  //         onStartQuery={videoCalls}
+  //         actionName={actionName}
+  //         onFinish={onFinish}
+  //         chatNames={toChatName}
+  //         locMyName={locMyName}
+  //         myLocName={myLocName}
+  //       />
+  //     );
+  //   } else {
+  //     return null;
+  //   }
+  // }, [videoCalls, actionName, call]);
 
   return (
     <>
@@ -220,7 +236,17 @@ export default function App() {
       )}
       {superMaps && <SuperMap callback={callbackMap} />}
       <audio id="play" src="/mp3/1.mp3"></audio>
-      {videoCalls && videoDom}
+      {videoCalls && (
+        <VideoCallPlay
+          call={call}
+          onStartQuery={videoCalls}
+          actionName={actionName}
+          onFinish={onFinish}
+          chatNames={toChatName}
+          locMyName={locMyName}
+          myLocName={myLocName}
+        />
+      )}
       <Router>
         <MyContext.Provider value={{ state, dispatch, messages }}>
           <Switch>
