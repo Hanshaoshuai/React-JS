@@ -91,6 +91,7 @@ const VideoCallPlay = ({
         setStart(true);
         setCallStarted(true);
       } else {
+        localStorage.removeItem('startTime');
         if (localVideo?.current) {
           // console.log('关闭===>>>>', localVideo.current);
           localVideo.current.srcObject?.getTracks().forEach((track: any) => {
