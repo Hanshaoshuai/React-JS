@@ -114,7 +114,9 @@ const ChatRecord = () => {
         });
         friendListL = list;
         setFriendList(list);
-        localStorage.removeItem('friendSocketId');
+        if (localStorage.getItem('friendSocketId') === socketId) {
+          localStorage.removeItem('friendSocketId');
+        }
         if (videoCalls) {
           Toast.show({
             content: '对方意外中断请重新链接！',
