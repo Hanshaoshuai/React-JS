@@ -59,7 +59,6 @@ const ChatRecord = () => {
   const [dividerBlock, setDividerBlock] = useState(false);
 
   useEffect(() => {
-    localStorage.removeItem('friendSocketId');
     localStorage.removeItem('addSearchFriends');
     localStorage.removeItem('personalInformation');
     localStorage.removeItem('groupName');
