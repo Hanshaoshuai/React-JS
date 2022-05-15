@@ -1804,7 +1804,8 @@ const Dynamic = ({
             style={{
               position: 'relative',
               width: '75vw',
-              height: '50%',
+              height: '60%',
+              paddingTop: '12px',
               background: '#fff',
               borderRadius: '0.2rem',
             }}
@@ -1814,12 +1815,12 @@ const Dynamic = ({
                 overflowY: 'auto',
                 margin: '0 auto',
                 width: '100%',
-                height: 'calc( 100% - 39px)',
+                height: 'calc( 100% - 51px)',
               }}
             >
               <div
                 style={{
-                  padding: '20px 12px',
+                  padding: '0 12px 20px 12px',
                 }}
               >
                 {dynamicDeletionTime.content && (
