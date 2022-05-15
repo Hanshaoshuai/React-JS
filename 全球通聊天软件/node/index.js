@@ -2152,7 +2152,7 @@ app.post('/post4', function (req, res, next) {
               MongoClient.connect(url, function (err, db) {
                 if (err) throw err;
                 var dbo = db.db('runoob');
-                var whereStr = { nickName: req.body.addNumber }; // 查询条件
+                var whereStr = { name: req.body.addNumber }; // 查询条件
                 dbo
                   .collection('site')
                   .find(whereStr)
@@ -2172,7 +2172,7 @@ app.post('/post4', function (req, res, next) {
                     // console.log(obj, +'....' + number);
                     MongoClient.connect(url, function (err, db) {
                       var dbo = db.db('runoob');
-                      var whereStr = { nickName: req.body.addNumber }; // 查询条件
+                      var whereStr = { name: req.body.addNumber }; // 查询条件
                       var updateStr = {
                         $set: { linkFriends: obj, dateTime: dateTime },
                       }; //更换内容
