@@ -1815,7 +1815,7 @@ const Dynamic = ({
                 overflowY: 'auto',
                 margin: '0 auto',
                 width: '100%',
-                height: 'calc( 100% - 51px)',
+                height: 'calc( 100% - 39px)',
               }}
             >
               <div
