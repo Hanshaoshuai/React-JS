@@ -1820,7 +1820,7 @@ const Dynamic = ({
             >
               <div
                 style={{
-                  padding: '0 12px 20px 12px',
+                  padding: '0 12px 12px 12px',
                 }}
               >
                 {dynamicDeletionTime.content && (
