@@ -1,32 +1,20 @@
 import './index.scss';
 
-import React, { useEffect, useRef, useState, useContext } from 'react';
-import { ActionSheet, Button, Dialog, Space, Toast } from 'antd-mobile';
-import VideoCallPlay from './videoCallPlayCall';
-import { MyContext } from '../../models/context';
+import React, { useEffect, useRef, useState } from 'react';
+import { ActionSheet, Toast } from 'antd-mobile';
 
-let VideoCallPlayCall: any = null;
 const OtherItems = ({
   setFileList,
   deleteFl,
   boxDom,
   onSetVideoCalls,
 }: any) => {
-  const { messages } = useContext(MyContext);
-
   const fs: any = useRef(null);
   const fs1: any = useRef(null);
   const [visible, setVisible] = useState(false);
-
   const [myLocName] = useState<any>(localStorage.getItem('name'));
   const [toChatName] = useState<any>(localStorage.getItem('toChatName'));
-
-  // const [onStartAction, setOnStartAction] = useState(false);
-  // const [onStartQuery, setOnStartQuery] = useState(false);
-  // const [clearIntervals, setClearIntervals] = useState(false);
-
-  // let localVideoRef: any = null;
-  // let remoteVideoRef: any = null;
+  const [friendSocketId] = useState(localStorage.getItem('friendSocketId'));
 
   useEffect(() => {
     if (fs && fs1) {
@@ -106,6 +94,9 @@ const OtherItems = ({
       conversation: true,
       startTime: new Date().getTime(),
       endTime: '',
+      to: friendSocketId,
+      sender: window.socket.id,
+      headPortrait: localStorage.getItem('headPortrait'),
     });
   };
 

@@ -212,6 +212,7 @@ const ChatList = () => {
   useEffect(() => {
     //监听服务服务端emit的message事件发送的消息
     // console.log(messages);
+    if (!messages?.text.startTime && messages?.text.conversation) return;
     if (firstEntry) {
       if (
         !messages?.text?.VideoAndVoice ||
@@ -332,10 +333,6 @@ const ChatList = () => {
     dispatch({
       type: 'videoCall',
       videoCall: true,
-    });
-    dispatch({
-      type: 'textActionName',
-      textActionName: text,
     });
     dispatchs({
       type: 'textActionName',

@@ -57,7 +57,7 @@ export default function App() {
   const [actionName, setActionName] = useState('');
 
   useEffect(() => {
-    console.log(videoCall, textActionName);
+    // console.log(videoCall, textActionName);
     if (videoCall && textActionName) {
       setCall(true);
       setVideoCalls(true);
@@ -77,16 +77,16 @@ export default function App() {
     //   })
     // );
 
-    // 视频语音通话部分
-    window.socket.on('call', ({ to, sender, headPortrait }: any) => {
-      // console.log(to, sender);
-      localStorage.setItem('friendSocketId', sender);
-      localStorage.setItem('headPortrait', headPortrait);
-      setVideoCalls(true);
-      setCall(false);
-    });
+    // // 视频语音通话部分
+    // window.socket.on('call', ({ to, sender, headPortrait }: any) => {
+    //   console.log(to, sender);
+    //   localStorage.setItem('friendSocketId', sender);
+    //   localStorage.setItem('headPortrait', headPortrait);
+    //   setVideoCalls(true);
+    //   setCall(false);
+    // });
     window.socket.on('respond', ({ to, sender, text }: any) => {
-      // console.log('接听+++++++====>>>>', to, sender, text);
+      // console.log('通话+++++++====>>>>', to, sender, text);
       if (text === '挂断') {
         localStorage.removeItem('startTime');
         // localStorage.removeItem('friendSocketId');
@@ -119,7 +119,6 @@ export default function App() {
       // console.log(messages.toName);
       toName = toName.filter((term: any) => term.name === myLocName)[0] || {};
     }
-    // console.log('message====>>>>>', messages, toName);
     if (
       messages.text !== '上线了' &&
       (messages?.text?.toName === myLocName || toName.name === myLocName)
@@ -139,12 +138,16 @@ export default function App() {
         indexId = 0;
       }
     }
-
+    // console.log('message====>>>>>', messages, window.socket.id);
     // 视频语音通话部分
     if (
-      messages?.text?.toName === myLocName ||
-      messages?.text?.fromName === myLocName
+      (messages?.text?.toName === myLocName ||
+        messages?.text?.fromName === myLocName) &&
+      messages?.text?.to === window.socket.id
     ) {
+      localStorage.setItem('friendSocketId', messages?.text?.sender);
+      localStorage.setItem('headPortrait', messages?.text?.headPortrait);
+      setCall(false);
       if (messages?.text?.VideoAndVoice === '视频') {
         setVideoCalls(true);
         setActionName('切换语音');

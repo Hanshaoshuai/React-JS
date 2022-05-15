@@ -34,15 +34,15 @@ any) => {
   const [slide, setSlideChange] = useState<any>({ x: 0, y: 0 });
   const [narrow, setNarrow] = useState<any>(false);
 
-  useEffect(() => {
-    if (onStartQuery && call) {
-      window.socket.emit('call', {
-        to: friendSocketId,
-        sender: window.socket.id,
-        headPortrait: localStorage.getItem('myHeadPortrait'),
-      }); // 发送 呼叫
-    }
-  }, [onStartQuery]);
+  // useEffect(() => {
+  //   if (onStartQuery && call) {
+  //     window.socket.emit('call', {
+  //       to: friendSocketId,
+  //       sender: window.socket.id,
+  //       headPortrait: localStorage.getItem('myHeadPortrait'),
+  //     }); // 发送 呼叫
+  //   }
+  // }, [onStartQuery]);
 
   useEffect(() => {
     if (actionName) {
