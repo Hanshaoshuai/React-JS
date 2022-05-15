@@ -835,7 +835,7 @@ app.post('/post0', function (req, res, next) {
 //登录
 app.post('/post', function (req, res, next) {
   var resto = res;
-  console.log('post请求参数：', req.body);
+  // console.log('post请求参数：', req.body);
   // console.log(__dirname);
   MongoClient.connect(url, function (err, db) {
     if (err) throw err;
@@ -1973,7 +1973,7 @@ app.post('/file_upload', function (req, res) {
         }
         fs.writeFile(`${filePath}/${fileName}.${reqs.type}`, dataBuffer, (err) => {
           if (err) {
-            console.log(err)
+            // console.log(err)
             res.send({ code: 2001, msg: "上传失败" })
           } else {
             // console.log(err)
@@ -2152,7 +2152,7 @@ app.post('/post4', function (req, res, next) {
               MongoClient.connect(url, function (err, db) {
                 if (err) throw err;
                 var dbo = db.db('runoob');
-                var whereStr = { nickName: req.body.addName }; // 查询条件
+                var whereStr = { nickName: req.body.addNumber }; // 查询条件
                 dbo
                   .collection('site')
                   .find(whereStr)
@@ -2172,7 +2172,7 @@ app.post('/post4', function (req, res, next) {
                     // console.log(obj, +'....' + number);
                     MongoClient.connect(url, function (err, db) {
                       var dbo = db.db('runoob');
-                      var whereStr = { nickName: req.body.addName }; // 查询条件
+                      var whereStr = { nickName: req.body.addNumber }; // 查询条件
                       var updateStr = {
                         $set: { linkFriends: obj, dateTime: dateTime },
                       }; //更换内容
