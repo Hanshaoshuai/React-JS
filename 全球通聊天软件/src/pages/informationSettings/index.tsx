@@ -223,7 +223,9 @@ const InformationSettings = ({
         setValueInput(valueInput);
       } else {
         setValueInput(valueInputText);
-        setName(valueInputText);
+        // if (name) {
+        //   setName(valueInputText);
+        // }
         let newList = [...newOptions0].map((item: any) => {
           if (item.label === '昵称') {
             item.value = valueInputText;
@@ -377,7 +379,7 @@ const InformationSettings = ({
           height: `calc(100% - 0.9rem - ${window.userAgents}px)`,
         }}
       >
-        <div className="denglu-text ziZhu">
+        <div className="denglu-text ziZhu denglu-text-settings">
           <div className="xiangCe">
             <div className={'container'}>
               <div className={'side'}>
