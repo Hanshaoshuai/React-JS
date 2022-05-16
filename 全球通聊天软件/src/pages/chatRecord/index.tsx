@@ -760,7 +760,9 @@ const ChatRecord = () => {
           <div className="times">{moment(parseInt(item.dateTime))}</div>
           {!imgList.length && (
             <Badge
-              color={`${item.socketId ? '#87d068' : '#bbbbbb'}`}
+              color={`${
+                item.socketId && item.signIn === 'yes' ? '#87d068' : '#bbbbbb'
+              }`}
               content={Badge.dot}
               style={{
                 minWidth: '0.13rem',
@@ -890,7 +892,11 @@ const ChatRecord = () => {
                     <div className="texts-bottom border-bottom"></div>
                   </span>
                   <Badge
-                    color={`${item.socketId ? '#87d068' : '#bbbbbb'}`}
+                    color={`${
+                      item.socketId && item.signIn === 'yes'
+                        ? '#87d068'
+                        : '#bbbbbb'
+                    }`}
                     content={Badge.dot}
                     style={{
                       minWidth: '0.13rem',
