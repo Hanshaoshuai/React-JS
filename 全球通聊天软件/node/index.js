@@ -87,7 +87,7 @@ var server = app.listen(ports, hostName, () => {
 //   console.log(`服务器运行在http:${hostName}:${ports}`);
 //   // var host = server.address().address;
 //   // var port = server.address().port;
-// });;
+// });
 
 
 var io = require('socket.io')(server, { cors: true });
@@ -145,7 +145,7 @@ io.sockets.on('connection', function (socket) {
       //   text: data,
       // });
     } else {
-      data.toName = data.toName.toString();
+      data.toName = `${data.toName}`;
       MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         var dbo = db.db('runoob');
