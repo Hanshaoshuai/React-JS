@@ -267,10 +267,17 @@ const ChatRecord = () => {
   const linkFriends = (
     nickName: string,
     name: string,
-    headPortrait: string
+    headPortrait: string,
+    socketId: any,
+    signIn: any
   ) => {
     // console.log("添加好友验证消息", nickName, name);
     // console.log(history);
+    if (signIn === 'yes') {
+      localStorage.setItem('friendSocketId', socketId);
+    } else {
+      localStorage.removeItem('friendSocketId');
+    }
     const { pathname, search } = history.location;
     localStorage.setItem('comeFrom', `${pathname}${search}`);
     if (name !== localName) {
@@ -354,10 +361,15 @@ const ChatRecord = () => {
     groupName: string,
     imgIdLocs: any,
     groupNameLocs: any,
-    socketId: any
+    socketId: any,
+    signIn: any
   ) => {
     //			console.log(remarksNuber,textName,groupOwner,localNumber,nickNameGrou,nickName1,text,fromName,toName,friendName,toNames,headPortrait,sex,toFriends);
-    localStorage.setItem('friendSocketId', socketId);
+    if (signIn === 'yes') {
+      localStorage.setItem('friendSocketId', socketId);
+    } else {
+      localStorage.removeItem('friendSocketId');
+    }
     localStorage.setItem('textName', textName);
     localStorage.setItem('remarksNuber', remarksNuber);
     if (groupName) {
@@ -725,7 +737,8 @@ const ChatRecord = () => {
               item.groupName,
               item.imgId,
               item.name,
-              item.socketId
+              item.socketId,
+              item.signIn
             )
           }
         >
@@ -878,7 +891,13 @@ const ChatRecord = () => {
                   key={`${item.name}`}
                   className="content-food "
                   onClick={() =>
-                    linkFriends(item.nickName, item.name, item.apathZoom)
+                    linkFriends(
+                      item.nickName,
+                      item.name,
+                      item.apathZoom,
+                      item.socketId,
+                      item.signIn
+                    )
                   }
                 >
                   <div className="imgas">
