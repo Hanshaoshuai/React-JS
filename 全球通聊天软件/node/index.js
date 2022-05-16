@@ -184,23 +184,28 @@ io.sockets.on('connection', function (socket) {
     socket.emit('newcomerOnline', { ...newData, text: '上线' });
     socket.broadcast.emit('newcomerOnline', { ...newData, text: '上线' });
   });
-  //告诉所有人上线了(除自己之外)
-  socket.broadcast.emit('message', {
-    id: socket.id,
-    text: '上线了',
-  });
+  // //告诉所有人上线了(除自己之外)
+  // socket.broadcast.emit('message', {
+  //   id: socket.id,
+  //   text: '上线了',
+  // });
   //连接断开，如关闭页面时触发
   socket.on('disconnect', async (data) => {
     // console.log('123456789', data);
-    //socket.broadcast用于向整个网络广播(除自己之外)
-    socket.broadcast.emit('message', {
-      id: socket.id,
-      text: '离开了',
-    });
+    // //socket.broadcast用于向整个网络广播(除自己之外)
+    // socket.broadcast.emit('message', {
+    //   id: socket.id,
+    //   text: '离开了',
+    // });
     const newData = await socketIdChange({ name: '', socketId: socket.id })
     // console.log(newData, { ...newData, text: '下线' })
     socket.emit('newcomerOnline', { ...newData, text: '下线' });
     socket.broadcast.emit('newcomerOnline', { ...newData, text: '下线' });
+  });
+
+  socket.on('ondisconnect', async (data) => {
+    // console.log('123456789', data);
+    socket.broadcast.emit('newcomerOnline', { name: data.name, socketId: data.socketId, text: '下线' });
   });
 
   // 视频通话
@@ -267,7 +272,6 @@ io.sockets.on('connection', function (socket) {
 });
 
 // 更改个人socketid
-//更改个人朋友圈背景
 const socketIdChange = ({ name, socketId }) => {
   return new Promise((resolve, reject) => {
     MongoClient.connect(url, function (err, db) {
@@ -835,12 +839,13 @@ app.post('/post0', function (req, res, next) {
 //登录
 app.post('/post', function (req, res, next) {
   var resto = res;
+  var reqs = req.body
   // console.log('post请求参数：', req.body);
   // console.log(__dirname);
   MongoClient.connect(url, function (err, db) {
     if (err) throw err;
     var dbo = db.db('runoob');
-    var whereStr = { name: req.body.name }; // 查询条件
+    var whereStr = { name: reqs.name }; // 查询条件
     dbo
       .collection('site')
       .find(whereStr)
@@ -851,14 +856,18 @@ app.post('/post', function (req, res, next) {
         if (result.length === 0) {
           resto.send({ code: 2001, msg: '用户不存在请先注册' });
         } else if (result.length === 1) {
-          if (
-            result[0].name === req.body.name &&
-            result[0].password === req.body.password
-          ) {
+          if (result[0].name === reqs.name) {
+            if (reqs.password !== '退出' && result[0].password !== reqs.password) {
+              resto.send({ code: 1001, msg: '用户名或密码错误' });
+              return;
+            }
             // MongoClient.connect(url, function (err, db) {
             //   var dbo = db.db('runoob');
-            var whereStr = { name: req.body.name }; // 查询条件
-            var updateStr = { $set: { signIn: 'yes' } }; //更换内容
+            var whereStr = { name: reqs.name }; // 查询条件
+            // if (reqs.password === '退出') {
+            //   whereStr.socketId = ''
+            // }
+            var updateStr = { $set: { signIn: reqs.password !== '退出' ? 'yes' : 'no' } }; //更换内容
             dbo
               .collection('site')
               .updateOne(whereStr, updateStr, function (err, res) {
@@ -869,7 +878,7 @@ app.post('/post', function (req, res, next) {
             // });
             resto.send({
               code: 200,
-              msg: '您已登录成功',
+              msg: reqs.password === '退出' ? "您已退出登录" : '您已登录成功',
               imgId: result[0].imgId,
               nickName: result[0].nickName,
               circleFriendsBackground: result[0].circleFriendsBackground,

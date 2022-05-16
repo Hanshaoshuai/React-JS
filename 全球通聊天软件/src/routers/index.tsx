@@ -158,7 +158,7 @@ export default function Routers({ location }: SwitchProps): ReactElement {
     });
   }, []);
   useEffect(() => {
-    if (window.socket.id) {
+    if (window.socket.id && myLocName) {
       // console.log(window.socket.id);
       localStorage.setItem('mySocketId', window.socket.id);
       window.socket.emit('goOnline', {

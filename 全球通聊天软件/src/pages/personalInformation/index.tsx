@@ -18,6 +18,7 @@ import {
   removeFriend,
   logout,
   getCircleFriends,
+  login,
 } from '../../api';
 import { Upload } from '../A-components/upload';
 import { urlObj } from './urlObj';
@@ -531,12 +532,24 @@ const ChatRecord = () => {
     setVisible(true);
   };
   const signOuts = () => {
-    clearAll();
-    Toast.show({
-      content: '已退出登录',
-      position: 'top',
+    login({
+      name: myName,
+      password: '退出',
+      socketId: localStorage.getItem('mySocketId'),
+    }).then((data) => {
+      if (data.code === 200) {
+        clearAll();
+        Toast.show({
+          content: '已退出登录',
+          position: 'top',
+        });
+        history.push('/login');
+        window.socket.emit('ondisconnect', {
+          name: myName,
+          socketId: localStorage.getItem('mySocketId'),
+        });
+      }
     });
-    history.push('/login');
   };
   const tabs = () => {
     setTabShow(!tabShow);
