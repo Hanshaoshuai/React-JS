@@ -80,7 +80,7 @@ export function Drag({ mv, box = document.body, slide, onSlideChange }: any) {
   if (window.modelName === 'pc') {
     mv.onmousedown = movedown;
     mv.onmousemove = move;
-    window.onmouseup = moveup;
+    mv.onmouseup = moveup;
     //非ie浏览器
     document.addEventListener('mousemove', move, true);
   } else if (window.modelName === '平板') {

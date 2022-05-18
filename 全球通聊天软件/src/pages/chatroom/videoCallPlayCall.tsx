@@ -110,9 +110,10 @@ any) => {
   }, []);
 
   const onSlideChange = ({ x, y, touchend }: any) => {
-    // console.log(x, y, touchend, slideChange, slideChange.y < -100);
-    if (touchend && slideChange.y < -100) {
+    // console.log(x, y);
+    if (touchend && Math.abs(slideChange.y) > 160) {
       setNarrow(true);
+      setSlideChange({ x: 0, y: 0 });
     } else if (touchend) {
       setSlideChange({ x: 0, y: 0 });
     } else {
@@ -241,17 +242,32 @@ any) => {
         node.style.left = '';
         node.style.top = '';
       } else if (node) {
-        // node.style.transform = `scale(1, ${1 - slide.y / 100}) translateZ(0)`;
-        // node.style.transition = '0ms cubic-bezier(.1, .57, .1, 1)';
+        // node.style.transform = `translate3d(0px, ${-slide.y / 10}px,0px)`;
+        // node.style.transition = '0ms cubic-bezier(.1, .57, .1, 1)'; Math.abs
       }
     },
     [narrow]
   );
-
+  let large = 0;
+  if (Math.abs(slide.x) > Math.abs(slide.y)) {
+    large = Math.abs(slide.x);
+  } else {
+    large = Math.abs(slide.y);
+  }
+  const transStyles = {
+    transform: `translate3d(${slide.x / 4}px, ${slide.y / 4}px,0px) scale(${
+      1 - large / 600
+    },${1 - large / 600})`,
+    // transform: `translate3d(${slide.x}px, ${slide.y}px,0px)`,
+    // transform: `scale(${1 - Math.abs(slide.x) / 200},${
+    //   1 - Math.abs(slide.x) / 200
+    // })`,
+  };
   return (
     <div
       className={`videoCall ${narrow ? 'dragName' : 'dragNameNone'}`}
       ref={infoBoxContainer}
+      style={!narrow ? transStyles : {}}
     >
       {narrow && (
         <img
