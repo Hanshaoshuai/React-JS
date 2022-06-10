@@ -10,7 +10,7 @@ export function StartPayment({ dcontent, info, value, path1 }: any) {
   var w: any = null;
   //	var PAYSERVER1='http://www.qironghome.com/api/index.php/pay/AliSign/?payid=';
   //	var PAYSERVER2='http://www.qironghome.com/api/index.php/pay/AliSign/?payid=';
-  var PAYSERVER = 'http://demo.dcloud.net.cn/payment/?payid=';
+  var PAYSERVER = 'https://demo.dcloud.net.cn/payment/?payid=';
   const plusReady = () => {
     console.log('开始执行');
     // 获取支付通道
