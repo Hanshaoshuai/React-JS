@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Input } from 'antd-mobile';
-import { UnorderedListOutline, CloseCircleOutline } from 'antd-mobile-icons';
 import '../chatroom/index.scss';
 import { StartPayment } from './payment';
 
@@ -9,15 +8,20 @@ const Payment = () => {
   const history = useHistory();
   const dom: any = useRef(null);
   const [value, setValue] = useState<any>();
-  const [onPlayUrl, setOnPlayUrl] = useState<any>('');
+
   const goBackS = () => {
     history.goBack();
   };
+  const onCallback = () => {
+    setValue(undefined);
+  };
+
   useEffect(() => {
-    if (dom && value && value * 1 > 0) {
-      StartPayment({ dcontent: dom.current, info: '', value: value * 1 });
+    if (dom) {
+      StartPayment({ dcontent: dom.current, value: value * 1, onCallback });
     }
   }, [value]);
+
   return (
     <div className="yijian">
       <div

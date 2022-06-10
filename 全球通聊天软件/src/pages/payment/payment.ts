@@ -1,177 +1,171 @@
 import { Toast } from 'antd-mobile';
 
-export function StartPayment({ dcontent, info, value, path1 }: any) {
-  console.log('开始链接');
-  console.log(dcontent);
-  console.log(info);
-  console.log(value);
-  console.log(path1);
+export function StartPayment({ dcontent, value, onCallback }: any) {
   var pays: any = {};
   var w: any = null;
-  //	var PAYSERVER1='http://www.qironghome.com/api/index.php/pay/AliSign/?payid=';
-  //	var PAYSERVER2='http://www.qironghome.com/api/index.php/pay/AliSign/?payid=';
   var PAYSERVER = 'https://demo.dcloud.net.cn/payment/?payid=';
-  const plusReady = () => {
-    console.log('开始执行');
-    // 获取支付通道
-    window.plus.payment.getChannels(
-      (channels: any) => {
-        console.log('支付通道信息');
-        dcontent.innerHTML = '';
-        var content = dcontent;
-        //			var content=document.getElementById('dcontent');
-        //			var info=document.getElementById('info');
-        var txt = '支付通道信息：';
-        var x = 0;
-        for (var i in channels) {
-          var channel = channels[i];
-          if (channel.id === 'qhpay' || channel.id === 'qihoo') {
-            // 过滤掉不支持的支付通道：暂不支持360相关支付
-            continue;
-          }
-          pays[channel.id] = channel;
-          txt += 'id:' + channel.id + ', ';
-          txt += 'description:' + channel.description + ', ';
-          txt += 'serviceReady:' + channel.serviceReady + '； ';
-          var de = document.createElement('div');
-          var id = channel.id;
-          de.setAttribute('class', 'button');
-          //				de.setAttribute('onclick', 'pay(this.id)');
-          de.id = channel.id;
-          if (x === 0) {
-            de.style.marginRight = '0.2rem';
-            x += 1;
-          }
-          de.style.width = '60%';
-          de.style.lineHeight = '1rem';
-          de.style.fontSize = '0.32rem';
-          de.style.textAlign = 'center';
-          de.style.borderRadius = '0.1rem';
-          de.style.background = '#ff7a59';
-          de.style.color = '#ffffff';
-          de.style.margin = '0 auto';
-          de.style.marginTop = '0.6rem';
-          de.onclick = () => {
-            if (w) {
-              return;
-            } //检查是否请求订单中
-            if (id === 'appleiap') {
-              //   outSet('应用内支付');
-              //   clicked('payment_iap.html');
+  const channelsList = (channels: any) => {
+    console.log('支付通道信息', JSON.stringify(channels));
+    dcontent.innerHTML = '';
+    var content = dcontent;
+    const startPay = (e: any) => {
+      if (!value || value < 0) {
+        Toast.show({
+          content: '请输入金额！',
+          position: 'top',
+        });
+        return;
+      }
+      // console.log('检查是否请求订单中', e.target.id);
+      let index = e.target.id;
+      if (w) {
+        return;
+      } //检查是否请求订单中
+      if (index === 'appleiap') {
+        Toast.show({
+          content: '应用内支付',
+          position: 'top',
+        });
+        return;
+      }
+      Toast.show({
+        content: '请求支付',
+        position: 'top',
+      });
+      var url = PAYSERVER;
+      if (index === 'alipay' || index === 'wxpay') {
+        url += index;
+      } else {
+        window.plus.nativeUI.alert(
+          '当前环境不支持此支付通道！',
+          null,
+          '会员支付'
+        );
+        return;
+      }
+      var appid = window.plus.runtime.appid;
+      if (navigator.userAgent.indexOf('StreamApp') >= 0) {
+        appid = 'Stream';
+      }
+      url += '&appid=' + appid + '&total=';
+
+      w = window.plus.nativeUI.showWaiting();
+      // 请求支付订单
+      var amount = value;
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function () {
+        switch (xhr.readyState) {
+          case 4:
+            w.close();
+            w = null;
+            if (xhr.status === 200) {
               Toast.show({
-                content: '应用内支付',
+                content: '请求订单成功',
                 position: 'top',
               });
-              return;
-            }
-            // outSet('----- 请求支付 -----');
-            Toast.show({
-              content: '----- 请求支付 -----',
-              position: 'top',
-            });
-            var url = PAYSERVER;
-            if (id == 'alipay' || id == 'wxpay') {
-              url += id;
+              var order = xhr.responseText;
+              window.plus.payment.request(
+                pays[index],
+                order,
+                (result: any) => {
+                  onCallback();
+                  Toast.show({
+                    content: '支付成功',
+                    position: 'top',
+                  });
+                  window.plus.nativeUI.alert(
+                    '支付成功。',
+                    () => {
+                      window.back();
+                    },
+                    '会员支付'
+                  );
+                },
+                (e: any) => {
+                  if (e.code === -100) {
+                    Toast.show({
+                      content: `已取消支付`,
+                      position: 'top',
+                    });
+                  } else {
+                    Toast.show({
+                      content: `支付失败[${e.code}]： ${e.message}`,
+                      position: 'top',
+                    });
+                  }
+                  //   window.plus.nativeUI.alert(
+                  //     'http://www.html5plus.org/#specification#/specification/Payment.html',
+                  //     null,
+                  //     '支付失败：' + e.code
+                  //   );
+                }
+              );
             } else {
+              Toast.show({
+                content: `请求订单失败，${xhr.status}`,
+                position: 'top',
+              });
               window.plus.nativeUI.alert(
-                '当前环境不支持此支付通道！',
+                '获取订单信息失败！',
                 null,
                 '会员支付'
               );
-              return;
             }
-            var appid = window.plus.runtime.appid;
-            if (navigator.userAgent.indexOf('StreamApp') >= 0) {
-              appid = 'Stream';
-            }
-            url += '&appid=' + appid + '&total=';
-
-            w = window.plus.nativeUI.showWaiting();
-            // 请求支付订单
-            //		var amount = document.getElementById('total').value;
-            var amount = value;
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-              switch (xhr.readyState) {
-                case 4:
-                  w.close();
-                  w = null;
-                  if (xhr.status == 200) {
-                    // outLine('----- 请求订单成功 -----');
-                    Toast.show({
-                      content: '----- 请求订单成功 -----',
-                      position: 'top',
-                    });
-                    // outLine(xhr.responseText);
-                    var order = xhr.responseText;
-                    window.plus.payment.request(
-                      pays[id],
-                      order,
-                      (result: any) => {
-                        // outLine('----- 支付成功 -----');
-                        // outLine(JSON.stringify(result));
-                        Toast.show({
-                          content: '----- 支付成功 -----',
-                          position: 'top',
-                        });
-                        window.plus.nativeUI.alert(
-                          '支付成功。',
-                          function () {
-                            window.back();
-                          },
-                          '会员支付'
-                        );
-                      },
-                      function (e: any) {
-                        // outLine('----- 支付失败 -----');
-                        Toast.show({
-                          content: '----- 支付失败 -----',
-                          position: 'top',
-                        });
-                        // outLine('[' + e.code + ']：' + e.message);
-                        window.plus.nativeUI.alert(
-                          'http://www.html5plus.org/#specification#/specification/Payment.html',
-                          null,
-                          '支付失败：' + e.code
-                        );
-                      }
-                    );
-                  } else {
-                    // outLine('----- 请求订单失败 -----');
-                    Toast.show({
-                      content: '----- 请求订单失败 -----',
-                      position: 'top',
-                    });
-                    // outLine(xhr.status);
-                    window.plus.nativeUI.alert(
-                      '获取订单信息失败！',
-                      null,
-                      '会员支付'
-                    );
-                  }
-                  break;
-                default:
-                  break;
-              }
-            };
-            console.log('请求支付订单：' + url + amount);
-            xhr.open('GET', url + amount);
-            // outLine('请求支付订单：' + url + amount);
-            xhr.send();
-          };
-          de.innerText = channel.description + '支付';
-          content.appendChild(de);
-          checkServices(channel);
+            break;
+          default:
+            break;
         }
-        if (info) {
-          info.innerText = txt;
+      };
+      console.log('请求支付订单：' + url + amount);
+      xhr.open('GET', url + amount);
+      xhr.send();
+    };
+    for (var i in channels) {
+      var channel = channels[i];
+      if (channel.id === 'qhpay' || channel.id === 'qihoo') {
+        // 过滤掉不支持的支付通道：暂不支持360相关支付
+        continue;
+      }
+      pays[channel.id] = channel;
+      var de = document.createElement('div');
+      de.setAttribute('class', 'button');
+      de.id = channel.id;
+      //   de.style.width = '60%';
+      //   de.style.lineHeight = '0.8rem';
+      //   de.style.fontSize = '0.32rem';
+      //   de.style.textAlign = 'center';
+      //   de.style.borderRadius = '0.1rem';
+      //   de.style.background = '#ff7a59';
+      //   de.style.color = '#ffffff';
+      //   de.style.margin = '0 auto';
+      //   de.style.marginTop = '0.6rem';
+      de.onclick = startPay;
+      de.innerText = channel.description + '支付';
+      content.appendChild(de);
+      checkServices(channel);
+    }
+  };
+  const plusReady = () => {
+    // console.log('开始执行');
+    // 获取支付通道
+    window.plus.payment.getChannels(
+      (channels: any) => {
+        if (!channels && !channels[0] && !channels[0].id) {
+          channels = [
+            { id: 'alipay', description: '支付宝', serviceReady: true },
+            { id: 'wxpay', description: '微信', serviceReady: true },
+          ];
         }
+        channelsList(channels);
       },
       (e: any) => {
-        console.log('获取支付通道失败');
-        // outLine('获取支付通道失败：' + e.message);
+        const channels = [
+          { id: 'alipay', description: '支付宝', serviceReady: true },
+          { id: 'wxpay', description: '微信', serviceReady: true },
+        ];
+        channelsList(channels);
         Toast.show({
-          content: '获取支付通道失败',
+          content: `获取支付通道失败${e.message}`,
           position: 'top',
         });
       }
@@ -183,7 +177,7 @@ export function StartPayment({ dcontent, info, value, path1 }: any) {
     document.addEventListener('plusready', plusReady, false);
   }
   // 检测是否安装支付服务
-  function checkServices(pc: any) {
+  const checkServices = (pc: any) => {
     if (!pc.serviceReady) {
       var txt = null;
       switch (pc.id) {
@@ -208,65 +202,5 @@ export function StartPayment({ dcontent, info, value, path1 }: any) {
         pc.description
       );
     }
-  }
-  // 支付
-  //	function pay(id){
-  //		if(w){return;}//检查是否请求订单中
-  //		if(id==='appleiap'){
-  //			outSet('应用内支付');
-  //			clicked('payment_iap.html');
-  //			return;
-  //		}
-  //		outSet('----- 请求支付 -----');
-  //		var url=PAYSERVER;
-  //		if(id=='alipay'||id=='wxpay'){
-  //			url+=id;
-  //		}else{
-  //			plus.nativeUI.alert('当前环境不支持此支付通道！', null, '捐赠');
-  //			return;
-  //		}
-  //		var appid=plus.runtime.appid;
-  //		if(navigator.userAgent.indexOf('StreamApp')>=0){
-  //			appid='Stream';
-  //		}
-  //		url+='&appid='+appid+'&total=';
-  //
-  //		w=plus.nativeUI.showWaiting();
-  //		// 请求支付订单
-  ////		var amount = document.getElementById('total').value;
-  //		var amount = total.value;
-  //		var xhr=new XMLHttpRequest();
-  //		xhr.onreadystatechange=function(){
-  //			switch(xhr.readyState){
-  //				case 4:
-  //				w.close();w=null;
-  //				if(xhr.status==200){
-  //					outLine('----- 请求订单成功 -----');
-  //					outLine(xhr.responseText);
-  //					var order=xhr.responseText;
-  //					plus.payment.request(pays[id],order,function(result){
-  //						outLine('----- 支付成功 -----');
-  //						outLine(JSON.stringify(result));
-  //						plus.nativeUI.alert('支付成功：感谢你的支持，我们会继续努力完善产品。',function(){
-  //							back();
-  //						},'捐赠');
-  //					},function(e){
-  //						outLine('----- 支付失败 -----');
-  //						outLine('['+e.code+']：'+e.message);
-  //						plus.nativeUI.alert('更多错误信息请参考支付(Payment)规范文档：http://www.html5plus.org/#specification#/specification/Payment.html', null, '支付失败：'+e.code);
-  //					});
-  //				}else{
-  //					outLine('----- 请求订单失败 -----');
-  //					outLine( xhr.status );
-  //					plus.nativeUI.alert('获取订单信息失败！', null, '捐赠');
-  //				}
-  //				break;
-  //				default:
-  //				break;
-  //			}
-  //		}
-  //		xhr.open('GET',url+amount);
-  //		outLine('请求支付订单：'+url+amount);
-  //		xhr.send();
-  //	}
+  };
 }

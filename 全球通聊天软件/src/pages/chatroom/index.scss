@@ -2,6 +2,18 @@
 .fades-leave-active {
   opacity: 0;
 }
+#alipay,
+#wxpay {
+  width: 60%;
+  line-height: 0.8rem;
+  font-size: 0.32rem;
+  text-align: center;
+  border-radius: 0.1rem;
+  background: #ff7a59;
+  color: #fff;
+  margin: 0 auto;
+  margin-top: 0.3rem;
+}
 .yijian {
   // position: fixed;
   position: absolute;
