@@ -26,6 +26,7 @@ declare global {
     stream: any;
     mediaStreamTrack: any;
     time: any;
+    back: any;
   }
 }
 

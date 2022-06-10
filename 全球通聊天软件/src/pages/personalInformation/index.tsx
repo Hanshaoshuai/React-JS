@@ -28,7 +28,7 @@ let urlName = '';
 let urlValue = '';
 let urlAlbum = '';
 const ChatRecord = () => {
-  const { state } = useContext(MyContext);
+  const { state }: any = useContext(MyContext);
   const { settings, urlPathname } = state;
   const history = useHistory();
   const fs: any = useRef(null);
@@ -662,6 +662,10 @@ const ChatRecord = () => {
   };
   let listIndexId = 0;
 
+  const onPayment = () => {
+    history.push('/payment');
+  };
+
   const listValues = useMemo(() => {
     const list: any = [];
     for (let key in labelData) {
@@ -1155,6 +1159,24 @@ const ChatRecord = () => {
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div className="denglu-text">
+              <div
+                className="sheZhi denglu_sheZhi"
+                // onClick={setUp}
+                onClick={onPayment}
+              >
+                充值中心
+                <span
+                  style={{
+                    float: 'right',
+                    textAlign: 'right',
+                    color: '#d0d0d0',
+                  }}
+                >
+                  <RightOutline />
+                </span>
               </div>
             </div>
             {friend &&

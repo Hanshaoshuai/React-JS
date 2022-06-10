@@ -23,7 +23,7 @@ export default function Routers({ location }: SwitchProps): ReactElement {
   const history = useHistory();
   const route = Router.find((r) => r.path === location?.pathname);
   const myLocName = localStorage.getItem('name');
-  const { state, dispatch } = useContext(MyContext);
+  const { state, dispatch }: any = useContext(MyContext);
   const { urlPathname, badge, pathname } = state;
   const { _name, _value } = urlObj(urlPathname);
   useEffect(() => {
