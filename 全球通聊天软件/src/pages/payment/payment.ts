@@ -171,7 +171,7 @@ export function StartPayment({ dcontent, value, onCallback }: any) {
       }
     );
   };
-  if (window.plus) {
+  if (window.plus || !window.plus) {
     plusReady();
   } else {
     document.addEventListener('plusready', plusReady, false);
