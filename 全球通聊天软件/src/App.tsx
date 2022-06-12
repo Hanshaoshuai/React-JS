@@ -27,6 +27,7 @@ declare global {
     mediaStreamTrack: any;
     time: any;
     back: any;
+    WeixinJSBridge: any;
   }
 }
 
