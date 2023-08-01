@@ -54,7 +54,7 @@ const ProjectInstance = () => {
               setOnPlayUrl('./projectImages/2022-02-14_06-55-39.mp4');
             }}
           >
-            工程数字资产
+            资产
           </List.Item>
           <List.Item
             prefix={<UnorderedListOutline />}
@@ -62,7 +62,7 @@ const ProjectInstance = () => {
               setOnPlayUrl('./projectImages/2022-02-14_06-13-05.mp4');
             }}
           >
-            三峡升船机数字化平台
+            数字平台
           </List.Item>
           <List.Item
             prefix={<UnorderedListOutline />}
@@ -70,7 +70,7 @@ const ProjectInstance = () => {
               setOnPlayUrl('./projectImages/2022-02-14_07-00-39.mp4');
             }}
           >
-            物联网
+            物联网购
           </List.Item>
         </List>
       </div>
